@@ -1,0 +1,119 @@
+/* FieldOps Custom Styles */
+
+/* Stats Card */
+.stats-card {
+  @apply bg-white rounded-xl border border-slate-200 p-6 transition-all duration-200;
+}
+
+.stats-card:hover {
+  @apply border-blue-200 shadow-sm;
+}
+
+/* Map Container */
+.map-container {
+  @apply relative rounded-xl overflow-hidden border border-slate-200 bg-slate-100;
+  min-height: 400px;
+}
+
+/* Visit Card */
+.visit-card {
+  @apply bg-white rounded-lg border border-slate-200 p-4 transition-all duration-200 cursor-pointer;
+}
+
+.visit-card:hover {
+  @apply border-blue-300 shadow-md transform -translate-y-0.5;
+}
+
+/* Status Badges */
+.status-active {
+  @apply bg-emerald-100 text-emerald-700 px-2.5 py-0.5 rounded-full text-xs font-medium;
+}
+
+.status-idle {
+  @apply bg-amber-100 text-amber-700 px-2.5 py-0.5 rounded-full text-xs font-medium;
+}
+
+.status-offline {
+  @apply bg-slate-100 text-slate-500 px-2.5 py-0.5 rounded-full text-xs font-medium;
+}
+
+/* Priority Badges */
+.priority-high {
+  @apply bg-red-100 text-red-700 border border-red-200;
+}
+
+.priority-medium {
+  @apply bg-amber-100 text-amber-700 border border-amber-200;
+}
+
+.priority-low {
+  @apply bg-slate-100 text-slate-600 border border-slate-200;
+}
+
+/* Sidebar */
+.sidebar {
+  @apply fixed left-0 top-0 h-full w-64 bg-slate-900 text-white z-40 transition-transform duration-300;
+}
+
+.sidebar-link {
+  @apply flex items-center gap-3 px-4 py-3 text-slate-300 hover:text-white hover:bg-slate-800 transition-colors rounded-lg mx-2;
+}
+
+.sidebar-link.active {
+  @apply bg-blue-600 text-white;
+}
+
+/* Data Table */
+.data-table {
+  @apply w-full text-sm;
+}
+
+.data-table th {
+  @apply text-left px-4 py-3 bg-slate-50 text-slate-600 font-semibold border-b border-slate-200;
+}
+
+.data-table td {
+  @apply px-4 py-3 border-b border-slate-100;
+}
+
+.data-table tr:hover td {
+  @apply bg-slate-50;
+}
+
+/* Form Styles */
+.form-group {
+  @apply space-y-2;
+}
+
+.form-label {
+  @apply text-sm font-medium text-slate-700;
+}
+
+/* Mobile Bottom Nav */
+.mobile-nav {
+  @apply fixed bottom-0 left-0 right-0 bg-white border-t border-slate-200 z-50 md:hidden;
+}
+
+.mobile-nav-item {
+  @apply flex flex-col items-center justify-center py-2 px-4 text-slate-500 text-xs;
+}
+
+.mobile-nav-item.active {
+  @apply text-blue-600;
+}
+
+/* Loading Spinner */
+.spinner {
+  @apply animate-spin h-5 w-5 border-2 border-blue-600 border-t-transparent rounded-full;
+}
+
+/* Hero Section */
+.hero-section {
+  @apply relative min-h-screen flex items-center justify-center overflow-hidden;
+  background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+}
+
+.hero-pattern {
+  @apply absolute inset-0 opacity-10;
+  background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.4'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+}
