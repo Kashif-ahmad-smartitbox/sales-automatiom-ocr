@@ -1,4 +1,4 @@
-import { createContext, useContext, useState, useEffect } from 'react';
+import { createContext, useContext, useState, useEffect, useCallback, useMemo } from 'react';
 import axios from 'axios';
 
 const API = `${process.env.REACT_APP_BACKEND_URL}/api`;
@@ -9,11 +9,7 @@ export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    checkAuth();
-  }, []);
-
-  const checkAuth = async () => {
+  const checkAuth = useCallback(async () => {
     const token = localStorage.getItem('fieldops_token');
     if (!token) {
       setLoading(false);
@@ -30,36 +26,44 @@ export const AuthProvider = ({ children }) => {
     } finally {
       setLoading(false);
     }
-  };
+  }, []);
 
-  const login = async (email, password) => {
+  useEffect(() => {
+    checkAuth();
+  }, [checkAuth]);
+
+  const login = useCallback(async (email, password) => {
     const response = await axios.post(`${API}/auth/login`, { email, password });
     const { token, ...userData } = response.data;
     localStorage.setItem('fieldops_token', token);
     setUser(userData);
     return userData;
-  };
+  }, []);
 
-  const register = async (companyData) => {
+  const register = useCallback(async (companyData) => {
     const response = await axios.post(`${API}/company/register`, companyData);
     const { token, ...userData } = response.data;
     localStorage.setItem('fieldops_token', token);
     setUser(userData);
     return userData;
-  };
+  }, []);
 
-  const logout = () => {
+  const logout = useCallback(() => {
     localStorage.removeItem('fieldops_token');
     setUser(null);
-  };
+  }, []);
 
-  const getAuthHeader = () => {
+  const getAuthHeader = useCallback(() => {
     const token = localStorage.getItem('fieldops_token');
     return token ? { Authorization: `Bearer ${token}` } : {};
-  };
+  }, []);
+
+  const value = useMemo(() => ({
+    user, loading, login, register, logout, getAuthHeader, checkAuth
+  }), [user, loading, login, register, logout, getAuthHeader, checkAuth]);
 
   return (
-    <AuthContext.Provider value={{ user, loading, login, register, logout, getAuthHeader, checkAuth }}>
+    <AuthContext.Provider value={value}>
       {children}
     </AuthContext.Provider>
   );
