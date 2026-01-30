@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import axios from 'axios';
 import AdminLayout from '../components/layout/AdminLayout';
 import { Card, CardContent } from '../components/ui/card';
@@ -36,9 +36,9 @@ const SalesExecutiveManagement = () => {
 
   useEffect(() => {
     fetchData();
-  }, []);
+  }, [fetchData]);
 
-  const fetchData = async () => {
+  const fetchData = useCallback(async () => {
     try {
       const [execsRes, territoriesRes] = await Promise.all([
         axios.get(`${API}/sales-executives`, { headers: getAuthHeader() }),
@@ -51,7 +51,7 @@ const SalesExecutiveManagement = () => {
     } finally {
       setLoading(false);
     }
-  };
+  }, [getAuthHeader]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();

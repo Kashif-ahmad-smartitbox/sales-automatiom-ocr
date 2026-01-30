@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import axios from 'axios';
 import AdminLayout from '../components/layout/AdminLayout';
 import { Card, CardContent } from '../components/ui/card';
@@ -32,9 +32,9 @@ const TerritoryManagement = () => {
 
   useEffect(() => {
     fetchTerritories();
-  }, []);
+  }, [fetchTerritories]);
 
-  const fetchTerritories = async () => {
+  const fetchTerritories = useCallback(async () => {
     try {
       const res = await axios.get(`${API}/territories`, { headers: getAuthHeader() });
       setTerritories(res.data);
@@ -43,7 +43,7 @@ const TerritoryManagement = () => {
     } finally {
       setLoading(false);
     }
-  };
+  }, [getAuthHeader]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();

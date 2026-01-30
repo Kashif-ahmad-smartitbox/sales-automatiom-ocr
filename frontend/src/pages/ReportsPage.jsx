@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import axios from 'axios';
 import AdminLayout from '../components/layout/AdminLayout';
 import { Card, CardContent, CardHeader, CardTitle } from '../components/ui/card';
@@ -32,9 +32,9 @@ const ReportsPage = () => {
 
   useEffect(() => {
     fetchReportData();
-  }, []);
+  }, [fetchReportData]);
 
-  const fetchReportData = async () => {
+  const fetchReportData = useCallback(async () => {
     try {
       const [dashRes, perfRes, lostRes, histRes] = await Promise.all([
         axios.get(`${API}/reports/dashboard`, { headers: getAuthHeader() }),
@@ -51,7 +51,7 @@ const ReportsPage = () => {
     } finally {
       setLoading(false);
     }
-  };
+  }, [getAuthHeader]);
 
   const outcomeStats = {
     'Order Booked': visitHistory.filter(v => v.outcome === 'Order Booked').length,

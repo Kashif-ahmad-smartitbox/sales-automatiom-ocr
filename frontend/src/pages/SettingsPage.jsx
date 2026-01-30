@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import axios from 'axios';
 import AdminLayout from '../components/layout/AdminLayout';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '../components/ui/card';
@@ -38,9 +38,9 @@ const SettingsPage = () => {
 
   useEffect(() => {
     fetchCompanyConfig();
-  }, []);
+  }, [fetchCompanyConfig]);
 
-  const fetchCompanyConfig = async () => {
+  const fetchCompanyConfig = useCallback(async () => {
     try {
       const res = await axios.get(`${API}/company/config`, { headers: getAuthHeader() });
       setCompany(res.data);
@@ -52,7 +52,7 @@ const SettingsPage = () => {
     } finally {
       setLoading(false);
     }
-  };
+  }, [getAuthHeader]);
 
   const handleSave = async () => {
     setSaving(true);

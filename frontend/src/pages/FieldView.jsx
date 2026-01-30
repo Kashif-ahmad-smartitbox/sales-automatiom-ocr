@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import axios from 'axios';
 import { Button } from '../components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '../components/ui/card';
@@ -76,13 +76,13 @@ const FieldView = () => {
   useEffect(() => {
     getCurrentLocation();
     fetchTodayVisits();
-  }, []);
+  }, [fetchTodayVisits]);
 
   useEffect(() => {
     if (currentLocation && isInMarket) {
       fetchNearbyDealers();
     }
-  }, [currentLocation, isInMarket]);
+  }, [currentLocation, isInMarket, fetchNearbyDealers]);
 
   const getCurrentLocation = () => {
     if (navigator.geolocation) {
@@ -104,7 +104,7 @@ const FieldView = () => {
     }
   };
 
-  const fetchNearbyDealers = async () => {
+  const fetchNearbyDealers = useCallback(async () => {
     if (!currentLocation) return;
     try {
       const res = await axios.get(`${API}/visit/nearby-dealers`, {
@@ -115,9 +115,9 @@ const FieldView = () => {
     } catch (error) {
       console.error('Failed to fetch nearby dealers');
     }
-  };
+  }, [currentLocation, getAuthHeader]);
 
-  const fetchTodayVisits = async () => {
+  const fetchTodayVisits = useCallback(async () => {
     try {
       const res = await axios.get(`${API}/visits/today`, { headers: getAuthHeader() });
       setTodayVisits(res.data);
@@ -129,7 +129,7 @@ const FieldView = () => {
     } catch (error) {
       console.error('Failed to fetch today visits');
     }
-  };
+  }, [getAuthHeader]);
 
   const handleStartMarket = async () => {
     if (!currentLocation) {

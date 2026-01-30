@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import axios from 'axios';
 import AdminLayout from '../components/layout/AdminLayout';
 import { Card, CardContent, CardHeader, CardTitle } from '../components/ui/card';
@@ -53,9 +53,9 @@ const AdminDashboard = () => {
     fetchDashboardData();
     const interval = setInterval(fetchDashboardData, 30000); // Refresh every 30s
     return () => clearInterval(interval);
-  }, []);
+  }, [fetchDashboardData]);
 
-  const fetchDashboardData = async () => {
+  const fetchDashboardData = useCallback(async () => {
     try {
       const [statsRes, execsRes, visitsRes] = await Promise.all([
         axios.get(`${API}/reports/dashboard`, { headers: getAuthHeader() }),
@@ -70,7 +70,7 @@ const AdminDashboard = () => {
     } finally {
       setLoading(false);
     }
-  };
+  }, [getAuthHeader]);
 
   const getExecutiveStatus = (exec) => {
     if (exec.is_in_market) return 'active';

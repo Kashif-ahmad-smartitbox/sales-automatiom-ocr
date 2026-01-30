@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import axios from 'axios';
 import AdminLayout from '../components/layout/AdminLayout';
 import { Card, CardContent } from '../components/ui/card';
@@ -40,9 +40,9 @@ const DealerManagement = () => {
 
   useEffect(() => {
     fetchData();
-  }, []);
+  }, [fetchData]);
 
-  const fetchData = async () => {
+  const fetchData = useCallback(async () => {
     try {
       const [dealersRes, territoriesRes] = await Promise.all([
         axios.get(`${API}/dealers`, { headers: getAuthHeader() }),
@@ -55,7 +55,7 @@ const DealerManagement = () => {
     } finally {
       setLoading(false);
     }
-  };
+  }, [getAuthHeader]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
