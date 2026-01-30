@@ -36,10 +36,6 @@ const SettingsPage = () => {
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
 
-  useEffect(() => {
-    fetchCompanyConfig();
-  }, [fetchCompanyConfig]);
-
   const fetchCompanyConfig = useCallback(async () => {
     try {
       const res = await axios.get(`${API}/company/config`, { headers: getAuthHeader() });
@@ -53,6 +49,10 @@ const SettingsPage = () => {
       setLoading(false);
     }
   }, [getAuthHeader]);
+
+  useEffect(() => {
+    fetchCompanyConfig();
+  }, [fetchCompanyConfig]);
 
   const handleSave = async () => {
     setSaving(true);

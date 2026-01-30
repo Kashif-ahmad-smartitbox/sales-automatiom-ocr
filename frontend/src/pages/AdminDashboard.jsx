@@ -49,12 +49,6 @@ const AdminDashboard = () => {
   const [todayVisits, setTodayVisits] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    fetchDashboardData();
-    const interval = setInterval(fetchDashboardData, 30000); // Refresh every 30s
-    return () => clearInterval(interval);
-  }, [fetchDashboardData]);
-
   const fetchDashboardData = useCallback(async () => {
     try {
       const [statsRes, execsRes, visitsRes] = await Promise.all([
@@ -71,6 +65,12 @@ const AdminDashboard = () => {
       setLoading(false);
     }
   }, [getAuthHeader]);
+
+  useEffect(() => {
+    fetchDashboardData();
+    const interval = setInterval(fetchDashboardData, 30000); // Refresh every 30s
+    return () => clearInterval(interval);
+  }, [fetchDashboardData]);
 
   const getExecutiveStatus = (exec) => {
     if (exec.is_in_market) return 'active';

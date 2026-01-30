@@ -34,10 +34,6 @@ const SalesExecutiveManagement = () => {
   const [editingId, setEditingId] = useState(null);
   const [formData, setFormData] = useState(emptyForm);
 
-  useEffect(() => {
-    fetchData();
-  }, [fetchData]);
-
   const fetchData = useCallback(async () => {
     try {
       const [execsRes, territoriesRes] = await Promise.all([
@@ -52,6 +48,10 @@ const SalesExecutiveManagement = () => {
       setLoading(false);
     }
   }, [getAuthHeader]);
+
+  useEffect(() => {
+    fetchData();
+  }, [fetchData]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();

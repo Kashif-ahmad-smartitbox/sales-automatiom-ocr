@@ -38,10 +38,6 @@ const DealerManagement = () => {
   const [editingId, setEditingId] = useState(null);
   const [formData, setFormData] = useState(emptyForm);
 
-  useEffect(() => {
-    fetchData();
-  }, [fetchData]);
-
   const fetchData = useCallback(async () => {
     try {
       const [dealersRes, territoriesRes] = await Promise.all([
@@ -56,6 +52,10 @@ const DealerManagement = () => {
       setLoading(false);
     }
   }, [getAuthHeader]);
+
+  useEffect(() => {
+    fetchData();
+  }, [fetchData]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();

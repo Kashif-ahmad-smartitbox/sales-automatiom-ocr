@@ -73,17 +73,6 @@ const FieldView = () => {
     next_visit_date: ''
   });
 
-  useEffect(() => {
-    getCurrentLocation();
-    fetchTodayVisits();
-  }, [fetchTodayVisits]);
-
-  useEffect(() => {
-    if (currentLocation && isInMarket) {
-      fetchNearbyDealers();
-    }
-  }, [currentLocation, isInMarket, fetchNearbyDealers]);
-
   const getCurrentLocation = () => {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
@@ -130,6 +119,17 @@ const FieldView = () => {
       console.error('Failed to fetch today visits');
     }
   }, [getAuthHeader]);
+
+  useEffect(() => {
+    getCurrentLocation();
+    fetchTodayVisits();
+  }, [fetchTodayVisits]);
+
+  useEffect(() => {
+    if (currentLocation && isInMarket) {
+      fetchNearbyDealers();
+    }
+  }, [currentLocation, isInMarket, fetchNearbyDealers]);
 
   const handleStartMarket = async () => {
     if (!currentLocation) {

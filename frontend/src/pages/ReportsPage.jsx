@@ -30,10 +30,6 @@ const ReportsPage = () => {
   const [visitHistory, setVisitHistory] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    fetchReportData();
-  }, [fetchReportData]);
-
   const fetchReportData = useCallback(async () => {
     try {
       const [dashRes, perfRes, lostRes, histRes] = await Promise.all([
@@ -52,6 +48,10 @@ const ReportsPage = () => {
       setLoading(false);
     }
   }, [getAuthHeader]);
+
+  useEffect(() => {
+    fetchReportData();
+  }, [fetchReportData]);
 
   const outcomeStats = {
     'Order Booked': visitHistory.filter(v => v.outcome === 'Order Booked').length,

@@ -30,10 +30,6 @@ const TerritoryManagement = () => {
   const [editingId, setEditingId] = useState(null);
   const [formData, setFormData] = useState(emptyForm);
 
-  useEffect(() => {
-    fetchTerritories();
-  }, [fetchTerritories]);
-
   const fetchTerritories = useCallback(async () => {
     try {
       const res = await axios.get(`${API}/territories`, { headers: getAuthHeader() });
@@ -44,6 +40,10 @@ const TerritoryManagement = () => {
       setLoading(false);
     }
   }, [getAuthHeader]);
+
+  useEffect(() => {
+    fetchTerritories();
+  }, [fetchTerritories]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
