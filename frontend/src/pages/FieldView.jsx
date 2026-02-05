@@ -162,12 +162,26 @@ const FieldView = () => {
   const handleCheckIn = async () => {
     if (!selectedDealer || !currentLocation) return;
     try {
-      const res = await axios.post(`${API}/visit/check-in`, {
+      const checkInPayload = {
         dealer_id: selectedDealer.id,
         lat: currentLocation.lat,
         lng: currentLocation.lng
-      }, { headers: getAuthHeader() });
-      setActiveVisit({ ...selectedDealer, visit_id: res.data.visit_id, check_in_time: res.data.check_in_time });
+      };
+      
+      // If this is a Google Place (not from database), include dealer data
+      if (selectedDealer.source === 'google_places') {
+        checkInPayload.dealer_data = selectedDealer;
+      }
+
+      const res = await axios.post(`${API}/visit/check-in`, checkInPayload, { 
+        headers: getAuthHeader() 
+      });
+      
+      setActiveVisit({ 
+        ...selectedDealer, 
+        visit_id: res.data.visit_id, 
+        check_in_time: res.data.check_in_time 
+      });
       setCheckInDialogOpen(false);
       toast.success(`Checked in at ${selectedDealer.name}`);
       fetchTodayVisits();
@@ -425,8 +439,18 @@ const FieldView = () => {
                               <Storefront className="text-blue-600" size={20} />
                             </div>
                             <div>
-                              <p className="font-semibold">{dealer.name}</p>
+                              <div className="flex items-center gap-2">
+                                <p className="font-semibold">{dealer.name}</p>
+                                {dealer.source === 'google_places' && (
+                                  <Badge variant="outline" className="text-xs bg-green-50 text-green-700 border-green-200">
+                                    Google
+                                  </Badge>
+                                )}
+                              </div>
                               <p className="text-xs text-slate-500">{dealer.dealer_type}</p>
+                              {dealer.rating && (
+                                <p className="text-xs text-amber-600">⭐ {dealer.rating}</p>
+                              )}
                             </div>
                           </div>
                           <div className="text-right">
@@ -434,9 +458,11 @@ const FieldView = () => {
                               <NavigationArrow size={12} className="mr-1" />
                               {dealer.distance}m
                             </Badge>
-                            <Badge className={`ml-2 ${dealer.priority_level === 1 ? 'priority-high' : dealer.priority_level === 2 ? 'priority-medium' : 'priority-low'}`}>
-                              {dealer.priority_level === 1 ? 'High' : dealer.priority_level === 2 ? 'Med' : 'Low'}
-                            </Badge>
+                            {dealer.source !== 'google_places' && (
+                              <Badge className={`ml-2 ${dealer.priority_level === 1 ? 'priority-high' : dealer.priority_level === 2 ? 'priority-medium' : 'priority-low'}`}>
+                                {dealer.priority_level === 1 ? 'High' : dealer.priority_level === 2 ? 'Med' : 'Low'}
+                              </Badge>
+                            )}
                           </div>
                         </div>
                       </CardContent>
