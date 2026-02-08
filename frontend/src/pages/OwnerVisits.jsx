@@ -18,7 +18,6 @@ import {
   Buildings,
   Clock,
   CurrencyDollar,
-  MapPin,
   User,
   Storefront,
   Check,
@@ -81,11 +80,11 @@ const OwnerVisits = () => {
 
   const getOutcomeBadgeClass = (outcome) => {
     switch (outcome) {
-      case 'Order Booked': return 'bg-emerald-500/20 text-emerald-400 border-emerald-500/30';
-      case 'Follow-up Required': return 'bg-amber-500/20 text-amber-400 border-amber-500/30';
-      case 'Lost Visit': return 'bg-red-500/20 text-red-400 border-red-500/30';
-      case 'No Meeting': return 'bg-orange-500/20 text-orange-400 border-orange-500/30';
-      default: return 'bg-blue-500/20 text-blue-400 border-blue-500/30';
+      case 'Order Booked': return 'bg-emerald-100 text-emerald-700 border-emerald-200';
+      case 'Follow-up Required': return 'bg-amber-100 text-amber-700 border-amber-200';
+      case 'Lost Visit': return 'bg-red-100 text-red-700 border-red-200';
+      case 'No Meeting': return 'bg-orange-100 text-orange-700 border-orange-200';
+      default: return 'bg-blue-100 text-blue-700 border-blue-200';
     }
   };
 
@@ -93,7 +92,7 @@ const OwnerVisits = () => {
     return (
       <OwnerLayout title="All Visits">
         <div className="flex items-center justify-center h-64">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-purple-500"></div>
+          <div className="spinner"></div>
         </div>
       </OwnerLayout>
     );
@@ -111,58 +110,58 @@ const OwnerVisits = () => {
                 placeholder="Search visits..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="pl-10 bg-slate-800/50 border-purple-500/20 text-white placeholder:text-slate-500"
+                className="pl-10 bg-white border-slate-200 text-slate-900 placeholder:text-slate-400 focus:border-blue-500"
               />
             </div>
             <Select value={companyFilter} onValueChange={setCompanyFilter}>
-              <SelectTrigger className="w-full md:w-48 bg-slate-800/50 border-purple-500/20 text-white">
-                <Funnel className="w-4 h-4 mr-2" />
+              <SelectTrigger className="w-full md:w-48 bg-white border-slate-200 text-slate-900">
+                <Funnel className="w-4 h-4 mr-2 text-slate-500" />
                 <SelectValue placeholder="Filter by company" />
               </SelectTrigger>
-              <SelectContent className="bg-slate-800 border-purple-500/20 max-h-64">
-                <SelectItem value="all" className="text-white">All Companies</SelectItem>
+              <SelectContent className="bg-white border-slate-200 max-h-64">
+                <SelectItem value="all" className="text-slate-900 focus:bg-slate-50">All Companies</SelectItem>
                 {organizations.map(org => (
-                  <SelectItem key={org.id} value={org.id} className="text-white">
+                  <SelectItem key={org.id} value={org.id} className="text-slate-900 focus:bg-slate-50">
                     {org.company_name}
                   </SelectItem>
                 ))}
               </SelectContent>
             </Select>
             <Select value={outcomeFilter} onValueChange={setOutcomeFilter}>
-              <SelectTrigger className="w-full md:w-48 bg-slate-800/50 border-purple-500/20 text-white">
-                <Funnel className="w-4 h-4 mr-2" />
+              <SelectTrigger className="w-full md:w-48 bg-white border-slate-200 text-slate-900">
+                <Funnel className="w-4 h-4 mr-2 text-slate-500" />
                 <SelectValue placeholder="Outcome" />
               </SelectTrigger>
-              <SelectContent className="bg-slate-800 border-purple-500/20">
-                <SelectItem value="all" className="text-white">All Outcomes</SelectItem>
-                <SelectItem value="in_progress" className="text-white">In Progress</SelectItem>
-                <SelectItem value="Order Booked" className="text-white">Order Booked</SelectItem>
-                <SelectItem value="Follow-up Required" className="text-white">Follow-up Required</SelectItem>
-                <SelectItem value="No Meeting" className="text-white">No Meeting</SelectItem>
-                <SelectItem value="Lost Visit" className="text-white">Lost Visit</SelectItem>
+              <SelectContent className="bg-white border-slate-200">
+                <SelectItem value="all" className="text-slate-900 focus:bg-slate-50">All Outcomes</SelectItem>
+                <SelectItem value="in_progress" className="text-slate-900 focus:bg-slate-50">In Progress</SelectItem>
+                <SelectItem value="Order Booked" className="text-slate-900 focus:bg-slate-50">Order Booked</SelectItem>
+                <SelectItem value="Follow-up Required" className="text-slate-900 focus:bg-slate-50">Follow-up Required</SelectItem>
+                <SelectItem value="No Meeting" className="text-slate-900 focus:bg-slate-50">No Meeting</SelectItem>
+                <SelectItem value="Lost Visit" className="text-slate-900 focus:bg-slate-50">Lost Visit</SelectItem>
               </SelectContent>
             </Select>
           </div>
-          <Badge className="bg-violet-500/20 text-violet-400 border-violet-500/30 text-sm whitespace-nowrap">
+          <Badge className="bg-violet-100 text-violet-700 hover:bg-violet-200 text-sm whitespace-nowrap">
             {filteredVisits.length} visits
           </Badge>
         </div>
 
         {/* Visits Table */}
         {filteredVisits.length === 0 ? (
-          <Card className="bg-slate-800/50 border-purple-500/20">
+          <Card className="bg-slate-50 border-slate-200">
             <CardContent className="p-8 text-center">
-              <Target className="w-12 h-12 text-slate-500 mx-auto mb-3" />
-              <p className="text-slate-400">No visits found</p>
+              <Target className="w-12 h-12 text-slate-400 mx-auto mb-3" />
+              <p className="text-slate-500">No visits found</p>
             </CardContent>
           </Card>
         ) : (
-          <Card className="bg-slate-800/50 border-purple-500/20">
+          <Card className="bg-white border-slate-200 overflow-hidden shadow-sm">
             <CardContent className="p-0">
               <div className="overflow-x-auto">
                 <table className="w-full text-sm">
                   <thead>
-                    <tr className="text-slate-400 text-left border-b border-purple-500/20 bg-slate-800/50">
+                    <tr className="text-slate-500 text-left border-b border-slate-200 bg-slate-50/50">
                       <th className="p-4 font-medium">Company</th>
                       <th className="p-4 font-medium">User</th>
                       <th className="p-4 font-medium">Dealer</th>
@@ -173,24 +172,24 @@ const OwnerVisits = () => {
                       <th className="p-4 font-medium">Order Value</th>
                     </tr>
                   </thead>
-                  <tbody className="divide-y divide-purple-500/10">
+                  <tbody className="divide-y divide-slate-100">
                     {filteredVisits.map((visit) => (
-                      <tr key={visit.id} className="text-slate-300 hover:bg-slate-700/30 transition-colors">
+                      <tr key={visit.id} className="text-slate-600 hover:bg-slate-50 transition-colors">
                         <td className="p-4">
                           <div className="flex items-center gap-2">
-                            <Buildings className="w-4 h-4 text-purple-400" />
-                            <span className="font-medium text-white truncate max-w-[150px]">{visit.company_name}</span>
+                            <Buildings className="w-4 h-4 text-purple-600" />
+                            <span className="font-medium text-slate-900 truncate max-w-[150px]">{visit.company_name}</span>
                           </div>
                         </td>
                         <td className="p-4">
                           <div className="flex items-center gap-2">
-                            <User className="w-4 h-4 text-emerald-400" />
+                            <User className="w-4 h-4 text-emerald-600" />
                             <span className="truncate max-w-[120px]">{visit.user_name}</span>
                           </div>
                         </td>
                         <td className="p-4">
                           <div className="flex items-center gap-2">
-                            <Storefront className="w-4 h-4 text-blue-400" />
+                            <Storefront className="w-4 h-4 text-blue-600" />
                             <span className="truncate max-w-[120px]">{visit.dealer_name}</span>
                           </div>
                         </td>
@@ -209,19 +208,19 @@ const OwnerVisits = () => {
                           ) : '–'}
                         </td>
                         <td className="p-4">
-                          <Badge className={getOutcomeBadgeClass(visit.outcome)}>
+                          <Badge variant="outline" className={getOutcomeBadgeClass(visit.outcome)}>
                             {getOutcomeIcon(visit.outcome)}
                             <span className="ml-1">{visit.outcome || 'In Progress'}</span>
                           </Badge>
                         </td>
                         <td className="p-4">
                           {visit.order_value ? (
-                            <span className="flex items-center gap-1 text-emerald-400 font-mono">
+                            <span className="flex items-center gap-1 text-emerald-600 font-mono font-medium">
                               <CurrencyDollar className="w-3 h-3" />
                               ₹{visit.order_value.toLocaleString()}
                             </span>
                           ) : (
-                            <span className="text-slate-500">–</span>
+                            <span className="text-slate-400">–</span>
                           )}
                         </td>
                       </tr>

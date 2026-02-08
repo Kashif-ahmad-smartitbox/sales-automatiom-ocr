@@ -6,7 +6,6 @@ import {
   Crown,
   MapPin, 
   Storefront, 
-  ChartBar, 
   UsersFour,
   Pulse,
   ClockCounterClockwise,
@@ -40,11 +39,11 @@ const OwnerSidebar = ({ isOpen, onClose }) => {
         />
       )}
       
-      <aside className={`sidebar owner-sidebar ${isOpen ? 'translate-x-0' : '-translate-x-full'} md:translate-x-0`}>
+      <aside className={`sidebar ${isOpen ? 'translate-x-0' : '-translate-x-full'} md:translate-x-0`}>
         {/* Logo */}
-        <div className="flex items-center justify-between h-16 px-4 border-b border-purple-800/50">
+        <div className="flex items-center justify-between h-16 px-4 border-b border-slate-800">
           <div className="flex items-center gap-2">
-            <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-purple-500 to-indigo-600 flex items-center justify-center">
+            <div className="w-8 h-8 rounded-lg bg-blue-600 flex items-center justify-center">
               <Crown weight="fill" className="w-5 h-5 text-white" />
             </div>
             <span className="font-bold text-lg tracking-tight">Owner Panel</span>
@@ -61,29 +60,29 @@ const OwnerSidebar = ({ isOpen, onClose }) => {
               key={item.to}
               to={item.to}
               end={item.end}
-              className={({ isActive }) => `sidebar-link owner-link ${isActive ? 'active' : ''}`}
+              className={({ isActive }) => `sidebar-link ${isActive ? 'active' : ''}`}
               onClick={onClose}
             >
-              <item.icon size={20} weight="regular" />
+              <item.icon size={20} weight={item.to === '/owner' && item.end ? 'fill' : 'regular'} />
               <span>{item.label}</span>
             </NavLink>
           ))}
         </nav>
 
         {/* User Info & Logout */}
-        <div className="p-4 border-t border-purple-800/50">
+        <div className="p-4 border-t border-slate-800">
           <div className="flex items-center gap-3 mb-4">
-            <div className="w-10 h-10 rounded-full bg-gradient-to-br from-purple-500 to-indigo-600 flex items-center justify-center text-white font-semibold">
+            <div className="w-10 h-10 rounded-full bg-blue-600 flex items-center justify-center text-white font-semibold">
               {user?.name?.charAt(0) || 'O'}
             </div>
             <div className="flex-1 min-w-0">
               <p className="text-sm font-medium text-white truncate">{user?.name || 'Owner'}</p>
-              <p className="text-xs text-purple-300 truncate capitalize">{user?.role?.replace('_', ' ') || 'Owner'}</p>
+              <p className="text-xs text-slate-400 truncate capitalize">{user?.role?.replace('_', ' ') || 'Owner'}</p>
             </div>
           </div>
           <button
             onClick={logout}
-            className="w-full flex items-center gap-2 px-4 py-2 text-purple-300 hover:text-white hover:bg-purple-800/50 rounded-lg transition-colors"
+            className="w-full flex items-center gap-2 px-4 py-2 text-slate-400 hover:text-white hover:bg-slate-800 rounded-lg transition-colors"
           >
             <SignOut size={18} />
             <span>Sign Out</span>

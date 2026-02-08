@@ -6,23 +6,23 @@ const OwnerLayout = ({ children, title }) => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900/20 to-slate-900">
+    <div className="min-h-screen bg-slate-50">
       <OwnerSidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} />
       
       {/* Main Content */}
       <div className="md:ml-64">
         {/* Header */}
-        <header className="sticky top-0 z-20 bg-slate-900/80 backdrop-blur-md border-b border-purple-500/20">
+        <header className="sticky top-0 z-20 bg-white/80 backdrop-blur-md border-b border-slate-200">
           <div className="flex items-center justify-between h-16 px-4 md:px-8">
             <div className="flex items-center gap-4">
               <button
                 onClick={() => setSidebarOpen(true)}
-                className="md:hidden p-2 text-purple-300 hover:text-white"
+                className="md:hidden p-2 text-slate-600 hover:text-slate-900"
                 data-testid="mobile-menu-btn"
               >
                 <List size={24} />
               </button>
-              <h1 className="text-xl font-bold text-white">{title}</h1>
+              <h1 className="text-xl font-bold text-slate-900">{title}</h1>
             </div>
           </div>
         </header>

@@ -8,6 +8,7 @@ import {
   Gear,
   SignOut,
   List,
+  Buildings,
   X
 } from '@phosphor-icons/react';
 import { useAuth } from '../../context/AuthContext';
@@ -19,6 +20,7 @@ const Sidebar = ({ isOpen, onClose }) => {
     { to: '/dashboard', icon: House, label: 'Dashboard' },
     { to: '/executives', icon: Users, label: 'Sales Team' },
     { to: '/dealers', icon: Storefront, label: 'Dealers' },
+    { to: '/potentials', icon: Buildings, label: 'Potential Dealers' },
     { to: '/territories', icon: MapPin, label: 'Territories' },
     { to: '/reports', icon: ChartBar, label: 'Reports' },
     { to: '/settings', icon: Gear, label: 'Settings' },

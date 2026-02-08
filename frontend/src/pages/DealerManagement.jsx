@@ -121,7 +121,20 @@ const DealerManagement = () => {
     d.address.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
-  const getTerritoryName = (id) => territories.find(t => t.id === id)?.name || 'Unknown';
+  const getTerritoryName = (id) => {
+      if (!id) return 'Unknown';
+      const t = territories.find(t => t.id === id);
+      if (t) return t.name;
+      // Fallback: If ID is not found, it might be the Name itself (legacy data)
+      // Check if any territory matches this Name
+      const tByName = territories.find(t => t.name.toLowerCase() === id.toLowerCase());
+      if (tByName) return tByName.name;
+      
+      // Look like a name? Return it.
+      if (id.length < 30 && !id.includes('-')) return id;
+      
+      return 'Unknown';
+  };
 
   return (
     <AdminLayout title="Dealer Management">

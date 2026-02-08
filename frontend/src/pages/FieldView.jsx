@@ -183,6 +183,7 @@ const FieldView = () => {
         check_in_time: res.data.check_in_time 
       });
       setCheckInDialogOpen(false);
+      setNearbyDealers([]); // Clear list immediately since backend blocks new suggestions
       toast.success(`Checked in at ${selectedDealer.name}`);
       fetchTodayVisits();
     } catch (error) {
@@ -195,28 +196,34 @@ const FieldView = () => {
       toast.error('Please select an outcome');
       return;
     }
+    
+    // Handle both cases: id (from GET /visits/today) and visit_id (from POST /check-in response)
+    const visitId = activeVisit.id || activeVisit.visit_id;
+    
+    if (!visitId) {
+      toast.error('Invalid visit ID');
+      return;
+    }
+
     try {
-      await axios.post(`${API}/visit/${activeVisit.visit_id}/check-out`, null, {
+      await axios.post(`${API}/visit/${visitId}/check-out`, {
+        outcome: outcomeData.outcome,
+        order_value: outcomeData.order_value ? parseFloat(outcomeData.order_value) : null,
+        notes: outcomeData.notes || null,
+        next_visit_date: outcomeData.next_visit_date || null
+      }, {
         params: {
           lat: currentLocation.lat,
           lng: currentLocation.lng
         },
-        headers: {
-          ...getAuthHeader(),
-          'Content-Type': 'application/json'
-        },
-        data: {
-          outcome: outcomeData.outcome,
-          order_value: outcomeData.order_value ? parseFloat(outcomeData.order_value) : null,
-          notes: outcomeData.notes || null,
-          next_visit_date: outcomeData.next_visit_date || null
-        }
+        headers: getAuthHeader()
       });
       setActiveVisit(null);
       setCheckOutDialogOpen(false);
       setOutcomeData({ outcome: '', order_value: '', notes: '', next_visit_date: '' });
       toast.success('Visit completed!');
       fetchTodayVisits();
+      fetchNearbyDealers(); // Re-fetch to show shops again
     } catch (error) {
       toast.error(error.response?.data?.detail || 'Check-out failed');
     }

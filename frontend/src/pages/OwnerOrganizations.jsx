@@ -81,7 +81,7 @@ const OwnerOrganizations = () => {
     return (
       <OwnerLayout title="Organizations">
         <div className="flex items-center justify-center h-64">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-purple-500"></div>
+          <div className="spinner"></div>
         </div>
       </OwnerLayout>
     );
@@ -98,10 +98,10 @@ const OwnerOrganizations = () => {
               placeholder="Search organizations..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className="pl-10 bg-slate-800/50 border-purple-500/20 text-white placeholder:text-slate-500"
+              className="pl-10 bg-white border-slate-200 text-slate-900 placeholder:text-slate-400 focus:border-blue-500"
             />
           </div>
-          <Badge className="bg-purple-500/20 text-purple-400 border-purple-500/30 text-sm">
+          <Badge className="bg-purple-100 text-purple-700 hover:bg-purple-200 text-sm">
             {filteredOrgs.length} organizations
           </Badge>
         </div>
@@ -109,10 +109,10 @@ const OwnerOrganizations = () => {
         {/* Organizations List */}
         <div className="space-y-4">
           {filteredOrgs.length === 0 ? (
-            <Card className="bg-slate-800/50 border-purple-500/20">
+            <Card className="bg-slate-50 border-slate-200">
               <CardContent className="p-8 text-center">
-                <Buildings className="w-12 h-12 text-slate-500 mx-auto mb-3" />
-                <p className="text-slate-400">No organizations found</p>
+                <Buildings className="w-12 h-12 text-slate-400 mx-auto mb-3" />
+                <p className="text-slate-500">No organizations found</p>
               </CardContent>
             </Card>
           ) : (
@@ -122,18 +122,18 @@ const OwnerOrganizations = () => {
                 open={expandedOrgs[org.id]}
                 onOpenChange={() => toggleOrgExpand(org.id)}
               >
-                <Card className="bg-slate-800/50 border-purple-500/20 overflow-hidden">
+                <Card className="bg-white border-slate-200 overflow-hidden shadow-sm hover:shadow-md transition-shadow">
                   <CollapsibleTrigger asChild>
-                    <CardHeader className="cursor-pointer hover:bg-slate-700/30 transition-colors">
+                    <CardHeader className="cursor-pointer hover:bg-slate-50 transition-colors">
                       <div className="flex items-center justify-between">
                         <div className="flex items-center gap-4">
-                          <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-purple-500 to-indigo-600 flex items-center justify-center text-white font-bold text-lg">
+                          <div className="w-12 h-12 rounded-xl bg-purple-100 flex items-center justify-center text-purple-700 font-bold text-lg">
                             {org.company_name.charAt(0)}
                           </div>
                           <div>
-                            <CardTitle className="text-white text-lg">{org.company_name}</CardTitle>
+                            <CardTitle className="text-slate-900 text-lg">{org.company_name}</CardTitle>
                             <div className="flex items-center gap-2 mt-1">
-                              <Badge variant="outline" className="text-xs text-slate-400 border-slate-600">
+                              <Badge variant="outline" className="text-xs text-slate-500 border-slate-300">
                                 {org.industry_type}
                               </Badge>
                               <span className="text-xs text-slate-500">{org.head_office_location}</span>
@@ -143,19 +143,19 @@ const OwnerOrganizations = () => {
                         <div className="flex items-center gap-4">
                           <div className="hidden md:flex items-center gap-3">
                             <div className="text-center px-3">
-                              <p className="text-emerald-400 font-bold">{org.user_count}</p>
+                              <p className="text-emerald-600 font-bold">{org.user_count}</p>
                               <p className="text-xs text-slate-500">Users</p>
                             </div>
                             <div className="text-center px-3">
-                              <p className="text-blue-400 font-bold">{org.dealer_count}</p>
+                              <p className="text-blue-600 font-bold">{org.dealer_count}</p>
                               <p className="text-xs text-slate-500">Dealers</p>
                             </div>
                             <div className="text-center px-3">
-                              <p className="text-pink-400 font-bold">{org.territory_count}</p>
+                              <p className="text-pink-600 font-bold">{org.territory_count}</p>
                               <p className="text-xs text-slate-500">Territories</p>
                             </div>
                             <div className="text-center px-3">
-                              <p className="text-amber-400 font-bold">{org.today_visits}</p>
+                              <p className="text-amber-600 font-bold">{org.today_visits}</p>
                               <p className="text-xs text-slate-500">Today</p>
                             </div>
                           </div>
@@ -169,32 +169,32 @@ const OwnerOrganizations = () => {
                     </CardHeader>
                   </CollapsibleTrigger>
                   <CollapsibleContent>
-                    <CardContent className="border-t border-purple-500/20">
+                    <CardContent className="border-t border-slate-100 bg-slate-50/50">
                       {orgDetails[org.id] ? (
                         <div className="space-y-6 pt-4">
                           {/* Company Info */}
                           <div className="grid md:grid-cols-3 gap-4">
-                            <div className="bg-slate-700/30 rounded-lg p-4">
-                              <p className="text-xs text-slate-400 mb-2">Contact Info</p>
-                              <p className="text-white text-sm">{orgDetails[org.id].admin_email}</p>
-                              <p className="text-slate-400 text-sm">{orgDetails[org.id].admin_mobile}</p>
-                              <p className="text-xs text-slate-500 mt-2">GST: {orgDetails[org.id].gst || 'N/A'}</p>
+                            <div className="bg-white border border-slate-200 rounded-lg p-4">
+                              <p className="text-xs text-slate-500 mb-2">Contact Info</p>
+                              <p className="text-slate-900 text-sm font-medium">{orgDetails[org.id].admin_email}</p>
+                              <p className="text-slate-500 text-sm">{orgDetails[org.id].admin_mobile}</p>
+                              <p className="text-xs text-slate-400 mt-2">GST: {orgDetails[org.id].gst || 'N/A'}</p>
                             </div>
-                            <div className="bg-slate-700/30 rounded-lg p-4">
-                              <p className="text-xs text-slate-400 mb-2">Configuration</p>
-                              <p className="text-white text-sm">
+                            <div className="bg-white border border-slate-200 rounded-lg p-4">
+                              <p className="text-xs text-slate-500 mb-2">Configuration</p>
+                              <p className="text-slate-900 text-sm">
                                 Working: {orgDetails[org.id].config?.working_hours?.start || '09:00'} - {orgDetails[org.id].config?.working_hours?.end || '18:00'}
                               </p>
-                              <p className="text-slate-400 text-sm">
+                              <p className="text-slate-500 text-sm">
                                 Visit Radius: {orgDetails[org.id].config?.visit_radius || 500}m
                               </p>
-                              <p className="text-slate-400 text-sm">
+                              <p className="text-slate-500 text-sm">
                                 Daily Target: {orgDetails[org.id].config?.visits_per_day_target || 10} visits
                               </p>
                             </div>
-                            <div className="bg-slate-700/30 rounded-lg p-4">
-                              <p className="text-xs text-slate-400 mb-2">Created</p>
-                              <p className="text-white text-sm">
+                            <div className="bg-white border border-slate-200 rounded-lg p-4">
+                              <p className="text-xs text-slate-500 mb-2">Created</p>
+                              <p className="text-slate-900 text-sm">
                                 {new Date(orgDetails[org.id].created_at).toLocaleDateString()}
                               </p>
                             </div>
@@ -202,24 +202,24 @@ const OwnerOrganizations = () => {
 
                           {/* Users */}
                           <div>
-                            <p className="text-sm text-slate-400 mb-3 flex items-center gap-2">
+                            <p className="text-sm text-slate-500 mb-3 flex items-center gap-2">
                               <Users className="w-4 h-4" /> Team Members ({orgDetails[org.id].users?.length || 0})
                             </p>
                             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-3">
                               {orgDetails[org.id].users?.slice(0, 6).map((user) => (
-                                <div key={user.id} className="bg-slate-700/30 rounded-lg p-3 flex items-center gap-3">
+                                <div key={user.id} className="bg-white border border-slate-200 rounded-lg p-3 flex items-center gap-3">
                                   <div className={`w-8 h-8 rounded-full flex items-center justify-center text-white text-sm font-semibold ${
-                                    user.role === 'super_admin' ? 'bg-amber-500' : 
+                                    user.role === 'organization' ? 'bg-amber-500' : 
                                     user.role === 'admin' ? 'bg-purple-500' : 'bg-emerald-500'
                                   }`}>
                                     {user.name.charAt(0)}
                                   </div>
                                   <div className="flex-1 min-w-0">
-                                    <p className="text-white text-sm truncate">{user.name}</p>
+                                    <p className="text-slate-900 text-sm truncate font-medium">{user.name}</p>
                                     <p className="text-xs text-slate-500 capitalize">{user.role.replace('_', ' ')}</p>
                                   </div>
                                   {user.is_in_market && (
-                                    <Badge className="bg-emerald-500/20 text-emerald-400 text-xs">Active</Badge>
+                                    <Badge className="bg-emerald-100 text-emerald-700 text-xs hover:bg-emerald-200">Active</Badge>
                                   )}
                                 </div>
                               ))}
@@ -234,31 +234,31 @@ const OwnerOrganizations = () => {
                           {/* Today's Visits */}
                           {orgDetails[org.id].today_visits?.length > 0 && (
                             <div>
-                              <p className="text-sm text-slate-400 mb-3 flex items-center gap-2">
+                              <p className="text-sm text-slate-500 mb-3 flex items-center gap-2">
                                 <Target className="w-4 h-4" /> Today's Visits ({orgDetails[org.id].today_visits.length})
                               </p>
                               <div className="overflow-x-auto">
                                 <table className="w-full text-sm">
                                   <thead>
-                                    <tr className="text-slate-400 border-b border-slate-700">
-                                      <th className="text-left pb-2">Dealer</th>
-                                      <th className="text-left pb-2">Time</th>
-                                      <th className="text-left pb-2">Outcome</th>
-                                      <th className="text-left pb-2">Value</th>
+                                    <tr className="text-slate-500 border-b border-slate-200">
+                                      <th className="text-left pb-2 font-medium">Dealer</th>
+                                      <th className="text-left pb-2 font-medium">Time</th>
+                                      <th className="text-left pb-2 font-medium">Outcome</th>
+                                      <th className="text-left pb-2 font-medium">Value</th>
                                     </tr>
                                   </thead>
-                                  <tbody className="divide-y divide-slate-700/50">
+                                  <tbody className="divide-y divide-slate-100">
                                     {orgDetails[org.id].today_visits.slice(0, 5).map((visit) => (
-                                      <tr key={visit.id} className="text-slate-300">
+                                      <tr key={visit.id} className="text-slate-600">
                                         <td className="py-2">{visit.dealer_name}</td>
                                         <td className="py-2 font-mono text-xs">
                                           {new Date(visit.check_in_time).toLocaleTimeString()}
                                         </td>
                                         <td className="py-2">
                                           <Badge className={
-                                            visit.outcome === 'Order Booked' ? 'bg-emerald-500/20 text-emerald-400' :
-                                            visit.outcome === 'Follow-up Required' ? 'bg-amber-500/20 text-amber-400' :
-                                            'bg-slate-500/20 text-slate-400'
+                                            visit.outcome === 'Order Booked' ? 'bg-emerald-100 text-emerald-700' :
+                                            visit.outcome === 'Follow-up Required' ? 'bg-amber-100 text-amber-700' :
+                                            'bg-slate-100 text-slate-600'
                                           }>
                                             {visit.outcome || 'In Progress'}
                                           </Badge>
@@ -276,7 +276,7 @@ const OwnerOrganizations = () => {
                         </div>
                       ) : (
                         <div className="flex items-center justify-center py-8">
-                          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-purple-500"></div>
+                          <div className="spinner"></div>
                         </div>
                       )}
                     </CardContent>

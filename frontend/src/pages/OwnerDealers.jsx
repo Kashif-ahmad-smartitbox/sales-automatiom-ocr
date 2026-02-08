@@ -81,7 +81,7 @@ const OwnerDealers = () => {
 
   const getPriorityStars = (priority) => {
     return Array(priority || 1).fill(0).map((_, i) => (
-      <Star key={i} className="w-3 h-3 text-amber-400" weight="fill" />
+      <Star key={i} className="w-3 h-3 text-amber-500" weight="fill" />
     ));
   };
 
@@ -89,7 +89,7 @@ const OwnerDealers = () => {
     return (
       <OwnerLayout title="All Dealers">
         <div className="flex items-center justify-center h-64">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-purple-500"></div>
+          <div className="spinner"></div>
         </div>
       </OwnerLayout>
     );
@@ -107,80 +107,80 @@ const OwnerDealers = () => {
                 placeholder="Search dealers..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="pl-10 bg-slate-800/50 border-purple-500/20 text-white placeholder:text-slate-500"
+                className="pl-10 bg-white border-slate-200 text-slate-900 placeholder:text-slate-400 focus:border-blue-500"
               />
             </div>
             <Select value={companyFilter} onValueChange={setCompanyFilter}>
-              <SelectTrigger className="w-full md:w-48 bg-slate-800/50 border-purple-500/20 text-white">
-                <Funnel className="w-4 h-4 mr-2" />
+              <SelectTrigger className="w-full md:w-48 bg-white border-slate-200 text-slate-900">
+                <Funnel className="w-4 h-4 mr-2 text-slate-500" />
                 <SelectValue placeholder="Filter by company" />
               </SelectTrigger>
-              <SelectContent className="bg-slate-800 border-purple-500/20 max-h-64">
-                <SelectItem value="all" className="text-white">All Companies</SelectItem>
+              <SelectContent className="bg-white border-slate-200 max-h-64">
+                <SelectItem value="all" className="text-slate-900 focus:bg-slate-50">All Companies</SelectItem>
                 {organizations.map(org => (
-                  <SelectItem key={org.id} value={org.id} className="text-white">
+                  <SelectItem key={org.id} value={org.id} className="text-slate-900 focus:bg-slate-50">
                     {org.company_name}
                   </SelectItem>
                 ))}
               </SelectContent>
             </Select>
             <Select value={typeFilter} onValueChange={setTypeFilter}>
-              <SelectTrigger className="w-full md:w-40 bg-slate-800/50 border-purple-500/20 text-white">
-                <Funnel className="w-4 h-4 mr-2" />
+              <SelectTrigger className="w-full md:w-40 bg-white border-slate-200 text-slate-900">
+                <Funnel className="w-4 h-4 mr-2 text-slate-500" />
                 <SelectValue placeholder="Dealer Type" />
               </SelectTrigger>
-              <SelectContent className="bg-slate-800 border-purple-500/20">
-                <SelectItem value="all" className="text-white">All Types</SelectItem>
+              <SelectContent className="bg-white border-slate-200">
+                <SelectItem value="all" className="text-slate-900 focus:bg-slate-50">All Types</SelectItem>
                 {dealerTypes.map(type => (
-                  <SelectItem key={type} value={type} className="text-white">{type}</SelectItem>
+                  <SelectItem key={type} value={type} className="text-slate-900 focus:bg-slate-50">{type}</SelectItem>
                 ))}
               </SelectContent>
             </Select>
           </div>
-          <Badge className="bg-blue-500/20 text-blue-400 border-blue-500/30 text-sm whitespace-nowrap">
+          <Badge className="bg-blue-100 text-blue-700 hover:bg-blue-200 text-sm whitespace-nowrap">
             {filteredDealers.length} dealers
           </Badge>
         </div>
 
         {/* Dealers Grid */}
         {filteredDealers.length === 0 ? (
-          <Card className="bg-slate-800/50 border-purple-500/20">
+          <Card className="bg-slate-50 border-slate-200">
             <CardContent className="p-8 text-center">
-              <Storefront className="w-12 h-12 text-slate-500 mx-auto mb-3" />
-              <p className="text-slate-400">No dealers found</p>
+              <Storefront className="w-12 h-12 text-slate-400 mx-auto mb-3" />
+              <p className="text-slate-500">No dealers found</p>
             </CardContent>
           </Card>
         ) : (
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
             {filteredDealers.map((dealer) => (
-              <Card key={dealer.id} className="bg-slate-800/50 border-purple-500/20 hover:border-purple-500/40 transition-colors">
+              <Card key={dealer.id} className="bg-white border-slate-200 hover:shadow-md transition-shadow">
                 <CardContent className="p-4">
                   <div className="flex items-start gap-4">
-                    <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-blue-500 to-cyan-600 flex items-center justify-center text-white font-bold text-lg flex-shrink-0">
+                    <div className="w-12 h-12 rounded-xl bg-blue-100 flex items-center justify-center text-blue-600 font-bold text-lg flex-shrink-0">
                       <Storefront className="w-6 h-6" />
                     </div>
                     <div className="flex-1 min-w-0">
                       <div className="flex items-center justify-between gap-2 mb-1">
-                        <p className="text-white font-medium truncate">{dealer.name}</p>
+                        <p className="text-slate-900 font-medium truncate">{dealer.name}</p>
                         <div className="flex">{getPriorityStars(dealer.priority_level)}</div>
                       </div>
-                      <Badge className="bg-blue-500/20 text-blue-400 border-blue-500/30 text-xs mb-2">
+                      <Badge className="bg-blue-100 text-blue-700 border-blue-200 text-xs mb-2 hover:bg-blue-200">
                         {dealer.dealer_type}
                       </Badge>
-                      <div className="space-y-1 text-xs text-slate-400">
+                      <div className="space-y-1 text-xs text-slate-500">
                         <p className="flex items-center gap-1 truncate">
-                          <MapPin className="w-3 h-3 flex-shrink-0" /> 
+                          <MapPin className="w-3 h-3 flex-shrink-0 text-slate-400" /> 
                           <span className="truncate">{dealer.address}</span>
                         </p>
                         {dealer.phone && (
                           <p className="flex items-center gap-1">
-                            <Phone className="w-3 h-3 flex-shrink-0" /> {dealer.phone}
+                            <Phone className="w-3 h-3 flex-shrink-0 text-slate-400" /> {dealer.phone}
                           </p>
                         )}
                         {dealer.contact_person && (
-                          <p className="text-slate-500">Contact: {dealer.contact_person}</p>
+                          <p className="text-slate-500">Contact: <span className="text-slate-700 font-medium">{dealer.contact_person}</span></p>
                         )}
-                        <p className="flex items-center gap-1 text-purple-400">
+                        <p className="flex items-center gap-1 text-purple-600 font-medium">
                           <Buildings className="w-3 h-3 flex-shrink-0" /> 
                           <span className="truncate">{dealer.company_name}</span>
                         </p>

@@ -7,10 +7,19 @@ import { Input } from '../components/ui/input';
 import { Label } from '../components/ui/label';
 import { Badge } from '../components/ui/badge';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '../components/ui/dialog';
-import { Plus, MagnifyingGlass, Trash, MapPin, Phone, Pencil } from '@phosphor-icons/react';
+import { Plus, MagnifyingGlass, Trash, MapPin, Phone, Pencil, Globe, Crosshair, ChartBar } from '@phosphor-icons/react';
 import { useAuth } from '../context/AuthContext';
 import { toast } from 'sonner';
 import { Checkbox } from '../components/ui/checkbox';
+import { Switch } from '../components/ui/switch';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "../components/ui/select";
+import { State, City } from 'country-state-city';
 
 const API = `${process.env.REACT_APP_BACKEND_URL}/api`;
 
@@ -20,28 +29,38 @@ const emptyForm = {
   mobile: '',
   password: '',
   employee_code: '',
-  territory_ids: [],
+  assigned_state: '',
+  assigned_city: '',
+  is_live_tracking: false,
   product_category_access: []
 };
 
 const SalesExecutiveManagement = () => {
   const { getAuthHeader } = useAuth();
   const [executives, setExecutives] = useState([]);
-  const [territories, setTerritories] = useState([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
   const [dialogOpen, setDialogOpen] = useState(false);
   const [editingId, setEditingId] = useState(null);
   const [formData, setFormData] = useState(emptyForm);
 
+  // Locations State
+  const [availableStates, setAvailableStates] = useState([]);
+  const [availableCities, setAvailableCities] = useState([]);
+
+  const [reportDialogOpen, setReportDialogOpen] = useState(false);
+  const [selectedExecId, setSelectedExecId] = useState(null);
+  const [execReport, setExecReport] = useState(null);
+  const [reportLoading, setReportLoading] = useState(false);
+
+  const [execVisits, setExecVisits] = useState([]);
+
+
+
   const fetchData = useCallback(async () => {
     try {
-      const [execsRes, territoriesRes] = await Promise.all([
-        axios.get(`${API}/sales-executives`, { headers: getAuthHeader() }),
-        axios.get(`${API}/territories`, { headers: getAuthHeader() })
-      ]);
+      const execsRes = await axios.get(`${API}/sales-executives`, { headers: getAuthHeader() });
       setExecutives(execsRes.data);
-      setTerritories(territoriesRes.data);
     } catch (error) {
       toast.error('Failed to fetch data');
     } finally {
@@ -49,16 +68,66 @@ const SalesExecutiveManagement = () => {
     }
   }, [getAuthHeader]);
 
+  const fetchUserReport = async (userId) => {
+      setReportLoading(true);
+      setExecReport(null);
+      setExecVisits([]); // Reset visits
+      try {
+          const [perfRes, visitsRes] = await Promise.all([
+             axios.get(`${API}/reports/executive-performance?exec_id=${userId}`, { headers: getAuthHeader() }),
+             axios.get(`${API}/visits/history?exec_id=${userId}`, { headers: getAuthHeader() })
+          ]);
+          
+          if (perfRes.data && perfRes.data.length > 0) {
+              setExecReport(perfRes.data[0]);
+          }
+          setExecVisits(visitsRes.data);
+      } catch (error) {
+          console.error("Report fetch error", error);
+          toast.error("Failed to load report");
+      } finally {
+          setReportLoading(false);
+      }
+  };
+
+  const handleViewReport = (exec) => {
+      setSelectedExecId(exec.id);
+      setReportDialogOpen(true);
+      fetchUserReport(exec.id);
+  };
+
   useEffect(() => {
     fetchData();
+    // Load states for India (implied context) or generic
+    setAvailableStates(State.getStatesOfCountry('IN')); 
   }, [fetchData]);
+
+  // Update available cities when state changes
+  useEffect(() => {
+    if (formData.assigned_state) {
+      // Find state code
+      const stateObj = availableStates.find(s => s.name === formData.assigned_state);
+      if (stateObj) {
+        setAvailableCities(City.getCitiesOfState('IN', stateObj.isoCode));
+      } else {
+        setAvailableCities([]);
+      }
+    } else {
+      setAvailableCities([]);
+    }
+  }, [formData.assigned_state, availableStates]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
+      // Validation: If NOT live tracking, City is required
+      if (!formData.is_live_tracking && (!formData.assigned_state || !formData.assigned_city)) {
+          toast.error("Please select State and City for restricted access, or enable Live Tracking.");
+          return;
+      }
+
       if (editingId) {
-        // Update territory assignment
-        await axios.put(`${API}/sales-executives/${editingId}/assign-territory`, formData.territory_ids, { headers: getAuthHeader() });
+        await axios.put(`${API}/sales-executives/${editingId}`, formData, { headers: getAuthHeader() });
         toast.success('Sales executive updated');
       } else {
         await axios.post(`${API}/sales-executives`, formData, { headers: getAuthHeader() });
@@ -79,7 +148,9 @@ const SalesExecutiveManagement = () => {
       mobile: exec.mobile,
       password: '', // Don't pre-fill password
       employee_code: exec.employee_code || '',
-      territory_ids: exec.territory_ids || [],
+      assigned_state: exec.assigned_state || '',
+      assigned_city: exec.assigned_city || '',
+      is_live_tracking: exec.is_live_tracking || false,
       product_category_access: exec.product_category_access || []
     });
     setDialogOpen(true);
@@ -102,15 +173,6 @@ const SalesExecutiveManagement = () => {
     }
   };
 
-  const toggleTerritory = (id) => {
-    setFormData(prev => ({
-      ...prev,
-      territory_ids: prev.territory_ids.includes(id)
-        ? prev.territory_ids.filter(t => t !== id)
-        : [...prev.territory_ids, id]
-    }));
-  };
-
   const getStatus = (exec) => {
     if (exec.is_in_market) return 'active';
     if (exec.last_location_update) {
@@ -120,10 +182,6 @@ const SalesExecutiveManagement = () => {
       if (diffMinutes < 30) return 'idle';
     }
     return 'offline';
-  };
-
-  const getTerritoryNames = (ids) => {
-    return ids?.map(id => territories.find(t => t.id === id)?.name).filter(Boolean).join(', ') || 'None';
   };
 
   const filteredExecutives = executives.filter(e => 
@@ -221,26 +279,65 @@ const SalesExecutiveManagement = () => {
                     </div>
                   )}
 
-                  <div className="col-span-2 space-y-2">
-                    <Label>Assign Territories</Label>
-                    <div className="border rounded-lg p-3 max-h-40 overflow-y-auto space-y-2">
-                      {territories.length === 0 ? (
-                        <p className="text-sm text-slate-500">No territories defined yet</p>
-                      ) : (
-                        territories.map((t) => (
-                          <div key={t.id} className="flex items-center space-x-2">
-                            <Checkbox
-                              id={t.id}
-                              checked={formData.territory_ids.includes(t.id)}
-                              onCheckedChange={() => toggleTerritory(t.id)}
-                            />
-                            <label htmlFor={t.id} className="text-sm cursor-pointer">
-                              {t.name} <span className="text-slate-400">({t.type})</span>
-                            </label>
-                          </div>
-                        ))
-                      )}
+                  <div className="col-span-2 border-t pt-4 mt-2">
+                    <Label className="text-base font-semibold mb-3 block">Visit Restrictions</Label>
+                    
+                    <div className="flex items-center space-x-2 mb-4">
+                      <Switch
+                        id="live-mode"
+                        checked={formData.is_live_tracking}
+                        onCheckedChange={(checked) => setFormData({...formData, is_live_tracking: checked})}
+                      />
+                      <Label htmlFor="live-mode" className="font-medium cursor-pointer">
+                        Enable Any-City Live Tracking
+                        <span className="block text-xs text-slate-500 font-normal">
+                          If enabled, user can visit ANY location. If disabled, user is restricted to the selected city.
+                        </span>
+                      </Label>
                     </div>
+
+                    {!formData.is_live_tracking && (
+                      <div className="grid grid-cols-2 gap-4 animate-in fade-in slide-in-from-top-2">
+                        <div className="space-y-2">
+                          <Label>State *</Label>
+                          <Select 
+                            value={formData.assigned_state} 
+                            onValueChange={(val) => setFormData({...formData, assigned_state: val, assigned_city: ''})}
+                          >
+                            <SelectTrigger>
+                              <SelectValue placeholder="Select State" />
+                            </SelectTrigger>
+                            <SelectContent className='max-h-60'>
+                              {availableStates.map((state) => (
+                                <SelectItem key={state.isoCode} value={state.name}>
+                                  {state.name}
+                                </SelectItem>
+                              ))}
+                            </SelectContent>
+                          </Select>
+                        </div>
+
+                        <div className="space-y-2">
+                          <Label>City *</Label>
+                          <Select 
+                            value={formData.assigned_city} 
+                            onValueChange={(val) => setFormData({...formData, assigned_city: val})}
+                            disabled={!formData.assigned_state}
+                          >
+                            <SelectTrigger>
+                              <SelectValue placeholder="Select City" />
+                            </SelectTrigger>
+                            <SelectContent className='max-h-60'>
+                              {availableCities.map((city) => (
+                                <SelectItem key={city.name} value={city.name}>
+                                  {city.name}
+                                </SelectItem>
+                              ))}
+                            </SelectContent>
+                          </Select>
+                        </div>
+                      </div>
+                    )}
                   </div>
                 </div>
 
@@ -326,12 +423,24 @@ const SalesExecutiveManagement = () => {
                         <span>{exec.mobile}</span>
                       </div>
                       <div className="flex items-center gap-2 text-slate-600">
-                        <MapPin size={14} />
-                        <span className="truncate">{getTerritoryNames(exec.territory_ids) || 'No territories assigned'}</span>
+                        {exec.is_live_tracking ? (
+                           <><Globe size={14} className="text-emerald-500" /> <span>Live Tracking (All Cities)</span></>
+                        ) : (
+                           <><MapPin size={14} className="text-amber-500" /> <span>{exec.assigned_city || 'No City'}, {exec.assigned_state}</span></>
+                        )}
                       </div>
                     </div>
 
                     <div className="flex justify-end mt-4 pt-4 border-t gap-1">
+                      <Button 
+                        variant="ghost" 
+                        size="sm" 
+                        className="text-emerald-600 hover:text-emerald-700 hover:bg-emerald-50"
+                        onClick={() => handleViewReport(exec)}
+                      >
+                         <ChartBar size={16} className="mr-1" />
+                         Report
+                      </Button>
                       <Button 
                         variant="ghost" 
                         size="sm" 
@@ -359,6 +468,118 @@ const SalesExecutiveManagement = () => {
             })}
           </div>
         )}
+
+      {/* Report Modal */}
+      <Dialog open={reportDialogOpen} onOpenChange={setReportDialogOpen}>
+          <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
+              <DialogHeader>
+                  <DialogTitle>Sales Executive Report</DialogTitle>
+              </DialogHeader>
+              {reportLoading ? (
+                  <div className="flex justify-center py-8"><div className="spinner" /></div>
+              ) : !execReport ? (
+                  <div className="text-center py-8 text-slate-500">No report data available</div>
+              ) : (
+                  <div className="space-y-6">
+                      {/* Header Info */}
+                      <div className="flex flex-col md:flex-row justify-between items-start md:items-center pb-4 border-b border-slate-100 gap-4">
+                          <div>
+                            <h3 className="font-bold text-xl text-slate-800">{execReport.name}</h3>
+                            <p className="text-sm text-slate-500 flex items-center gap-2">
+                                <span>{execReport.employee_code}</span>
+                                <span>•</span>
+                                <span>{execReport.mobile}</span>
+                            </p>
+                          </div>
+                          <Badge className={execReport.is_in_market ? 'bg-emerald-100 text-emerald-700' : 'bg-slate-100 text-slate-600'}>
+                             {execReport.is_in_market ? 'Currently In Market' : 'Currently Offline'}
+                         </Badge>
+                      </div>
+                      
+                      {/* Key Stats */}
+                      <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                          <div className="bg-slate-50 p-4 rounded-lg">
+                              <p className="text-xs text-slate-500 uppercase tracking-wide mb-1">Total Visits</p>
+                              <p className="text-2xl font-bold text-slate-700">{execReport.total_visits}</p>
+                          </div>
+                           <div className="bg-emerald-50 p-4 rounded-lg">
+                              <p className="text-xs text-emerald-600 uppercase tracking-wide mb-1">Completed</p>
+                              <p className="text-2xl font-bold text-emerald-700">{execReport.completed_visits}</p>
+                          </div>
+                           <div className="bg-blue-50 p-4 rounded-lg">
+                              <p className="text-xs text-blue-600 uppercase tracking-wide mb-1">Orders</p>
+                              <p className="text-2xl font-bold text-blue-700">₹{execReport.total_orders.toLocaleString()}</p>
+                          </div>
+                           <div className="bg-purple-50 p-4 rounded-lg">
+                              <p className="text-xs text-purple-600 uppercase tracking-wide mb-1">Avg Time</p>
+                              <p className="text-2xl font-bold text-purple-700">{execReport.avg_time_per_visit}m</p>
+                          </div>
+                      </div>
+
+                      {/* Visit History Table */}
+                      <div>
+                          <h4 className="font-semibold text-slate-800 mb-3">Recent Visit History</h4>
+                          <div className="border rounded-lg overflow-hidden">
+                              <table className="w-full text-sm text-left">
+                                  <thead className="bg-slate-50 text-slate-500 font-medium border-b">
+                                      <tr>
+                                          <th className="px-4 py-3">Date & Time</th>
+                                          <th className="px-4 py-3">Dealer / Location</th>
+                                          <th className="px-4 py-3">Duration</th>
+                                          <th className="px-4 py-3">Outcome</th>
+                                          <th className="px-4 py-3 text-right">Order Value</th>
+                                      </tr>
+                                  </thead>
+                                  <tbody className="divide-y divide-slate-100">
+                                      {execVisits.length === 0 ? (
+                                          <tr>
+                                              <td colSpan="5" className="px-4 py-8 text-center text-slate-500">
+                                                  No visit history found.
+                                              </td>
+                                          </tr>
+                                      ) : (
+                                          execVisits.map((visit) => (
+                                              <tr key={visit.id} className="hover:bg-slate-50/50">
+                                                  <td className="px-4 py-3 whitespace-nowrap">
+                                                      <div className="font-medium text-slate-700">
+                                                          {new Date(visit.check_in_time).toLocaleDateString()}
+                                                      </div>
+                                                      <div className="text-xs text-slate-400">
+                                                          {new Date(visit.check_in_time).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}
+                                                      </div>
+                                                  </td>
+                                                  <td className="px-4 py-3">
+                                                      <div className="font-medium text-slate-800">{visit.dealer_name || 'Unknown Dealer'}</div>
+                                                      <div className="text-xs text-slate-500 truncate max-w-[200px]">
+                                                          {visit.location_address || 'No address'}
+                                                      </div>
+                                                  </td>
+                                                  <td className="px-4 py-3 text-slate-600">
+                                                      {visit.duration_minutes ? `${visit.duration_minutes}m` : '-'}
+                                                  </td>
+                                                  <td className="px-4 py-3">
+                                                      <Badge variant="outline" className={
+                                                          visit.outcome === 'Order Booked' ? 'bg-blue-50 text-blue-700 border-blue-200' :
+                                                          visit.outcome === 'No Meeting' ? 'bg-red-50 text-red-700 border-red-200' :
+                                                          'text-slate-600'
+                                                      }>
+                                                          {visit.outcome || 'Pending'}
+                                                      </Badge>
+                                                  </td>
+                                                  <td className="px-4 py-3 text-right font-medium text-slate-700">
+                                                      {visit.order_value > 0 ? `₹${visit.order_value.toLocaleString()}` : '-'}
+                                                  </td>
+                                              </tr>
+                                          ))
+                                      )}
+                                  </tbody>
+                              </table>
+                          </div>
+                      </div>
+                  </div>
+              )}
+          </DialogContent>
+      </Dialog>
       </div>
     </AdminLayout>
   );

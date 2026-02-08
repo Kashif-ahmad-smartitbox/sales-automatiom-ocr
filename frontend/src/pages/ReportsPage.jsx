@@ -22,32 +22,58 @@ import { toast } from 'sonner';
 
 const API = `${process.env.REACT_APP_BACKEND_URL}/api`;
 
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from '../components/ui/dialog';
+
 const ReportsPage = () => {
   const { getAuthHeader } = useAuth();
   const [dashboardStats, setDashboardStats] = useState(null);
   const [executivePerformance, setExecutivePerformance] = useState([]);
   const [lostVisits, setLostVisits] = useState([]);
   const [visitHistory, setVisitHistory] = useState([]);
+  const [marketSessions, setMarketSessions] = useState([]);
   const [loading, setLoading] = useState(true);
+
+  // Details Modal State
+  const [selectedSession, setSelectedSession] = useState(null);
+  const [sessionPotentials, setSessionPotentials] = useState([]);
+  const [detailsLoading, setDetailsLoading] = useState(false);
+  const [isDetailsOpen, setIsDetailsOpen] = useState(false);
 
   const fetchReportData = useCallback(async () => {
     try {
-      const [dashRes, perfRes, lostRes, histRes] = await Promise.all([
+      const [dashRes, perfRes, lostRes, histRes, sessRes] = await Promise.all([
         axios.get(`${API}/reports/dashboard`, { headers: getAuthHeader() }),
         axios.get(`${API}/reports/executive-performance`, { headers: getAuthHeader() }),
         axios.get(`${API}/reports/lost-visits`, { headers: getAuthHeader() }),
-        axios.get(`${API}/visits/history`, { headers: getAuthHeader() })
+        axios.get(`${API}/visits/history`, { headers: getAuthHeader() }),
+        axios.get(`${API}/reports/market-sessions`, { headers: getAuthHeader() })
       ]);
       setDashboardStats(dashRes.data);
       setExecutivePerformance(perfRes.data);
       setLostVisits(lostRes.data);
       setVisitHistory(histRes.data);
+      setMarketSessions(sessRes.data);
     } catch (error) {
       toast.error('Failed to fetch reports');
     } finally {
       setLoading(false);
     }
   }, [getAuthHeader]);
+
+  const viewSessionDetails = async (session) => {
+      setSelectedSession(session);
+      setIsDetailsOpen(true);
+      setDetailsLoading(true);
+      try {
+          const res = await axios.get(`${API}/reports/market-sessions/${session.id}/potentials`, { headers: getAuthHeader() });
+          setSessionPotentials(res.data);
+      } catch (error) {
+          console.error("Failed to fetch details", error);
+          toast.error("Failed to load session details");
+      } finally {
+          setDetailsLoading(false);
+      }
+  };
 
   useEffect(() => {
     fetchReportData();
@@ -68,6 +94,7 @@ const ReportsPage = () => {
             <TabsTrigger value="overview">Overview</TabsTrigger>
             <TabsTrigger value="performance">Team Performance</TabsTrigger>
             <TabsTrigger value="visits">Visit Analysis</TabsTrigger>
+            <TabsTrigger value="market_sessions">Market Sessions</TabsTrigger>
             <TabsTrigger value="lost">Lost Visits</TabsTrigger>
           </TabsList>
 
@@ -296,7 +323,137 @@ const ReportsPage = () => {
               </CardContent>
             </Card>
           </TabsContent>
+          {/* Market Sessions Tab */}
+          <TabsContent value="market_sessions" className="space-y-6">
+            <Card>
+              <CardHeader>
+                <CardTitle className="text-lg">Daily Market Sessions</CardTitle>
+              </CardHeader>
+              <CardContent>
+                  {dashboardStats && (
+                      <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
+                        {/* We need to fetch sessions here or use dashboardStats if we added them there? 
+                            Better to fetch them separately or in the main fetch. 
+                            Let's assume we add `marketSessions` to the state. */}
+                         {marketSessions.length === 0 ? (
+                            <p className="text-center py-8 text-slate-500 col-span-3">No market sessions recorded</p>
+                         ) : (
+                            marketSessions.map(session => (
+                              <Card key={session.id} className="bg-white border-slate-200 hover:shadow-md transition-shadow">
+                                <CardContent className="p-4">
+                                  <div className="flex items-start justify-between mb-4">
+                                    <div className="flex items-center gap-3">
+                                      <div className={`w-10 h-10 rounded-full flex items-center justify-center ${
+                                        session.end_time 
+                                          ? 'bg-slate-100' 
+                                          : 'bg-emerald-100 animate-pulse'
+                                      }`}>
+                                        {session.end_time ? (
+                                          <div className="w-5 h-5 bg-slate-400 rounded-sm" /> 
+                                        ) : (
+                                          <div className="w-5 h-5 bg-emerald-500 rounded-full" /> 
+                                        )}
+                                      </div>
+                                      <div>
+                                        <p className="text-slate-900 font-medium">{session.user_name}</p>
+                                        <p className="text-xs text-slate-500">{new Date(session.start_time).toLocaleString()}</p>
+                                      </div>
+                                    </div>
+                                    <Badge className={session.end_time ? 'bg-slate-100 text-slate-600' : 'bg-emerald-100 text-emerald-700'}>
+                                      {session.end_time ? 'Completed' : 'Active'}
+                                    </Badge>
+                                  </div>
+
+                                  <div className="space-y-3">
+                                    <div className="grid grid-cols-3 gap-2">
+                                       <div className="bg-slate-50 border border-slate-100 rounded-lg p-2 text-center">
+                                        <p className="text-[10px] text-slate-500 mb-1 uppercase tracking-wider">Shown</p>
+                                        <p className="text-slate-700 font-bold">{session.potential_visits_count || 0}</p>
+                                      </div>
+                                      <div className="bg-emerald-50 border border-emerald-100 rounded-lg p-2 text-center">
+                                        <p className="text-[10px] text-emerald-600 mb-1 uppercase tracking-wider">Visited</p>
+                                        <p className="text-emerald-700 font-bold">{session.visits_completed || 0}</p>
+                                      </div>
+                                      <div className="bg-red-50 border border-red-100 rounded-lg p-2 text-center">
+                                        <p className="text-[10px] text-red-600 mb-1 uppercase tracking-wider">Lost</p>
+                                        <p className="text-red-700 font-bold">{session.calculated_lost_visits || 0}</p>
+                                      </div>
+                                    </div>
+                                    
+                                    <div className="flex justify-between items-center pt-2">
+                                        <p className="text-xs text-slate-400">
+                                            {session.total_distance ? `${(session.total_distance / 1000).toFixed(1)} km` : '0 km'}
+                                        </p>
+                                        <Button 
+                                            variant="outline" 
+                                            size="sm" 
+                                            className="h-7 text-xs"
+                                            onClick={() => viewSessionDetails(session)}
+                                        >
+                                            View Details
+                                        </Button>
+                                    </div>
+                                  </div>
+                                </CardContent>
+                              </Card>
+                            ))
+                         )}
+                      </div>
+                  )}
+              </CardContent>
+            </Card>
+          </TabsContent>
         </Tabs>
+
+      {/* Details Modal */}
+      <Dialog open={isDetailsOpen} onOpenChange={setIsDetailsOpen}>
+        <DialogContent className="max-w-3xl max-h-[80vh] overflow-hidden flex flex-col">
+          <DialogHeader>
+            <DialogTitle>Session Details</DialogTitle>
+            <div className="text-sm text-slate-500 flex gap-4 mt-2">
+                <span>{selectedSession?.user_name}</span>
+                <span>•</span>
+                <span>{selectedSession && new Date(selectedSession.start_time).toLocaleString()}</span>
+            </div>
+          </DialogHeader>
+          
+          <div className="flex-1 overflow-y-auto pr-2 mt-4">
+             {detailsLoading ? (
+                 <div className="flex justify-center p-8"><div className="spinner" /></div>
+             ) : sessionPotentials.length === 0 ? (
+                 <div className="text-center p-8 text-slate-500">No details recorded for this session.</div>
+             ) : (
+                 <table className="w-full text-sm text-left">
+                     <thead className="text-xs text-slate-400 uppercase bg-slate-50 sticky top-0">
+                         <tr>
+                             <th className="px-4 py-2">Place/Dealer</th>
+                             <th className="px-4 py-2">Address</th>
+                             <th className="px-4 py-2 text-right">Time Shown</th>
+                         </tr>
+                     </thead>
+                     <tbody className="divide-y divide-slate-100">
+                         {sessionPotentials.map((item) => (
+                             <tr key={item.id} className="hover:bg-slate-50">
+                                 <td className="px-4 py-3 font-medium text-slate-700">
+                                     <div className="flex items-center gap-2">
+                                         <MapPin className="w-4 h-4 text-slate-400" />
+                                         {item.place_name}
+                                     </div>
+                                 </td>
+                                 <td className="px-4 py-3 text-slate-500 max-w-xs truncate" title={item.address}>
+                                     {item.address}
+                                 </td>
+                                 <td className="px-4 py-3 text-right text-slate-500">
+                                     {new Date(item.created_at).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}
+                                 </td>
+                             </tr>
+                         ))}
+                     </tbody>
+                 </table>
+             )}
+          </div>
+        </DialogContent>
+      </Dialog>
       </div>
     </AdminLayout>
   );
