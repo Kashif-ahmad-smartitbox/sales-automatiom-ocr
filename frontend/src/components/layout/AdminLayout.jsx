@@ -10,7 +10,7 @@ const AdminLayout = ({ children, title }) => {
       <Sidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} />
       
       {/* Main Content */}
-      <div className="md:ml-60">
+      <div className="md:ml-60 flex flex-col min-h-screen">
         {/* Header */}
         <header className="sticky top-0 z-20 bg-white/90 backdrop-blur-md border-b border-gray-100 shadow-sm">
           <div className="flex items-center justify-between h-14 px-4 md:px-6">
@@ -28,7 +28,7 @@ const AdminLayout = ({ children, title }) => {
         </header>
 
         {/* Page Content */}
-        <main className="p-4 md:p-6">
+        <main className="p-4 md:p-6 flex-1">
           {children}
         </main>
 
