@@ -236,19 +236,19 @@ const FieldView = () => {
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-slate-50">
+      <div className="min-h-screen flex items-center justify-center bg-gray-50">
         <div className="text-center">
-          <div className="spinner mx-auto mb-4" />
-          <p className="text-slate-500">Getting your location...</p>
+          <div className="spinner mx-auto mb-3" />
+          <p className="text-xs text-gray-500">Getting your location...</p>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-slate-50 pb-20" data-testid="field-view">
+    <div className="min-h-screen bg-gray-50 pb-20" data-testid="field-view">
       {/* Header */}
-      <header className="sticky top-0 z-40 bg-white border-b border-slate-200 px-4 py-3">
+      <header className="sticky top-0 z-40 bg-white border-b border-gray-100 px-4 py-2.5">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
             <div className="bg-gradient-to-r from-primary-500 to-orange-500 w-8 h-8 rounded-lg flex items-center justify-center shadow-sm">
@@ -270,12 +270,12 @@ const FieldView = () => {
       {/* Main Content */}
       <div className="p-4 space-y-4">
         {/* Welcome Card */}
-        <Card>
-          <CardContent className="p-4">
-            <p className="text-slate-500 text-sm">Welcome back,</p>
-            <p className="font-semibold text-lg">{user?.name || 'Sales Executive'}</p>
-            <div className="flex items-center gap-2 mt-2 text-sm text-slate-600">
-              <Clock size={16} />
+        <Card className="border-0 shadow-sm">
+          <CardContent className="p-3">
+            <p className="text-gray-500 text-xs">Welcome back,</p>
+            <p className="font-bold text-sm text-gray-800">{user?.name || 'Sales Executive'}</p>
+            <div className="flex items-center gap-1.5 mt-1 text-xs text-gray-500">
+              <Clock size={14} />
               <span>{new Date().toLocaleDateString('en-IN', { weekday: 'long', day: 'numeric', month: 'short' })}</span>
             </div>
           </CardContent>
@@ -283,13 +283,13 @@ const FieldView = () => {
 
         {/* Active Visit Card */}
         {activeVisit && (
-          <Card className="border-emerald-200 bg-emerald-50">
-            <CardContent className="p-4">
+          <Card className="border-0 shadow-sm bg-emerald-50">
+            <CardContent className="p-3">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-xs text-emerald-600 font-medium">ACTIVE VISIT</p>
-                  <p className="font-semibold">{activeVisit.dealer_name || activeVisit.name}</p>
-                  <p className="text-sm text-slate-600">
+                  <p className="text-[10px] text-emerald-600 font-bold uppercase tracking-wider">ACTIVE VISIT</p>
+                  <p className="text-sm font-bold text-gray-800">{activeVisit.dealer_name || activeVisit.name}</p>
+                  <p className="text-xs text-gray-500">
                     Started at {new Date(activeVisit.check_in_time).toLocaleTimeString()}
                   </p>
                 </div>
@@ -335,27 +335,27 @@ const FieldView = () => {
         )}
 
         {/* Today's Stats */}
-        <div className="grid grid-cols-3 gap-3">
-          <Card>
-            <CardContent className="p-3 text-center">
-              <p className="text-2xl font-bold font-mono text-primary-600">{todayVisits.length}</p>
-              <p className="text-xs text-slate-500">Visits</p>
+        <div className="grid grid-cols-3 gap-2">
+          <Card className="border-0 shadow-sm bg-gradient-to-br from-primary-400 to-primary-500 text-white">
+            <CardContent className="p-2.5 text-center">
+              <p className="text-lg font-bold font-mono">{todayVisits.length}</p>
+              <p className="text-[10px] text-white/80">Visits</p>
             </CardContent>
           </Card>
-          <Card>
-            <CardContent className="p-3 text-center">
-              <p className="text-2xl font-bold font-mono text-emerald-600">
+          <Card className="border-0 shadow-sm bg-gradient-to-br from-emerald-400 to-emerald-500 text-white">
+            <CardContent className="p-2.5 text-center">
+              <p className="text-lg font-bold font-mono">
                 {todayVisits.filter(v => v.outcome === 'Order Booked').length}
               </p>
-              <p className="text-xs text-slate-500">Orders</p>
+              <p className="text-[10px] text-white/80">Orders</p>
             </CardContent>
           </Card>
-          <Card>
-            <CardContent className="p-3 text-center">
-              <p className="text-2xl font-bold font-mono">
+          <Card className="border-0 shadow-sm bg-gradient-to-br from-purple-400 to-purple-500 text-white">
+            <CardContent className="p-2.5 text-center">
+              <p className="text-lg font-bold font-mono">
                 ₹{todayVisits.reduce((sum, v) => sum + (v.order_value || 0), 0).toLocaleString()}
               </p>
-              <p className="text-xs text-slate-500">Value</p>
+              <p className="text-[10px] text-white/80">Value</p>
             </CardContent>
           </Card>
         </div>
@@ -426,8 +426,8 @@ const FieldView = () => {
             {viewMode === 'list' && (
               <div className="space-y-2">
                 {nearbyDealers.length === 0 ? (
-                  <Card>
-                    <CardContent className="p-8 text-center text-slate-500">
+                  <Card className="border-0 shadow-sm">
+                    <CardContent className="p-6 text-center text-xs text-gray-500">
                       No dealers found nearby. Try moving to a different area.
                     </CardContent>
                   </Card>
@@ -482,20 +482,20 @@ const FieldView = () => {
         )}
 
         {/* Today's Visits History */}
-        <Card>
+        <Card className="border-0 shadow-sm">
           <CardHeader className="pb-2">
-            <CardTitle className="text-base">Today's Activity</CardTitle>
+            <CardTitle className="text-sm font-bold text-gray-800">Today's Activity</CardTitle>
           </CardHeader>
           <CardContent>
             {todayVisits.length === 0 ? (
-              <p className="text-sm text-slate-500 text-center py-4">No visits yet today</p>
+              <p className="text-xs text-gray-500 text-center py-3">No visits yet today</p>
             ) : (
               <div className="space-y-2">
                 {todayVisits.map((visit) => (
-                  <div key={visit.id} className="flex items-center justify-between p-3 bg-slate-50 rounded-lg">
+                  <div key={visit.id} className="flex items-center justify-between p-2.5 bg-gray-50 rounded-lg">
                     <div>
-                      <p className="font-medium text-sm">{visit.dealer_name}</p>
-                      <p className="text-xs text-slate-500">
+                      <p className="font-medium text-sm text-gray-800">{visit.dealer_name}</p>
+                      <p className="text-[10px] text-gray-500">
                         {new Date(visit.check_in_time).toLocaleTimeString()}
                         {visit.time_spent_minutes && ` • ${Math.round(visit.time_spent_minutes)} min`}
                       </p>

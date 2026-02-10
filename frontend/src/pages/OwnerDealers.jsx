@@ -97,12 +97,18 @@ const OwnerDealers = () => {
 
   return (
     <OwnerLayout title="All Dealers">
-      <div className="space-y-6">
-        {/* Header Controls */}
-        <div className="flex flex-col md:flex-row gap-4 items-center justify-between">
-          <div className="flex flex-col md:flex-row gap-3 flex-1 w-full">
+      <div className="space-y-4">
+        {/* Header */}
+        <div>
+          <h1 className="text-lg font-bold bg-gradient-to-r from-primary-600 to-orange-600 bg-clip-text text-transparent">All Dealers</h1>
+          <p className="text-xs text-gray-500 mt-0.5">Dealers across all organizations</p>
+        </div>
+
+        {/* Controls */}
+        <div className="flex flex-col md:flex-row gap-3 items-center justify-between">
+          <div className="flex flex-col md:flex-row gap-2 flex-1 w-full">
             <div className="relative flex-1">
-              <MagnifyingGlass className="absolute left-3 top-1/2 transform -translate-y-1/2 text-slate-400 w-5 h-5" />
+              <MagnifyingGlass className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
               <Input
                 placeholder="Search dealers..."
                 value={searchTerm}
@@ -137,60 +143,60 @@ const OwnerDealers = () => {
               </SelectContent>
             </Select>
           </div>
-          <Badge className="bg-primary-100 text-primary-700 hover:bg-primary-200 text-sm whitespace-nowrap">
+          <Badge className="bg-primary-100 text-primary-700 text-[10px] px-1.5 py-0 whitespace-nowrap">
             {filteredDealers.length} dealers
           </Badge>
         </div>
 
         {/* Dealers Grid */}
         {filteredDealers.length === 0 ? (
-          <Card className="bg-slate-50 border-slate-200">
-            <CardContent className="p-8 text-center">
-              <Storefront className="w-12 h-12 text-slate-400 mx-auto mb-3" />
-              <p className="text-slate-500">No dealers found</p>
+          <Card className="border-0 shadow-sm">
+            <CardContent className="p-6 text-center">
+              <Storefront className="w-10 h-10 text-gray-400 mx-auto mb-2" />
+              <p className="text-xs text-gray-500">No dealers found</p>
             </CardContent>
           </Card>
         ) : (
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-3">
             {filteredDealers.map((dealer) => (
-              <Card key={dealer.id} className="bg-white border-slate-200 hover:shadow-md transition-shadow">
-                <CardContent className="p-4">
-                  <div className="flex items-start gap-4">
-                    <div className="w-12 h-12 rounded-xl bg-primary-100 flex items-center justify-center text-primary-600 font-bold text-lg flex-shrink-0">
-                      <Storefront className="w-6 h-6" />
+              <Card key={dealer.id} className="border-0 shadow-sm hover:shadow-md transition-all duration-300">
+                <CardContent className="p-3">
+                  <div className="flex items-start gap-3">
+                    <div className="w-9 h-9 rounded-lg bg-primary-100 flex items-center justify-center text-primary-600 flex-shrink-0">
+                      <Storefront className="w-4 h-4" />
                     </div>
                     <div className="flex-1 min-w-0">
-                      <div className="flex items-center justify-between gap-2 mb-1">
-                        <p className="text-slate-900 font-medium truncate">{dealer.name}</p>
+                      <div className="flex items-center justify-between gap-2 mb-0.5">
+                        <p className="text-sm font-medium text-gray-800 truncate">{dealer.name}</p>
                         <div className="flex">{getPriorityStars(dealer.priority_level)}</div>
                       </div>
-                      <Badge className="bg-primary-100 text-primary-700 border-primary-200 text-xs mb-2 hover:bg-primary-200">
+                      <Badge className="bg-primary-100 text-primary-700 border-primary-200 text-[10px] px-1.5 py-0 mb-1.5">
                         {dealer.dealer_type}
                       </Badge>
-                      <div className="space-y-1 text-xs text-slate-500">
+                      <div className="space-y-0.5 text-[10px] text-gray-500">
                         <p className="flex items-center gap-1 truncate">
-                          <MapPin className="w-3 h-3 flex-shrink-0 text-slate-400" /> 
+                          <MapPin className="w-2.5 h-2.5 flex-shrink-0 text-gray-400" /> 
                           <span className="truncate">{dealer.address}</span>
                         </p>
                         {dealer.phone && (
                           <p className="flex items-center gap-1">
-                            <Phone className="w-3 h-3 flex-shrink-0 text-slate-400" /> {dealer.phone}
+                            <Phone className="w-2.5 h-2.5 flex-shrink-0 text-gray-400" /> {dealer.phone}
                           </p>
                         )}
                         {dealer.contact_person && (
-                          <p className="text-slate-500">Contact: <span className="text-slate-700 font-medium">{dealer.contact_person}</span></p>
+                          <p className="text-gray-500">Contact: <span className="text-gray-700 font-medium">{dealer.contact_person}</span></p>
                         )}
                         <p className="flex items-center gap-1 text-purple-600 font-medium">
-                          <Buildings className="w-3 h-3 flex-shrink-0" /> 
+                          <Buildings className="w-2.5 h-2.5 flex-shrink-0" /> 
                           <span className="truncate">{dealer.company_name}</span>
                         </p>
-                        <div className="flex gap-3 pt-1">
-                          <span className="flex items-center gap-1 text-slate-500">
-                            <Calendar className="w-3 h-3" />
+                        <div className="flex gap-3 pt-0.5">
+                          <span className="flex items-center gap-1 text-gray-500">
+                            <Calendar className="w-2.5 h-2.5" />
                             {dealer.visit_frequency}
                           </span>
                           {dealer.last_visit_date && (
-                            <span className="text-slate-500 text-xs">
+                            <span className="text-gray-500">
                               Last: {new Date(dealer.last_visit_date).toLocaleDateString()}
                             </span>
                           )}

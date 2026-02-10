@@ -125,49 +125,65 @@ const AdminDashboard = () => {
 
   return (
     <AdminLayout title="Dashboard">
-      <div className="space-y-6" data-testid="admin-dashboard">
-        {/* Stats Grid */}
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+      <div className="space-y-4" data-testid="admin-dashboard">
+        {/* Header */}
+        <div>
+          <h1 className="text-lg font-bold bg-gradient-to-r from-primary-600 to-orange-600 bg-clip-text text-transparent">
+            Dashboard Overview
+          </h1>
+          <p className="text-gray-500 text-xs mt-0.5">Real-time field sales tracking and analytics</p>
+        </div>
+
+        {/* Stats Grid - Smart CA gradient cards */}
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
           {statCards.map((stat, idx) => (
-            <Card key={idx} className="stats-card" data-testid={`stat-card-${idx}`}>
-              <CardContent className="p-4">
-                <div className="flex items-start justify-between">
-                  <div>
-                    <p className="text-sm text-slate-500 mb-1">{stat.label}</p>
-                    <p className="text-2xl font-bold font-mono">{stat.value}</p>
-                    <p className="text-xs text-slate-400 mt-1">{stat.subtext}</p>
-                  </div>
-                  <div className={`p-2 rounded-lg ${stat.bg}`}>
-                    <stat.icon className={`w-5 h-5 ${stat.color}`} weight="duotone" />
+            <Card key={idx} className={`border-0 shadow-md transition-all duration-300 hover:shadow-lg ${
+              idx === 0 ? 'bg-gradient-to-br from-emerald-400 to-emerald-500 hover:from-emerald-500 hover:to-emerald-600' :
+              idx === 1 ? 'bg-gradient-to-br from-primary-400 to-primary-500 hover:from-primary-500 hover:to-primary-600' :
+              idx === 2 ? 'bg-gradient-to-br from-amber-400 to-amber-500 hover:from-amber-500 hover:to-amber-600' :
+              'bg-gradient-to-br from-purple-400 to-purple-500 hover:from-purple-500 hover:to-purple-600'
+            } text-white`} data-testid={`stat-card-${idx}`}>
+              <CardContent className="p-3">
+                <div className="flex items-center justify-between mb-1">
+                  <span className="text-xs font-medium text-white/90">{stat.label}</span>
+                  <div className="p-1.5 rounded-md bg-white/20 backdrop-blur-sm">
+                    <stat.icon className="w-3.5 h-3.5" weight="duotone" />
                   </div>
                 </div>
+                <div className="text-lg font-bold font-mono">{stat.value}</div>
+                <p className="text-[10px] text-white/80 mt-0.5">{stat.subtext}</p>
               </CardContent>
             </Card>
           ))}
         </div>
 
         {/* Main Content Grid */}
-        <div className="grid lg:grid-cols-3 gap-6">
+        <div className="grid lg:grid-cols-3 gap-4">
           {/* Live Map */}
-          <Card className="lg:col-span-2" data-testid="live-map-card">
-            <CardHeader className="pb-2">
+          <Card className="lg:col-span-2 border-0 bg-gradient-to-br from-white to-gray-50 shadow-sm" data-testid="live-map-card">
+            <CardHeader className="pb-3 border-b border-gray-100">
               <div className="flex items-center justify-between">
-                <CardTitle className="text-lg">Live Tracking</CardTitle>
-                <div className="flex items-center gap-4 text-xs">
+                <CardTitle className="text-sm font-bold text-gray-800 flex items-center gap-2">
+                  <div className="p-1.5 rounded-lg bg-gradient-to-br from-primary-400 to-primary-500">
+                    <MapPin size={14} className="text-white" weight="fill" />
+                  </div>
+                  Live Tracking
+                </CardTitle>
+                <div className="flex items-center gap-3 text-[10px]">
                   <span className="flex items-center gap-1">
-                    <span className="w-2 h-2 rounded-full bg-emerald-500"></span> Active
+                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-500"></span> Active
                   </span>
                   <span className="flex items-center gap-1">
-                    <span className="w-2 h-2 rounded-full bg-amber-500"></span> Idle
+                    <span className="w-1.5 h-1.5 rounded-full bg-amber-500"></span> Idle
                   </span>
                   <span className="flex items-center gap-1">
-                    <span className="w-2 h-2 rounded-full bg-slate-400"></span> Offline
+                    <span className="w-1.5 h-1.5 rounded-full bg-slate-400"></span> Offline
                   </span>
                 </div>
               </div>
             </CardHeader>
-            <CardContent>
-              <div className="map-container h-[400px]">
+            <CardContent className="pt-4">
+              <div className="map-container h-[350px]">
                 <MapContainer 
                   center={mapCenter} 
                   zoom={12} 
@@ -204,26 +220,31 @@ const AdminDashboard = () => {
           </Card>
 
           {/* Field Team Status */}
-          <Card data-testid="team-status-card">
-            <CardHeader className="pb-2">
-              <CardTitle className="text-lg">Field Team Status</CardTitle>
+          <Card className="border-0 bg-gradient-to-br from-white to-gray-50 shadow-sm" data-testid="team-status-card">
+            <CardHeader className="pb-3 border-b border-gray-100">
+              <CardTitle className="text-sm font-bold text-gray-800 flex items-center gap-2">
+                <div className="p-1.5 rounded-lg bg-gradient-to-br from-emerald-400 to-emerald-500">
+                  <Users size={14} className="text-white" weight="fill" />
+                </div>
+                Field Team
+              </CardTitle>
             </CardHeader>
-            <CardContent>
-              <div className="space-y-3 max-h-[400px] overflow-auto">
+            <CardContent className="pt-3">
+              <div className="space-y-2 max-h-[350px] overflow-auto custom-scrollbar">
                 {executives.length === 0 ? (
-                  <p className="text-sm text-slate-500 text-center py-8">No sales executives added yet</p>
+                  <p className="text-xs text-slate-500 text-center py-6">No sales executives added yet</p>
                 ) : (
                   executives.map((exec) => {
                     const status = getExecutiveStatus(exec);
                     return (
-                      <div key={exec.id} className="flex items-center justify-between p-3 bg-slate-50 rounded-lg">
-                        <div className="flex items-center gap-3">
-                          <div className={`w-10 h-10 rounded-full flex items-center justify-center text-white font-semibold ${status === 'active' ? 'bg-emerald-500' : status === 'idle' ? 'bg-amber-500' : 'bg-slate-400'}`}>
+                      <div key={exec.id} className="flex items-center justify-between p-2.5 bg-gray-50 rounded-lg border border-gray-100 hover:border-primary-200 transition-colors">
+                        <div className="flex items-center gap-2.5">
+                          <div className={`w-8 h-8 rounded-full flex items-center justify-center text-white text-xs font-bold ${status === 'active' ? 'bg-emerald-500' : status === 'idle' ? 'bg-amber-500' : 'bg-slate-400'}`}>
                             {exec.name.charAt(0)}
                           </div>
                           <div>
-                            <p className="font-medium text-sm">{exec.name}</p>
-                            <p className="text-xs text-slate-500">{exec.employee_code}</p>
+                            <p className="font-medium text-xs text-gray-800">{exec.name}</p>
+                            <p className="text-[10px] text-gray-500">{exec.employee_code}</p>
                           </div>
                         </div>
                         <Badge className={`${status === 'active' ? 'status-active' : status === 'idle' ? 'status-idle' : 'status-offline'}`}>
@@ -239,18 +260,23 @@ const AdminDashboard = () => {
         </div>
 
         {/* Today's Visits */}
-        <Card data-testid="today-visits-card">
-          <CardHeader className="pb-2">
+        <Card className="border-0 bg-gradient-to-br from-white to-gray-50 shadow-sm" data-testid="today-visits-card">
+          <CardHeader className="pb-3 border-b border-gray-100">
             <div className="flex items-center justify-between">
-              <CardTitle className="text-lg">Today's Visits</CardTitle>
-              <Button variant="ghost" size="sm" className="text-primary-600 hover:text-primary-700 hover:bg-gradient-to-r hover:from-primary-50 hover:to-orange-50">
-                View All <ArrowRight className="ml-1 w-4 h-4" />
+              <CardTitle className="text-sm font-bold text-gray-800 flex items-center gap-2">
+                <div className="p-1.5 rounded-lg bg-gradient-to-br from-orange-400 to-orange-500">
+                  <Target size={14} className="text-white" weight="fill" />
+                </div>
+                Today's Visits
+              </CardTitle>
+              <Button variant="ghost" size="sm" className="text-xs text-primary-600 hover:text-primary-700 hover:bg-gradient-to-r hover:from-primary-50 hover:to-orange-50 h-auto py-1 px-2">
+                View All <ArrowRight className="ml-1 w-3 h-3" />
               </Button>
             </div>
           </CardHeader>
           <CardContent>
             {todayVisits.length === 0 ? (
-              <p className="text-sm text-slate-500 text-center py-8">No visits recorded today</p>
+              <p className="text-xs text-gray-500 text-center py-6">No visits recorded today</p>
             ) : (
               <div className="overflow-x-auto">
                 <table className="data-table">
@@ -267,10 +293,10 @@ const AdminDashboard = () => {
                   <tbody>
                     {todayVisits.slice(0, 10).map((visit) => (
                       <tr key={visit.id}>
-                        <td className="font-medium">{visit.dealer_name}</td>
-                        <td className="font-mono text-sm">{new Date(visit.check_in_time).toLocaleTimeString()}</td>
-                        <td className="font-mono text-sm">{visit.check_out_time ? new Date(visit.check_out_time).toLocaleTimeString() : '-'}</td>
-                        <td>{visit.time_spent_minutes ? `${Math.round(visit.time_spent_minutes)} min` : '-'}</td>
+                        <td className="font-medium text-sm text-gray-800">{visit.dealer_name}</td>
+                        <td className="font-mono text-xs text-gray-600">{new Date(visit.check_in_time).toLocaleTimeString()}</td>
+                        <td className="font-mono text-xs text-gray-600">{visit.check_out_time ? new Date(visit.check_out_time).toLocaleTimeString() : '-'}</td>
+                        <td className="text-xs text-gray-600">{visit.time_spent_minutes ? `${Math.round(visit.time_spent_minutes)} min` : '-'}</td>
                         <td>
                           <Badge className={
                             visit.outcome === 'Order Booked' ? 'bg-emerald-100 text-emerald-700' :
@@ -281,7 +307,7 @@ const AdminDashboard = () => {
                             {visit.outcome || 'In Progress'}
                           </Badge>
                         </td>
-                        <td className="font-mono">{visit.order_value ? `₹${visit.order_value.toLocaleString()}` : '-'}</td>
+                        <td className="font-mono text-xs font-medium text-primary-600">{visit.order_value ? `₹${visit.order_value.toLocaleString()}` : '-'}</td>
                       </tr>
                     ))}
                   </tbody>

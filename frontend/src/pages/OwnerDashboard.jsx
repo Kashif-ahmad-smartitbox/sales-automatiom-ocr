@@ -150,46 +150,59 @@ const OwnerDashboard = () => {
 
   return (
     <OwnerLayout title="Owner Dashboard">
-      <div className="space-y-6" data-testid="owner-dashboard">
-        {/* Stats Grid */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-          {statCards.map((stat, idx) => (
-            <Card key={idx} className="stats-card" data-testid={`owner-stat-card-${idx}`}>
-              <CardContent className="p-4">
-                <div className="flex items-start justify-between">
-                  <div>
-                    <p className="text-sm text-slate-500 mb-1">{stat.label}</p>
-                    <p className="text-2xl font-bold font-mono text-slate-900">{stat.value.toLocaleString()}</p>
-                    <p className="text-xs text-slate-400 mt-1">{stat.subtext}</p>
-                  </div>
-                  <div className={`p-2 rounded-lg ${stat.bg}`}>
-                    <stat.icon className={`w-5 h-5 ${stat.color}`} weight="duotone" />
+      <div className="space-y-4" data-testid="owner-dashboard">
+        {/* Header */}
+        <div>
+          <h1 className="text-lg font-bold bg-gradient-to-r from-primary-600 to-orange-600 bg-clip-text text-transparent">Owner Dashboard</h1>
+          <p className="text-xs text-gray-500 mt-0.5">Platform-wide overview and analytics</p>
+        </div>
+
+        {/* Stats Grid - gradient cards */}
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+          {statCards.map((stat, idx) => {
+            const gradients = [
+              'from-purple-400 to-purple-500', 'from-amber-400 to-amber-500',
+              'from-emerald-400 to-emerald-500', 'from-primary-400 to-primary-500',
+              'from-pink-400 to-pink-500', 'from-violet-400 to-violet-500',
+              'from-green-400 to-green-500', 'from-cyan-400 to-cyan-500'
+            ];
+            return (
+            <Card key={idx} className={`border-0 bg-gradient-to-br ${gradients[idx]} text-white shadow-md hover:shadow-lg transition-all duration-300`} data-testid={`owner-stat-card-${idx}`}>
+              <CardContent className="p-3">
+                <div className="flex items-center justify-between mb-1">
+                  <span className="text-xs font-medium text-white/90">{stat.label}</span>
+                  <div className="p-1.5 rounded-md bg-white/20 backdrop-blur-sm">
+                    <stat.icon className="w-3.5 h-3.5" weight="fill" />
                   </div>
                 </div>
+                <div className="text-lg font-bold font-mono">{stat.value.toLocaleString()}</div>
+                <p className="text-[10px] text-white/80 mt-0.5">{stat.subtext}</p>
               </CardContent>
             </Card>
-          ))}
+          );})}
         </div>
 
         {/* Main Content Grid */}
-        <div className="grid lg:grid-cols-2 gap-6">
+        <div className="grid lg:grid-cols-2 gap-4">
           {/* Super Admins with Teams */}
-          <Card data-testid="super-admins-card">
-            <CardHeader className="pb-2">
+          <Card className="border-0 shadow-sm" data-testid="super-admins-card">
+            <CardHeader className="pb-3 border-b border-gray-100">
               <div className="flex items-center justify-between">
-                <CardTitle className="text-lg flex items-center gap-2">
-                  <Crown className="w-5 h-5 text-amber-500" weight="duotone" />
+                <CardTitle className="text-sm font-bold text-gray-800 flex items-center gap-2">
+                  <div className="p-1.5 rounded-lg bg-gradient-to-br from-amber-400 to-amber-500">
+                    <Crown className="w-3.5 h-3.5 text-white" weight="fill" />
+                  </div>
                   Super Admins & Teams
                 </CardTitle>
-                <Badge className="bg-amber-100 text-amber-700 hover:bg-amber-200">
+                <Badge className="bg-amber-100 text-amber-700 text-[10px] px-1.5 py-0">
                   {superAdmins.length} admins
                 </Badge>
               </div>
             </CardHeader>
-            <CardContent>
-              <div className="space-y-3 max-h-[400px] overflow-auto custom-scrollbar">
+            <CardContent className="pt-3">
+              <div className="space-y-2 max-h-[350px] overflow-auto custom-scrollbar">
                 {superAdmins.length === 0 ? (
-                  <p className="text-sm text-slate-500 text-center py-8">No super admins registered yet</p>
+                  <p className="text-xs text-gray-500 text-center py-6">No super admins registered yet</p>
                 ) : (
                   superAdmins.map((admin) => (
                     <Collapsible 
@@ -197,29 +210,27 @@ const OwnerDashboard = () => {
                       open={expandedAdmins[admin.id]}
                       onOpenChange={() => toggleAdminExpand(admin.id)}
                     >
-                      <div className="bg-slate-50 rounded-lg border border-slate-200 overflow-hidden">
+                      <div className="bg-gray-50 rounded-lg border border-gray-100 overflow-hidden">
                         <CollapsibleTrigger className="w-full">
-                          <div className="flex items-center justify-between p-4 hover:bg-slate-100 transition-colors cursor-pointer">
-                            <div className="flex items-center gap-3">
-                              <div className="w-10 h-10 rounded-full bg-amber-100 flex items-center justify-center text-amber-700 font-semibold">
+                          <div className="flex items-center justify-between p-3 hover:bg-gray-100 transition-colors cursor-pointer">
+                            <div className="flex items-center gap-2.5">
+                              <div className="w-8 h-8 rounded-full bg-amber-100 flex items-center justify-center text-amber-700 text-xs font-bold">
                                 {admin.name.charAt(0)}
                               </div>
                               <div className="text-left">
-                                <p className="font-medium text-slate-900">{admin.name}</p>
-                                <p className="text-xs text-slate-500">{admin.email}</p>
+                                <p className="text-sm font-medium text-gray-800">{admin.name}</p>
+                                <p className="text-[10px] text-gray-500">{admin.email}</p>
                               </div>
                             </div>
-                            <div className="flex items-center gap-3">
-                              <div className="text-right">
-                                <Badge variant="outline" className="border-purple-200 text-purple-700 bg-purple-50">
-                                  <UsersFour className="w-3 h-3 mr-1" />
-                                  {admin.team_member_count} members
-                                </Badge>
-                              </div>
+                            <div className="flex items-center gap-2">
+                              <Badge variant="outline" className="border-purple-200 text-purple-700 bg-purple-50 text-[10px] px-1.5 py-0">
+                                <UsersFour className="w-2.5 h-2.5 mr-0.5" />
+                                {admin.team_member_count}
+                              </Badge>
                               {expandedAdmins[admin.id] ? (
-                                <CaretUp className="w-5 h-5 text-slate-400" />
+                                <CaretUp className="w-4 h-4 text-gray-400" />
                               ) : (
-                                <CaretDown className="w-5 h-5 text-slate-400" />
+                                <CaretDown className="w-4 h-4 text-gray-400" />
                               )}
                             </div>
                           </div>
@@ -287,50 +298,52 @@ const OwnerDashboard = () => {
           </Card>
 
           {/* Organizations Overview */}
-          <Card data-testid="organizations-card">
-            <CardHeader className="pb-2">
+          <Card className="border-0 shadow-sm" data-testid="organizations-card">
+            <CardHeader className="pb-3 border-b border-gray-100">
               <div className="flex items-center justify-between">
-                <CardTitle className="text-lg flex items-center gap-2">
-                  <Buildings className="w-5 h-5 text-purple-500" weight="duotone" />
+                <CardTitle className="text-sm font-bold text-gray-800 flex items-center gap-2">
+                  <div className="p-1.5 rounded-lg bg-gradient-to-br from-purple-400 to-purple-500">
+                    <Buildings className="w-3.5 h-3.5 text-white" weight="fill" />
+                  </div>
                   Organizations
                 </CardTitle>
-                <Badge className="bg-purple-100 text-purple-700 hover:bg-purple-200">
+                <Badge className="bg-purple-100 text-purple-700 text-[10px] px-1.5 py-0">
                   {organizations.length} total
                 </Badge>
               </div>
             </CardHeader>
-            <CardContent>
-              <div className="space-y-3 max-h-[400px] overflow-auto custom-scrollbar">
+            <CardContent className="pt-3">
+              <div className="space-y-2 max-h-[350px] overflow-auto custom-scrollbar">
                 {organizations.length === 0 ? (
-                  <p className="text-sm text-slate-500 text-center py-8">No organizations registered yet</p>
+                  <p className="text-xs text-gray-500 text-center py-6">No organizations registered yet</p>
                 ) : (
                   organizations.map((org) => (
-                    <div key={org.id} className="bg-slate-50 rounded-lg p-4 border border-slate-200 hover:border-primary-300 transition-colors">
-                      <div className="flex items-start justify-between mb-3">
+                    <div key={org.id} className="bg-gray-50 rounded-lg p-3 border border-gray-100 hover:border-primary-200 transition-colors">
+                      <div className="flex items-start justify-between mb-2">
                         <div>
-                          <p className="font-medium text-slate-900">{org.company_name}</p>
-                          <p className="text-xs text-slate-500">{org.industry_type}</p>
+                          <p className="text-sm font-medium text-gray-800">{org.company_name}</p>
+                          <p className="text-[10px] text-gray-500">{org.industry_type}</p>
                         </div>
-                        <Badge variant="secondary" className="bg-slate-200 text-slate-700">
+                        <Badge variant="secondary" className="bg-gray-200 text-gray-700 text-[10px] px-1.5 py-0">
                           {org.head_office_location}
                         </Badge>
                       </div>
-                      <div className="grid grid-cols-4 gap-2 text-center">
-                        <div className="bg-white rounded p-2 border border-slate-100 shadow-sm">
-                          <p className="text-emerald-600 font-bold text-sm">{org.user_count}</p>
-                          <p className="text-xs text-slate-500">Users</p>
+                      <div className="grid grid-cols-4 gap-1.5 text-center">
+                        <div className="bg-white rounded p-1.5 border border-gray-100">
+                          <p className="text-emerald-600 font-bold text-xs">{org.user_count}</p>
+                          <p className="text-[10px] text-gray-500">Users</p>
                         </div>
-                        <div className="bg-white rounded p-2 border border-slate-100 shadow-sm">
-                          <p className="text-primary-600 font-bold text-sm">{org.dealer_count}</p>
-                          <p className="text-xs text-slate-500">Dealers</p>
+                        <div className="bg-white rounded p-1.5 border border-gray-100">
+                          <p className="text-primary-600 font-bold text-xs">{org.dealer_count}</p>
+                          <p className="text-[10px] text-gray-500">Dealers</p>
                         </div>
-                        <div className="bg-white rounded p-2 border border-slate-100 shadow-sm">
-                          <p className="text-pink-600 font-bold text-sm">{org.territory_count}</p>
-                          <p className="text-xs text-slate-500">Areas</p>
+                        <div className="bg-white rounded p-1.5 border border-gray-100">
+                          <p className="text-pink-600 font-bold text-xs">{org.territory_count}</p>
+                          <p className="text-[10px] text-gray-500">Areas</p>
                         </div>
-                        <div className="bg-white rounded p-2 border border-slate-100 shadow-sm">
-                          <p className="text-amber-600 font-bold text-sm">{org.today_visits}</p>
-                          <p className="text-xs text-slate-500">Today</p>
+                        <div className="bg-white rounded p-1.5 border border-gray-100">
+                          <p className="text-amber-600 font-bold text-xs">{org.today_visits}</p>
+                          <p className="text-[10px] text-gray-500">Today</p>
                         </div>
                       </div>
                     </div>
@@ -342,56 +355,58 @@ const OwnerDashboard = () => {
         </div>
 
         {/* Recent Activity */}
-        <Card data-testid="activity-card">
-          <CardHeader className="pb-2">
+        <Card className="border-0 shadow-sm" data-testid="activity-card">
+          <CardHeader className="pb-3 border-b border-gray-100">
             <div className="flex items-center justify-between">
-              <CardTitle className="text-lg flex items-center gap-2">
-                <Pulse className="w-5 h-5 text-emerald-500" weight="duotone" />
+              <CardTitle className="text-sm font-bold text-gray-800 flex items-center gap-2">
+                <div className="p-1.5 rounded-lg bg-gradient-to-br from-emerald-400 to-emerald-500">
+                  <Pulse className="w-3.5 h-3.5 text-white" weight="fill" />
+                </div>
                 Recent Activity
               </CardTitle>
-              <Button variant="ghost" size="sm" className="text-primary-600 hover:text-primary-700 hover:bg-gradient-to-r hover:from-primary-50 hover:to-orange-50">
-                View All <ArrowRight className="ml-1 w-4 h-4" />
+              <Button variant="ghost" size="sm" className="text-xs text-primary-600 hover:text-primary-700 hover:bg-gradient-to-r hover:from-primary-50 hover:to-orange-50 h-auto py-1 px-2">
+                View All <ArrowRight className="ml-1 w-3 h-3" />
               </Button>
             </div>
           </CardHeader>
-          <CardContent>
+          <CardContent className="pt-3">
             {recentActivity.length === 0 ? (
-              <p className="text-sm text-slate-500 text-center py-8">No recent activity</p>
+              <p className="text-xs text-gray-500 text-center py-6">No recent activity</p>
             ) : (
               <div className="overflow-x-auto">
-                <table className="w-full text-sm">
+                <table className="data-table">
                   <thead>
-                    <tr className="text-slate-500 text-left border-b border-slate-200">
-                      <th className="pb-3 font-medium px-2">Company</th>
-                      <th className="pb-3 font-medium px-2">User</th>
-                      <th className="pb-3 font-medium px-2">Dealer</th>
-                      <th className="pb-3 font-medium px-2">Check-in</th>
-                      <th className="pb-3 font-medium px-2">Outcome</th>
-                      <th className="pb-3 font-medium px-2">Order Value</th>
+                    <tr>
+                      <th>Company</th>
+                      <th>User</th>
+                      <th>Dealer</th>
+                      <th>Check-in</th>
+                      <th>Outcome</th>
+                      <th>Order Value</th>
                     </tr>
                   </thead>
-                  <tbody className="divide-y divide-slate-100">
+                  <tbody>
                     {recentActivity.slice(0, 10).map((visit) => (
-                      <tr key={visit.id} className="text-slate-600 hover:bg-slate-50 transition-colors">
-                        <td className="py-3 px-2">
-                          <span className="font-medium text-slate-900">{visit.company_name}</span>
+                      <tr key={visit.id}>
+                        <td>
+                          <span className="font-medium text-sm text-gray-800">{visit.company_name}</span>
                         </td>
-                        <td className="py-3 px-2">{visit.user_name}</td>
-                        <td className="py-3 px-2">{visit.dealer_name}</td>
-                        <td className="py-3 px-2 font-mono text-xs">
+                        <td className="text-xs text-gray-600">{visit.user_name}</td>
+                        <td className="text-xs text-gray-600">{visit.dealer_name}</td>
+                        <td className="font-mono text-xs text-gray-600">
                           {new Date(visit.check_in_time).toLocaleString()}
                         </td>
-                        <td className="py-3 px-2">
+                        <td>
                           <Badge className={
-                            visit.outcome === 'Order Booked' ? 'bg-emerald-100 text-emerald-700 border-emerald-200' :
-                            visit.outcome === 'Follow-up Required' ? 'bg-amber-100 text-amber-700 border-amber-200' :
-                            visit.outcome === 'Lost Visit' ? 'bg-red-100 text-red-700 border-red-200' :
-                            'bg-slate-100 text-slate-600 border-slate-200'
+                            visit.outcome === 'Order Booked' ? 'bg-emerald-100 text-emerald-700' :
+                            visit.outcome === 'Follow-up Required' ? 'bg-amber-100 text-amber-700' :
+                            visit.outcome === 'Lost Visit' ? 'bg-red-100 text-red-700' :
+                            'bg-slate-100 text-slate-600'
                           }>
                             {visit.outcome || 'In Progress'}
                           </Badge>
                         </td>
-                        <td className="py-3 px-2 font-mono">
+                        <td className="font-mono text-xs font-medium text-primary-600">
                           {visit.order_value ? `₹${visit.order_value.toLocaleString()}` : '–'}
                         </td>
                       </tr>

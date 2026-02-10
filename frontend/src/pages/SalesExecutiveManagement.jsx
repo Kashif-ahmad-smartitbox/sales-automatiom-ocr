@@ -191,11 +191,19 @@ const SalesExecutiveManagement = () => {
 
   return (
     <AdminLayout title="Sales Team">
-      <div className="space-y-6" data-testid="sales-executive-management">
-        {/* Header Actions */}
-        <div className="flex flex-col sm:flex-row gap-4 items-start sm:items-center justify-between">
-          <div className="relative flex-1 max-w-md">
-            <MagnifyingGlass className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" size={18} />
+      <div className="space-y-4" data-testid="sales-executive-management">
+        {/* Header */}
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+          <div>
+            <h1 className="text-lg font-bold bg-gradient-to-r from-primary-600 to-orange-600 bg-clip-text text-transparent">Sales Team</h1>
+            <p className="text-xs text-gray-500 mt-0.5">Manage your field sales executives</p>
+          </div>
+        </div>
+
+        {/* Search & Actions */}
+        <div className="flex flex-col sm:flex-row gap-3 items-start sm:items-center justify-between">
+          <div className="relative flex-1 max-w-sm">
+            <MagnifyingGlass className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={16} />
             <Input
               placeholder="Search by name or code..."
               value={searchTerm}
@@ -207,9 +215,9 @@ const SalesExecutiveManagement = () => {
           
           <Dialog open={dialogOpen} onOpenChange={(open) => { if (!open) closeDialog(); else setDialogOpen(true); }}>
             <DialogTrigger asChild>
-              <Button className="bg-gradient-to-r from-primary-500 to-orange-500 hover:from-primary-600 hover:to-orange-600 text-white shadow-md" data-testid="add-executive-btn">
-                <Plus className="mr-2" size={18} />
-                Add Sales Executive
+              <Button className="bg-gradient-to-r from-primary-500 to-orange-500 hover:from-primary-600 hover:to-orange-600 text-white shadow-sm text-xs h-8" data-testid="add-executive-btn">
+                <Plus className="mr-1" size={14} />
+                Add Executive
               </Button>
             </DialogTrigger>
             <DialogContent className="max-w-lg max-h-[90vh] overflow-y-auto">
@@ -352,30 +360,30 @@ const SalesExecutiveManagement = () => {
           </Dialog>
         </div>
 
-        {/* Stats */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-          <Card className="stats-card">
-            <CardContent className="p-4">
-              <p className="text-sm text-slate-500">Total Team</p>
-              <p className="text-2xl font-bold font-mono">{executives.length}</p>
+        {/* Stats - gradient cards */}
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+          <Card className="border-0 bg-gradient-to-br from-primary-400 to-primary-500 text-white shadow-md hover:shadow-lg transition-all duration-300">
+            <CardContent className="p-3">
+              <span className="text-xs font-medium text-white/90">Total Team</span>
+              <div className="text-lg font-bold font-mono mt-1">{executives.length}</div>
             </CardContent>
           </Card>
-          <Card className="stats-card">
-            <CardContent className="p-4">
-              <p className="text-sm text-slate-500">Active Now</p>
-              <p className="text-2xl font-bold font-mono text-emerald-600">{executives.filter(e => e.is_in_market).length}</p>
+          <Card className="border-0 bg-gradient-to-br from-emerald-400 to-emerald-500 text-white shadow-md hover:shadow-lg transition-all duration-300">
+            <CardContent className="p-3">
+              <span className="text-xs font-medium text-white/90">Active Now</span>
+              <div className="text-lg font-bold font-mono mt-1">{executives.filter(e => e.is_in_market).length}</div>
             </CardContent>
           </Card>
-          <Card className="stats-card">
-            <CardContent className="p-4">
-              <p className="text-sm text-slate-500">Idle</p>
-              <p className="text-2xl font-bold font-mono text-amber-600">{executives.filter(e => getStatus(e) === 'idle').length}</p>
+          <Card className="border-0 bg-gradient-to-br from-amber-400 to-amber-500 text-white shadow-md hover:shadow-lg transition-all duration-300">
+            <CardContent className="p-3">
+              <span className="text-xs font-medium text-white/90">Idle</span>
+              <div className="text-lg font-bold font-mono mt-1">{executives.filter(e => getStatus(e) === 'idle').length}</div>
             </CardContent>
           </Card>
-          <Card className="stats-card">
-            <CardContent className="p-4">
-              <p className="text-sm text-slate-500">Offline</p>
-              <p className="text-2xl font-bold font-mono text-slate-400">{executives.filter(e => getStatus(e) === 'offline').length}</p>
+          <Card className="border-0 bg-gradient-to-br from-gray-400 to-gray-500 text-white shadow-md hover:shadow-lg transition-all duration-300">
+            <CardContent className="p-3">
+              <span className="text-xs font-medium text-white/90">Offline</span>
+              <div className="text-lg font-bold font-mono mt-1">{executives.filter(e => getStatus(e) === 'offline').length}</div>
             </CardContent>
           </Card>
         </div>
@@ -392,22 +400,22 @@ const SalesExecutiveManagement = () => {
             </CardContent>
           </Card>
         ) : (
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-3">
             {filteredExecutives.map((exec) => {
               const status = getStatus(exec);
               return (
-                <Card key={exec.id} className="hover:border-primary-300 transition-colors" data-testid={`executive-card-${exec.id}`}>
-                  <CardContent className="p-4">
-                    <div className="flex items-start justify-between mb-4">
-                      <div className="flex items-center gap-3">
-                        <div className={`w-12 h-12 rounded-full flex items-center justify-center text-white font-bold text-lg ${
+                <Card key={exec.id} className="border-0 shadow-sm hover:shadow-md hover:border-primary-200 transition-all duration-300" data-testid={`executive-card-${exec.id}`}>
+                  <CardContent className="p-3">
+                    <div className="flex items-start justify-between mb-3">
+                      <div className="flex items-center gap-2.5">
+                        <div className={`w-9 h-9 rounded-full flex items-center justify-center text-white text-sm font-bold ${
                           status === 'active' ? 'bg-emerald-500' : status === 'idle' ? 'bg-amber-500' : 'bg-slate-400'
                         }`}>
                           {exec.name.charAt(0)}
                         </div>
                         <div>
-                          <p className="font-semibold">{exec.name}</p>
-                          <p className="text-sm text-slate-500 font-mono">{exec.employee_code}</p>
+                          <p className="text-sm font-semibold text-gray-800">{exec.name}</p>
+                          <p className="text-[10px] text-gray-500 font-mono">{exec.employee_code}</p>
                         </div>
                       </div>
                       <Badge className={
@@ -417,48 +425,48 @@ const SalesExecutiveManagement = () => {
                       </Badge>
                     </div>
 
-                    <div className="space-y-2 text-sm">
-                      <div className="flex items-center gap-2 text-slate-600">
-                        <Phone size={14} />
+                    <div className="space-y-1.5 text-xs">
+                      <div className="flex items-center gap-2 text-gray-500">
+                        <Phone size={12} />
                         <span>{exec.mobile}</span>
                       </div>
-                      <div className="flex items-center gap-2 text-slate-600">
+                      <div className="flex items-center gap-2 text-gray-500">
                         {exec.is_live_tracking ? (
-                           <><Globe size={14} className="text-emerald-500" /> <span>Live Tracking (All Cities)</span></>
+                           <><Globe size={12} className="text-emerald-500" /> <span>Live Tracking (All Cities)</span></>
                         ) : (
-                           <><MapPin size={14} className="text-amber-500" /> <span>{exec.assigned_city || 'No City'}, {exec.assigned_state}</span></>
+                           <><MapPin size={12} className="text-amber-500" /> <span>{exec.assigned_city || 'No City'}, {exec.assigned_state}</span></>
                         )}
                       </div>
                     </div>
 
-                    <div className="flex justify-end mt-4 pt-4 border-t gap-1">
+                    <div className="flex justify-end mt-3 pt-3 border-t border-gray-100 gap-1">
                       <Button 
                         variant="ghost" 
                         size="sm" 
-                        className="text-emerald-600 hover:text-emerald-700 hover:bg-emerald-50"
+                        className="text-emerald-600 hover:text-emerald-700 hover:bg-emerald-50 text-xs h-7 px-2"
                         onClick={() => handleViewReport(exec)}
                       >
-                         <ChartBar size={16} className="mr-1" />
+                         <ChartBar size={12} className="mr-1" />
                          Report
                       </Button>
                       <Button 
                         variant="ghost" 
                         size="sm" 
-                        className="text-primary-600 hover:text-primary-700 hover:bg-gradient-to-r hover:from-primary-50 hover:to-orange-50"
+                        className="text-primary-600 hover:text-primary-700 hover:bg-gradient-to-r hover:from-primary-50 hover:to-orange-50 text-xs h-7 px-2"
                         onClick={() => handleEdit(exec)}
                         data-testid={`edit-executive-${exec.id}`}
                       >
-                        <Pencil size={16} className="mr-1" />
+                        <Pencil size={12} className="mr-1" />
                         Edit
                       </Button>
                       <Button 
                         variant="ghost" 
                         size="sm" 
-                        className="text-red-600 hover:text-red-700 hover:bg-red-50"
+                        className="text-red-600 hover:text-red-700 hover:bg-red-50 text-xs h-7 px-2"
                         onClick={() => handleDelete(exec.id)}
                         data-testid={`delete-executive-${exec.id}`}
                       >
-                        <Trash size={16} className="mr-1" />
+                        <Trash size={12} className="mr-1" />
                         Remove
                       </Button>
                     </div>
@@ -482,10 +490,10 @@ const SalesExecutiveManagement = () => {
               ) : (
                   <div className="space-y-6">
                       {/* Header Info */}
-                      <div className="flex flex-col md:flex-row justify-between items-start md:items-center pb-4 border-b border-slate-100 gap-4">
+                      <div className="flex flex-col md:flex-row justify-between items-start md:items-center pb-3 border-b border-gray-100 gap-3">
                           <div>
-                            <h3 className="font-bold text-xl text-slate-800">{execReport.name}</h3>
-                            <p className="text-sm text-slate-500 flex items-center gap-2">
+                            <h3 className="font-bold text-base text-gray-800">{execReport.name}</h3>
+                            <p className="text-xs text-gray-500 flex items-center gap-2">
                                 <span>{execReport.employee_code}</span>
                                 <span>•</span>
                                 <span>{execReport.mobile}</span>
@@ -497,64 +505,64 @@ const SalesExecutiveManagement = () => {
                       </div>
                       
                       {/* Key Stats */}
-                      <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                          <div className="bg-slate-50 p-4 rounded-lg">
-                              <p className="text-xs text-slate-500 uppercase tracking-wide mb-1">Total Visits</p>
-                              <p className="text-2xl font-bold text-slate-700">{execReport.total_visits}</p>
+                      <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+                          <div className="bg-gray-50 p-3 rounded-lg border border-gray-100">
+                              <p className="text-[10px] text-gray-500 uppercase tracking-wider mb-1">Total Visits</p>
+                              <p className="text-lg font-bold font-mono text-gray-700">{execReport.total_visits}</p>
                           </div>
-                           <div className="bg-emerald-50 p-4 rounded-lg">
-                              <p className="text-xs text-emerald-600 uppercase tracking-wide mb-1">Completed</p>
-                              <p className="text-2xl font-bold text-emerald-700">{execReport.completed_visits}</p>
+                           <div className="bg-emerald-50 p-3 rounded-lg border border-emerald-100">
+                              <p className="text-[10px] text-emerald-600 uppercase tracking-wider mb-1">Completed</p>
+                              <p className="text-lg font-bold font-mono text-emerald-700">{execReport.completed_visits}</p>
                           </div>
-                           <div className="bg-primary-50 p-4 rounded-lg">
-                              <p className="text-xs text-primary-600 uppercase tracking-wide mb-1">Orders</p>
-                              <p className="text-2xl font-bold text-primary-700">₹{execReport.total_orders.toLocaleString()}</p>
+                           <div className="bg-primary-50 p-3 rounded-lg border border-primary-100">
+                              <p className="text-[10px] text-primary-600 uppercase tracking-wider mb-1">Orders</p>
+                              <p className="text-lg font-bold font-mono text-primary-700">₹{execReport.total_orders.toLocaleString()}</p>
                           </div>
-                           <div className="bg-purple-50 p-4 rounded-lg">
-                              <p className="text-xs text-purple-600 uppercase tracking-wide mb-1">Avg Time</p>
-                              <p className="text-2xl font-bold text-purple-700">{execReport.avg_time_per_visit}m</p>
+                           <div className="bg-purple-50 p-3 rounded-lg border border-purple-100">
+                              <p className="text-[10px] text-purple-600 uppercase tracking-wider mb-1">Avg Time</p>
+                              <p className="text-lg font-bold font-mono text-purple-700">{execReport.avg_time_per_visit}m</p>
                           </div>
                       </div>
 
                       {/* Visit History Table */}
                       <div>
-                          <h4 className="font-semibold text-slate-800 mb-3">Recent Visit History</h4>
-                          <div className="border rounded-lg overflow-hidden">
-                              <table className="w-full text-sm text-left">
-                                  <thead className="bg-slate-50 text-slate-500 font-medium border-b">
-                                      <tr>
-                                          <th className="px-4 py-3">Date & Time</th>
-                                          <th className="px-4 py-3">Dealer / Location</th>
-                                          <th className="px-4 py-3">Duration</th>
-                                          <th className="px-4 py-3">Outcome</th>
-                                          <th className="px-4 py-3 text-right">Order Value</th>
+                          <h4 className="text-sm font-bold text-gray-800 mb-2">Recent Visit History</h4>
+                          <div className="border border-gray-100 rounded-lg overflow-hidden">
+                              <table className="w-full text-left">
+                                  <thead>
+                                      <tr style={{background: 'linear-gradient(to right, #f9fafb, #ffffff)'}}>
+                                          <th className="px-3 py-2.5 text-xs font-semibold text-gray-500 uppercase tracking-wider border-b border-gray-200">Date & Time</th>
+                                          <th className="px-3 py-2.5 text-xs font-semibold text-gray-500 uppercase tracking-wider border-b border-gray-200">Dealer / Location</th>
+                                          <th className="px-3 py-2.5 text-xs font-semibold text-gray-500 uppercase tracking-wider border-b border-gray-200">Duration</th>
+                                          <th className="px-3 py-2.5 text-xs font-semibold text-gray-500 uppercase tracking-wider border-b border-gray-200">Outcome</th>
+                                          <th className="px-3 py-2.5 text-xs font-semibold text-gray-500 uppercase tracking-wider border-b border-gray-200 text-right">Order Value</th>
                                       </tr>
                                   </thead>
-                                  <tbody className="divide-y divide-slate-100">
+                                  <tbody className="divide-y divide-gray-50">
                                       {execVisits.length === 0 ? (
                                           <tr>
-                                              <td colSpan="5" className="px-4 py-8 text-center text-slate-500">
+                                              <td colSpan="5" className="px-3 py-6 text-center text-xs text-gray-500">
                                                   No visit history found.
                                               </td>
                                           </tr>
                                       ) : (
                                           execVisits.map((visit) => (
-                                              <tr key={visit.id} className="hover:bg-slate-50/50">
-                                                  <td className="px-4 py-3 whitespace-nowrap">
-                                                      <div className="font-medium text-slate-700">
+                                              <tr key={visit.id} className="hover:bg-gradient-to-r hover:from-primary-50 hover:to-orange-50 transition-colors">
+                                                  <td className="px-3 py-2.5 whitespace-nowrap">
+                                                      <div className="text-sm font-medium text-gray-700">
                                                           {new Date(visit.check_in_time).toLocaleDateString()}
                                                       </div>
-                                                      <div className="text-xs text-slate-400">
+                                                      <div className="text-[10px] text-gray-400">
                                                           {new Date(visit.check_in_time).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}
                                                       </div>
                                                   </td>
-                                                  <td className="px-4 py-3">
-                                                      <div className="font-medium text-slate-800">{visit.dealer_name || 'Unknown Dealer'}</div>
-                                                      <div className="text-xs text-slate-500 truncate max-w-[200px]">
+                                                  <td className="px-3 py-2.5">
+                                                      <div className="text-sm font-medium text-gray-800">{visit.dealer_name || 'Unknown Dealer'}</div>
+                                                      <div className="text-[10px] text-gray-500 truncate max-w-[200px]">
                                                           {visit.location_address || 'No address'}
                                                       </div>
                                                   </td>
-                                                  <td className="px-4 py-3 text-slate-600">
+                                                  <td className="px-3 py-2.5 text-xs text-gray-600">
                                                       {visit.duration_minutes ? `${visit.duration_minutes}m` : '-'}
                                                   </td>
                                                   <td className="px-4 py-3">
@@ -566,7 +574,7 @@ const SalesExecutiveManagement = () => {
                                                           {visit.outcome || 'Pending'}
                                                       </Badge>
                                                   </td>
-                                                  <td className="px-4 py-3 text-right font-medium text-slate-700">
+                                                  <td className="px-3 py-2.5 text-right font-mono text-xs font-medium text-primary-600">
                                                       {visit.order_value > 0 ? `₹${visit.order_value.toLocaleString()}` : '-'}
                                                   </td>
                                               </tr>

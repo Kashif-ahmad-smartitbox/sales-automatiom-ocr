@@ -89,11 +89,17 @@ const OwnerOrganizations = () => {
 
   return (
     <OwnerLayout title="All Organizations">
-      <div className="space-y-6">
-        {/* Header Controls */}
-        <div className="flex flex-col md:flex-row gap-4 items-center justify-between">
-          <div className="relative w-full md:w-80">
-            <MagnifyingGlass className="absolute left-3 top-1/2 transform -translate-y-1/2 text-slate-400 w-5 h-5" />
+      <div className="space-y-4">
+        {/* Header */}
+        <div>
+          <h1 className="text-lg font-bold bg-gradient-to-r from-primary-600 to-orange-600 bg-clip-text text-transparent">All Organizations</h1>
+          <p className="text-xs text-gray-500 mt-0.5">Manage registered organizations</p>
+        </div>
+
+        {/* Controls */}
+        <div className="flex flex-col md:flex-row gap-3 items-center justify-between">
+          <div className="relative w-full md:w-72">
+            <MagnifyingGlass className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
             <Input
               placeholder="Search organizations..."
               value={searchTerm}
@@ -101,18 +107,18 @@ const OwnerOrganizations = () => {
               className="pl-10 bg-white border-slate-200 text-slate-900 placeholder:text-slate-400 focus:border-primary-500"
             />
           </div>
-          <Badge className="bg-purple-100 text-purple-700 hover:bg-purple-200 text-sm">
+          <Badge className="bg-purple-100 text-purple-700 text-[10px] px-1.5 py-0">
             {filteredOrgs.length} organizations
           </Badge>
         </div>
 
         {/* Organizations List */}
-        <div className="space-y-4">
+        <div className="space-y-3">
           {filteredOrgs.length === 0 ? (
-            <Card className="bg-slate-50 border-slate-200">
-              <CardContent className="p-8 text-center">
-                <Buildings className="w-12 h-12 text-slate-400 mx-auto mb-3" />
-                <p className="text-slate-500">No organizations found</p>
+            <Card className="border-0 shadow-sm">
+              <CardContent className="p-6 text-center">
+                <Buildings className="w-10 h-10 text-gray-400 mx-auto mb-2" />
+                <p className="text-xs text-gray-500">No organizations found</p>
               </CardContent>
             </Card>
           ) : (
@@ -122,47 +128,47 @@ const OwnerOrganizations = () => {
                 open={expandedOrgs[org.id]}
                 onOpenChange={() => toggleOrgExpand(org.id)}
               >
-                <Card className="bg-white border-slate-200 overflow-hidden shadow-sm hover:shadow-md transition-shadow">
+                <Card className="border-0 shadow-sm overflow-hidden hover:shadow-md transition-all duration-300">
                   <CollapsibleTrigger asChild>
-                    <CardHeader className="cursor-pointer hover:bg-slate-50 transition-colors">
+                    <CardHeader className="cursor-pointer hover:bg-gray-50 transition-colors py-3">
                       <div className="flex items-center justify-between">
-                        <div className="flex items-center gap-4">
-                          <div className="w-12 h-12 rounded-xl bg-purple-100 flex items-center justify-center text-purple-700 font-bold text-lg">
+                        <div className="flex items-center gap-3">
+                          <div className="w-9 h-9 rounded-lg bg-purple-100 flex items-center justify-center text-purple-700 font-bold text-sm">
                             {org.company_name.charAt(0)}
                           </div>
                           <div>
-                            <CardTitle className="text-slate-900 text-lg">{org.company_name}</CardTitle>
-                            <div className="flex items-center gap-2 mt-1">
-                              <Badge variant="outline" className="text-xs text-slate-500 border-slate-300">
+                            <CardTitle className="text-sm font-bold text-gray-800">{org.company_name}</CardTitle>
+                            <div className="flex items-center gap-2 mt-0.5">
+                              <Badge variant="outline" className="text-[10px] text-gray-500 border-gray-300 px-1.5 py-0">
                                 {org.industry_type}
                               </Badge>
-                              <span className="text-xs text-slate-500">{org.head_office_location}</span>
+                              <span className="text-[10px] text-gray-500">{org.head_office_location}</span>
                             </div>
                           </div>
                         </div>
-                        <div className="flex items-center gap-4">
-                          <div className="hidden md:flex items-center gap-3">
-                            <div className="text-center px-3">
-                              <p className="text-emerald-600 font-bold">{org.user_count}</p>
-                              <p className="text-xs text-slate-500">Users</p>
+                        <div className="flex items-center gap-3">
+                          <div className="hidden md:flex items-center gap-2">
+                            <div className="text-center px-2">
+                              <p className="text-emerald-600 font-bold text-xs">{org.user_count}</p>
+                              <p className="text-[10px] text-gray-500">Users</p>
                             </div>
-                            <div className="text-center px-3">
-                              <p className="text-primary-600 font-bold">{org.dealer_count}</p>
-                              <p className="text-xs text-slate-500">Dealers</p>
+                            <div className="text-center px-2">
+                              <p className="text-primary-600 font-bold text-xs">{org.dealer_count}</p>
+                              <p className="text-[10px] text-gray-500">Dealers</p>
                             </div>
-                            <div className="text-center px-3">
-                              <p className="text-pink-600 font-bold">{org.territory_count}</p>
-                              <p className="text-xs text-slate-500">Territories</p>
+                            <div className="text-center px-2">
+                              <p className="text-pink-600 font-bold text-xs">{org.territory_count}</p>
+                              <p className="text-[10px] text-gray-500">Territories</p>
                             </div>
-                            <div className="text-center px-3">
-                              <p className="text-amber-600 font-bold">{org.today_visits}</p>
-                              <p className="text-xs text-slate-500">Today</p>
+                            <div className="text-center px-2">
+                              <p className="text-amber-600 font-bold text-xs">{org.today_visits}</p>
+                              <p className="text-[10px] text-gray-500">Today</p>
                             </div>
                           </div>
                           {expandedOrgs[org.id] ? (
-                            <CaretUp className="w-5 h-5 text-slate-400" />
+                            <CaretUp className="w-4 h-4 text-gray-400" />
                           ) : (
-                            <CaretDown className="w-5 h-5 text-slate-400" />
+                            <CaretDown className="w-4 h-4 text-gray-400" />
                           )}
                         </div>
                       </div>

@@ -88,7 +88,12 @@ const ReportsPage = () => {
 
   return (
     <AdminLayout title="Reports & Analytics">
-      <div className="space-y-6" data-testid="reports-page">
+      <div className="space-y-4" data-testid="reports-page">
+        {/* Page Header */}
+        <div>
+          <h1 className="text-lg font-bold bg-gradient-to-r from-primary-600 to-orange-600 bg-clip-text text-transparent">Reports & Analytics</h1>
+          <p className="text-xs text-gray-500 mt-0.5">Track performance and visit analytics</p>
+        </div>
         <Tabs defaultValue="overview">
           <TabsList>
             <TabsTrigger value="overview">Overview</TabsTrigger>
@@ -99,81 +104,73 @@ const ReportsPage = () => {
           </TabsList>
 
           {/* Overview Tab */}
-          <TabsContent value="overview" className="space-y-6">
-            {/* Summary Stats */}
-            <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-              <Card className="stats-card">
-                <CardContent className="p-4">
-                  <div className="flex items-start justify-between">
-                    <div>
-                      <p className="text-sm text-slate-500">Total Visits</p>
-                      <p className="text-2xl font-bold font-mono">{visitHistory.length}</p>
-                      <p className="text-xs text-slate-400 mt-1">All time</p>
-                    </div>
-                    <div className="p-2 rounded-lg bg-primary-50">
-                      <Target className="w-5 h-5 text-primary-600" weight="duotone" />
+          <TabsContent value="overview" className="space-y-4">
+            {/* Summary Stats - gradient cards */}
+            <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
+              <Card className="border-0 bg-gradient-to-br from-primary-400 to-primary-500 text-white shadow-md hover:shadow-lg transition-all duration-300">
+                <CardContent className="p-3">
+                  <div className="flex items-center justify-between mb-1">
+                    <span className="text-xs font-medium text-white/90">Total Visits</span>
+                    <div className="p-1.5 rounded-md bg-white/20 backdrop-blur-sm">
+                      <Target className="w-3.5 h-3.5" weight="fill" />
                     </div>
                   </div>
+                  <div className="text-lg font-bold font-mono">{visitHistory.length}</div>
+                  <p className="text-[10px] text-white/80 mt-0.5">All time</p>
                 </CardContent>
               </Card>
 
-              <Card className="stats-card">
-                <CardContent className="p-4">
-                  <div className="flex items-start justify-between">
-                    <div>
-                      <p className="text-sm text-slate-500">Orders Booked</p>
-                      <p className="text-2xl font-bold font-mono text-emerald-600">{outcomeStats['Order Booked']}</p>
-                      <p className="text-xs text-slate-400 mt-1">{visitHistory.length > 0 ? Math.round(outcomeStats['Order Booked'] / visitHistory.length * 100) : 0}% conversion</p>
-                    </div>
-                    <div className="p-2 rounded-lg bg-emerald-50">
-                      <TrendUp className="w-5 h-5 text-emerald-600" weight="duotone" />
+              <Card className="border-0 bg-gradient-to-br from-emerald-400 to-emerald-500 text-white shadow-md hover:shadow-lg transition-all duration-300">
+                <CardContent className="p-3">
+                  <div className="flex items-center justify-between mb-1">
+                    <span className="text-xs font-medium text-white/90">Orders Booked</span>
+                    <div className="p-1.5 rounded-md bg-white/20 backdrop-blur-sm">
+                      <TrendUp className="w-3.5 h-3.5" weight="fill" />
                     </div>
                   </div>
+                  <div className="text-lg font-bold font-mono">{outcomeStats['Order Booked']}</div>
+                  <p className="text-[10px] text-white/80 mt-0.5">{visitHistory.length > 0 ? Math.round(outcomeStats['Order Booked'] / visitHistory.length * 100) : 0}% conversion</p>
                 </CardContent>
               </Card>
 
-              <Card className="stats-card">
-                <CardContent className="p-4">
-                  <div className="flex items-start justify-between">
-                    <div>
-                      <p className="text-sm text-slate-500">Total Revenue</p>
-                      <p className="text-2xl font-bold font-mono">₹{visitHistory.reduce((sum, v) => sum + (v.order_value || 0), 0).toLocaleString()}</p>
-                      <p className="text-xs text-slate-400 mt-1">From orders</p>
-                    </div>
-                    <div className="p-2 rounded-lg bg-purple-50">
-                      <CurrencyDollar className="w-5 h-5 text-purple-600" weight="duotone" />
+              <Card className="border-0 bg-gradient-to-br from-purple-400 to-purple-500 text-white shadow-md hover:shadow-lg transition-all duration-300">
+                <CardContent className="p-3">
+                  <div className="flex items-center justify-between mb-1">
+                    <span className="text-xs font-medium text-white/90">Total Revenue</span>
+                    <div className="p-1.5 rounded-md bg-white/20 backdrop-blur-sm">
+                      <CurrencyDollar className="w-3.5 h-3.5" weight="fill" />
                     </div>
                   </div>
+                  <div className="text-lg font-bold font-mono">₹{visitHistory.reduce((sum, v) => sum + (v.order_value || 0), 0).toLocaleString()}</div>
+                  <p className="text-[10px] text-white/80 mt-0.5">From orders</p>
                 </CardContent>
               </Card>
 
-              <Card className="stats-card">
-                <CardContent className="p-4">
-                  <div className="flex items-start justify-between">
-                    <div>
-                      <p className="text-sm text-slate-500">Lost Visits</p>
-                      <p className="text-2xl font-bold font-mono text-red-600">{lostVisits.length}</p>
-                      <p className="text-xs text-slate-400 mt-1">Needs attention</p>
-                    </div>
-                    <div className="p-2 rounded-lg bg-red-50">
-                      <Warning className="w-5 h-5 text-red-600" weight="duotone" />
+              <Card className="border-0 bg-gradient-to-br from-red-400 to-red-500 text-white shadow-md hover:shadow-lg transition-all duration-300">
+                <CardContent className="p-3">
+                  <div className="flex items-center justify-between mb-1">
+                    <span className="text-xs font-medium text-white/90">Lost Visits</span>
+                    <div className="p-1.5 rounded-md bg-white/20 backdrop-blur-sm">
+                      <Warning className="w-3.5 h-3.5" weight="fill" />
                     </div>
                   </div>
+                  <div className="text-lg font-bold font-mono">{lostVisits.length}</div>
+                  <p className="text-[10px] text-white/80 mt-0.5">Needs attention</p>
                 </CardContent>
               </Card>
             </div>
 
             {/* Outcome Breakdown */}
-            <Card>
-              <CardHeader>
-                <CardTitle className="text-lg">Visit Outcomes Breakdown</CardTitle>
+            <Card className="border-0 shadow-sm">
+              <CardHeader className="pb-3">
+                <CardTitle className="text-sm font-bold text-gray-800">Visit Outcomes Breakdown</CardTitle>
               </CardHeader>
               <CardContent>
-                <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
                   {Object.entries(outcomeStats).map(([outcome, count]) => (
-                    <div key={outcome} className="text-center p-4 bg-slate-50 rounded-lg">
-                      <p className="text-2xl font-bold font-mono">{count}</p>
-                      <p className="text-sm text-slate-500">{outcome}</p>
+                    <div key={outcome} className="text-center p-3 bg-gray-50 rounded-lg border border-gray-100">
+                      <p className="text-lg font-bold font-mono text-gray-800">{count}</p>
+                      <p className="text-xs text-gray-500">{outcome}</p>
                     </div>
                   ))}
                 </div>
@@ -182,14 +179,14 @@ const ReportsPage = () => {
           </TabsContent>
 
           {/* Team Performance Tab */}
-          <TabsContent value="performance" className="space-y-6">
-            <Card data-testid="performance-table-card">
-              <CardHeader>
-                <CardTitle className="text-lg">Executive Performance</CardTitle>
+          <TabsContent value="performance" className="space-y-4">
+            <Card className="border-0 shadow-sm" data-testid="performance-table-card">
+              <CardHeader className="pb-3">
+                <CardTitle className="text-sm font-bold text-gray-800">Executive Performance</CardTitle>
               </CardHeader>
               <CardContent>
                 {executivePerformance.length === 0 ? (
-                  <p className="text-center py-8 text-slate-500">No performance data yet</p>
+                  <p className="text-center py-6 text-xs text-gray-500">No performance data yet</p>
                 ) : (
                   <div className="overflow-x-auto">
                     <table className="data-table">
@@ -208,14 +205,14 @@ const ReportsPage = () => {
                           <tr key={exec.id}>
                             <td>
                               <div>
-                                <p className="font-medium">{exec.name}</p>
-                                <p className="text-xs text-slate-500 font-mono">{exec.employee_code}</p>
+                                <p className="font-medium text-sm text-gray-800">{exec.name}</p>
+                                <p className="text-[10px] text-gray-500 font-mono">{exec.employee_code}</p>
                               </div>
                             </td>
-                            <td className="font-mono">{exec.total_visits}</td>
-                            <td className="font-mono">{exec.completed_visits}</td>
-                            <td className="font-mono">₹{exec.total_orders.toLocaleString()}</td>
-                            <td className="font-mono">{exec.avg_time_per_visit} min</td>
+                            <td className="font-mono text-xs">{exec.total_visits}</td>
+                            <td className="font-mono text-xs">{exec.completed_visits}</td>
+                            <td className="font-mono text-xs font-medium text-primary-600">₹{exec.total_orders.toLocaleString()}</td>
+                            <td className="font-mono text-xs">{exec.avg_time_per_visit} min</td>
                             <td>
                               <Badge className={exec.is_in_market ? 'status-active' : 'status-offline'}>
                                 {exec.is_in_market ? 'In Field' : 'Offline'}
@@ -232,14 +229,14 @@ const ReportsPage = () => {
           </TabsContent>
 
           {/* Visit Analysis Tab */}
-          <TabsContent value="visits" className="space-y-6">
-            <Card data-testid="visits-history-card">
-              <CardHeader>
-                <CardTitle className="text-lg">Recent Visits</CardTitle>
+          <TabsContent value="visits" className="space-y-4">
+            <Card className="border-0 shadow-sm" data-testid="visits-history-card">
+              <CardHeader className="pb-3">
+                <CardTitle className="text-sm font-bold text-gray-800">Recent Visits</CardTitle>
               </CardHeader>
               <CardContent>
                 {visitHistory.length === 0 ? (
-                  <p className="text-center py-8 text-slate-500">No visits recorded yet</p>
+                  <p className="text-center py-6 text-xs text-gray-500">No visits recorded yet</p>
                 ) : (
                   <div className="overflow-x-auto">
                     <table className="data-table">
@@ -256,10 +253,10 @@ const ReportsPage = () => {
                       <tbody>
                         {visitHistory.slice(0, 50).map((visit) => (
                           <tr key={visit.id}>
-                            <td className="font-mono text-sm">{new Date(visit.check_in_time).toLocaleDateString()}</td>
-                            <td className="font-medium">{visit.dealer_name}</td>
-                            <td className="font-mono text-sm">{new Date(visit.check_in_time).toLocaleTimeString()}</td>
-                            <td className="font-mono">{visit.time_spent_minutes ? `${Math.round(visit.time_spent_minutes)} min` : '-'}</td>
+                            <td className="font-mono text-xs text-gray-600">{new Date(visit.check_in_time).toLocaleDateString()}</td>
+                            <td className="font-medium text-sm text-gray-800">{visit.dealer_name}</td>
+                            <td className="font-mono text-xs text-gray-600">{new Date(visit.check_in_time).toLocaleTimeString()}</td>
+                            <td className="font-mono text-xs text-gray-600">{visit.time_spent_minutes ? `${Math.round(visit.time_spent_minutes)} min` : '-'}</td>
                             <td>
                               <Badge className={
                                 visit.outcome === 'Order Booked' ? 'bg-emerald-100 text-emerald-700' :
@@ -270,7 +267,7 @@ const ReportsPage = () => {
                                 {visit.outcome || 'In Progress'}
                               </Badge>
                             </td>
-                            <td className="font-mono">{visit.order_value ? `₹${visit.order_value.toLocaleString()}` : '-'}</td>
+                            <td className="font-mono text-xs font-medium text-primary-600">{visit.order_value ? `₹${visit.order_value.toLocaleString()}` : '-'}</td>
                           </tr>
                         ))}
                       </tbody>
@@ -282,11 +279,11 @@ const ReportsPage = () => {
           </TabsContent>
 
           {/* Lost Visits Tab */}
-          <TabsContent value="lost" className="space-y-6">
-            <Card data-testid="lost-visits-card">
-              <CardHeader>
-                <CardTitle className="text-lg flex items-center gap-2">
-                  <Warning className="text-red-500" weight="fill" />
+          <TabsContent value="lost" className="space-y-4">
+            <Card className="border-0 shadow-sm" data-testid="lost-visits-card">
+              <CardHeader className="pb-3">
+                <CardTitle className="text-sm font-bold text-gray-800 flex items-center gap-2">
+                  <Warning className="text-red-500" weight="fill" size={16} />
                   Lost Visits Analysis
                 </CardTitle>
               </CardHeader>
@@ -296,7 +293,7 @@ const ReportsPage = () => {
                     <div className="w-16 h-16 rounded-full bg-emerald-100 flex items-center justify-center mx-auto mb-4">
                       <TrendUp className="w-8 h-8 text-emerald-600" />
                     </div>
-                    <p className="text-slate-500">Great! No lost visits recorded</p>
+                    <p className="text-xs text-gray-500">Great! No lost visits recorded</p>
                   </div>
                 ) : (
                   <div className="overflow-x-auto">
@@ -311,9 +308,9 @@ const ReportsPage = () => {
                       <tbody>
                         {lostVisits.map((visit) => (
                           <tr key={visit.id}>
-                            <td className="font-mono text-sm">{new Date(visit.check_in_time).toLocaleDateString()}</td>
-                            <td className="font-medium">{visit.dealer_name}</td>
-                            <td className="text-slate-500">{visit.notes || 'No notes'}</td>
+                            <td className="font-mono text-xs text-gray-600">{new Date(visit.check_in_time).toLocaleDateString()}</td>
+                            <td className="font-medium text-sm text-gray-800">{visit.dealer_name}</td>
+                            <td className="text-xs text-gray-500">{visit.notes || 'No notes'}</td>
                           </tr>
                         ))}
                       </tbody>
@@ -324,39 +321,39 @@ const ReportsPage = () => {
             </Card>
           </TabsContent>
           {/* Market Sessions Tab */}
-          <TabsContent value="market_sessions" className="space-y-6">
-            <Card>
-              <CardHeader>
-                <CardTitle className="text-lg">Daily Market Sessions</CardTitle>
+          <TabsContent value="market_sessions" className="space-y-4">
+            <Card className="border-0 shadow-sm">
+              <CardHeader className="pb-3">
+                <CardTitle className="text-sm font-bold text-gray-800">Daily Market Sessions</CardTitle>
               </CardHeader>
               <CardContent>
                   {dashboardStats && (
-                      <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
+                      <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-3">
                         {/* We need to fetch sessions here or use dashboardStats if we added them there? 
                             Better to fetch them separately or in the main fetch. 
                             Let's assume we add `marketSessions` to the state. */}
                          {marketSessions.length === 0 ? (
-                            <p className="text-center py-8 text-slate-500 col-span-3">No market sessions recorded</p>
+                            <p className="text-center py-6 text-xs text-gray-500 col-span-3">No market sessions recorded</p>
                          ) : (
                             marketSessions.map(session => (
-                              <Card key={session.id} className="bg-white border-slate-200 hover:shadow-md transition-shadow">
-                                <CardContent className="p-4">
-                                  <div className="flex items-start justify-between mb-4">
-                                    <div className="flex items-center gap-3">
-                                      <div className={`w-10 h-10 rounded-full flex items-center justify-center ${
+                              <Card key={session.id} className="border-0 shadow-sm hover:shadow-md transition-all duration-300">
+                                <CardContent className="p-3">
+                                  <div className="flex items-start justify-between mb-3">
+                                    <div className="flex items-center gap-2.5">
+                                      <div className={`w-8 h-8 rounded-full flex items-center justify-center ${
                                         session.end_time 
                                           ? 'bg-slate-100' 
                                           : 'bg-emerald-100 animate-pulse'
                                       }`}>
                                         {session.end_time ? (
-                                          <div className="w-5 h-5 bg-slate-400 rounded-sm" /> 
+                                          <div className="w-4 h-4 bg-slate-400 rounded-sm" /> 
                                         ) : (
-                                          <div className="w-5 h-5 bg-emerald-500 rounded-full" /> 
+                                          <div className="w-4 h-4 bg-emerald-500 rounded-full" /> 
                                         )}
                                       </div>
                                       <div>
-                                        <p className="text-slate-900 font-medium">{session.user_name}</p>
-                                        <p className="text-xs text-slate-500">{new Date(session.start_time).toLocaleString()}</p>
+                                        <p className="text-sm font-medium text-gray-800">{session.user_name}</p>
+                                        <p className="text-[10px] text-gray-500">{new Date(session.start_time).toLocaleString()}</p>
                                       </div>
                                     </div>
                                     <Badge className={session.end_time ? 'bg-slate-100 text-slate-600' : 'bg-emerald-100 text-emerald-700'}>
@@ -364,8 +361,8 @@ const ReportsPage = () => {
                                     </Badge>
                                   </div>
 
-                                  <div className="space-y-3">
-                                    <div className="grid grid-cols-3 gap-2">
+                                  <div className="space-y-2">
+                                    <div className="grid grid-cols-3 gap-1.5">
                                        <div className="bg-slate-50 border border-slate-100 rounded-lg p-2 text-center">
                                         <p className="text-[10px] text-slate-500 mb-1 uppercase tracking-wider">Shown</p>
                                         <p className="text-slate-700 font-bold">{session.potential_visits_count || 0}</p>

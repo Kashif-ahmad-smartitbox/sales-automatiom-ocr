@@ -95,48 +95,58 @@ const SettingsPage = () => {
 
   return (
     <AdminLayout title="Settings">
-      <div className="max-w-4xl space-y-6" data-testid="settings-page">
+      <div className="max-w-4xl space-y-4" data-testid="settings-page">
+        {/* Page Header */}
+        <div>
+          <h1 className="text-lg font-bold bg-gradient-to-r from-primary-600 to-orange-600 bg-clip-text text-transparent">Settings</h1>
+          <p className="text-xs text-gray-500 mt-0.5">Configure your organization preferences</p>
+        </div>
+
         {/* Company Info */}
-        <Card>
-          <CardHeader>
+        <Card className="border-0 shadow-sm">
+          <CardHeader className="pb-3">
             <div className="flex items-center gap-2">
-              <Buildings className="text-primary-600" weight="duotone" size={24} />
-              <CardTitle>Company Information</CardTitle>
+              <div className="p-1.5 rounded-lg bg-gradient-to-br from-primary-400 to-primary-500">
+                <Buildings className="text-white" weight="fill" size={14} />
+              </div>
+              <CardTitle className="text-sm font-bold text-gray-800">Company Information</CardTitle>
             </div>
-            <CardDescription>Your company details</CardDescription>
+            <CardDescription className="text-xs">Your company details</CardDescription>
           </CardHeader>
-          <CardContent className="space-y-4">
-            <div className="grid grid-cols-2 gap-4">
+          <CardContent className="space-y-3">
+            <div className="grid grid-cols-2 gap-3">
               <div>
-                <Label className="text-slate-500">Company Name</Label>
-                <p className="font-medium">{company?.company_name}</p>
+                <Label className="text-[10px] text-gray-500 uppercase tracking-wider">Company Name</Label>
+                <p className="text-sm font-medium text-gray-800">{company?.company_name}</p>
               </div>
               <div>
-                <Label className="text-slate-500">Industry</Label>
-                <p className="font-medium">{company?.industry_type}</p>
+                <Label className="text-[10px] text-gray-500 uppercase tracking-wider">Industry</Label>
+                <p className="text-sm font-medium text-gray-800">{company?.industry_type}</p>
               </div>
               <div>
-                <Label className="text-slate-500">Head Office</Label>
-                <p className="font-medium">{company?.head_office_location}</p>
+                <Label className="text-[10px] text-gray-500 uppercase tracking-wider">Head Office</Label>
+                <p className="text-sm font-medium text-gray-800">{company?.head_office_location}</p>
               </div>
               <div>
-                <Label className="text-slate-500">GST Number</Label>
-                <p className="font-medium">{company?.gst || 'Not provided'}</p>
+                <Label className="text-[10px] text-gray-500 uppercase tracking-wider">GST Number</Label>
+                <p className="text-sm font-medium text-gray-800">{company?.gst || 'Not provided'}</p>
               </div>
             </div>
           </CardContent>
         </Card>
 
         {/* Geo-fence Settings */}
-        <Card>
-          <CardHeader>
+        <Card className="border-0 shadow-sm">
+          <CardHeader className="pb-3">
             <div className="flex items-center gap-2">
-              <MapPin className="text-primary-600" weight="duotone" size={24} />
-              <CardTitle>Geo-fence Settings</CardTitle>
+              <div className="p-1.5 rounded-lg bg-gradient-to-br from-emerald-400 to-emerald-500">
+                <MapPin className="text-white" weight="fill" size={14} />
+              </div>
+              <CardTitle className="text-sm font-bold text-gray-800">Geo-fence Settings</CardTitle>
             </div>
-            <CardDescription>Configure location verification parameters</CardDescription>
+            <CardDescription className="text-xs">Configure location verification parameters</CardDescription>
           </CardHeader>
-          <CardContent className="space-y-4">
+          <CardContent className="space-y-3">
             <div className="space-y-2">
               <Label>Visit Radius (meters)</Label>
               <Input
@@ -146,19 +156,21 @@ const SettingsPage = () => {
                 className="max-w-xs"
                 data-testid="visit-radius-input"
               />
-              <p className="text-xs text-slate-500">Sales executives must be within this distance to check-in at a dealer</p>
+              <p className="text-[10px] text-gray-500">Sales executives must be within this distance to check-in at a dealer</p>
             </div>
           </CardContent>
         </Card>
 
         {/* Working Hours */}
-        <Card>
-          <CardHeader>
+        <Card className="border-0 shadow-sm">
+          <CardHeader className="pb-3">
             <div className="flex items-center gap-2">
-              <Clock className="text-primary-600" weight="duotone" size={24} />
-              <CardTitle>Working Hours</CardTitle>
+              <div className="p-1.5 rounded-lg bg-gradient-to-br from-amber-400 to-amber-500">
+                <Clock className="text-white" weight="fill" size={14} />
+              </div>
+              <CardTitle className="text-sm font-bold text-gray-800">Working Hours</CardTitle>
             </div>
-            <CardDescription>Define field team working hours</CardDescription>
+            <CardDescription className="text-xs">Define field team working hours</CardDescription>
           </CardHeader>
           <CardContent>
             <div className="flex items-center gap-4">
@@ -188,16 +200,18 @@ const SettingsPage = () => {
         </Card>
 
         {/* Targets */}
-        <Card>
-          <CardHeader>
+        <Card className="border-0 shadow-sm">
+          <CardHeader className="pb-3">
             <div className="flex items-center gap-2">
-              <Target className="text-primary-600" weight="duotone" size={24} />
-              <CardTitle>Target Settings</CardTitle>
+              <div className="p-1.5 rounded-lg bg-gradient-to-br from-purple-400 to-purple-500">
+                <Target className="text-white" weight="fill" size={14} />
+              </div>
+              <CardTitle className="text-sm font-bold text-gray-800">Target Settings</CardTitle>
             </div>
-            <CardDescription>Set daily visit and sales targets</CardDescription>
+            <CardDescription className="text-xs">Set daily visit and sales targets</CardDescription>
           </CardHeader>
-          <CardContent className="space-y-4">
-            <div className="grid grid-cols-2 gap-4">
+          <CardContent className="space-y-3">
+            <div className="grid grid-cols-2 gap-3">
               <div className="space-y-2">
                 <Label>Visits Per Day Target</Label>
                 <Input
@@ -222,15 +236,17 @@ const SettingsPage = () => {
         </Card>
 
         {/* Product Categories */}
-        <Card>
-          <CardHeader>
+        <Card className="border-0 shadow-sm">
+          <CardHeader className="pb-3">
             <div className="flex items-center gap-2">
-              <Tag className="text-primary-600" weight="duotone" size={24} />
-              <CardTitle>Product Categories</CardTitle>
+              <div className="p-1.5 rounded-lg bg-gradient-to-br from-orange-400 to-orange-500">
+                <Tag className="text-white" weight="fill" size={14} />
+              </div>
+              <CardTitle className="text-sm font-bold text-gray-800">Product Categories</CardTitle>
             </div>
-            <CardDescription>Manage product categories for dealers</CardDescription>
+            <CardDescription className="text-xs">Manage product categories for dealers</CardDescription>
           </CardHeader>
-          <CardContent className="space-y-4">
+          <CardContent className="space-y-3">
             <div className="flex gap-2">
               <Input
                 value={newCategory}
@@ -253,7 +269,7 @@ const SettingsPage = () => {
                 </Badge>
               ))}
               {config.product_categories.length === 0 && (
-                <p className="text-sm text-slate-500">No categories added yet</p>
+                <p className="text-xs text-gray-500">No categories added yet</p>
               )}
             </div>
           </CardContent>
@@ -267,7 +283,7 @@ const SettingsPage = () => {
             className="bg-gradient-to-r from-primary-500 to-orange-500 hover:from-primary-600 hover:to-orange-600 text-white shadow-md"
             data-testid="save-settings-btn"
           >
-            {saving ? <span className="spinner mr-2" /> : <FloppyDisk className="mr-2" size={18} />}
+            {saving ? <span className="spinner mr-2" /> : <FloppyDisk className="mr-1" size={14} />}
             Save Settings
           </Button>
         </div>

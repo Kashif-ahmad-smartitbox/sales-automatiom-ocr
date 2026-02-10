@@ -106,12 +106,18 @@ const OwnerUsers = () => {
 
   return (
     <OwnerLayout title="All Users">
-      <div className="space-y-6">
-        {/* Header Controls */}
-        <div className="flex flex-col md:flex-row gap-4 items-center justify-between">
-          <div className="flex flex-col md:flex-row gap-3 flex-1 w-full">
+      <div className="space-y-4">
+        {/* Header */}
+        <div>
+          <h1 className="text-lg font-bold bg-gradient-to-r from-primary-600 to-orange-600 bg-clip-text text-transparent">All Users</h1>
+          <p className="text-xs text-gray-500 mt-0.5">Users across all organizations</p>
+        </div>
+
+        {/* Controls */}
+        <div className="flex flex-col md:flex-row gap-3 items-center justify-between">
+          <div className="flex flex-col md:flex-row gap-2 flex-1 w-full">
             <div className="relative flex-1">
-              <MagnifyingGlass className="absolute left-3 top-1/2 transform -translate-y-1/2 text-slate-400 w-5 h-5" />
+              <MagnifyingGlass className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
               <Input
                 placeholder="Search users..."
                 value={searchTerm}
@@ -146,55 +152,54 @@ const OwnerUsers = () => {
               </SelectContent>
             </Select>
           </div>
-          <Badge className="bg-purple-100 text-purple-700 hover:bg-purple-200 text-sm whitespace-nowrap">
+          <Badge className="bg-purple-100 text-purple-700 text-[10px] px-1.5 py-0 whitespace-nowrap">
             {filteredUsers.length} users
           </Badge>
         </div>
 
         {/* Users Grid */}
         {filteredUsers.length === 0 ? (
-          <Card className="bg-slate-50 border-slate-200">
-            <CardContent className="p-8 text-center">
-              <Users className="w-12 h-12 text-slate-400 mx-auto mb-3" />
-              <p className="text-slate-500">No users found</p>
+          <Card className="border-0 shadow-sm">
+            <CardContent className="p-6 text-center">
+              <Users className="w-10 h-10 text-gray-400 mx-auto mb-2" />
+              <p className="text-xs text-gray-500">No users found</p>
             </CardContent>
           </Card>
         ) : (
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-3">
             {filteredUsers.map((user) => (
-              <Card key={user.id} className="bg-white border-slate-200 hover:shadow-md transition-shadow">
-                <CardContent className="p-4">
-                  <div className="flex items-start gap-4">
-                    <div className={`w-12 h-12 rounded-xl bg-gradient-to-br ${getRoleColor(user.role)} flex items-center justify-center text-white font-bold text-lg flex-shrink-0 shadow-sm`}>
+              <Card key={user.id} className="border-0 shadow-sm hover:shadow-md transition-all duration-300">
+                <CardContent className="p-3">
+                  <div className="flex items-start gap-3">
+                    <div className={`w-9 h-9 rounded-lg bg-gradient-to-br ${getRoleColor(user.role)} flex items-center justify-center text-white font-bold text-xs flex-shrink-0`}>
                       {user.name.charAt(0)}
                     </div>
                     <div className="flex-1 min-w-0">
-                      <div className="flex items-center justify-between gap-2 mb-1">
-                        <p className="text-slate-900 font-medium truncate">{user.name}</p>
+                      <div className="flex items-center justify-between gap-2 mb-0.5">
+                        <p className="text-sm font-medium text-gray-800 truncate">{user.name}</p>
                         {user.is_in_market && (
                           <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse flex-shrink-0" title="Active in Market"></span>
                         )}
                       </div>
-                      <Badge variant="outline" className={`${getRoleBadgeClass(user.role)} text-xs mb-2`}>
-                        {getRoleIcon(user.role)}
-                        <span className="ml-1 capitalize">{user.role.replace('_', ' ')}</span>
+                      <Badge variant="outline" className={`${getRoleBadgeClass(user.role)} text-[10px] px-1.5 py-0 mb-1.5`}>
+                        <span className="capitalize">{user.role.replace('_', ' ')}</span>
                       </Badge>
-                      <div className="space-y-1 text-xs text-slate-500">
+                      <div className="space-y-0.5 text-[10px] text-gray-500">
                         <p className="flex items-center gap-1 truncate">
-                          <Envelope className="w-3 h-3 flex-shrink-0 text-slate-400" /> 
+                          <Envelope className="w-2.5 h-2.5 flex-shrink-0 text-gray-400" /> 
                           <span className="truncate">{user.email}</span>
                         </p>
                         <p className="flex items-center gap-1">
-                          <Phone className="w-3 h-3 flex-shrink-0 text-slate-400" /> {user.mobile}
+                          <Phone className="w-2.5 h-2.5 flex-shrink-0 text-gray-400" /> {user.mobile}
                         </p>
                         {user.company_name && (
                           <p className="flex items-center gap-1 text-purple-600 font-medium">
-                            <MapPin className="w-3 h-3 flex-shrink-0" /> 
+                            <MapPin className="w-2.5 h-2.5 flex-shrink-0" /> 
                             <span className="truncate">{user.company_name}</span>
                           </p>
                         )}
                         {user.role === 'sales_executive' && (
-                           <p className="flex items-center gap-1 text-slate-600">
+                           <p className="flex items-center gap-1 text-gray-600">
                              {user.is_live_tracking ? (
                                <>
                                  <Globe className="w-3 h-3 text-emerald-500" />
@@ -209,7 +214,7 @@ const OwnerUsers = () => {
                            </p>
                         )}
                         {user.employee_code && (
-                          <p className="font-mono text-slate-400">ID: {user.employee_code}</p>
+                          <p className="font-mono text-gray-400">ID: {user.employee_code}</p>
                         )}
                       </div>
                     </div>

@@ -116,17 +116,18 @@ const TerritoryManagement = () => {
 
   return (
     <AdminLayout title="Territory Management">
-      <div className="space-y-6" data-testid="territory-management">
+      <div className="space-y-4" data-testid="territory-management">
         {/* Header */}
-        <div className="flex items-center justify-between">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
           <div>
-            <p className="text-slate-500">Define your territory hierarchy: State → City → Area → Beat</p>
+            <h1 className="text-lg font-bold bg-gradient-to-r from-primary-600 to-orange-600 bg-clip-text text-transparent">Territory Management</h1>
+            <p className="text-xs text-gray-500 mt-0.5">Define your territory hierarchy: State → City → Area → Beat</p>
           </div>
           
           <Dialog open={dialogOpen} onOpenChange={(open) => { if (!open) closeDialog(); else setDialogOpen(true); }}>
             <DialogTrigger asChild>
-              <Button className="bg-gradient-to-r from-primary-500 to-orange-500 hover:from-primary-600 hover:to-orange-600 text-white shadow-md" data-testid="add-territory-btn">
-                <Plus className="mr-2" size={18} />
+              <Button className="bg-gradient-to-r from-primary-500 to-orange-500 hover:from-primary-600 hover:to-orange-600 text-white shadow-sm text-xs h-8" data-testid="add-territory-btn">
+                <Plus className="mr-1" size={14} />
                 Add Territory
               </Button>
             </DialogTrigger>
@@ -210,13 +211,18 @@ const TerritoryManagement = () => {
           </Dialog>
         </div>
 
-        {/* Stats */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-          {['State', 'City', 'Area', 'Beat'].map((type) => (
-            <Card key={type} className="stats-card">
-              <CardContent className="p-4">
-                <p className="text-sm text-slate-500">{type}s</p>
-                <p className="text-2xl font-bold font-mono">{groupedTerritories[type].length}</p>
+        {/* Stats - gradient cards */}
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+          {['State', 'City', 'Area', 'Beat'].map((type, idx) => (
+            <Card key={type} className={`border-0 shadow-md hover:shadow-lg transition-all duration-300 text-white ${
+              idx === 0 ? 'bg-gradient-to-br from-purple-400 to-purple-500' :
+              idx === 1 ? 'bg-gradient-to-br from-primary-400 to-primary-500' :
+              idx === 2 ? 'bg-gradient-to-br from-emerald-400 to-emerald-500' :
+              'bg-gradient-to-br from-amber-400 to-amber-500'
+            }`}>
+              <CardContent className="p-3">
+                <span className="text-xs font-medium text-white/90">{type}s</span>
+                <div className="text-lg font-bold font-mono mt-1">{groupedTerritories[type].length}</div>
               </CardContent>
             </Card>
           ))}
@@ -234,46 +240,46 @@ const TerritoryManagement = () => {
             </CardContent>
           </Card>
         ) : (
-          <div className="grid md:grid-cols-2 gap-6">
+          <div className="grid md:grid-cols-2 gap-4">
             {['State', 'City', 'Area', 'Beat'].map((type) => (
-              <Card key={type} data-testid={`territory-${type.toLowerCase()}-card`}>
+              <Card key={type} className="border-0 shadow-sm" data-testid={`territory-${type.toLowerCase()}-card`}>
                 <CardContent className="p-4">
-                  <div className="flex items-center gap-2 mb-4">
-                    <TreeStructure className="text-slate-400" size={20} />
-                    <h3 className="font-semibold">{type}s</h3>
-                    <Badge className={typeColors[type]}>{groupedTerritories[type].length}</Badge>
+                  <div className="flex items-center gap-2 mb-3">
+                    <TreeStructure className="text-gray-400" size={16} />
+                    <h3 className="text-sm font-bold text-gray-800">{type}s</h3>
+                    <Badge className={typeColors[type] + ' text-[10px] px-1.5 py-0'}>{groupedTerritories[type].length}</Badge>
                   </div>
                   
                   {groupedTerritories[type].length === 0 ? (
-                    <p className="text-sm text-slate-400">No {type.toLowerCase()}s added</p>
+                    <p className="text-xs text-gray-400">No {type.toLowerCase()}s added</p>
                   ) : (
                     <div className="space-y-2">
                       {groupedTerritories[type].map((territory) => (
-                        <div key={territory.id} className="flex items-center justify-between p-3 bg-slate-50 rounded-lg">
+                        <div key={territory.id} className="flex items-center justify-between p-2.5 bg-gray-50 rounded-lg border border-gray-100 hover:border-primary-200 transition-colors">
                           <div>
-                            <p className="font-medium">{territory.name}</p>
+                            <p className="font-medium text-sm text-gray-800">{territory.name}</p>
                             {territory.parent_id && (
-                              <p className="text-xs text-slate-500">Parent: {getParentName(territory.parent_id)}</p>
+                              <p className="text-[10px] text-gray-500 mt-0.5">Parent: {getParentName(territory.parent_id)}</p>
                             )}
                           </div>
                           <div className="flex items-center gap-1">
                             <Button 
                               variant="ghost" 
                               size="sm" 
-                              className="text-primary-600 hover:text-primary-700 hover:bg-gradient-to-r hover:from-primary-50 hover:to-orange-50"
+                              className="text-primary-600 hover:text-primary-700 hover:bg-gradient-to-r hover:from-primary-50 hover:to-orange-50 h-7 w-7 p-0"
                               onClick={() => handleEdit(territory)}
                               data-testid={`edit-territory-${territory.id}`}
                             >
-                              <Pencil size={16} />
+                              <Pencil size={14} />
                             </Button>
                             <Button 
                               variant="ghost" 
                               size="sm" 
-                              className="text-red-600 hover:text-red-700 hover:bg-red-50"
+                              className="text-red-600 hover:text-red-700 hover:bg-red-50 h-7 w-7 p-0"
                               onClick={() => handleDelete(territory.id)}
                               data-testid={`delete-territory-${territory.id}`}
                             >
-                              <Trash size={16} />
+                              <Trash size={14} />
                             </Button>
                           </div>
                         </div>

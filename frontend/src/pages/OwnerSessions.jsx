@@ -116,12 +116,18 @@ const OwnerSessions = () => {
 
   return (
     <OwnerLayout title="Market Sessions">
-      <div className="space-y-6">
-        {/* Header Controls */}
-        <div className="flex flex-col md:flex-row gap-4 items-center justify-between">
-          <div className="flex flex-col md:flex-row gap-3 flex-1 w-full">
+      <div className="space-y-4">
+        {/* Header */}
+        <div>
+          <h1 className="text-lg font-bold bg-gradient-to-r from-primary-600 to-orange-600 bg-clip-text text-transparent">Market Sessions</h1>
+          <p className="text-xs text-gray-500 mt-0.5">Track field team market sessions</p>
+        </div>
+
+        {/* Controls */}
+        <div className="flex flex-col md:flex-row gap-3 items-center justify-between">
+          <div className="flex flex-col md:flex-row gap-2 flex-1 w-full">
             <div className="relative flex-1">
-              <MagnifyingGlass className="absolute left-3 top-1/2 transform -translate-y-1/2 text-slate-400 w-5 h-5" />
+              <MagnifyingGlass className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
               <Input
                 placeholder="Search sessions..."
                 value={searchTerm}
@@ -155,41 +161,41 @@ const OwnerSessions = () => {
               </SelectContent>
             </Select>
           </div>
-          <Badge className="bg-cyan-100 text-cyan-700 hover:bg-cyan-200 text-sm whitespace-nowrap">
+          <Badge className="bg-cyan-100 text-cyan-700 text-[10px] px-1.5 py-0 whitespace-nowrap">
             {filteredSessions.length} sessions
           </Badge>
         </div>
 
         {/* Sessions Grid */}
         {filteredSessions.length === 0 ? (
-          <Card className="bg-slate-50 border-slate-200">
-            <CardContent className="p-8 text-center">
-              <ClockCounterClockwise className="w-12 h-12 text-slate-400 mx-auto mb-3" />
-              <p className="text-slate-500">No market sessions found</p>
+          <Card className="border-0 shadow-sm">
+            <CardContent className="p-6 text-center">
+              <ClockCounterClockwise className="w-10 h-10 text-gray-400 mx-auto mb-2" />
+              <p className="text-xs text-gray-500">No market sessions found</p>
             </CardContent>
           </Card>
         ) : (
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-3">
             {filteredSessions.map((session) => (
-              <Card key={session.id} className="bg-white border-slate-200 hover:shadow-md transition-shadow">
-                <CardContent className="p-4">
-                  <div className="flex items-start justify-between mb-4">
-                    <div className="flex items-center gap-3">
-                      <div className={`w-10 h-10 rounded-full flex items-center justify-center ${
+              <Card key={session.id} className="border-0 shadow-sm hover:shadow-md transition-all duration-300">
+                <CardContent className="p-3">
+                  <div className="flex items-start justify-between mb-3">
+                    <div className="flex items-center gap-2.5">
+                      <div className={`w-8 h-8 rounded-full flex items-center justify-center ${
                         session.end_time 
                           ? 'bg-slate-100' 
                           : 'bg-emerald-100 animate-pulse'
                       }`}>
                         {session.end_time ? (
-                          <Stop className="w-5 h-5 text-slate-600" weight="fill" />
+                          <Stop className="w-4 h-4 text-slate-600" weight="fill" />
                         ) : (
-                          <Play className="w-5 h-5 text-emerald-600" weight="fill" />
+                          <Play className="w-4 h-4 text-emerald-600" weight="fill" />
                         )}
                       </div>
                       <div>
-                        <p className="text-slate-900 font-medium">{session.user_name}</p>
-                        <p className="text-xs text-slate-500 flex items-center gap-1">
-                          <Buildings className="w-3 h-3" />
+                        <p className="text-sm font-medium text-gray-800">{session.user_name}</p>
+                        <p className="text-[10px] text-gray-500 flex items-center gap-1">
+                          <Buildings className="w-2.5 h-2.5" />
                           {session.company_name}
                         </p>
                       </div>
@@ -202,21 +208,21 @@ const OwnerSessions = () => {
                     </Badge>
                   </div>
 
-                  <div className="space-y-3">
-                    <div className="grid grid-cols-2 gap-3">
-                      <div className="bg-slate-50 border border-slate-100 rounded-lg p-3">
-                        <p className="text-xs text-slate-500 mb-1 flex items-center gap-1">
-                          <Clock className="w-3 h-3" /> Duration
+                  <div className="space-y-2">
+                    <div className="grid grid-cols-2 gap-2">
+                      <div className="bg-gray-50 border border-gray-100 rounded-lg p-2">
+                        <p className="text-[10px] text-gray-500 mb-0.5 flex items-center gap-1">
+                          <Clock className="w-2.5 h-2.5" /> Duration
                         </p>
-                        <p className="text-slate-900 font-mono font-medium">
+                        <p className="text-sm text-gray-800 font-mono font-medium">
                           {formatDuration(session.start_time, session.end_time)}
                         </p>
                       </div>
-                      <div className="bg-slate-50 border border-slate-100 rounded-lg p-3">
-                        <p className="text-xs text-slate-500 mb-1 flex items-center gap-1">
-                          <Path className="w-3 h-3" /> Distance
+                      <div className="bg-gray-50 border border-gray-100 rounded-lg p-2">
+                        <p className="text-[10px] text-gray-500 mb-0.5 flex items-center gap-1">
+                          <Path className="w-2.5 h-2.5" /> Distance
                         </p>
-                        <p className="text-slate-900 font-mono font-medium">
+                        <p className="text-sm text-gray-800 font-mono font-medium">
                           {session.total_distance ? `${(session.total_distance / 1000).toFixed(1)} km` : '–'}
                         </p>
                       </div>
@@ -237,15 +243,15 @@ const OwnerSessions = () => {
                       </div>
                     </div>
 
-                    <div className="flex items-center justify-between pt-2 border-t border-slate-100">
-                        <div className="text-xs text-slate-500 space-y-1">
+                    <div className="flex items-center justify-between pt-2 border-t border-gray-100">
+                        <div className="text-[10px] text-gray-500 space-y-0.5">
                           <p className="flex items-center gap-1">
-                            <Play className="w-3 h-3 text-slate-400" /> 
+                            <Play className="w-2.5 h-2.5 text-gray-400" /> 
                             {new Date(session.start_time).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}
                           </p>
                           {session.end_time && (
                             <p className="flex items-center gap-1">
-                              <Stop className="w-3 h-3 text-slate-400" /> 
+                              <Stop className="w-2.5 h-2.5 text-gray-400" /> 
                               {new Date(session.end_time).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}
                             </p>
                           )}
@@ -253,10 +259,10 @@ const OwnerSessions = () => {
                         <Button 
                             variant="outline" 
                             size="sm" 
-                            className="h-8 text-xs gap-1"
+                            className="h-7 text-xs gap-1"
                             onClick={() => viewSessionDetails(session)}
                         >
-                            <Eye className="w-3 h-3" /> View Details
+                            <Eye className="w-3 h-3" /> Details
                         </Button>
                     </div>
                   </div>

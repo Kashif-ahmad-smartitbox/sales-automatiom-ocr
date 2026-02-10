@@ -109,12 +109,18 @@ const OwnerActivity = () => {
 
   return (
     <OwnerLayout title="Activity Log">
-      <div className="space-y-6">
-        {/* Header Controls */}
-        <div className="flex flex-col md:flex-row gap-4 items-center justify-between">
-          <div className="flex flex-col md:flex-row gap-3 flex-1 w-full">
+      <div className="space-y-4">
+        {/* Header */}
+        <div>
+          <h1 className="text-lg font-bold bg-gradient-to-r from-primary-600 to-orange-600 bg-clip-text text-transparent">Activity Log</h1>
+          <p className="text-xs text-gray-500 mt-0.5">Real-time visit activity across all organizations</p>
+        </div>
+
+        {/* Controls */}
+        <div className="flex flex-col md:flex-row gap-3 items-center justify-between">
+          <div className="flex flex-col md:flex-row gap-2 flex-1 w-full">
             <div className="relative flex-1">
-              <MagnifyingGlass className="absolute left-3 top-1/2 transform -translate-y-1/2 text-slate-400 w-5 h-5" />
+              <MagnifyingGlass className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
               <Input
                 placeholder="Search activity..."
                 value={searchTerm}
@@ -139,28 +145,28 @@ const OwnerActivity = () => {
             <button
               onClick={handleRefresh}
               disabled={refreshing}
-              className="p-2 rounded-lg bg-white border border-slate-200 text-slate-600 hover:bg-slate-50 hover:text-slate-900 transition-colors disabled:opacity-50"
+              className="p-2 rounded-lg bg-white border border-gray-200 text-gray-600 hover:bg-gray-50 hover:text-gray-900 transition-colors disabled:opacity-50"
             >
-              <ArrowsClockwise className={`w-5 h-5 ${refreshing ? 'animate-spin' : ''}`} />
+              <ArrowsClockwise className={`w-4 h-4 ${refreshing ? 'animate-spin' : ''}`} />
             </button>
           </div>
-          <Badge className="bg-emerald-100 text-emerald-700 hover:bg-emerald-200 text-sm whitespace-nowrap">
+          <Badge className="bg-emerald-100 text-emerald-700 text-[10px] px-1.5 py-0 whitespace-nowrap">
             {filteredActivity.length} activities
           </Badge>
         </div>
 
         {/* Activity Timeline */}
         {filteredActivity.length === 0 ? (
-          <Card className="bg-slate-50 border-slate-200">
-            <CardContent className="p-8 text-center">
-              <Pulse className="w-12 h-12 text-slate-400 mx-auto mb-3" />
-              <p className="text-slate-500">No activity found</p>
+          <Card className="border-0 shadow-sm">
+            <CardContent className="p-6 text-center">
+              <Pulse className="w-10 h-10 text-gray-400 mx-auto mb-2" />
+              <p className="text-xs text-gray-500">No activity found</p>
             </CardContent>
           </Card>
         ) : (
           <div className="relative">
             {/* Timeline line */}
-            <div className="absolute left-6 top-0 bottom-0 w-px bg-slate-200" />
+            <div className="absolute left-6 top-0 bottom-0 w-px bg-gray-200" />
             
             <div className="space-y-4">
               {filteredActivity.map((item, index) => (
@@ -176,17 +182,17 @@ const OwnerActivity = () => {
                     {getOutcomeIcon(item.outcome)}
                   </div>
                   
-                  <Card className="flex-1 ml-8 bg-white border-slate-200 hover:shadow-md transition-shadow">
-                    <CardContent className="p-4">
-                      <div className="flex flex-wrap items-start justify-between gap-3 mb-3">
+                  <Card className="flex-1 ml-8 border-0 shadow-sm hover:shadow-md transition-all duration-300">
+                    <CardContent className="p-3">
+                      <div className="flex flex-wrap items-start justify-between gap-2 mb-2">
                         <div>
-                          <div className="flex items-center gap-2 mb-1">
-                            <span className="text-slate-900 font-medium">{item.user_name}</span>
-                            <span className="text-slate-500">visited</span>
+                          <div className="flex items-center gap-1.5 mb-0.5 text-sm">
+                            <span className="text-gray-800 font-medium">{item.user_name}</span>
+                            <span className="text-gray-400">visited</span>
                             <span className="text-primary-600 font-medium">{item.dealer_name}</span>
                           </div>
-                          <div className="flex items-center gap-2 text-xs text-slate-500">
-                            <Buildings className="w-3 h-3" />
+                          <div className="flex items-center gap-1.5 text-[10px] text-gray-500">
+                            <Buildings className="w-2.5 h-2.5" />
                             <span>{item.company_name}</span>
                           </div>
                         </div>
@@ -200,33 +206,33 @@ const OwnerActivity = () => {
                           }>
                             {item.outcome || 'In Progress'}
                           </Badge>
-                          <p className="text-xs text-slate-500 mt-1">{formatTimeAgo(item.check_in_time)}</p>
+                          <p className="text-[10px] text-gray-500 mt-0.5">{formatTimeAgo(item.check_in_time)}</p>
                         </div>
                       </div>
                       
-                      <div className="flex flex-wrap gap-4 text-sm">
-                        <div className="flex items-center gap-1 text-slate-500">
-                          <Clock className="w-4 h-4" />
-                          <span className="font-mono text-xs">
+                      <div className="flex flex-wrap gap-3 text-xs">
+                        <div className="flex items-center gap-1 text-gray-500">
+                          <Clock className="w-3 h-3" />
+                          <span className="font-mono text-[10px]">
                             {new Date(item.check_in_time).toLocaleTimeString()}
                             {item.check_out_time && ` – ${new Date(item.check_out_time).toLocaleTimeString()}`}
                           </span>
                         </div>
                         {item.time_spent_minutes && (
-                          <div className="text-slate-500 text-xs">
+                          <div className="text-gray-500 text-[10px]">
                             Duration: {Math.round(item.time_spent_minutes)} min
                           </div>
                         )}
                         {item.order_value && (
-                          <div className="flex items-center gap-1 text-emerald-600 font-mono text-sm font-medium">
-                            <CurrencyDollar className="w-4 h-4" />
+                          <div className="flex items-center gap-1 text-primary-600 font-mono text-xs font-medium">
+                            <CurrencyDollar className="w-3 h-3" />
                             ₹{item.order_value.toLocaleString()}
                           </div>
                         )}
                       </div>
                       
                       {item.notes && (
-                        <p className="mt-2 text-xs text-slate-600 bg-slate-50 rounded p-2 border border-slate-100">
+                        <p className="mt-2 text-[10px] text-gray-600 bg-gray-50 rounded p-1.5 border border-gray-100">
                           {item.notes}
                         </p>
                       )}

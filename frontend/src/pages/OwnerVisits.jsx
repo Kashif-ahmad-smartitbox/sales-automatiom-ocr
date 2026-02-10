@@ -100,12 +100,18 @@ const OwnerVisits = () => {
 
   return (
     <OwnerLayout title="All Visits">
-      <div className="space-y-6">
-        {/* Header Controls */}
-        <div className="flex flex-col md:flex-row gap-4 items-center justify-between">
-          <div className="flex flex-col md:flex-row gap-3 flex-1 w-full">
+      <div className="space-y-4">
+        {/* Header */}
+        <div>
+          <h1 className="text-lg font-bold bg-gradient-to-r from-primary-600 to-orange-600 bg-clip-text text-transparent">All Visits</h1>
+          <p className="text-xs text-gray-500 mt-0.5">Visit records across all organizations</p>
+        </div>
+
+        {/* Controls */}
+        <div className="flex flex-col md:flex-row gap-3 items-center justify-between">
+          <div className="flex flex-col md:flex-row gap-2 flex-1 w-full">
             <div className="relative flex-1">
-              <MagnifyingGlass className="absolute left-3 top-1/2 transform -translate-y-1/2 text-slate-400 w-5 h-5" />
+              <MagnifyingGlass className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
               <Input
                 placeholder="Search visits..."
                 value={searchTerm}
@@ -142,85 +148,84 @@ const OwnerVisits = () => {
               </SelectContent>
             </Select>
           </div>
-          <Badge className="bg-violet-100 text-violet-700 hover:bg-violet-200 text-sm whitespace-nowrap">
+          <Badge className="bg-violet-100 text-violet-700 text-[10px] px-1.5 py-0 whitespace-nowrap">
             {filteredVisits.length} visits
           </Badge>
         </div>
 
         {/* Visits Table */}
         {filteredVisits.length === 0 ? (
-          <Card className="bg-slate-50 border-slate-200">
-            <CardContent className="p-8 text-center">
-              <Target className="w-12 h-12 text-slate-400 mx-auto mb-3" />
-              <p className="text-slate-500">No visits found</p>
+          <Card className="border-0 shadow-sm">
+            <CardContent className="p-6 text-center">
+              <Target className="w-10 h-10 text-gray-400 mx-auto mb-2" />
+              <p className="text-xs text-gray-500">No visits found</p>
             </CardContent>
           </Card>
         ) : (
-          <Card className="bg-white border-slate-200 overflow-hidden shadow-sm">
+          <Card className="border-0 shadow-sm overflow-hidden">
             <CardContent className="p-0">
               <div className="overflow-x-auto">
-                <table className="w-full text-sm">
+                <table className="data-table">
                   <thead>
-                    <tr className="text-slate-500 text-left border-b border-slate-200 bg-slate-50/50">
-                      <th className="p-4 font-medium">Company</th>
-                      <th className="p-4 font-medium">User</th>
-                      <th className="p-4 font-medium">Dealer</th>
-                      <th className="p-4 font-medium">Check-in</th>
-                      <th className="p-4 font-medium">Check-out</th>
-                      <th className="p-4 font-medium">Duration</th>
-                      <th className="p-4 font-medium">Outcome</th>
-                      <th className="p-4 font-medium">Order Value</th>
+                    <tr>
+                      <th>Company</th>
+                      <th>User</th>
+                      <th>Dealer</th>
+                      <th>Check-in</th>
+                      <th>Check-out</th>
+                      <th>Duration</th>
+                      <th>Outcome</th>
+                      <th>Order Value</th>
                     </tr>
                   </thead>
-                  <tbody className="divide-y divide-slate-100">
+                  <tbody>
                     {filteredVisits.map((visit) => (
-                      <tr key={visit.id} className="text-slate-600 hover:bg-slate-50 transition-colors">
-                        <td className="p-4">
-                          <div className="flex items-center gap-2">
-                            <Buildings className="w-4 h-4 text-purple-600" />
-                            <span className="font-medium text-slate-900 truncate max-w-[150px]">{visit.company_name}</span>
+                      <tr key={visit.id}>
+                        <td>
+                          <div className="flex items-center gap-1.5">
+                            <Buildings className="w-3 h-3 text-purple-600" />
+                            <span className="font-medium text-sm text-gray-800 truncate max-w-[130px]">{visit.company_name}</span>
                           </div>
                         </td>
-                        <td className="p-4">
-                          <div className="flex items-center gap-2">
-                            <User className="w-4 h-4 text-emerald-600" />
-                            <span className="truncate max-w-[120px]">{visit.user_name}</span>
+                        <td>
+                          <div className="flex items-center gap-1.5 text-xs text-gray-600">
+                            <User className="w-3 h-3 text-emerald-600" />
+                            <span className="truncate max-w-[100px]">{visit.user_name}</span>
                           </div>
                         </td>
-                        <td className="p-4">
-                          <div className="flex items-center gap-2">
-                            <Storefront className="w-4 h-4 text-primary-600" />
-                            <span className="truncate max-w-[120px]">{visit.dealer_name}</span>
+                        <td>
+                          <div className="flex items-center gap-1.5 text-xs text-gray-600">
+                            <Storefront className="w-3 h-3 text-primary-600" />
+                            <span className="truncate max-w-[100px]">{visit.dealer_name}</span>
                           </div>
                         </td>
-                        <td className="p-4 font-mono text-xs">
+                        <td className="font-mono text-xs text-gray-600">
                           {new Date(visit.check_in_time).toLocaleString()}
                         </td>
-                        <td className="p-4 font-mono text-xs">
+                        <td className="font-mono text-xs text-gray-600">
                           {visit.check_out_time ? new Date(visit.check_out_time).toLocaleString() : '–'}
                         </td>
-                        <td className="p-4">
+                        <td className="text-xs text-gray-600">
                           {visit.time_spent_minutes ? (
                             <span className="flex items-center gap-1">
-                              <Clock className="w-3 h-3 text-slate-400" />
+                              <Clock className="w-2.5 h-2.5 text-gray-400" />
                               {Math.round(visit.time_spent_minutes)} min
                             </span>
                           ) : '–'}
                         </td>
-                        <td className="p-4">
+                        <td>
                           <Badge variant="outline" className={getOutcomeBadgeClass(visit.outcome)}>
-                            {getOutcomeIcon(visit.outcome)}
-                            <span className="ml-1">{visit.outcome || 'In Progress'}</span>
+                            {visit.outcome || 'In Progress'}
                           </Badge>
                         </td>
-                        <td className="p-4">
+                        <td>
                           {visit.order_value ? (
-                            <span className="flex items-center gap-1 text-emerald-600 font-mono font-medium">
-                              <CurrencyDollar className="w-3 h-3" />
+                            <span className="flex items-center gap-1 text-primary-600 font-mono text-xs font-medium">
+                              <CurrencyDollar className="w-2.5 h-2.5" />
                               ₹{visit.order_value.toLocaleString()}
                             </span>
                           ) : (
-                            <span className="text-slate-400">–</span>
+                            <span className="text-gray-400 text-xs">–</span>
                           )}
                         </td>
                       </tr>

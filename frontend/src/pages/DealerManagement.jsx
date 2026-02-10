@@ -138,11 +138,19 @@ const DealerManagement = () => {
 
   return (
     <AdminLayout title="Dealer Management">
-      <div className="space-y-6" data-testid="dealer-management">
-        {/* Header Actions */}
-        <div className="flex flex-col sm:flex-row gap-4 items-start sm:items-center justify-between">
-          <div className="relative flex-1 max-w-md">
-            <MagnifyingGlass className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" size={18} />
+      <div className="space-y-4" data-testid="dealer-management">
+        {/* Header */}
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+          <div>
+            <h1 className="text-lg font-bold bg-gradient-to-r from-primary-600 to-orange-600 bg-clip-text text-transparent">Dealer Management</h1>
+            <p className="text-xs text-gray-500 mt-0.5">Manage your dealer network</p>
+          </div>
+        </div>
+
+        {/* Search & Actions */}
+        <div className="flex flex-col sm:flex-row gap-3 items-start sm:items-center justify-between">
+          <div className="relative flex-1 max-w-sm">
+            <MagnifyingGlass className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={16} />
             <Input
               placeholder="Search dealers..."
               value={searchTerm}
@@ -154,8 +162,8 @@ const DealerManagement = () => {
           
           <Dialog open={dialogOpen} onOpenChange={(open) => { if (!open) closeDialog(); else setDialogOpen(true); }}>
             <DialogTrigger asChild>
-              <Button className="bg-gradient-to-r from-primary-500 to-orange-500 hover:from-primary-600 hover:to-orange-600 text-white shadow-md" data-testid="add-dealer-btn">
-                <Plus className="mr-2" size={18} />
+              <Button className="bg-gradient-to-r from-primary-500 to-orange-500 hover:from-primary-600 hover:to-orange-600 text-white shadow-sm text-xs h-8" data-testid="add-dealer-btn">
+                <Plus className="mr-1" size={14} />
                 Add Dealer
               </Button>
             </DialogTrigger>
@@ -296,43 +304,43 @@ const DealerManagement = () => {
           </Dialog>
         </div>
 
-        {/* Stats */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-          <Card className="stats-card">
-            <CardContent className="p-4">
-              <p className="text-sm text-slate-500">Total Dealers</p>
-              <p className="text-2xl font-bold font-mono">{dealers.length}</p>
+        {/* Stats - gradient cards */}
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+          <Card className="border-0 bg-gradient-to-br from-primary-400 to-primary-500 text-white shadow-md hover:shadow-lg transition-all duration-300">
+            <CardContent className="p-3">
+              <span className="text-xs font-medium text-white/90">Total Dealers</span>
+              <div className="text-lg font-bold font-mono mt-1">{dealers.length}</div>
             </CardContent>
           </Card>
-          <Card className="stats-card">
-            <CardContent className="p-4">
-              <p className="text-sm text-slate-500">Retailers</p>
-              <p className="text-2xl font-bold font-mono">{dealers.filter(d => d.dealer_type === 'Retailer').length}</p>
+          <Card className="border-0 bg-gradient-to-br from-emerald-400 to-emerald-500 text-white shadow-md hover:shadow-lg transition-all duration-300">
+            <CardContent className="p-3">
+              <span className="text-xs font-medium text-white/90">Retailers</span>
+              <div className="text-lg font-bold font-mono mt-1">{dealers.filter(d => d.dealer_type === 'Retailer').length}</div>
             </CardContent>
           </Card>
-          <Card className="stats-card">
-            <CardContent className="p-4">
-              <p className="text-sm text-slate-500">Distributors</p>
-              <p className="text-2xl font-bold font-mono">{dealers.filter(d => d.dealer_type === 'Distributor').length}</p>
+          <Card className="border-0 bg-gradient-to-br from-amber-400 to-amber-500 text-white shadow-md hover:shadow-lg transition-all duration-300">
+            <CardContent className="p-3">
+              <span className="text-xs font-medium text-white/90">Distributors</span>
+              <div className="text-lg font-bold font-mono mt-1">{dealers.filter(d => d.dealer_type === 'Distributor').length}</div>
             </CardContent>
           </Card>
-          <Card className="stats-card">
-            <CardContent className="p-4">
-              <p className="text-sm text-slate-500">High Priority</p>
-              <p className="text-2xl font-bold font-mono">{dealers.filter(d => d.priority_level === 1).length}</p>
+          <Card className="border-0 bg-gradient-to-br from-red-400 to-red-500 text-white shadow-md hover:shadow-lg transition-all duration-300">
+            <CardContent className="p-3">
+              <span className="text-xs font-medium text-white/90">High Priority</span>
+              <div className="text-lg font-bold font-mono mt-1">{dealers.filter(d => d.priority_level === 1).length}</div>
             </CardContent>
           </Card>
         </div>
 
         {/* Dealers Table */}
-        <Card data-testid="dealers-table-card">
+        <Card className="border-0 shadow-sm" data-testid="dealers-table-card">
           <CardContent className="p-0">
             {loading ? (
               <div className="flex items-center justify-center py-12">
                 <div className="spinner" />
               </div>
             ) : filteredDealers.length === 0 ? (
-              <div className="text-center py-12 text-slate-500">
+              <div className="text-center py-8 text-xs text-gray-500">
                 {searchTerm ? 'No dealers match your search' : 'No dealers added yet. Click "Add Dealer" to get started.'}
               </div>
             ) : (
@@ -354,9 +362,9 @@ const DealerManagement = () => {
                       <tr key={dealer.id}>
                         <td>
                           <div>
-                            <p className="font-medium">{dealer.name}</p>
-                            <p className="text-xs text-slate-500 flex items-center gap-1">
-                              <MapPin size={12} />
+                            <p className="font-medium text-sm text-gray-800">{dealer.name}</p>
+                            <p className="text-[10px] text-gray-500 flex items-center gap-1 mt-0.5">
+                              <MapPin size={10} />
                               {dealer.address}
                             </p>
                           </div>
@@ -374,7 +382,7 @@ const DealerManagement = () => {
                             {dealer.priority_level === 1 ? 'High' : dealer.priority_level === 2 ? 'Medium' : 'Low'}
                           </Badge>
                         </td>
-                        <td className="font-mono text-sm">
+                        <td className="font-mono text-xs text-gray-600">
                           {dealer.last_visit_date ? new Date(dealer.last_visit_date).toLocaleDateString() : 'Never'}
                         </td>
                         <td>
@@ -382,20 +390,20 @@ const DealerManagement = () => {
                             <Button 
                               variant="ghost" 
                               size="sm" 
-                              className="text-primary-600 hover:text-primary-700 hover:bg-gradient-to-r hover:from-primary-50 hover:to-orange-50"
+                              className="text-primary-600 hover:text-primary-700 hover:bg-gradient-to-r hover:from-primary-50 hover:to-orange-50 h-7 w-7 p-0"
                               onClick={() => handleEdit(dealer)}
                               data-testid={`edit-dealer-${dealer.id}`}
                             >
-                              <Pencil size={16} />
+                              <Pencil size={14} />
                             </Button>
                             <Button 
                               variant="ghost" 
                               size="sm" 
-                              className="text-red-600 hover:text-red-700 hover:bg-red-50" 
+                              className="text-red-600 hover:text-red-700 hover:bg-red-50 h-7 w-7 p-0" 
                               onClick={() => handleDelete(dealer.id)}
                               data-testid={`delete-dealer-${dealer.id}`}
                             >
-                              <Trash size={16} />
+                              <Trash size={14} />
                             </Button>
                           </div>
                         </td>
