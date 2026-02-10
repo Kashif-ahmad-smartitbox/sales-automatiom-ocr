@@ -13,6 +13,19 @@ module.exports = {
   			sm: 'calc(var(--radius) - 4px)'
   		},
   		colors: {
+  			primary: {
+  				50: 'oklch(97% 0.03 75)',
+  				100: 'oklch(94% 0.05 75)',
+  				200: 'oklch(89% 0.07 75)',
+  				300: 'oklch(83% 0.1 75)',
+  				400: 'oklch(78% 0.12 75)',
+  				500: '#fed50a',
+  				600: 'oklch(67% 0.14 75)',
+  				700: 'oklch(60% 0.12 75)',
+  				800: 'oklch(52% 0.1 75)',
+  				900: 'oklch(45% 0.08 75)',
+  				950: 'oklch(30% 0.05 75)',
+  			},
   			background: 'hsl(var(--background))',
   			foreground: 'hsl(var(--foreground))',
   			card: {
@@ -22,10 +35,6 @@ module.exports = {
   			popover: {
   				DEFAULT: 'hsl(var(--popover))',
   				foreground: 'hsl(var(--popover-foreground))'
-  			},
-  			primary: {
-  				DEFAULT: 'hsl(var(--primary))',
-  				foreground: 'hsl(var(--primary-foreground))'
   			},
   			secondary: {
   				DEFAULT: 'hsl(var(--secondary))',

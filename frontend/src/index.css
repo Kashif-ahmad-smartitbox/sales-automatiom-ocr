@@ -1,39 +1,20 @@
-@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&family=Manrope:wght@400;600;700;800&family=Public+Sans:wght@400;500;600&display=swap");
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  --tactical-blue: #2563eb;
-  --command-slate: #0f172a;
-  --alert-amber: #f59e0b;
-  --field-green: #10b981;
-  --critical-red: #ef4444;
-  --bg-light: #f8fafc;
-  --bg-dark: #020617;
-  --paper: #ffffff;
-}
-
 body {
   margin: 0;
-  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-family: "Outfit", sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background-color: var(--bg-light);
-}
-
-h1, h2, h3, h4, h5, h6 {
-  font-family: 'Manrope', sans-serif;
-  font-weight: 700;
-}
-
-.font-mono {
-  font-family: 'JetBrains Mono', monospace;
 }
 
 code {
-  font-family: 'JetBrains Mono', monospace;
+  font-family:
+    "JetBrains Mono", source-code-pro, Menlo, Monaco, Consolas, "Courier New",
+    monospace;
 }
 
 /* Leaflet map fix */
@@ -50,7 +31,7 @@ code {
 
 .leaflet-control-zoom a {
   background: white !important;
-  color: var(--command-slate) !important;
+  color: #0f172a !important;
   border: none !important;
 }
 
@@ -100,29 +81,29 @@ code {
 
 @layer base {
   :root {
-    --background: 210 40% 98%;
-    --foreground: 222 84% 5%;
+    --background: 0 0% 100%;
+    --foreground: 216 79% 20%;
     --card: 0 0% 100%;
-    --card-foreground: 222 84% 5%;
+    --card-foreground: 216 79% 20%;
     --popover: 0 0% 100%;
-    --popover-foreground: 222 84% 5%;
-    --primary: 217 91% 60%;
+    --popover-foreground: 216 79% 20%;
+    --primary: 216 79% 20%;
     --primary-foreground: 0 0% 100%;
-    --secondary: 222 47% 11%;
-    --secondary-foreground: 0 0% 100%;
-    --muted: 210 40% 96%;
+    --secondary: 210 40% 96.1%;
+    --secondary-foreground: 216 79% 20%;
+    --muted: 210 40% 96.1%;
     --muted-foreground: 215 16% 47%;
-    --accent: 38 92% 50%;
-    --accent-foreground: 0 0% 100%;
-    --destructive: 0 84% 60%;
-    --destructive-foreground: 0 0% 100%;
+    --accent: 51 100% 50%;
+    --accent-foreground: 216 79% 20%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 0 0% 98%;
     --border: 214 32% 91%;
     --input: 214 32% 91%;
-    --ring: 217 91% 60%;
-    --radius: 0.75rem;
-    --chart-1: 217 91% 60%;
+    --ring: 216 79% 20%;
+    --radius: 0.25rem;
+    --chart-1: 51 100% 50%;
     --chart-2: 160 84% 39%;
-    --chart-3: 38 92% 50%;
+    --chart-3: 30 90% 55%;
     --chart-4: 0 84% 60%;
     --chart-5: 262 83% 58%;
   }
@@ -134,6 +115,18 @@ code {
   }
   body {
     @apply bg-background text-foreground;
+  }
+}
+
+@layer utilities {
+  .font-manrope {
+    font-family: "Manrope", sans-serif;
+  }
+  .font-public {
+    font-family: "Public Sans", sans-serif;
+  }
+  .font-mono {
+    font-family: "JetBrains Mono", monospace;
   }
 }
 

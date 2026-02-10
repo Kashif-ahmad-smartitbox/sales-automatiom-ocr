@@ -154,7 +154,7 @@ const DealerManagement = () => {
           
           <Dialog open={dialogOpen} onOpenChange={(open) => { if (!open) closeDialog(); else setDialogOpen(true); }}>
             <DialogTrigger asChild>
-              <Button className="bg-blue-600 hover:bg-blue-700" data-testid="add-dealer-btn">
+              <Button className="bg-gradient-to-r from-primary-500 to-orange-500 hover:from-primary-600 hover:to-orange-600 text-white shadow-md" data-testid="add-dealer-btn">
                 <Plus className="mr-2" size={18} />
                 Add Dealer
               </Button>
@@ -287,7 +287,7 @@ const DealerManagement = () => {
 
                 <div className="flex justify-end gap-2 pt-4">
                   <Button type="button" variant="outline" onClick={closeDialog}>Cancel</Button>
-                  <Button type="submit" className="bg-blue-600 hover:bg-blue-700" data-testid="dealer-submit-btn">
+                  <Button type="submit" className="bg-gradient-to-r from-primary-500 to-orange-500 hover:from-primary-600 hover:to-orange-600 text-white shadow-md" data-testid="dealer-submit-btn">
                     {editingId ? 'Update Dealer' : 'Add Dealer'}
                   </Button>
                 </div>
@@ -382,7 +382,7 @@ const DealerManagement = () => {
                             <Button 
                               variant="ghost" 
                               size="sm" 
-                              className="text-blue-600 hover:text-blue-700 hover:bg-blue-50"
+                              className="text-primary-600 hover:text-primary-700 hover:bg-gradient-to-r hover:from-primary-50 hover:to-orange-50"
                               onClick={() => handleEdit(dealer)}
                               data-testid={`edit-dealer-${dealer.id}`}
                             >

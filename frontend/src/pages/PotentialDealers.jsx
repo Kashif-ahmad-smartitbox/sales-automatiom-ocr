@@ -63,7 +63,7 @@ const PotentialDealers = () => {
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
             <Card className="bg-white shadow-sm border-slate-200">
                 <CardContent className="p-4 flex items-center gap-4">
-                    <div className="p-3 bg-blue-50 text-blue-600 rounded-lg">
+                    <div className="p-3 bg-primary-50 text-primary-600 rounded-lg">
                         <Buildings size={24} weight="duotone" />
                     </div>
                     <div>

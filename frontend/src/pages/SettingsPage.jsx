@@ -100,7 +100,7 @@ const SettingsPage = () => {
         <Card>
           <CardHeader>
             <div className="flex items-center gap-2">
-              <Buildings className="text-blue-600" weight="duotone" size={24} />
+              <Buildings className="text-primary-600" weight="duotone" size={24} />
               <CardTitle>Company Information</CardTitle>
             </div>
             <CardDescription>Your company details</CardDescription>
@@ -131,7 +131,7 @@ const SettingsPage = () => {
         <Card>
           <CardHeader>
             <div className="flex items-center gap-2">
-              <MapPin className="text-blue-600" weight="duotone" size={24} />
+              <MapPin className="text-primary-600" weight="duotone" size={24} />
               <CardTitle>Geo-fence Settings</CardTitle>
             </div>
             <CardDescription>Configure location verification parameters</CardDescription>
@@ -155,7 +155,7 @@ const SettingsPage = () => {
         <Card>
           <CardHeader>
             <div className="flex items-center gap-2">
-              <Clock className="text-blue-600" weight="duotone" size={24} />
+              <Clock className="text-primary-600" weight="duotone" size={24} />
               <CardTitle>Working Hours</CardTitle>
             </div>
             <CardDescription>Define field team working hours</CardDescription>
@@ -191,7 +191,7 @@ const SettingsPage = () => {
         <Card>
           <CardHeader>
             <div className="flex items-center gap-2">
-              <Target className="text-blue-600" weight="duotone" size={24} />
+              <Target className="text-primary-600" weight="duotone" size={24} />
               <CardTitle>Target Settings</CardTitle>
             </div>
             <CardDescription>Set daily visit and sales targets</CardDescription>
@@ -225,7 +225,7 @@ const SettingsPage = () => {
         <Card>
           <CardHeader>
             <div className="flex items-center gap-2">
-              <Tag className="text-blue-600" weight="duotone" size={24} />
+              <Tag className="text-primary-600" weight="duotone" size={24} />
               <CardTitle>Product Categories</CardTitle>
             </div>
             <CardDescription>Manage product categories for dealers</CardDescription>
@@ -264,7 +264,7 @@ const SettingsPage = () => {
           <Button 
             onClick={handleSave} 
             disabled={saving}
-            className="bg-blue-600 hover:bg-blue-700"
+            className="bg-gradient-to-r from-primary-500 to-orange-500 hover:from-primary-600 hover:to-orange-600 text-white shadow-md"
             data-testid="save-settings-btn"
           >
             {saving ? <span className="spinner mr-2" /> : <FloppyDisk className="mr-2" size={18} />}

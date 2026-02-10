@@ -84,7 +84,7 @@ const OwnerVisits = () => {
       case 'Follow-up Required': return 'bg-amber-100 text-amber-700 border-amber-200';
       case 'Lost Visit': return 'bg-red-100 text-red-700 border-red-200';
       case 'No Meeting': return 'bg-orange-100 text-orange-700 border-orange-200';
-      default: return 'bg-blue-100 text-blue-700 border-blue-200';
+      default: return 'bg-primary-100 text-primary-700 border-primary-200';
     }
   };
 
@@ -110,7 +110,7 @@ const OwnerVisits = () => {
                 placeholder="Search visits..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="pl-10 bg-white border-slate-200 text-slate-900 placeholder:text-slate-400 focus:border-blue-500"
+                className="pl-10 bg-white border-slate-200 text-slate-900 placeholder:text-slate-400 focus:border-primary-500"
               />
             </div>
             <Select value={companyFilter} onValueChange={setCompanyFilter}>
@@ -189,7 +189,7 @@ const OwnerVisits = () => {
                         </td>
                         <td className="p-4">
                           <div className="flex items-center gap-2">
-                            <Storefront className="w-4 h-4 text-blue-600" />
+                            <Storefront className="w-4 h-4 text-primary-600" />
                             <span className="truncate max-w-[120px]">{visit.dealer_name}</span>
                           </div>
                         </td>

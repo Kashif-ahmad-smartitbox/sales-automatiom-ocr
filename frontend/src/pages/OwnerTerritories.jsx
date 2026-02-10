@@ -76,7 +76,7 @@ const OwnerTerritories = () => {
   const getTypeColor = (type) => {
     switch (type?.toLowerCase()) {
       case 'state': return 'bg-red-100 text-red-600';
-      case 'city': return 'bg-blue-100 text-blue-600';
+      case 'city': return 'bg-primary-100 text-primary-600';
       case 'area': return 'bg-emerald-100 text-emerald-600';
       case 'beat': return 'bg-amber-100 text-amber-600';
       default: return 'bg-purple-100 text-purple-600';
@@ -86,7 +86,7 @@ const OwnerTerritories = () => {
   const getTypeBadgeClass = (type) => {
     switch (type?.toLowerCase()) {
       case 'state': return 'bg-red-100 text-red-700 border-red-200';
-      case 'city': return 'bg-blue-100 text-blue-700 border-blue-200';
+      case 'city': return 'bg-primary-100 text-primary-700 border-primary-200';
       case 'area': return 'bg-emerald-100 text-emerald-700 border-emerald-200';
       case 'beat': return 'bg-amber-100 text-amber-700 border-amber-200';
       default: return 'bg-purple-100 text-purple-700 border-purple-200';
@@ -121,7 +121,7 @@ const OwnerTerritories = () => {
                 placeholder="Search territories..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="pl-10 bg-white border-slate-200 text-slate-900 placeholder:text-slate-400 focus:border-blue-500"
+                className="pl-10 bg-white border-slate-200 text-slate-900 placeholder:text-slate-400 focus:border-primary-500"
               />
             </div>
             <Select value={companyFilter} onValueChange={setCompanyFilter}>

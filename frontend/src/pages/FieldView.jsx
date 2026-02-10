@@ -251,10 +251,10 @@ const FieldView = () => {
       <header className="sticky top-0 z-40 bg-white border-b border-slate-200 px-4 py-3">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <div className="w-8 h-8 rounded-lg bg-blue-600 flex items-center justify-center">
+            <div className="bg-gradient-to-r from-primary-500 to-orange-500 w-8 h-8 rounded-lg flex items-center justify-center shadow-sm">
               <MapPin weight="fill" className="w-5 h-5 text-white" />
             </div>
-            <span className="font-bold">FieldOps</span>
+            <span className="font-bold text-sm bg-gradient-to-r from-primary-600 to-orange-600 bg-clip-text text-transparent">Smart ITBox</span>
           </div>
           <div className="flex items-center gap-2">
             <Badge className={isInMarket ? 'status-active' : 'status-offline'}>
@@ -322,7 +322,7 @@ const FieldView = () => {
                 </Button>
               ) : (
                 <Button 
-                  className="w-full py-6 text-lg bg-blue-600 hover:bg-blue-700"
+                  className="w-full py-6 text-lg bg-gradient-to-r from-primary-500 to-orange-500 hover:from-primary-600 hover:to-orange-600 text-white shadow-md"
                   onClick={handleStartMarket}
                   data-testid="start-market-btn"
                 >
@@ -338,7 +338,7 @@ const FieldView = () => {
         <div className="grid grid-cols-3 gap-3">
           <Card>
             <CardContent className="p-3 text-center">
-              <p className="text-2xl font-bold font-mono text-blue-600">{todayVisits.length}</p>
+              <p className="text-2xl font-bold font-mono text-primary-600">{todayVisits.length}</p>
               <p className="text-xs text-slate-500">Visits</p>
             </CardContent>
           </Card>
@@ -366,7 +366,7 @@ const FieldView = () => {
             <div className="flex gap-2">
               <Button 
                 variant={viewMode === 'map' ? 'default' : 'outline'}
-                className={viewMode === 'map' ? 'flex-1 bg-blue-600' : 'flex-1'}
+                className={viewMode === 'map' ? 'flex-1 bg-gradient-to-r from-primary-500 to-orange-500 text-white' : 'flex-1'}
                 onClick={() => setViewMode('map')}
               >
                 <MapTrifold className="mr-2" size={18} />
@@ -374,7 +374,7 @@ const FieldView = () => {
               </Button>
               <Button 
                 variant={viewMode === 'list' ? 'default' : 'outline'}
-                className={viewMode === 'list' ? 'flex-1 bg-blue-600' : 'flex-1'}
+                className={viewMode === 'list' ? 'flex-1 bg-gradient-to-r from-primary-500 to-orange-500 text-white' : 'flex-1'}
                 onClick={() => setViewMode('list')}
               >
                 <List className="mr-2" size={18} />
@@ -442,8 +442,8 @@ const FieldView = () => {
                       <CardContent className="p-4">
                         <div className="flex items-center justify-between">
                           <div className="flex items-center gap-3">
-                            <div className="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center">
-                              <Storefront className="text-blue-600" size={20} />
+                            <div className="w-10 h-10 rounded-full bg-primary-100 flex items-center justify-center">
+                              <Storefront className="text-primary-600" size={20} />
                             </div>
                             <div>
                               <div className="flex items-center gap-2">
@@ -503,7 +503,7 @@ const FieldView = () => {
                     <Badge className={
                       visit.outcome === 'Order Booked' ? 'bg-emerald-100 text-emerald-700' :
                       visit.outcome === 'Follow-up Required' ? 'bg-amber-100 text-amber-700' :
-                      !visit.outcome ? 'bg-blue-100 text-blue-700' :
+                      !visit.outcome ? 'bg-primary-100 text-primary-700' :
                       'bg-slate-100 text-slate-600'
                     }>
                       {visit.outcome || 'In Progress'}
@@ -529,7 +529,7 @@ const FieldView = () => {
                 <p className="text-sm text-slate-500">{selectedDealer.address}</p>
                 <div className="flex items-center gap-2 mt-2">
                   <Badge variant="outline">{selectedDealer.dealer_type}</Badge>
-                  <Badge className="bg-blue-100 text-blue-700">
+                  <Badge className="bg-primary-100 text-primary-700">
                     <NavigationArrow size={12} className="mr-1" />
                     {selectedDealer.distance}m away
                   </Badge>
@@ -540,7 +540,7 @@ const FieldView = () => {
                   Cancel
                 </Button>
                 <Button 
-                  className="flex-1 bg-blue-600 hover:bg-blue-700"
+                  className="flex-1 bg-gradient-to-r from-primary-500 to-orange-500 hover:from-primary-600 hover:to-orange-600 text-white shadow-md"
                   onClick={handleCheckIn}
                   data-testid="confirm-checkin-btn"
                 >

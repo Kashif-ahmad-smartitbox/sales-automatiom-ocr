@@ -102,7 +102,7 @@ const TerritoryManagement = () => {
   
   const typeColors = {
     State: 'bg-purple-100 text-purple-700',
-    City: 'bg-blue-100 text-blue-700',
+    City: 'bg-primary-100 text-primary-700',
     Area: 'bg-emerald-100 text-emerald-700',
     Beat: 'bg-amber-100 text-amber-700'
   };
@@ -125,7 +125,7 @@ const TerritoryManagement = () => {
           
           <Dialog open={dialogOpen} onOpenChange={(open) => { if (!open) closeDialog(); else setDialogOpen(true); }}>
             <DialogTrigger asChild>
-              <Button className="bg-blue-600 hover:bg-blue-700" data-testid="add-territory-btn">
+              <Button className="bg-gradient-to-r from-primary-500 to-orange-500 hover:from-primary-600 hover:to-orange-600 text-white shadow-md" data-testid="add-territory-btn">
                 <Plus className="mr-2" size={18} />
                 Add Territory
               </Button>
@@ -201,7 +201,7 @@ const TerritoryManagement = () => {
 
                 <div className="flex justify-end gap-2 pt-4">
                   <Button type="button" variant="outline" onClick={closeDialog}>Cancel</Button>
-                  <Button type="submit" className="bg-blue-600 hover:bg-blue-700" data-testid="territory-submit-btn">
+                  <Button type="submit" className="bg-gradient-to-r from-primary-500 to-orange-500 hover:from-primary-600 hover:to-orange-600 text-white shadow-md" data-testid="territory-submit-btn">
                     {editingId ? 'Update Territory' : 'Create Territory'}
                   </Button>
                 </div>
@@ -260,7 +260,7 @@ const TerritoryManagement = () => {
                             <Button 
                               variant="ghost" 
                               size="sm" 
-                              className="text-blue-600 hover:text-blue-700 hover:bg-blue-50"
+                              className="text-primary-600 hover:text-primary-700 hover:bg-gradient-to-r hover:from-primary-50 hover:to-orange-50"
                               onClick={() => handleEdit(territory)}
                               data-testid={`edit-territory-${territory.id}`}
                             >

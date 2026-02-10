@@ -97,8 +97,8 @@ const AdminDashboard = () => {
       label: 'Visits Today', 
       value: stats?.visits_today || 0,
       subtext: `Target: ${stats?.target_visits || 0}`,
-      color: 'text-blue-600',
-      bg: 'bg-blue-50'
+      color: 'text-primary-600',
+      bg: 'bg-primary-50'
     },
     { 
       icon: ChartLineUp, 
@@ -243,7 +243,7 @@ const AdminDashboard = () => {
           <CardHeader className="pb-2">
             <div className="flex items-center justify-between">
               <CardTitle className="text-lg">Today's Visits</CardTitle>
-              <Button variant="ghost" size="sm" className="text-blue-600">
+              <Button variant="ghost" size="sm" className="text-primary-600 hover:text-primary-700 hover:bg-gradient-to-r hover:from-primary-50 hover:to-orange-50">
                 View All <ArrowRight className="ml-1 w-4 h-4" />
               </Button>
             </div>

@@ -96,7 +96,7 @@ const OwnerSuperAdmins = () => {
               placeholder="Search super admins..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className="pl-10 bg-white border-slate-200 text-slate-900 placeholder:text-slate-400 focus:border-blue-500"
+              className="pl-10 bg-white border-slate-200 text-slate-900 placeholder:text-slate-400 focus:border-primary-500"
             />
           </div>
           <Badge className="bg-amber-100 text-amber-700 hover:bg-amber-200 text-sm">

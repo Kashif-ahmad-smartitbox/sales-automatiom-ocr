@@ -207,7 +207,7 @@ const SalesExecutiveManagement = () => {
           
           <Dialog open={dialogOpen} onOpenChange={(open) => { if (!open) closeDialog(); else setDialogOpen(true); }}>
             <DialogTrigger asChild>
-              <Button className="bg-blue-600 hover:bg-blue-700" data-testid="add-executive-btn">
+              <Button className="bg-gradient-to-r from-primary-500 to-orange-500 hover:from-primary-600 hover:to-orange-600 text-white shadow-md" data-testid="add-executive-btn">
                 <Plus className="mr-2" size={18} />
                 Add Sales Executive
               </Button>
@@ -343,7 +343,7 @@ const SalesExecutiveManagement = () => {
 
                 <div className="flex justify-end gap-2 pt-4">
                   <Button type="button" variant="outline" onClick={closeDialog}>Cancel</Button>
-                  <Button type="submit" className="bg-blue-600 hover:bg-blue-700" data-testid="executive-submit-btn">
+                  <Button type="submit" className="bg-gradient-to-r from-primary-500 to-orange-500 hover:from-primary-600 hover:to-orange-600 text-white shadow-md" data-testid="executive-submit-btn">
                     {editingId ? 'Update Executive' : 'Add Executive'}
                   </Button>
                 </div>
@@ -396,7 +396,7 @@ const SalesExecutiveManagement = () => {
             {filteredExecutives.map((exec) => {
               const status = getStatus(exec);
               return (
-                <Card key={exec.id} className="hover:border-blue-300 transition-colors" data-testid={`executive-card-${exec.id}`}>
+                <Card key={exec.id} className="hover:border-primary-300 transition-colors" data-testid={`executive-card-${exec.id}`}>
                   <CardContent className="p-4">
                     <div className="flex items-start justify-between mb-4">
                       <div className="flex items-center gap-3">
@@ -444,7 +444,7 @@ const SalesExecutiveManagement = () => {
                       <Button 
                         variant="ghost" 
                         size="sm" 
-                        className="text-blue-600 hover:text-blue-700 hover:bg-blue-50"
+                        className="text-primary-600 hover:text-primary-700 hover:bg-gradient-to-r hover:from-primary-50 hover:to-orange-50"
                         onClick={() => handleEdit(exec)}
                         data-testid={`edit-executive-${exec.id}`}
                       >
@@ -506,9 +506,9 @@ const SalesExecutiveManagement = () => {
                               <p className="text-xs text-emerald-600 uppercase tracking-wide mb-1">Completed</p>
                               <p className="text-2xl font-bold text-emerald-700">{execReport.completed_visits}</p>
                           </div>
-                           <div className="bg-blue-50 p-4 rounded-lg">
-                              <p className="text-xs text-blue-600 uppercase tracking-wide mb-1">Orders</p>
-                              <p className="text-2xl font-bold text-blue-700">₹{execReport.total_orders.toLocaleString()}</p>
+                           <div className="bg-primary-50 p-4 rounded-lg">
+                              <p className="text-xs text-primary-600 uppercase tracking-wide mb-1">Orders</p>
+                              <p className="text-2xl font-bold text-primary-700">₹{execReport.total_orders.toLocaleString()}</p>
                           </div>
                            <div className="bg-purple-50 p-4 rounded-lg">
                               <p className="text-xs text-purple-600 uppercase tracking-wide mb-1">Avg Time</p>
@@ -559,7 +559,7 @@ const SalesExecutiveManagement = () => {
                                                   </td>
                                                   <td className="px-4 py-3">
                                                       <Badge variant="outline" className={
-                                                          visit.outcome === 'Order Booked' ? 'bg-blue-50 text-blue-700 border-blue-200' :
+                                                          visit.outcome === 'Order Booked' ? 'bg-primary-50 text-primary-700 border-primary-200' :
                                                           visit.outcome === 'No Meeting' ? 'bg-red-50 text-red-700 border-red-200' :
                                                           'text-slate-600'
                                                       }>

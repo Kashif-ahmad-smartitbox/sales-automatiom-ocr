@@ -98,7 +98,7 @@ const OwnerOrganizations = () => {
               placeholder="Search organizations..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className="pl-10 bg-white border-slate-200 text-slate-900 placeholder:text-slate-400 focus:border-blue-500"
+              className="pl-10 bg-white border-slate-200 text-slate-900 placeholder:text-slate-400 focus:border-primary-500"
             />
           </div>
           <Badge className="bg-purple-100 text-purple-700 hover:bg-purple-200 text-sm">
@@ -147,7 +147,7 @@ const OwnerOrganizations = () => {
                               <p className="text-xs text-slate-500">Users</p>
                             </div>
                             <div className="text-center px-3">
-                              <p className="text-blue-600 font-bold">{org.dealer_count}</p>
+                              <p className="text-primary-600 font-bold">{org.dealer_count}</p>
                               <p className="text-xs text-slate-500">Dealers</p>
                             </div>
                             <div className="text-center px-3">

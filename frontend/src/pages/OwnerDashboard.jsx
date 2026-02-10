@@ -101,8 +101,8 @@ const OwnerDashboard = () => {
       label: 'Total Dealers', 
       value: stats?.total_dealers || 0,
       subtext: 'Across all territories',
-      color: 'text-blue-600',
-      bg: 'bg-blue-50'
+      color: 'text-primary-600',
+      bg: 'bg-primary-50'
     },
     { 
       icon: MapPin, 
@@ -258,9 +258,9 @@ const OwnerDashboard = () => {
                                 <p className="text-emerald-700 font-bold">{admin.team_member_count}</p>
                                 <p className="text-xs text-emerald-600">Team</p>
                               </div>
-                              <div className="bg-blue-50 rounded-lg p-2 text-center border border-blue-100">
-                                <p className="text-blue-700 font-bold">{admin.company?.id ? '–' : '–'}</p>
-                                <p className="text-xs text-blue-600">Dealers</p>
+                              <div className="bg-primary-50 rounded-lg p-2 text-center border border-primary-100">
+                                <p className="text-primary-700 font-bold">{admin.company?.id ? '–' : '–'}</p>
+                                <p className="text-xs text-primary-600">Dealers</p>
                               </div>
                               <div className="bg-purple-50 rounded-lg p-2 text-center border border-purple-100">
                                 <p className="text-purple-700 font-bold">{admin.company?.id ? '–' : '–'}</p>
@@ -271,7 +271,7 @@ const OwnerDashboard = () => {
                             <Button 
                               variant="ghost" 
                               size="sm" 
-                              className="w-full text-blue-600 hover:text-blue-700 hover:bg-blue-50"
+                              className="w-full text-primary-600 hover:text-primary-700 hover:bg-gradient-to-r hover:from-primary-50 hover:to-orange-50"
                               onClick={() => window.location.href = `/owner/organizations/${admin.company?.id}`}
                             >
                               View Full Details <ArrowRight className="ml-1 w-4 h-4" />
@@ -305,7 +305,7 @@ const OwnerDashboard = () => {
                   <p className="text-sm text-slate-500 text-center py-8">No organizations registered yet</p>
                 ) : (
                   organizations.map((org) => (
-                    <div key={org.id} className="bg-slate-50 rounded-lg p-4 border border-slate-200 hover:border-blue-300 transition-colors">
+                    <div key={org.id} className="bg-slate-50 rounded-lg p-4 border border-slate-200 hover:border-primary-300 transition-colors">
                       <div className="flex items-start justify-between mb-3">
                         <div>
                           <p className="font-medium text-slate-900">{org.company_name}</p>
@@ -321,7 +321,7 @@ const OwnerDashboard = () => {
                           <p className="text-xs text-slate-500">Users</p>
                         </div>
                         <div className="bg-white rounded p-2 border border-slate-100 shadow-sm">
-                          <p className="text-blue-600 font-bold text-sm">{org.dealer_count}</p>
+                          <p className="text-primary-600 font-bold text-sm">{org.dealer_count}</p>
                           <p className="text-xs text-slate-500">Dealers</p>
                         </div>
                         <div className="bg-white rounded p-2 border border-slate-100 shadow-sm">
@@ -349,7 +349,7 @@ const OwnerDashboard = () => {
                 <Pulse className="w-5 h-5 text-emerald-500" weight="duotone" />
                 Recent Activity
               </CardTitle>
-              <Button variant="ghost" size="sm" className="text-blue-600 hover:text-blue-700">
+              <Button variant="ghost" size="sm" className="text-primary-600 hover:text-primary-700 hover:bg-gradient-to-r hover:from-primary-50 hover:to-orange-50">
                 View All <ArrowRight className="ml-1 w-4 h-4" />
               </Button>
             </div>

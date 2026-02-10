@@ -110,8 +110,8 @@ const ReportsPage = () => {
                       <p className="text-2xl font-bold font-mono">{visitHistory.length}</p>
                       <p className="text-xs text-slate-400 mt-1">All time</p>
                     </div>
-                    <div className="p-2 rounded-lg bg-blue-50">
-                      <Target className="w-5 h-5 text-blue-600" weight="duotone" />
+                    <div className="p-2 rounded-lg bg-primary-50">
+                      <Target className="w-5 h-5 text-primary-600" weight="duotone" />
                     </div>
                   </div>
                 </CardContent>

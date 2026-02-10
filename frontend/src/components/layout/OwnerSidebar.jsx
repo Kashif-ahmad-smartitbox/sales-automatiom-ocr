@@ -34,21 +34,28 @@ const OwnerSidebar = ({ isOpen, onClose }) => {
       {/* Overlay for mobile */}
       {isOpen && (
         <div 
-          className="fixed inset-0 bg-black/50 z-30 md:hidden"
+          className="fixed inset-0 bg-black/30 z-30 md:hidden"
           onClick={onClose}
         />
       )}
       
       <aside className={`sidebar ${isOpen ? 'translate-x-0' : '-translate-x-full'} md:translate-x-0`}>
         {/* Logo */}
-        <div className="flex items-center justify-between h-16 px-4 border-b border-slate-800">
-          <div className="flex items-center gap-2">
-            <div className="w-8 h-8 rounded-lg bg-blue-600 flex items-center justify-center">
+        <div className="flex items-center justify-between h-16 px-4 border-b border-gray-200">
+          <div className="flex items-center gap-3">
+            <div className="bg-gradient-to-r from-primary-500 to-orange-500 w-8 h-8 rounded-lg flex items-center justify-center shadow-sm">
               <Crown weight="fill" className="w-5 h-5 text-white" />
             </div>
-            <span className="font-bold text-lg tracking-tight">Owner Panel</span>
+            <div>
+              <div className="font-bold text-xs bg-gradient-to-r from-primary-600 to-orange-600 bg-clip-text text-transparent">
+                Owner Panel
+              </div>
+              <div className="text-[10px] text-gray-500">
+                by SMART ITBOX
+              </div>
+            </div>
           </div>
-          <button onClick={onClose} className="md:hidden text-slate-400 hover:text-white">
+          <button onClick={onClose} className="md:hidden text-gray-400 hover:text-gray-700">
             <X size={20} />
           </button>
         </div>
@@ -70,19 +77,19 @@ const OwnerSidebar = ({ isOpen, onClose }) => {
         </nav>
 
         {/* User Info & Logout */}
-        <div className="p-4 border-t border-slate-800">
+        <div className="p-4 border-t border-gray-200">
           <div className="flex items-center gap-3 mb-4">
-            <div className="w-10 h-10 rounded-full bg-blue-600 flex items-center justify-center text-white font-semibold">
+            <div className="w-10 h-10 rounded-full bg-gradient-to-br from-primary-500 to-orange-500 flex items-center justify-center text-white font-semibold shadow-sm">
               {user?.name?.charAt(0) || 'O'}
             </div>
             <div className="flex-1 min-w-0">
-              <p className="text-sm font-medium text-white truncate">{user?.name || 'Owner'}</p>
-              <p className="text-xs text-slate-400 truncate capitalize">{user?.role?.replace('_', ' ') || 'Owner'}</p>
+              <p className="text-sm font-medium text-gray-800 truncate capitalize">{user?.name || 'Owner'}</p>
+              <p className="text-xs text-gray-500 truncate capitalize">{user?.role?.replace('_', ' ') || 'Owner'}</p>
             </div>
           </div>
           <button
             onClick={logout}
-            className="w-full flex items-center gap-2 px-4 py-2 text-slate-400 hover:text-white hover:bg-slate-800 rounded-lg transition-colors"
+            className="w-full flex items-center gap-2 px-4 py-2 text-gray-500 hover:text-red-600 hover:bg-gradient-to-r hover:from-red-50 hover:to-orange-50 rounded-lg transition-colors"
           >
             <SignOut size={18} />
             <span>Sign Out</span>

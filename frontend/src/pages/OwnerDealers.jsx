@@ -107,7 +107,7 @@ const OwnerDealers = () => {
                 placeholder="Search dealers..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="pl-10 bg-white border-slate-200 text-slate-900 placeholder:text-slate-400 focus:border-blue-500"
+                className="pl-10 bg-white border-slate-200 text-slate-900 placeholder:text-slate-400 focus:border-primary-500"
               />
             </div>
             <Select value={companyFilter} onValueChange={setCompanyFilter}>
@@ -137,7 +137,7 @@ const OwnerDealers = () => {
               </SelectContent>
             </Select>
           </div>
-          <Badge className="bg-blue-100 text-blue-700 hover:bg-blue-200 text-sm whitespace-nowrap">
+          <Badge className="bg-primary-100 text-primary-700 hover:bg-primary-200 text-sm whitespace-nowrap">
             {filteredDealers.length} dealers
           </Badge>
         </div>
@@ -156,7 +156,7 @@ const OwnerDealers = () => {
               <Card key={dealer.id} className="bg-white border-slate-200 hover:shadow-md transition-shadow">
                 <CardContent className="p-4">
                   <div className="flex items-start gap-4">
-                    <div className="w-12 h-12 rounded-xl bg-blue-100 flex items-center justify-center text-blue-600 font-bold text-lg flex-shrink-0">
+                    <div className="w-12 h-12 rounded-xl bg-primary-100 flex items-center justify-center text-primary-600 font-bold text-lg flex-shrink-0">
                       <Storefront className="w-6 h-6" />
                     </div>
                     <div className="flex-1 min-w-0">
@@ -164,7 +164,7 @@ const OwnerDealers = () => {
                         <p className="text-slate-900 font-medium truncate">{dealer.name}</p>
                         <div className="flex">{getPriorityStars(dealer.priority_level)}</div>
                       </div>
-                      <Badge className="bg-blue-100 text-blue-700 border-blue-200 text-xs mb-2 hover:bg-blue-200">
+                      <Badge className="bg-primary-100 text-primary-700 border-primary-200 text-xs mb-2 hover:bg-primary-200">
                         {dealer.dealer_type}
                       </Badge>
                       <div className="space-y-1 text-xs text-slate-500">

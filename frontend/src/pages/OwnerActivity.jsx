@@ -78,7 +78,7 @@ const OwnerActivity = () => {
       case 'Follow-up Required': return <Clock className="w-4 h-4 text-amber-600" />;
       case 'Lost Visit': return <XIcon className="w-4 h-4 text-red-600" weight="bold" />;
       case 'No Meeting': return <Warning className="w-4 h-4 text-orange-600" />;
-      default: return <Clock className="w-4 h-4 text-blue-600" />;
+      default: return <Clock className="w-4 h-4 text-primary-600" />;
     }
   };
 
@@ -119,7 +119,7 @@ const OwnerActivity = () => {
                 placeholder="Search activity..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="pl-10 bg-white border-slate-200 text-slate-900 placeholder:text-slate-400 focus:border-blue-500"
+                className="pl-10 bg-white border-slate-200 text-slate-900 placeholder:text-slate-400 focus:border-primary-500"
               />
             </div>
             <Select value={companyFilter} onValueChange={setCompanyFilter}>
@@ -171,7 +171,7 @@ const OwnerActivity = () => {
                     item.outcome === 'Follow-up Required' ? 'bg-amber-100' :
                     item.outcome === 'Lost Visit' ? 'bg-red-100' :
                     item.outcome === 'No Meeting' ? 'bg-orange-100' :
-                    'bg-blue-100'
+                    'bg-primary-100'
                   }`}>
                     {getOutcomeIcon(item.outcome)}
                   </div>
@@ -183,7 +183,7 @@ const OwnerActivity = () => {
                           <div className="flex items-center gap-2 mb-1">
                             <span className="text-slate-900 font-medium">{item.user_name}</span>
                             <span className="text-slate-500">visited</span>
-                            <span className="text-blue-600 font-medium">{item.dealer_name}</span>
+                            <span className="text-primary-600 font-medium">{item.dealer_name}</span>
                           </div>
                           <div className="flex items-center gap-2 text-xs text-slate-500">
                             <Buildings className="w-3 h-3" />
@@ -196,7 +196,7 @@ const OwnerActivity = () => {
                             item.outcome === 'Follow-up Required' ? 'bg-amber-100 text-amber-700 border-amber-200' :
                             item.outcome === 'Lost Visit' ? 'bg-red-100 text-red-700 border-red-200' :
                             item.outcome === 'No Meeting' ? 'bg-orange-100 text-orange-700 border-orange-200' :
-                            'bg-blue-100 text-blue-700 border-blue-200'
+                            'bg-primary-100 text-primary-700 border-primary-200'
                           }>
                             {item.outcome || 'In Progress'}
                           </Badge>
