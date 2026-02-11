@@ -183,7 +183,7 @@ const AdminDashboard = () => {
               </div>
             </CardHeader>
             <CardContent className="pt-4">
-              <div className="map-container h-[350px]">
+              <div className="map-container h-[250px] sm:h-[350px]">
                 <MapContainer 
                   center={mapCenter} 
                   zoom={12} 

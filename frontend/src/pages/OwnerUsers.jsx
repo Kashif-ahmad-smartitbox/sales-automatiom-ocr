@@ -166,7 +166,7 @@ const OwnerUsers = () => {
             </CardContent>
           </Card>
         ) : (
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-3">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
             {filteredUsers.map((user) => (
               <Card key={user.id} className="border-0 shadow-sm hover:shadow-md transition-all duration-300">
                 <CardContent className="p-3">

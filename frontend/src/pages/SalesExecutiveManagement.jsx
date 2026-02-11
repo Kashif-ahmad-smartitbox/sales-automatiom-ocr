@@ -202,7 +202,7 @@ const SalesExecutiveManagement = () => {
 
         {/* Search & Actions */}
         <div className="flex flex-col sm:flex-row gap-3 items-start sm:items-center justify-between">
-          <div className="relative flex-1 max-w-sm">
+          <div className="relative flex-1 w-full sm:max-w-sm">
             <MagnifyingGlass className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={16} />
             <Input
               placeholder="Search by name or code..."
@@ -220,13 +220,13 @@ const SalesExecutiveManagement = () => {
                 Add Executive
               </Button>
             </DialogTrigger>
-            <DialogContent className="max-w-lg max-h-[90vh] overflow-y-auto">
+            <DialogContent className="max-w-lg max-h-[85vh] overflow-y-auto">
               <DialogHeader>
                 <DialogTitle>{editingId ? 'Edit Sales Executive' : 'Add Sales Executive'}</DialogTitle>
               </DialogHeader>
               <form onSubmit={handleSubmit} className="space-y-4">
-                <div className="grid grid-cols-2 gap-4">
-                  <div className="col-span-2 space-y-2">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <div className="sm:col-span-2 space-y-2">
                     <Label>Full Name *</Label>
                     <Input
                       value={formData.name}
@@ -261,7 +261,7 @@ const SalesExecutiveManagement = () => {
                     />
                   </div>
 
-                  <div className="col-span-2 space-y-2">
+                  <div className="sm:col-span-2 space-y-2">
                     <Label>Email Address *</Label>
                     <Input
                       type="email"
@@ -274,7 +274,7 @@ const SalesExecutiveManagement = () => {
                   </div>
 
                   {!editingId && (
-                    <div className="col-span-2 space-y-2">
+                    <div className="sm:col-span-2 space-y-2">
                       <Label>Password *</Label>
                       <Input
                         type="password"
@@ -287,7 +287,7 @@ const SalesExecutiveManagement = () => {
                     </div>
                   )}
 
-                  <div className="col-span-2 border-t pt-4 mt-2">
+                  <div className="sm:col-span-2 border-t pt-4 mt-2">
                     <Label className="text-base font-semibold mb-3 block">Visit Restrictions</Label>
                     
                     <div className="flex items-center space-x-2 mb-4">
@@ -305,7 +305,7 @@ const SalesExecutiveManagement = () => {
                     </div>
 
                     {!formData.is_live_tracking && (
-                      <div className="grid grid-cols-2 gap-4 animate-in fade-in slide-in-from-top-2">
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 animate-in fade-in slide-in-from-top-2">
                         <div className="space-y-2">
                           <Label>State *</Label>
                           <Select 
@@ -479,7 +479,7 @@ const SalesExecutiveManagement = () => {
 
       {/* Report Modal */}
       <Dialog open={reportDialogOpen} onOpenChange={setReportDialogOpen}>
-          <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
+          <DialogContent className="max-w-4xl max-h-[85vh] overflow-y-auto">
               <DialogHeader>
                   <DialogTitle>Sales Executive Report</DialogTitle>
               </DialogHeader>
@@ -527,8 +527,8 @@ const SalesExecutiveManagement = () => {
                       {/* Visit History Table */}
                       <div>
                           <h4 className="text-sm font-bold text-gray-800 mb-2">Recent Visit History</h4>
-                          <div className="border border-gray-100 rounded-lg overflow-hidden">
-                              <table className="w-full text-left">
+                          <div className="border border-gray-100 rounded-lg overflow-x-auto">
+                              <table className="w-full text-left min-w-[500px]">
                                   <thead>
                                       <tr style={{background: 'linear-gradient(to right, #f9fafb, #ffffff)'}}>
                                           <th className="px-3 py-2.5 text-xs font-semibold text-gray-500 uppercase tracking-wider border-b border-gray-200">Date & Time</th>

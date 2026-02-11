@@ -177,7 +177,7 @@ const TerritoryManagement = () => {
                   </Select>
                 </div>
 
-                <div className="grid grid-cols-2 gap-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div className="space-y-2">
                     <Label>Latitude (Optional)</Label>
                     <Input
@@ -240,7 +240,7 @@ const TerritoryManagement = () => {
             </CardContent>
           </Card>
         ) : (
-          <div className="grid md:grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {['State', 'City', 'Area', 'Beat'].map((type) => (
               <Card key={type} className="border-0 shadow-sm" data-testid={`territory-${type.toLowerCase()}-card`}>
                 <CardContent className="p-4">

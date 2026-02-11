@@ -147,7 +147,7 @@ const OwnerOrganizations = () => {
                           </div>
                         </div>
                         <div className="flex items-center gap-3">
-                          <div className="hidden md:flex items-center gap-2">
+                          <div className="hidden sm:flex items-center gap-2">
                             <div className="text-center px-2">
                               <p className="text-emerald-600 font-bold text-xs">{org.user_count}</p>
                               <p className="text-[10px] text-gray-500">Users</p>
@@ -179,7 +179,7 @@ const OwnerOrganizations = () => {
                       {orgDetails[org.id] ? (
                         <div className="space-y-6 pt-4">
                           {/* Company Info */}
-                          <div className="grid md:grid-cols-3 gap-4">
+                          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
                             <div className="bg-white border border-slate-200 rounded-lg p-4">
                               <p className="text-xs text-slate-500 mb-2">Contact Info</p>
                               <p className="text-slate-900 text-sm font-medium">{orgDetails[org.id].admin_email}</p>
@@ -211,7 +211,7 @@ const OwnerOrganizations = () => {
                             <p className="text-sm text-slate-500 mb-3 flex items-center gap-2">
                               <Users className="w-4 h-4" /> Team Members ({orgDetails[org.id].users?.length || 0})
                             </p>
-                            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-3">
+                            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
                               {orgDetails[org.id].users?.slice(0, 6).map((user) => (
                                 <div key={user.id} className="bg-white border border-slate-200 rounded-lg p-3 flex items-center gap-3">
                                   <div className={`w-8 h-8 rounded-full flex items-center justify-center text-white text-sm font-semibold ${

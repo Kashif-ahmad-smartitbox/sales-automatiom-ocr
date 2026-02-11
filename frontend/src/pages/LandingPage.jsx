@@ -58,14 +58,14 @@ const LandingPage = () => {
                 <div className="text-[10px] text-gray-500">Field Sales Automation</div>
               </div>
             </div>
-            <div className="flex items-center gap-4">
+            <div className="flex items-center gap-2 sm:gap-4">
               <Link to="/login">
-                <Button variant="ghost" className="text-gray-700 hover:text-primary-700 hover:bg-gradient-to-r hover:from-primary-50 hover:to-orange-50">
+                <Button variant="ghost" className="text-gray-700 hover:text-primary-700 hover:bg-gradient-to-r hover:from-primary-50 hover:to-orange-50 text-sm px-2 sm:px-4">
                   Sign In
                 </Button>
               </Link>
               <Link to="/register">
-                <Button className="bg-gradient-to-r from-primary-500 to-orange-500 hover:from-primary-600 hover:to-orange-600 text-white shadow-md" data-testid="get-started-btn">
+                <Button className="bg-gradient-to-r from-primary-500 to-orange-500 hover:from-primary-600 hover:to-orange-600 text-white shadow-md text-sm px-3 sm:px-4" data-testid="get-started-btn">
                   Get Started
                 </Button>
               </Link>
@@ -75,7 +75,7 @@ const LandingPage = () => {
       </nav>
 
       {/* Hero Section */}
-      <section className="hero-section pt-32 pb-20 px-4">
+      <section className="hero-section pt-24 sm:pt-32 pb-12 sm:pb-20 px-4">
         <div className="hero-pattern" />
         <div className="max-w-7xl mx-auto relative z-10">
           <motion.div 
@@ -92,7 +92,7 @@ const LandingPage = () => {
               Field Sales<br />
               <span className="bg-gradient-to-r from-primary-500 to-orange-500 bg-clip-text text-transparent">Automation Platform</span>
             </h1>
-            <p className="text-lg text-gray-500 max-w-2xl mx-auto mb-8">
+            <p className="text-base sm:text-lg text-gray-500 max-w-2xl mx-auto mb-8 px-2">
               Track your field team in real-time, automate visit workflows, and boost sales productivity with intelligent route planning and geo-verified check-ins.
             </p>
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
@@ -115,12 +115,12 @@ const LandingPage = () => {
             initial={{ opacity: 0, y: 40 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.3 }}
-            className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-16"
+            className="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4 mt-10 sm:mt-16"
           >
             {stats.map((stat, index) => (
-              <div key={index} className="text-center p-6 bg-white rounded-xl border border-gray-200 shadow-sm hover:border-primary-300 hover:shadow-md transition-all">
-                <div className="text-3xl sm:text-4xl font-extrabold bg-gradient-to-r from-primary-600 to-orange-600 bg-clip-text text-transparent mb-1 font-mono">{stat.value}</div>
-                <div className="text-sm text-gray-500">{stat.label}</div>
+              <div key={index} className="text-center p-4 sm:p-6 bg-white rounded-xl border border-gray-200 shadow-sm hover:border-primary-300 hover:shadow-md transition-all">
+                <div className="text-2xl sm:text-4xl font-extrabold bg-gradient-to-r from-primary-600 to-orange-600 bg-clip-text text-transparent mb-1 font-mono">{stat.value}</div>
+                <div className="text-xs sm:text-sm text-gray-500">{stat.label}</div>
               </div>
             ))}
           </motion.div>
@@ -128,10 +128,10 @@ const LandingPage = () => {
       </section>
 
       {/* Features Section */}
-      <section className="py-20 px-4 bg-gradient-to-b from-gray-50 to-white">
+      <section className="py-12 sm:py-20 px-4 bg-gradient-to-b from-gray-50 to-white">
         <div className="max-w-7xl mx-auto">
-          <div className="text-center mb-16">
-            <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-4">
+          <div className="text-center mb-10 sm:mb-16">
+            <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-gray-900 mb-4">
               Everything You Need for Field Operations
             </h2>
             <p className="text-gray-500 max-w-2xl mx-auto">
@@ -161,10 +161,10 @@ const LandingPage = () => {
       </section>
 
       {/* Industries Section */}
-      <section className="py-20 px-4 bg-white">
+      <section className="py-12 sm:py-20 px-4 bg-white">
         <div className="max-w-7xl mx-auto">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold text-gray-900 mb-4">Built for Field-Heavy Industries</h2>
+          <div className="text-center mb-8 sm:mb-12">
+            <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-4">Built for Field-Heavy Industries</h2>
             <p className="text-gray-500">Trusted by leading companies in FMCG, Pharma, and Building Materials</p>
           </div>
           <div className="flex flex-wrap justify-center gap-4">
@@ -178,12 +178,12 @@ const LandingPage = () => {
       </section>
 
       {/* CTA Section */}
-      <section className="py-20 px-4 bg-gradient-to-r from-primary-500 to-orange-500">
+      <section className="py-12 sm:py-20 px-4 bg-gradient-to-r from-primary-500 to-orange-500">
         <div className="max-w-4xl mx-auto text-center">
-          <h2 className="text-3xl sm:text-4xl font-bold text-white mb-4">
+          <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-white mb-4">
             Ready to Transform Your Field Operations?
           </h2>
-          <p className="text-white/80 mb-8 text-lg">
+          <p className="text-white/80 mb-8 text-base sm:text-lg">
             Join 500+ companies already using Smart ITBox to maximize their sales team productivity.
           </p>
           <Link to="/register">

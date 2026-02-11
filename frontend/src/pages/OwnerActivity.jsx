@@ -186,7 +186,7 @@ const OwnerActivity = () => {
                     <CardContent className="p-3">
                       <div className="flex flex-wrap items-start justify-between gap-2 mb-2">
                         <div>
-                          <div className="flex items-center gap-1.5 mb-0.5 text-sm">
+                          <div className="flex flex-wrap items-center gap-1 sm:gap-1.5 mb-0.5 text-xs sm:text-sm">
                             <span className="text-gray-800 font-medium">{item.user_name}</span>
                             <span className="text-gray-400">visited</span>
                             <span className="text-primary-600 font-medium">{item.dealer_name}</span>

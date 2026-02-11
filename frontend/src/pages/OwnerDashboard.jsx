@@ -243,7 +243,7 @@ const OwnerDashboard = () => {
                                 <p className="text-xs text-slate-500 mb-2 flex items-center gap-1">
                                   <Buildings className="w-3 h-3" /> Company Details
                                 </p>
-                                <div className="grid grid-cols-2 gap-2 text-sm">
+                                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-sm">
                                   <div>
                                     <p className="text-slate-500 text-xs">Company</p>
                                     <p className="text-slate-900 font-medium">{admin.company.company_name}</p>
@@ -328,7 +328,7 @@ const OwnerDashboard = () => {
                           {org.head_office_location}
                         </Badge>
                       </div>
-                      <div className="grid grid-cols-4 gap-1.5 text-center">
+                      <div className="grid grid-cols-2 sm:grid-cols-4 gap-1.5 text-center">
                         <div className="bg-white rounded p-1.5 border border-gray-100">
                           <p className="text-emerald-600 font-bold text-xs">{org.user_count}</p>
                           <p className="text-[10px] text-gray-500">Users</p>

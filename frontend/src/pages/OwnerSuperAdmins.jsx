@@ -152,7 +152,7 @@ const OwnerSuperAdmins = () => {
                           </div>
                         </div>
                         <div className="flex items-center gap-3">
-                          <div className="hidden md:flex items-center gap-3">
+                          <div className="hidden sm:flex items-center gap-3">
                             {admin.company && (
                               <div className="text-right">
                                 <p className="text-sm font-medium text-gray-800">{admin.company.company_name}</p>
@@ -182,7 +182,7 @@ const OwnerSuperAdmins = () => {
                             <p className="text-xs text-gray-500 mb-2 flex items-center gap-1.5">
                               <Buildings className="w-3 h-3" /> Company Details
                             </p>
-                            <div className="grid md:grid-cols-4 gap-3">
+                            <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
                               <div>
                                 <p className="text-[10px] text-gray-500 uppercase tracking-wider">Company</p>
                                 <p className="text-sm text-gray-800 font-medium">{admin.company.company_name}</p>
@@ -215,7 +215,7 @@ const OwnerSuperAdmins = () => {
                             teamMembers[admin.company_id].length === 0 ? (
                               <p className="text-xs text-gray-500 italic">No team members yet</p>
                             ) : (
-                              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-2">
+                              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2">
                                 {teamMembers[admin.company_id].map((member) => (
                                   <div key={member.id} className="bg-white border border-gray-100 rounded-lg p-2.5">
                                     <div className="flex items-center gap-2.5">

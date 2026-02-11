@@ -76,8 +76,8 @@ const RegisterPage = () => {
         </CardHeader>
         <CardContent>
           <form onSubmit={handleSubmit} className="space-y-4">
-            <div className="grid grid-cols-2 gap-4">
-              <div className="col-span-2 space-y-2">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div className="sm:col-span-2 space-y-2">
                 <Label htmlFor="company_name">Company Name *</Label>
                 <Input
                   id="company_name"
@@ -114,7 +114,7 @@ const RegisterPage = () => {
                 />
               </div>
 
-              <div className="col-span-2 space-y-2">
+              <div className="sm:col-span-2 space-y-2">
                 <Label htmlFor="head_office_location">Head Office Location *</Label>
                 <Input
                   id="head_office_location"
@@ -126,7 +126,7 @@ const RegisterPage = () => {
                 />
               </div>
 
-              <div className="col-span-2 border-t pt-4 mt-2">
+              <div className="sm:col-span-2 border-t pt-4 mt-2">
                 <p className="text-sm font-medium text-slate-700 mb-3">Admin Account</p>
               </div>
 
@@ -154,7 +154,7 @@ const RegisterPage = () => {
                 />
               </div>
 
-              <div className="col-span-2 space-y-2">
+              <div className="sm:col-span-2 space-y-2">
                 <Label htmlFor="admin_email">Email Address *</Label>
                 <Input
                   id="admin_email"
@@ -167,7 +167,7 @@ const RegisterPage = () => {
                 />
               </div>
 
-              <div className="col-span-2 space-y-2">
+              <div className="sm:col-span-2 space-y-2">
                 <Label htmlFor="password">Password *</Label>
                 <div className="relative">
                   <Input

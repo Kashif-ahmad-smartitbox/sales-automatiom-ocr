@@ -385,7 +385,7 @@ const FieldView = () => {
             {/* Map View */}
             {viewMode === 'map' && currentLocation && (
               <Card>
-                <CardContent className="p-0 h-[300px] rounded-lg overflow-hidden">
+                <CardContent className="p-0 h-[220px] sm:h-[300px] rounded-lg overflow-hidden">
                   <MapContainer 
                     center={[currentLocation.lat, currentLocation.lng]} 
                     zoom={15}

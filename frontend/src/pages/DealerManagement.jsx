@@ -149,7 +149,7 @@ const DealerManagement = () => {
 
         {/* Search & Actions */}
         <div className="flex flex-col sm:flex-row gap-3 items-start sm:items-center justify-between">
-          <div className="relative flex-1 max-w-sm">
+          <div className="relative flex-1 w-full sm:max-w-sm">
             <MagnifyingGlass className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={16} />
             <Input
               placeholder="Search dealers..."
@@ -167,13 +167,13 @@ const DealerManagement = () => {
                 Add Dealer
               </Button>
             </DialogTrigger>
-            <DialogContent className="max-w-lg max-h-[90vh] overflow-y-auto">
+            <DialogContent className="max-w-lg max-h-[85vh] overflow-y-auto">
               <DialogHeader>
                 <DialogTitle>{editingId ? 'Edit Dealer' : 'Add New Dealer'}</DialogTitle>
               </DialogHeader>
               <form onSubmit={handleSubmit} className="space-y-4">
-                <div className="grid grid-cols-2 gap-4">
-                  <div className="col-span-2 space-y-2">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <div className="sm:col-span-2 space-y-2">
                     <Label>Dealer Name *</Label>
                     <Input
                       value={formData.name}
@@ -211,7 +211,7 @@ const DealerManagement = () => {
                     </Select>
                   </div>
 
-                  <div className="col-span-2 space-y-2">
+                  <div className="sm:col-span-2 space-y-2">
                     <Label>Address *</Label>
                     <Input
                       value={formData.address}
