@@ -171,6 +171,8 @@ const OwnerVisits = () => {
                       <th>Company</th>
                       <th>User</th>
                       <th>Dealer</th>
+                      <th>Contact</th>
+                      <th>Phone</th>
                       <th>Check-in</th>
                       <th>Check-out</th>
                       <th>Duration</th>
@@ -198,6 +200,12 @@ const OwnerVisits = () => {
                             <Storefront className="w-3 h-3 text-primary-600" />
                             <span className="truncate max-w-[100px]">{visit.dealer_name}</span>
                           </div>
+                        </td>
+                        <td className="text-xs text-gray-600 truncate max-w-[100px]">
+                          {visit.contact_name || '–'}
+                        </td>
+                        <td className="font-mono text-xs text-gray-600 whitespace-nowrap">
+                          {visit.contact_phone || '–'}
                         </td>
                         <td className="font-mono text-xs text-gray-600">
                           {new Date(visit.check_in_time).toLocaleString()}

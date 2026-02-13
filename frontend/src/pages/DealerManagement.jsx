@@ -25,7 +25,8 @@ const emptyForm = {
   visit_frequency: 'Weekly',
   priority_level: 1,
   contact_person: '',
-  phone: ''
+  phone: '',
+  found_by: ''
 };
 
 const DealerManagement = () => {
@@ -94,7 +95,8 @@ const DealerManagement = () => {
       visit_frequency: dealer.visit_frequency,
       priority_level: dealer.priority_level,
       contact_person: dealer.contact_person || '',
-      phone: dealer.phone || ''
+      phone: dealer.phone || '',
+      found_by: dealer.found_by || ''
     });
     setDialogOpen(true);
   };
@@ -291,6 +293,15 @@ const DealerManagement = () => {
                       onChange={(e) => setFormData({...formData, phone: e.target.value})}
                     />
                   </div>
+
+                  <div className="space-y-2">
+                    <Label>Found By</Label>
+                    <Input
+                      value={formData.found_by}
+                      onChange={(e) => setFormData({...formData, found_by: e.target.value})}
+                      placeholder="Name of person who found this dealer"
+                    />
+                  </div>
                 </div>
 
                 <div className="flex justify-end gap-2 pt-4">
@@ -351,9 +362,14 @@ const DealerManagement = () => {
                       <th>Dealer</th>
                       <th>Type</th>
                       <th>Territory</th>
-                      <th>Frequency</th>
+                      <th>Contact</th>
+                      <th>Phone</th>
+                      <th>Found By</th>
                       <th>Priority</th>
                       <th>Last Visit</th>
+                      <th>Visited By</th>
+                      <th>Outcome</th>
+                      <th>Next Visit</th>
                       <th>Actions</th>
                     </tr>
                   </thead>
@@ -372,8 +388,10 @@ const DealerManagement = () => {
                         <td>
                           <Badge variant="outline">{dealer.dealer_type}</Badge>
                         </td>
-                        <td>{getTerritoryName(dealer.territory_id)}</td>
-                        <td>{dealer.visit_frequency}</td>
+                        <td className="text-xs text-gray-600">{getTerritoryName(dealer.territory_id)}</td>
+                        <td className="text-xs text-gray-600">{dealer.contact_person || '–'}</td>
+                        <td className="text-xs text-gray-600 font-mono">{dealer.phone || '–'}</td>
+                        <td className="text-xs text-gray-600">{dealer.found_by || '–'}</td>
                         <td>
                           <Badge className={
                             dealer.priority_level === 1 ? 'priority-high' :
@@ -382,8 +400,28 @@ const DealerManagement = () => {
                             {dealer.priority_level === 1 ? 'High' : dealer.priority_level === 2 ? 'Medium' : 'Low'}
                           </Badge>
                         </td>
-                        <td className="font-mono text-xs text-gray-600">
+                        <td className="font-mono text-xs text-gray-600 whitespace-nowrap">
                           {dealer.last_visit_date ? new Date(dealer.last_visit_date).toLocaleDateString() : 'Never'}
+                        </td>
+                        <td className="text-xs text-gray-600 truncate max-w-[100px]">
+                          {dealer.last_visited_by || '–'}
+                        </td>
+                        <td>
+                          {dealer.last_outcome ? (
+                            <Badge className={`text-[10px] px-1.5 py-0 ${
+                              dealer.last_outcome === 'Order Booked' ? 'bg-emerald-100 text-emerald-700' :
+                              dealer.last_outcome === 'Follow-up Required' ? 'bg-amber-100 text-amber-700' :
+                              dealer.last_outcome === 'Lost Visit' ? 'bg-red-100 text-red-700' :
+                              'bg-slate-100 text-slate-600'
+                            }`}>
+                              {dealer.last_outcome}
+                            </Badge>
+                          ) : (
+                            <span className="text-xs text-gray-400">–</span>
+                          )}
+                        </td>
+                        <td className="font-mono text-xs text-gray-600 whitespace-nowrap">
+                          {dealer.next_visit_date ? new Date(dealer.next_visit_date).toLocaleDateString() : '–'}
                         </td>
                         <td>
                           <div className="flex items-center gap-1">

@@ -35,6 +35,7 @@ import { useAuth } from '../context/AuthContext';
 import { Button } from '../components/ui/button';
 
 const API = `${process.env.REACT_APP_BACKEND_URL}/api`;
+const ROWS_PER_PAGE = 15;
 
 const OwnerSessions = () => {
   const { getAuthHeader } = useAuth();
@@ -44,6 +45,7 @@ const OwnerSessions = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [companyFilter, setCompanyFilter] = useState('all');
   const [statusFilter, setStatusFilter] = useState('all');
+  const [currentPage, setCurrentPage] = useState(1);
   
   // Details Modal State
   const [selectedSession, setSelectedSession] = useState(null);
@@ -166,111 +168,123 @@ const OwnerSessions = () => {
           </Badge>
         </div>
 
-        {/* Sessions Grid */}
-        {filteredSessions.length === 0 ? (
-          <Card className="border-0 shadow-sm">
-            <CardContent className="p-6 text-center">
-              <ClockCounterClockwise className="w-10 h-10 text-gray-400 mx-auto mb-2" />
-              <p className="text-xs text-gray-500">No market sessions found</p>
-            </CardContent>
-          </Card>
-        ) : (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
-            {filteredSessions.map((session) => (
-              <Card key={session.id} className="border-0 shadow-sm hover:shadow-md transition-all duration-300">
-                <CardContent className="p-3">
-                  <div className="flex items-start justify-between mb-3">
-                    <div className="flex items-center gap-2.5">
-                      <div className={`w-8 h-8 rounded-full flex items-center justify-center ${
-                        session.end_time 
-                          ? 'bg-slate-100' 
-                          : 'bg-emerald-100 animate-pulse'
-                      }`}>
-                        {session.end_time ? (
-                          <Stop className="w-4 h-4 text-slate-600" weight="fill" />
-                        ) : (
-                          <Play className="w-4 h-4 text-emerald-600" weight="fill" />
-                        )}
-                      </div>
-                      <div>
-                        <p className="text-sm font-medium text-gray-800">{session.user_name}</p>
-                        <p className="text-[10px] text-gray-500 flex items-center gap-1">
-                          <Buildings className="w-2.5 h-2.5" />
-                          {session.company_name}
-                        </p>
-                      </div>
+        {/* Sessions Table */}
+        <Card className="border-0 shadow-sm">
+          <CardContent className="p-0">
+            {filteredSessions.length === 0 ? (
+              <div className="p-6 text-center">
+                <ClockCounterClockwise className="w-10 h-10 text-gray-400 mx-auto mb-2" />
+                <p className="text-xs text-gray-500">No market sessions found</p>
+              </div>
+            ) : (
+              <div className="p-4">
+                <div className="overflow-x-auto">
+                  <table className="w-full text-left">
+                    <thead>
+                      <tr className="border-b border-gray-100">
+                        <th className="text-[10px] text-gray-500 uppercase tracking-wider font-medium px-2 py-2">User</th>
+                        <th className="text-[10px] text-gray-500 uppercase tracking-wider font-medium px-2 py-2">Company</th>
+                        <th className="text-[10px] text-gray-500 uppercase tracking-wider font-medium px-2 py-2">Date</th>
+                        <th className="text-[10px] text-gray-500 uppercase tracking-wider font-medium px-2 py-2">Time</th>
+                        <th className="text-[10px] text-gray-500 uppercase tracking-wider font-medium px-2 py-2">Status</th>
+                        <th className="text-[10px] text-gray-500 uppercase tracking-wider font-medium px-2 py-2 text-center">Duration</th>
+                        <th className="text-[10px] text-gray-500 uppercase tracking-wider font-medium px-2 py-2 text-center">Distance</th>
+                        <th className="text-[10px] text-gray-500 uppercase tracking-wider font-medium px-2 py-2 text-center">Shown</th>
+                        <th className="text-[10px] text-gray-500 uppercase tracking-wider font-medium px-2 py-2 text-center">Visited</th>
+                        <th className="text-[10px] text-gray-500 uppercase tracking-wider font-medium px-2 py-2 text-center">Lost</th>
+                        <th className="text-[10px] text-gray-500 uppercase tracking-wider font-medium px-2 py-2 text-right">Action</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {filteredSessions
+                        .slice((currentPage - 1) * ROWS_PER_PAGE, currentPage * ROWS_PER_PAGE)
+                        .map((session) => (
+                        <tr key={session.id} className="border-b border-gray-50 hover:bg-gray-50/50 transition-colors">
+                          <td className="px-2 py-1.5 text-xs font-medium text-gray-800 truncate max-w-[120px]">{session.user_name}</td>
+                          <td className="px-2 py-1.5 text-[11px] text-gray-600 truncate max-w-[120px]">{session.company_name}</td>
+                          <td className="px-2 py-1.5 font-mono text-[11px] text-gray-600 whitespace-nowrap">{new Date(session.start_time).toLocaleDateString()}</td>
+                          <td className="px-2 py-1.5 font-mono text-[11px] text-gray-600 whitespace-nowrap">{new Date(session.start_time).toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'})}</td>
+                          <td className="px-2 py-1.5">
+                            <Badge className={`text-[10px] px-1.5 py-0 ${session.end_time ? 'bg-slate-100 text-slate-600' : 'bg-emerald-100 text-emerald-700'}`}>
+                              {session.end_time ? 'Done' : 'Active'}
+                            </Badge>
+                          </td>
+                          <td className="px-2 py-1.5 font-mono text-[11px] text-gray-600 text-center">{formatDuration(session.start_time, session.end_time)}</td>
+                          <td className="px-2 py-1.5 font-mono text-[11px] text-gray-600 text-center">{session.total_distance ? `${(session.total_distance / 1000).toFixed(1)} km` : '–'}</td>
+                          <td className="px-2 py-1.5 font-mono text-[11px] font-bold text-slate-700 text-center">{session.potential_visits_count || 0}</td>
+                          <td className="px-2 py-1.5 font-mono text-[11px] font-bold text-emerald-700 text-center">{session.visits_completed || 0}</td>
+                          <td className="px-2 py-1.5 font-mono text-[11px] font-bold text-red-600 text-center">{session.calculated_lost_visits || 0}</td>
+                          <td className="px-2 py-1.5 text-right">
+                            <Button 
+                              variant="ghost" 
+                              size="sm" 
+                              className="h-6 text-[10px] px-2 text-primary-600 hover:text-primary-700 hover:bg-primary-50"
+                              onClick={() => viewSessionDetails(session)}
+                            >
+                              <Eye className="w-3 h-3 mr-1" /> Details
+                            </Button>
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+                {/* Pagination */}
+                {Math.ceil(filteredSessions.length / ROWS_PER_PAGE) > 1 && (
+                  <div className="flex items-center justify-between pt-3 border-t border-gray-100 mt-2">
+                    <p className="text-[10px] text-gray-500">
+                      Page {currentPage} of {Math.ceil(filteredSessions.length / ROWS_PER_PAGE)}
+                    </p>
+                    <div className="flex items-center gap-1">
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        className="h-7 text-xs px-2"
+                        disabled={currentPage === 1}
+                        onClick={() => setCurrentPage(currentPage - 1)}
+                      >
+                        Prev
+                      </Button>
+                      {Array.from({ length: Math.min(Math.ceil(filteredSessions.length / ROWS_PER_PAGE), 5) }, (_, i) => {
+                        const totalPages = Math.ceil(filteredSessions.length / ROWS_PER_PAGE);
+                        let pageNum;
+                        if (totalPages <= 5) {
+                          pageNum = i + 1;
+                        } else if (currentPage <= 3) {
+                          pageNum = i + 1;
+                        } else if (currentPage >= totalPages - 2) {
+                          pageNum = totalPages - 4 + i;
+                        } else {
+                          pageNum = currentPage - 2 + i;
+                        }
+                        return (
+                          <Button
+                            key={pageNum}
+                            variant={currentPage === pageNum ? 'default' : 'outline'}
+                            size="sm"
+                            className={`h-7 w-7 text-xs p-0 ${currentPage === pageNum ? 'bg-primary-500 text-white' : ''}`}
+                            onClick={() => setCurrentPage(pageNum)}
+                          >
+                            {pageNum}
+                          </Button>
+                        );
+                      })}
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        className="h-7 text-xs px-2"
+                        disabled={currentPage === Math.ceil(filteredSessions.length / ROWS_PER_PAGE)}
+                        onClick={() => setCurrentPage(currentPage + 1)}
+                      >
+                        Next
+                      </Button>
                     </div>
-                    <Badge className={session.end_time 
-                      ? 'bg-slate-100 text-slate-600 border-slate-200' 
-                      : 'bg-emerald-100 text-emerald-700 border-emerald-200'
-                    }>
-                      {session.end_time ? 'Completed' : 'Active'}
-                    </Badge>
                   </div>
-
-                  <div className="space-y-2">
-                    <div className="grid grid-cols-2 gap-2">
-                      <div className="bg-gray-50 border border-gray-100 rounded-lg p-2">
-                        <p className="text-[10px] text-gray-500 mb-0.5 flex items-center gap-1">
-                          <Clock className="w-2.5 h-2.5" /> Duration
-                        </p>
-                        <p className="text-sm text-gray-800 font-mono font-medium">
-                          {formatDuration(session.start_time, session.end_time)}
-                        </p>
-                      </div>
-                      <div className="bg-gray-50 border border-gray-100 rounded-lg p-2">
-                        <p className="text-[10px] text-gray-500 mb-0.5 flex items-center gap-1">
-                          <Path className="w-2.5 h-2.5" /> Distance
-                        </p>
-                        <p className="text-sm text-gray-800 font-mono font-medium">
-                          {session.total_distance ? `${(session.total_distance / 1000).toFixed(1)} km` : '–'}
-                        </p>
-                      </div>
-                    </div>
-
-                    <div className="grid grid-cols-3 gap-2">
-                       <div className="bg-slate-50 border border-slate-100 rounded-lg p-2 text-center">
-                        <p className="text-[10px] text-slate-500 mb-1 uppercase tracking-wider">Shown</p>
-                        <p className="text-slate-700 font-bold">{session.potential_visits_count || 0}</p>
-                      </div>
-                      <div className="bg-emerald-50 border border-emerald-100 rounded-lg p-2 text-center">
-                        <p className="text-[10px] text-emerald-600 mb-1 uppercase tracking-wider">Visited</p>
-                        <p className="text-emerald-700 font-bold">{session.visits_completed || 0}</p>
-                      </div>
-                      <div className="bg-red-50 border border-red-100 rounded-lg p-2 text-center">
-                        <p className="text-[10px] text-red-600 mb-1 uppercase tracking-wider">Lost</p>
-                        <p className="text-red-700 font-bold">{session.calculated_lost_visits || 0}</p>
-                      </div>
-                    </div>
-
-                    <div className="flex items-center justify-between pt-2 border-t border-gray-100">
-                        <div className="text-[10px] text-gray-500 space-y-0.5">
-                          <p className="flex items-center gap-1">
-                            <Play className="w-2.5 h-2.5 text-gray-400" /> 
-                            {new Date(session.start_time).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}
-                          </p>
-                          {session.end_time && (
-                            <p className="flex items-center gap-1">
-                              <Stop className="w-2.5 h-2.5 text-gray-400" /> 
-                              {new Date(session.end_time).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}
-                            </p>
-                          )}
-                        </div>
-                        <Button 
-                            variant="outline" 
-                            size="sm" 
-                            className="h-7 text-xs gap-1"
-                            onClick={() => viewSessionDetails(session)}
-                        >
-                            <Eye className="w-3 h-3" /> Details
-                        </Button>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-        )}
+                )}
+              </div>
+            )}
+          </CardContent>
+        </Card>
 
       {/* Details Modal */}
       <Dialog open={isDetailsOpen} onOpenChange={setIsDetailsOpen}>
@@ -295,15 +309,16 @@ const OwnerSessions = () => {
                          <tr>
                              <th className="px-2 sm:px-4 py-2">Place/Dealer</th>
                              <th className="px-2 sm:px-4 py-2 hidden sm:table-cell">Address</th>
+                             <th className="px-2 sm:px-4 py-2 text-center">Status</th>
                              <th className="px-2 sm:px-4 py-2 text-right">Time Shown</th>
                          </tr>
                      </thead>
                      <tbody className="divide-y divide-slate-100">
                          {sessionPotentials.map((item) => (
-                             <tr key={item.id} className="hover:bg-slate-50">
+                             <tr key={item.id} className={item.is_visited ? 'bg-emerald-50 hover:bg-emerald-100' : 'hover:bg-slate-50'}>
                                  <td className="px-2 sm:px-4 py-3 font-medium text-slate-700">
                                      <div className="flex items-center gap-2">
-                                         <Buildings className="w-4 h-4 text-slate-400 flex-shrink-0" />
+                                         <Buildings className={`w-4 h-4 flex-shrink-0 ${item.is_visited ? 'text-emerald-500' : 'text-slate-400'}`} />
                                          <div>
                                            <span>{item.place_name}</span>
                                            <p className="text-[10px] text-slate-400 sm:hidden truncate max-w-[200px]">{item.address}</p>
@@ -312,6 +327,13 @@ const OwnerSessions = () => {
                                  </td>
                                  <td className="px-2 sm:px-4 py-3 text-slate-500 max-w-xs truncate hidden sm:table-cell" title={item.address}>
                                      {item.address}
+                                 </td>
+                                 <td className="px-2 sm:px-4 py-3 text-center">
+                                     {item.is_visited ? (
+                                         <Badge className="bg-emerald-100 text-emerald-700 text-[10px] px-1.5 py-0">Visited</Badge>
+                                     ) : (
+                                         <Badge className="bg-slate-100 text-slate-500 text-[10px] px-1.5 py-0">Shown</Badge>
+                                     )}
                                  </td>
                                  <td className="px-2 sm:px-4 py-3 text-right text-slate-500 whitespace-nowrap">
                                      {new Date(item.created_at).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}

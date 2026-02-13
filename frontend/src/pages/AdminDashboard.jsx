@@ -12,53 +12,36 @@ import {
   Target,
   Clock,
   CurrencyDollar,
-  ArrowRight
+  ArrowRight,
+  ListBullets,
+  Check,
+  X as XIcon,
+  Warning
 } from '@phosphor-icons/react';
 import { useAuth } from '../context/AuthContext';
-import { MapContainer, TileLayer, Marker, Popup, Circle } from 'react-leaflet';
-import L from 'leaflet';
-import 'leaflet/dist/leaflet.css';
-
-// Fix Leaflet marker icons
-delete L.Icon.Default.prototype._getIconUrl;
-L.Icon.Default.mergeOptions({
-  iconRetinaUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/images/marker-icon-2x.png',
-  iconUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/images/marker-icon.png',
-  shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/images/marker-shadow.png',
-});
 
 const API = `${process.env.REACT_APP_BACKEND_URL}/api`;
-
-// Custom marker icons
-const createIcon = (color) => new L.DivIcon({
-  className: 'custom-marker',
-  html: `<div style="background-color: ${color}; width: 24px; height: 24px; border-radius: 50%; border: 3px solid white; box-shadow: 0 2px 8px rgba(0,0,0,0.3);"></div>`,
-  iconSize: [24, 24],
-  iconAnchor: [12, 12],
-});
-
-const activeIcon = createIcon('#10b981');
-const idleIcon = createIcon('#f59e0b');
-const offlineIcon = createIcon('#94a3b8');
-const dealerIcon = createIcon('#2563eb');
 
 const AdminDashboard = () => {
   const { getAuthHeader } = useAuth();
   const [stats, setStats] = useState(null);
   const [executives, setExecutives] = useState([]);
   const [todayVisits, setTodayVisits] = useState([]);
+  const [activityLog, setActivityLog] = useState([]);
   const [loading, setLoading] = useState(true);
 
   const fetchDashboardData = useCallback(async () => {
     try {
-      const [statsRes, execsRes, visitsRes] = await Promise.all([
+      const [statsRes, execsRes, visitsRes, activityRes] = await Promise.all([
         axios.get(`${API}/reports/dashboard`, { headers: getAuthHeader() }),
         axios.get(`${API}/tracking/live`, { headers: getAuthHeader() }),
-        axios.get(`${API}/visits/today`, { headers: getAuthHeader() })
+        axios.get(`${API}/visits/today`, { headers: getAuthHeader() }),
+        axios.get(`${API}/visits/history?limit=10`, { headers: getAuthHeader() })
       ]);
       setStats(statsRes.data);
       setExecutives(execsRes.data);
       setTodayVisits(visitsRes.data);
+      setActivityLog(activityRes.data.slice(0, 10));
     } catch (error) {
       console.error('Failed to fetch dashboard data:', error);
     } finally {
@@ -81,6 +64,31 @@ const AdminDashboard = () => {
       if (diffMinutes < 30) return 'idle';
     }
     return 'offline';
+  };
+
+  const formatTimeAgo = (dateString) => {
+    const date = new Date(dateString);
+    const now = new Date();
+    const diffMs = now - date;
+    const diffMins = Math.floor(diffMs / (1000 * 60));
+    const diffHours = Math.floor(diffMs / (1000 * 60 * 60));
+    const diffDays = Math.floor(diffMs / (1000 * 60 * 60 * 24));
+
+    if (diffMins < 1) return 'Just now';
+    if (diffMins < 60) return `${diffMins}m ago`;
+    if (diffHours < 24) return `${diffHours}h ago`;
+    if (diffDays < 7) return `${diffDays}d ago`;
+    return date.toLocaleDateString();
+  };
+
+  const getOutcomeIcon = (outcome) => {
+    switch (outcome) {
+      case 'Order Booked': return <Check className="w-4 h-4 text-emerald-600" weight="bold" />;
+      case 'Follow-up Required': return <Clock className="w-4 h-4 text-amber-600" />;
+      case 'Lost Visit': return <XIcon className="w-4 h-4 text-red-600" weight="bold" />;
+      case 'No Meeting': return <Warning className="w-4 h-4 text-orange-600" />;
+      default: return <Clock className="w-4 h-4 text-primary-600" />;
+    }
   };
 
   const statCards = [
@@ -118,10 +126,6 @@ const AdminDashboard = () => {
     },
   ];
 
-  // Get map center from executives or default to India
-  const mapCenter = executives.find(e => e.current_location)?.current_location 
-    ? [executives.find(e => e.current_location).current_location.lat, executives.find(e => e.current_location).current_location.lng]
-    : [19.076, 72.877]; // Mumbai default
 
   return (
     <AdminLayout title="Dashboard">
@@ -159,63 +163,62 @@ const AdminDashboard = () => {
 
         {/* Main Content Grid */}
         <div className="grid lg:grid-cols-3 gap-4">
-          {/* Live Map */}
-          <Card className="lg:col-span-2 border-0 bg-gradient-to-br from-white to-gray-50 shadow-sm" data-testid="live-map-card">
+          {/* Activity Log */}
+          <Card className="lg:col-span-2 border-0 bg-gradient-to-br from-white to-gray-50 shadow-sm" data-testid="activity-log-card">
             <CardHeader className="pb-3 border-b border-gray-100">
               <div className="flex items-center justify-between">
                 <CardTitle className="text-sm font-bold text-gray-800 flex items-center gap-2">
                   <div className="p-1.5 rounded-lg bg-gradient-to-br from-primary-400 to-primary-500">
-                    <MapPin size={14} className="text-white" weight="fill" />
+                    <ListBullets size={14} className="text-white" weight="fill" />
                   </div>
-                  Live Tracking
+                  Activity Log
                 </CardTitle>
-                <div className="flex items-center gap-3 text-[10px]">
-                  <span className="flex items-center gap-1">
-                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-500"></span> Active
-                  </span>
-                  <span className="flex items-center gap-1">
-                    <span className="w-1.5 h-1.5 rounded-full bg-amber-500"></span> Idle
-                  </span>
-                  <span className="flex items-center gap-1">
-                    <span className="w-1.5 h-1.5 rounded-full bg-slate-400"></span> Offline
-                  </span>
-                </div>
+                <span className="text-[10px] text-gray-500">Recent 10 activities</span>
               </div>
             </CardHeader>
             <CardContent className="pt-4">
-              <div className="map-container h-[250px] sm:h-[350px]">
-                <MapContainer 
-                  center={mapCenter} 
-                  zoom={12} 
-                  style={{ height: '100%', width: '100%' }}
-                >
-                  <TileLayer
-                    attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
-                    url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-                  />
-                  {executives.filter(e => e.current_location).map((exec) => {
-                    const status = getExecutiveStatus(exec);
-                    const icon = status === 'active' ? activeIcon : status === 'idle' ? idleIcon : offlineIcon;
-                    return (
-                      <Marker 
-                        key={exec.id} 
-                        position={[exec.current_location.lat, exec.current_location.lng]}
-                        icon={icon}
-                      >
-                        <Popup>
-                          <div className="text-sm">
-                            <p className="font-semibold">{exec.name}</p>
-                            <p className="text-slate-500">{exec.employee_code}</p>
-                            <Badge className={`mt-1 ${status === 'active' ? 'bg-emerald-100 text-emerald-700' : status === 'idle' ? 'bg-amber-100 text-amber-700' : 'bg-slate-100 text-slate-500'}`}>
-                              {status}
-                            </Badge>
-                          </div>
-                        </Popup>
-                      </Marker>
-                    );
-                  })}
-                </MapContainer>
-              </div>
+              {activityLog.length === 0 ? (
+                <p className="text-xs text-gray-500 text-center py-8">No recent activities</p>
+              ) : (
+                <div className="space-y-3 max-h-[350px] overflow-y-auto custom-scrollbar">
+                  {activityLog.map((activity) => (
+                    <div key={activity.id} className="flex items-start gap-3 p-3 bg-gray-50 rounded-lg border border-gray-100 hover:border-primary-200 transition-colors">
+                      <div className="mt-0.5">
+                        {getOutcomeIcon(activity.outcome)}
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <div className="flex items-center justify-between gap-2 mb-1">
+                          <p className="font-medium text-xs text-gray-800 truncate">{activity.dealer_name || 'Unknown Dealer'}</p>
+                          <span className="text-[10px] text-gray-500 whitespace-nowrap">{formatTimeAgo(activity.check_in_time)}</span>
+                        </div>
+                        <p className="text-[10px] text-gray-600 mb-1">
+                          <span className="font-medium">{activity.user_name || 'Unknown'}</span>
+                          {activity.check_in_time && (
+                            <span className="text-gray-500 ml-2">
+                              • {new Date(activity.check_in_time).toLocaleString()}
+                            </span>
+                          )}
+                        </p>
+                        {activity.outcome && (
+                          <Badge className={`text-[10px] px-1.5 py-0 ${
+                            activity.outcome === 'Order Booked' ? 'bg-emerald-100 text-emerald-700' :
+                            activity.outcome === 'Follow-up Required' ? 'bg-amber-100 text-amber-700' :
+                            activity.outcome === 'Lost Visit' ? 'bg-red-100 text-red-700' :
+                            'bg-slate-100 text-slate-600'
+                          }`}>
+                            {activity.outcome}
+                          </Badge>
+                        )}
+                        {activity.order_value && (
+                          <p className="text-[10px] font-medium text-primary-600 mt-1">
+                            Order: ₹{activity.order_value.toLocaleString()}
+                          </p>
+                        )}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
             </CardContent>
           </Card>
 

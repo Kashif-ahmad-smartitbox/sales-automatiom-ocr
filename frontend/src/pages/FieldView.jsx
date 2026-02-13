@@ -70,7 +70,10 @@ const FieldView = () => {
     outcome: '',
     order_value: '',
     notes: '',
-    next_visit_date: ''
+    next_visit_date: '',
+    contact_name: '',
+    contact_phone: '',
+    contact_email: ''
   });
 
   const getCurrentLocation = () => {
@@ -120,16 +123,29 @@ const FieldView = () => {
     }
   }, [getAuthHeader]);
 
+  // Restore market session state on load
+  const fetchUserStatus = useCallback(async () => {
+    try {
+      const res = await axios.get(`${API}/auth/me`, { headers: getAuthHeader() });
+      if (res.data?.is_in_market) {
+        setIsInMarket(true);
+      }
+    } catch (error) {
+      console.error('Failed to fetch user status');
+    }
+  }, [getAuthHeader]);
+
   useEffect(() => {
     getCurrentLocation();
     fetchTodayVisits();
-  }, [fetchTodayVisits]);
+    fetchUserStatus();
+  }, [fetchTodayVisits, fetchUserStatus]);
 
   useEffect(() => {
-    if (currentLocation && isInMarket) {
+    if (currentLocation && isInMarket && !activeVisit) {
       fetchNearbyDealers();
     }
-  }, [currentLocation, isInMarket, fetchNearbyDealers]);
+  }, [currentLocation, isInMarket, activeVisit, fetchNearbyDealers]);
 
   const handleStartMarket = async () => {
     if (!currentLocation) {
@@ -210,22 +226,35 @@ const FieldView = () => {
         outcome: outcomeData.outcome,
         order_value: outcomeData.order_value ? parseFloat(outcomeData.order_value) : null,
         notes: outcomeData.notes || null,
-        next_visit_date: outcomeData.next_visit_date || null
+        next_visit_date: outcomeData.next_visit_date || null,
+        contact_name: outcomeData.contact_name || null,
+        contact_phone: outcomeData.contact_phone || null,
+        contact_email: outcomeData.contact_email || null,
+        lat: currentLocation?.lat,
+        lng: currentLocation?.lng
       }, {
-        params: {
-          lat: currentLocation.lat,
-          lng: currentLocation.lng
-        },
         headers: getAuthHeader()
       });
       setActiveVisit(null);
       setCheckOutDialogOpen(false);
-      setOutcomeData({ outcome: '', order_value: '', notes: '', next_visit_date: '' });
+      setOutcomeData({ outcome: '', order_value: '', notes: '', next_visit_date: '', contact_name: '', contact_phone: '', contact_email: '' });
       toast.success('Visit completed!');
       fetchTodayVisits();
       fetchNearbyDealers(); // Re-fetch to show shops again
     } catch (error) {
       toast.error(error.response?.data?.detail || 'Check-out failed');
+    }
+  };
+
+  const handleForceCheckout = async () => {
+    try {
+      await axios.post(`${API}/visit/force-checkout`, {}, { headers: getAuthHeader() });
+      setActiveVisit(null);
+      toast.success('Stale visit closed');
+      fetchTodayVisits();
+      fetchNearbyDealers();
+    } catch (error) {
+      toast.error('Failed to force close visit');
     }
   };
 
@@ -293,14 +322,26 @@ const FieldView = () => {
                     Started at {new Date(activeVisit.check_in_time).toLocaleTimeString()}
                   </p>
                 </div>
-                <Button 
-                  className="bg-emerald-600 hover:bg-emerald-700"
-                  onClick={() => setCheckOutDialogOpen(true)}
-                  data-testid="checkout-btn"
-                >
-                  <CheckCircle className="mr-2" size={18} />
-                  Check Out
-                </Button>
+                <div className="flex items-center gap-2">
+                  <Button 
+                    variant="outline"
+                    size="sm"
+                    className="text-red-600 border-red-200 hover:bg-red-50 text-xs h-8"
+                    onClick={handleForceCheckout}
+                    data-testid="force-checkout-btn"
+                  >
+                    <Stop className="mr-1" size={14} />
+                    Cancel
+                  </Button>
+                  <Button 
+                    className="bg-emerald-600 hover:bg-emerald-700"
+                    onClick={() => setCheckOutDialogOpen(true)}
+                    data-testid="checkout-btn"
+                  >
+                    <CheckCircle className="mr-2" size={18} />
+                    Check Out
+                  </Button>
+                </div>
               </div>
             </CardContent>
           </Card>
@@ -499,6 +540,11 @@ const FieldView = () => {
                         {new Date(visit.check_in_time).toLocaleTimeString()}
                         {visit.time_spent_minutes && ` • ${Math.round(visit.time_spent_minutes)} min`}
                       </p>
+                      {visit.contact_name && (
+                        <p className="text-[10px] text-gray-500 mt-0.5">
+                          {visit.contact_name}{visit.contact_phone && ` • ${visit.contact_phone}`}
+                        </p>
+                      )}
                     </div>
                     <Badge className={
                       visit.outcome === 'Order Booked' ? 'bg-emerald-100 text-emerald-700' :
@@ -606,6 +652,42 @@ const FieldView = () => {
                 onChange={(e) => setOutcomeData({...outcomeData, next_visit_date: e.target.value})}
                 data-testid="next-visit-date-input"
               />
+            </div>
+
+            {/* Contact Details */}
+            <div className="border-t border-gray-100 pt-3 space-y-3">
+              <p className="text-xs font-semibold text-gray-600 uppercase tracking-wider">Contact Details</p>
+              <div className="grid grid-cols-2 gap-3">
+                <div className="space-y-1">
+                  <Label className="text-xs">Name</Label>
+                  <Input
+                    value={outcomeData.contact_name}
+                    onChange={(e) => setOutcomeData({...outcomeData, contact_name: e.target.value})}
+                    placeholder="Contact name"
+                    data-testid="contact-name-input"
+                  />
+                </div>
+                <div className="space-y-1">
+                  <Label className="text-xs">Phone</Label>
+                  <Input
+                    type="tel"
+                    value={outcomeData.contact_phone}
+                    onChange={(e) => setOutcomeData({...outcomeData, contact_phone: e.target.value})}
+                    placeholder="Phone number"
+                    data-testid="contact-phone-input"
+                  />
+                </div>
+              </div>
+              <div className="space-y-1">
+                <Label className="text-xs">Email (Optional)</Label>
+                <Input
+                  type="email"
+                  value={outcomeData.contact_email}
+                  onChange={(e) => setOutcomeData({...outcomeData, contact_email: e.target.value})}
+                  placeholder="Email address"
+                  data-testid="contact-email-input"
+                />
+              </div>
             </div>
 
             <div className="flex gap-2">
