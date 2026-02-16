@@ -20,6 +20,7 @@ import {
 } from '@phosphor-icons/react';
 import { useAuth } from '../context/AuthContext';
 import { toast } from 'sonner';
+import OrderItemsView from '../components/OrderItemsView';
 
 const API = `${process.env.REACT_APP_BACKEND_URL}/api`;
 
@@ -333,6 +334,7 @@ const ReportsPage = () => {
                             <th className="text-[10px] text-gray-500 uppercase tracking-wider font-medium px-2 py-2 text-center">Duration</th>
                             <th className="text-[10px] text-gray-500 uppercase tracking-wider font-medium px-2 py-2">Outcome</th>
                             <th className="text-[10px] text-gray-500 uppercase tracking-wider font-medium px-2 py-2 text-right">Order Value</th>
+                            <th className="text-[10px] text-gray-500 uppercase tracking-wider font-medium px-2 py-2 text-center">Items</th>
                           </tr>
                         </thead>
                         <tbody>
@@ -356,6 +358,9 @@ const ReportsPage = () => {
                                 </Badge>
                               </td>
                               <td className="px-2 py-1.5 font-mono text-[11px] font-medium text-primary-600 text-right">{visit.order_value ? `₹${visit.order_value.toLocaleString()}` : '–'}</td>
+                              <td className="px-2 py-1.5 text-center">
+                                <OrderItemsView visit={visit} />
+                              </td>
                             </tr>
                           ))}
                         </tbody>

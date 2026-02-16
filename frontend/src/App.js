@@ -11,6 +11,7 @@ import DealerManagement from "./pages/DealerManagement";
 import TerritoryManagement from "./pages/TerritoryManagement";
 import SalesExecutiveManagement from "./pages/SalesExecutiveManagement";
 import ReportsPage from "./pages/ReportsPage";
+import UserVisitSummary from "./pages/UserVisitSummary";
 import SettingsPage from "./pages/SettingsPage";
 import FieldView from "./pages/FieldView";
 import PotentialDealers from "./pages/PotentialDealers";
@@ -95,6 +96,11 @@ function AppRoutes() {
       <Route path="/reports" element={
         <ProtectedRoute allowedRoles={["organization", "admin"]}>
           <ReportsPage />
+        </ProtectedRoute>
+      } />
+      <Route path="/user-visit-summary" element={
+        <ProtectedRoute allowedRoles={["organization", "admin"]}>
+          <UserVisitSummary />
         </ProtectedRoute>
       } />
       <Route path="/settings" element={

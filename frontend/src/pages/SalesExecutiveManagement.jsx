@@ -10,6 +10,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from 
 import { Plus, MagnifyingGlass, Trash, MapPin, Phone, Pencil, Globe, Crosshair, ChartBar } from '@phosphor-icons/react';
 import { useAuth } from '../context/AuthContext';
 import { toast } from 'sonner';
+import OrderItemsView from '../components/OrderItemsView';
 import { Checkbox } from '../components/ui/checkbox';
 import { Switch } from '../components/ui/switch';
 import {
@@ -32,7 +33,9 @@ const emptyForm = {
   assigned_state: '',
   assigned_city: '',
   is_live_tracking: false,
-  product_category_access: []
+  product_category_access: [],
+  daily_sales_target: '',
+  daily_sales_amount_target: ''
 };
 
 const SalesExecutiveManagement = () => {
@@ -126,11 +129,18 @@ const SalesExecutiveManagement = () => {
           return;
       }
 
+      const payload = {
+        ...formData,
+        daily_sales_target: formData.daily_sales_target === '' ? null : Number(formData.daily_sales_target),
+        daily_sales_amount_target: formData.daily_sales_amount_target === '' ? null : Number(formData.daily_sales_amount_target)
+      };
+      if (editingId) delete payload.password;
+
       if (editingId) {
-        await axios.put(`${API}/sales-executives/${editingId}`, formData, { headers: getAuthHeader() });
+        await axios.put(`${API}/sales-executives/${editingId}`, payload, { headers: getAuthHeader() });
         toast.success('Sales executive updated');
       } else {
-        await axios.post(`${API}/sales-executives`, formData, { headers: getAuthHeader() });
+        await axios.post(`${API}/sales-executives`, payload, { headers: getAuthHeader() });
         toast.success('Sales executive added');
       }
       closeDialog();
@@ -151,7 +161,9 @@ const SalesExecutiveManagement = () => {
       assigned_state: exec.assigned_state || '',
       assigned_city: exec.assigned_city || '',
       is_live_tracking: exec.is_live_tracking || false,
-      product_category_access: exec.product_category_access || []
+      product_category_access: exec.product_category_access || [],
+      daily_sales_target: exec.daily_sales_target ?? '',
+      daily_sales_amount_target: exec.daily_sales_amount_target ?? ''
     });
     setDialogOpen(true);
   };
@@ -286,6 +298,36 @@ const SalesExecutiveManagement = () => {
                       />
                     </div>
                   )}
+
+                  <div className="sm:col-span-2 border-t pt-4 mt-2">
+                    <Label className="text-base font-semibold mb-3 block">Daily Targets</Label>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
+                      <div className="space-y-2">
+                        <Label>Daily Sales Target (visits count)</Label>
+                        <Input
+                          type="number"
+                          min="0"
+                          value={formData.daily_sales_target}
+                          onChange={(e) => setFormData({...formData, daily_sales_target: e.target.value})}
+                          placeholder="e.g. 10"
+                          data-testid="daily-sales-target-input"
+                        />
+                        <p className="text-[10px] text-slate-500">Target number of dealer visits per day</p>
+                      </div>
+                      <div className="space-y-2">
+                        <Label>Daily Sales Amount Target (₹)</Label>
+                        <Input
+                          type="number"
+                          min="0"
+                          value={formData.daily_sales_amount_target}
+                          onChange={(e) => setFormData({...formData, daily_sales_amount_target: e.target.value})}
+                          placeholder="e.g. 50000"
+                          data-testid="daily-sales-amount-target-input"
+                        />
+                        <p className="text-[10px] text-slate-500">Target order value in ₹ per day</p>
+                      </div>
+                    </div>
+                  </div>
 
                   <div className="sm:col-span-2 border-t pt-4 mt-2">
                     <Label className="text-base font-semibold mb-3 block">Visit Restrictions</Label>
@@ -536,12 +578,13 @@ const SalesExecutiveManagement = () => {
                                           <th className="px-3 py-2.5 text-xs font-semibold text-gray-500 uppercase tracking-wider border-b border-gray-200">Duration</th>
                                           <th className="px-3 py-2.5 text-xs font-semibold text-gray-500 uppercase tracking-wider border-b border-gray-200">Outcome</th>
                                           <th className="px-3 py-2.5 text-xs font-semibold text-gray-500 uppercase tracking-wider border-b border-gray-200 text-right">Order Value</th>
+                                          <th className="px-3 py-2.5 text-xs font-semibold text-gray-500 uppercase tracking-wider border-b border-gray-200 text-center">Items</th>
                                       </tr>
                                   </thead>
                                   <tbody className="divide-y divide-gray-50">
                                       {execVisits.length === 0 ? (
                                           <tr>
-                                              <td colSpan="5" className="px-3 py-6 text-center text-xs text-gray-500">
+                                              <td colSpan="6" className="px-3 py-6 text-center text-xs text-gray-500">
                                                   No visit history found.
                                               </td>
                                           </tr>
@@ -576,6 +619,9 @@ const SalesExecutiveManagement = () => {
                                                   </td>
                                                   <td className="px-3 py-2.5 text-right font-mono text-xs font-medium text-primary-600">
                                                       {visit.order_value > 0 ? `₹${visit.order_value.toLocaleString()}` : '-'}
+                                                  </td>
+                                                  <td className="px-3 py-2.5 text-center">
+                                                      <OrderItemsView visit={visit} />
                                                   </td>
                                               </tr>
                                           ))

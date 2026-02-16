@@ -9,7 +9,8 @@ import {
   SignOut,
   List,
   Buildings,
-  X
+  X,
+  ChartPieSlice
 } from '@phosphor-icons/react';
 import { useAuth } from '../../context/AuthContext';
 
@@ -23,6 +24,7 @@ const Sidebar = ({ isOpen, onClose }) => {
     { to: '/potentials', icon: Buildings, label: 'Potential Dealers' },
     // { to: '/territories', icon: MapPin, label: 'Territories' },
     { to: '/reports', icon: ChartBar, label: 'Reports' },
+    { to: '/user-visit-summary', icon: ChartPieSlice, label: 'User Visit Summary' },
     { to: '/settings', icon: Gear, label: 'Settings' },
   ];
 

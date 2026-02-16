@@ -8,6 +8,7 @@ import { Label } from '../components/ui/label';
 import { Textarea } from '../components/ui/textarea';
 import { Input } from '../components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../components/ui/select';
+import { Checkbox } from '../components/ui/checkbox';
 import { 
   MapPin, 
   Play, 
@@ -19,10 +20,13 @@ import {
   SignOut,
   List,
   MapTrifold,
-  CurrencyDollar
+  CurrencyDollar,
+  Target,
+  Package
 } from '@phosphor-icons/react';
 import { useAuth } from '../context/AuthContext';
 import { toast } from 'sonner';
+import OrderItemsView from '../components/OrderItemsView';
 import { MapContainer, TileLayer, Marker, Popup, Circle } from 'react-leaflet';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
@@ -58,6 +62,8 @@ const FieldView = () => {
   const [currentLocation, setCurrentLocation] = useState(null);
   const [nearbyDealers, setNearbyDealers] = useState([]);
   const [todayVisits, setTodayVisits] = useState([]);
+  const [allVisits, setAllVisits] = useState([]);
+  const [visitTab, setVisitTab] = useState('today'); // 'today' or 'overall'
   const [loading, setLoading] = useState(true);
   const [viewMode, setViewMode] = useState('map'); // 'map' or 'list'
   
@@ -69,12 +75,14 @@ const FieldView = () => {
   const [outcomeData, setOutcomeData] = useState({
     outcome: '',
     order_value: '',
+    ordered_items: [],
     notes: '',
     next_visit_date: '',
     contact_name: '',
     contact_phone: '',
     contact_email: ''
   });
+  const [companyProducts, setCompanyProducts] = useState([]);
 
   const getCurrentLocation = () => {
     if (navigator.geolocation) {
@@ -123,6 +131,15 @@ const FieldView = () => {
     }
   }, [getAuthHeader]);
 
+  const fetchAllVisits = useCallback(async () => {
+    try {
+      const res = await axios.get(`${API}/visits/history`, { headers: getAuthHeader() });
+      setAllVisits(res.data);
+    } catch (error) {
+      console.error('Failed to fetch visit history');
+    }
+  }, [getAuthHeader]);
+
   // Restore market session state on load
   const fetchUserStatus = useCallback(async () => {
     try {
@@ -140,6 +157,12 @@ const FieldView = () => {
     fetchTodayVisits();
     fetchUserStatus();
   }, [fetchTodayVisits, fetchUserStatus]);
+
+  useEffect(() => {
+    if (visitTab === 'overall') {
+      fetchAllVisits();
+    }
+  }, [visitTab, fetchAllVisits]);
 
   useEffect(() => {
     if (currentLocation && isInMarket && !activeVisit) {
@@ -207,6 +230,15 @@ const FieldView = () => {
     }
   };
 
+  const toggleOrderedItem = (item) => {
+    setOutcomeData(prev => ({
+      ...prev,
+      ordered_items: prev.ordered_items.includes(item)
+        ? prev.ordered_items.filter(i => i !== item)
+        : [...prev.ordered_items, item]
+    }));
+  };
+
   const handleCheckOut = async () => {
     if (!activeVisit || !outcomeData.outcome) {
       toast.error('Please select an outcome');
@@ -225,6 +257,7 @@ const FieldView = () => {
       await axios.post(`${API}/visit/${visitId}/check-out`, {
         outcome: outcomeData.outcome,
         order_value: outcomeData.order_value ? parseFloat(outcomeData.order_value) : null,
+        ordered_items: outcomeData.ordered_items || [],
         notes: outcomeData.notes || null,
         next_visit_date: outcomeData.next_visit_date || null,
         contact_name: outcomeData.contact_name || null,
@@ -237,7 +270,7 @@ const FieldView = () => {
       });
       setActiveVisit(null);
       setCheckOutDialogOpen(false);
-      setOutcomeData({ outcome: '', order_value: '', notes: '', next_visit_date: '', contact_name: '', contact_phone: '', contact_email: '' });
+      setOutcomeData({ outcome: '', order_value: '', ordered_items: [], notes: '', next_visit_date: '', contact_name: '', contact_phone: '', contact_email: '' });
       toast.success('Visit completed!');
       fetchTodayVisits();
       fetchNearbyDealers(); // Re-fetch to show shops again
@@ -262,6 +295,25 @@ const FieldView = () => {
     setSelectedDealer(dealer);
     setCheckInDialogOpen(true);
   };
+
+  const fetchCompanyProducts = useCallback(async () => {
+    try {
+      const res = await axios.get(`${API}/company/config`, { headers: getAuthHeader() });
+      const cfg = res.data?.config || {};
+      // Prefer product_items; fallback to product_categories
+      const items = (cfg.product_items?.length ? cfg.product_items : cfg.product_categories) || [];
+      setCompanyProducts(Array.isArray(items) ? items : []);
+    } catch (error) {
+      console.error('Failed to fetch company products', error);
+      setCompanyProducts([]);
+    }
+  }, [getAuthHeader]);
+
+  useEffect(() => {
+    if (checkOutDialogOpen && outcomeData.outcome === 'Order Booked' && companyProducts.length === 0) {
+      fetchCompanyProducts();
+    }
+  }, [checkOutDialogOpen, outcomeData.outcome, companyProducts.length, fetchCompanyProducts]);
 
   if (loading) {
     return (
@@ -371,6 +423,38 @@ const FieldView = () => {
                   Start Market Visit
                 </Button>
               )}
+            </CardContent>
+          </Card>
+        )}
+
+        {/* Daily Target vs Achieved */}
+        {(user?.daily_sales_target != null || user?.daily_sales_amount_target != null) && (
+          <Card className="shadow-sm bg-gradient-to-br from-slate-50 to-slate-100 border border-slate-200">
+            <CardContent className="p-3">
+              <p className="text-[10px] font-semibold text-slate-600 uppercase tracking-wider mb-2 flex items-center gap-1">
+                <Target size={12} />
+                Daily Targets
+              </p>
+              <div className="grid grid-cols-2 gap-3">
+                {user?.daily_sales_target != null && (
+                  <div className="bg-white rounded-lg p-2.5 border border-slate-100">
+                    <p className="text-[10px] text-slate-500">Visit Target</p>
+                    <p className="text-sm font-bold text-slate-800">
+                      <span className="text-primary-600">{todayVisits.length}</span>
+                      <span className="text-slate-400 font-normal"> / {user.daily_sales_target}</span>
+                    </p>
+                  </div>
+                )}
+                {user?.daily_sales_amount_target != null && (
+                  <div className="bg-white rounded-lg p-2.5 border border-slate-100">
+                    <p className="text-[10px] text-slate-500">Sales Target (₹)</p>
+                    <p className="text-sm font-bold text-slate-800">
+                      <span className="text-emerald-600">₹{todayVisits.reduce((sum, v) => sum + (v.order_value || 0), 0).toLocaleString()}</span>
+                      <span className="text-slate-400 font-normal"> / ₹{user.daily_sales_amount_target?.toLocaleString()}</span>
+                    </p>
+                  </div>
+                )}
+              </div>
             </CardContent>
           </Card>
         )}
@@ -486,9 +570,9 @@ const FieldView = () => {
                             <div className="w-10 h-10 rounded-full bg-primary-100 flex items-center justify-center">
                               <Storefront className="text-primary-600" size={20} />
                             </div>
-                            <div>
-                              <div className="flex items-center gap-2">
-                                <p className="font-semibold">{dealer.name}</p>
+                            <div className="min-w-0 flex-1">
+                              <div className="flex items-center gap-2 flex-wrap">
+                                <p className="font-semibold text-gray-800">{dealer.name}</p>
                                 {dealer.source === 'google_places' && (
                                   <Badge variant="outline" className="text-xs bg-green-50 text-green-700 border-green-200">
                                     Google
@@ -496,8 +580,14 @@ const FieldView = () => {
                                 )}
                               </div>
                               <p className="text-xs text-slate-500">{dealer.dealer_type}</p>
+                              {(dealer.address || dealer.vicinity) && (
+                                <p className="text-[11px] text-slate-600 mt-1 flex items-start gap-1">
+                                  <MapPin size={12} className="flex-shrink-0 mt-0.5 text-slate-400" />
+                                  <span className="line-clamp-2">{dealer.address || dealer.vicinity}</span>
+                                </p>
+                              )}
                               {dealer.rating && (
-                                <p className="text-xs text-amber-600">⭐ {dealer.rating}</p>
+                                <p className="text-xs text-amber-600 mt-0.5">⭐ {dealer.rating}</p>
                               )}
                             </div>
                           </div>
@@ -522,41 +612,128 @@ const FieldView = () => {
           </>
         )}
 
-        {/* Today's Visits History */}
+        {/* Visits History - Today / Overall Tabs */}
         <Card className="border-0 shadow-sm">
           <CardHeader className="pb-2">
-            <CardTitle className="text-sm font-bold text-gray-800">Today's Activity</CardTitle>
+            <div className="flex items-center justify-between">
+              <CardTitle className="text-sm font-bold text-gray-800">Visit History</CardTitle>
+              <div className="flex gap-1 bg-gray-100 rounded-lg p-0.5">
+                <button
+                  type="button"
+                  onClick={() => setVisitTab('today')}
+                  className={`px-3 py-1 text-xs font-medium rounded-md transition-colors ${
+                    visitTab === 'today' ? 'bg-white text-primary-600 shadow-sm' : 'text-gray-500 hover:text-gray-700'
+                  }`}
+                >
+                  Today
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setVisitTab('overall')}
+                  className={`px-3 py-1 text-xs font-medium rounded-md transition-colors ${
+                    visitTab === 'overall' ? 'bg-white text-primary-600 shadow-sm' : 'text-gray-500 hover:text-gray-700'
+                  }`}
+                >
+                  Overall
+                </button>
+              </div>
+            </div>
           </CardHeader>
           <CardContent>
-            {todayVisits.length === 0 ? (
-              <p className="text-xs text-gray-500 text-center py-3">No visits yet today</p>
+            {visitTab === 'today' ? (
+              todayVisits.length === 0 ? (
+                <p className="text-xs text-gray-500 text-center py-6">No visits yet today</p>
+              ) : (
+                <div className="overflow-x-auto">
+                  <table className="w-full text-left">
+                    <thead>
+                      <tr className="border-b border-gray-100">
+                        <th className="text-[10px] text-gray-500 uppercase tracking-wider font-medium px-2 py-2">Date</th>
+                        <th className="text-[10px] text-gray-500 uppercase tracking-wider font-medium px-2 py-2">Dealer</th>
+                        <th className="text-[10px] text-gray-500 uppercase tracking-wider font-medium px-2 py-2">Contact</th>
+                        <th className="text-[10px] text-gray-500 uppercase tracking-wider font-medium px-2 py-2">Check-in</th>
+                        <th className="text-[10px] text-gray-500 uppercase tracking-wider font-medium px-2 py-2 text-center">Duration</th>
+                        <th className="text-[10px] text-gray-500 uppercase tracking-wider font-medium px-2 py-2">Outcome</th>
+                        <th className="text-[10px] text-gray-500 uppercase tracking-wider font-medium px-2 py-2 text-right">Order Value</th>
+                        <th className="text-[10px] text-gray-500 uppercase tracking-wider font-medium px-2 py-2 text-center">Items</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {todayVisits.map((visit) => (
+                        <tr key={visit.id} className="border-b border-gray-50 hover:bg-gray-50/50 transition-colors">
+                          <td className="px-2 py-1.5 font-mono text-[11px] text-gray-600 whitespace-nowrap">{new Date(visit.check_in_time).toLocaleDateString()}</td>
+                          <td className="px-2 py-1.5 text-xs font-medium text-gray-800 truncate max-w-[140px]">{visit.dealer_name}</td>
+                          <td className="px-2 py-1.5 text-[11px] text-gray-600 truncate max-w-[100px]">{visit.contact_name || '–'}</td>
+                          <td className="px-2 py-1.5 font-mono text-[11px] text-gray-600 whitespace-nowrap">{new Date(visit.check_in_time).toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'})}</td>
+                          <td className="px-2 py-1.5 font-mono text-[11px] text-gray-600 text-center">{visit.time_spent_minutes ? `${Math.round(visit.time_spent_minutes)}m` : '–'}</td>
+                          <td className="px-2 py-1.5">
+                            <Badge className={`text-[10px] px-1.5 py-0 ${
+                              visit.outcome === 'Order Booked' ? 'bg-emerald-100 text-emerald-700' :
+                              visit.outcome === 'Follow-up Required' ? 'bg-amber-100 text-amber-700' :
+                              visit.outcome === 'Lost Visit' ? 'bg-red-100 text-red-700' :
+                              !visit.outcome ? 'bg-primary-100 text-primary-700' :
+                              'bg-slate-100 text-slate-700'
+                            }`}>
+                              {visit.outcome || 'In Progress'}
+                            </Badge>
+                          </td>
+                          <td className="px-2 py-1.5 font-mono text-[11px] font-medium text-primary-600 text-right">{visit.order_value ? `₹${visit.order_value.toLocaleString()}` : '–'}</td>
+                          <td className="px-2 py-1.5 text-center">
+                            <OrderItemsView visit={visit} />
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              )
             ) : (
-              <div className="space-y-2">
-                {todayVisits.map((visit) => (
-                  <div key={visit.id} className="flex items-center justify-between p-2.5 bg-gray-50 rounded-lg">
-                    <div>
-                      <p className="font-medium text-sm text-gray-800">{visit.dealer_name}</p>
-                      <p className="text-[10px] text-gray-500">
-                        {new Date(visit.check_in_time).toLocaleTimeString()}
-                        {visit.time_spent_minutes && ` • ${Math.round(visit.time_spent_minutes)} min`}
-                      </p>
-                      {visit.contact_name && (
-                        <p className="text-[10px] text-gray-500 mt-0.5">
-                          {visit.contact_name}{visit.contact_phone && ` • ${visit.contact_phone}`}
-                        </p>
-                      )}
-                    </div>
-                    <Badge className={
-                      visit.outcome === 'Order Booked' ? 'bg-emerald-100 text-emerald-700' :
-                      visit.outcome === 'Follow-up Required' ? 'bg-amber-100 text-amber-700' :
-                      !visit.outcome ? 'bg-primary-100 text-primary-700' :
-                      'bg-slate-100 text-slate-600'
-                    }>
-                      {visit.outcome || 'In Progress'}
-                    </Badge>
-                  </div>
-                ))}
-              </div>
+              allVisits.length === 0 ? (
+                <p className="text-xs text-gray-500 text-center py-6">No visits recorded yet</p>
+              ) : (
+                <div className="overflow-x-auto max-h-[320px] overflow-y-auto">
+                  <table className="w-full text-left">
+                    <thead className="sticky top-0 bg-white z-10">
+                      <tr className="border-b border-gray-100">
+                        <th className="text-[10px] text-gray-500 uppercase tracking-wider font-medium px-2 py-2">Date</th>
+                        <th className="text-[10px] text-gray-500 uppercase tracking-wider font-medium px-2 py-2">Dealer</th>
+                        <th className="text-[10px] text-gray-500 uppercase tracking-wider font-medium px-2 py-2">Contact</th>
+                        <th className="text-[10px] text-gray-500 uppercase tracking-wider font-medium px-2 py-2">Check-in</th>
+                        <th className="text-[10px] text-gray-500 uppercase tracking-wider font-medium px-2 py-2 text-center">Duration</th>
+                        <th className="text-[10px] text-gray-500 uppercase tracking-wider font-medium px-2 py-2">Outcome</th>
+                        <th className="text-[10px] text-gray-500 uppercase tracking-wider font-medium px-2 py-2 text-right">Order Value</th>
+                        <th className="text-[10px] text-gray-500 uppercase tracking-wider font-medium px-2 py-2 text-center">Items</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {allVisits.map((visit) => (
+                        <tr key={visit.id} className="border-b border-gray-50 hover:bg-gray-50/50 transition-colors">
+                          <td className="px-2 py-1.5 font-mono text-[11px] text-gray-600 whitespace-nowrap">{new Date(visit.check_in_time).toLocaleDateString()}</td>
+                          <td className="px-2 py-1.5 text-xs font-medium text-gray-800 truncate max-w-[140px]">{visit.dealer_name}</td>
+                          <td className="px-2 py-1.5 text-[11px] text-gray-600 truncate max-w-[100px]">{visit.contact_name || '–'}</td>
+                          <td className="px-2 py-1.5 font-mono text-[11px] text-gray-600 whitespace-nowrap">{new Date(visit.check_in_time).toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'})}</td>
+                          <td className="px-2 py-1.5 font-mono text-[11px] text-gray-600 text-center">{visit.time_spent_minutes ? `${Math.round(visit.time_spent_minutes)}m` : '–'}</td>
+                          <td className="px-2 py-1.5">
+                            <Badge className={`text-[10px] px-1.5 py-0 ${
+                              visit.outcome === 'Order Booked' ? 'bg-emerald-100 text-emerald-700' :
+                              visit.outcome === 'Follow-up Required' ? 'bg-amber-100 text-amber-700' :
+                              visit.outcome === 'Lost Visit' ? 'bg-red-100 text-red-700' :
+                              !visit.outcome ? 'bg-primary-100 text-primary-700' :
+                              'bg-slate-100 text-slate-700'
+                            }`}>
+                              {visit.outcome || 'In Progress'}
+                            </Badge>
+                          </td>
+                          <td className="px-2 py-1.5 font-mono text-[11px] font-medium text-primary-600 text-right">{visit.order_value ? `₹${visit.order_value.toLocaleString()}` : '–'}</td>
+                          <td className="px-2 py-1.5 text-center">
+                            <OrderItemsView visit={visit} />
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              )
             )}
           </CardContent>
         </Card>
@@ -599,9 +776,9 @@ const FieldView = () => {
         </DialogContent>
       </Dialog>
 
-      {/* Check-out Dialog */}
+      {/* Check-out Dialog - high z-index to appear above map */}
       <Dialog open={checkOutDialogOpen} onOpenChange={setCheckOutDialogOpen}>
-        <DialogContent>
+        <DialogContent className="z-[9999] overflow-visible" overlayClassName="z-[9998]">
           <DialogHeader>
             <DialogTitle>Complete Visit</DialogTitle>
           </DialogHeader>
@@ -612,7 +789,7 @@ const FieldView = () => {
                 <SelectTrigger data-testid="outcome-select">
                   <SelectValue placeholder="Select outcome" />
                 </SelectTrigger>
-                <SelectContent>
+                <SelectContent className="!z-[10001]">
                   <SelectItem value="Order Booked">Order Booked</SelectItem>
                   <SelectItem value="Follow-up Required">Follow-up Required</SelectItem>
                   <SelectItem value="No Meeting">No Meeting</SelectItem>
@@ -622,16 +799,47 @@ const FieldView = () => {
             </div>
 
             {outcomeData.outcome === 'Order Booked' && (
-              <div className="space-y-2">
-                <Label>Order Value (₹)</Label>
-                <Input
-                  type="number"
-                  value={outcomeData.order_value}
-                  onChange={(e) => setOutcomeData({...outcomeData, order_value: e.target.value})}
-                  placeholder="Enter order value"
-                  data-testid="order-value-input"
-                />
-              </div>
+              <>
+                <div className="space-y-2">
+                  <Label className="flex items-center gap-1.5">
+                    <Package size={14} />
+                    Select Items Ordered
+                  </Label>
+                  <p className="text-[11px] text-gray-500">Pick only the items that were ordered (optional)</p>
+                  {companyProducts.length > 0 ? (
+                    <div className="border border-gray-200 rounded-lg p-2 max-h-[180px] overflow-y-auto bg-gray-50/50 space-y-1.5">
+                      {companyProducts.map((item) => (
+                        <label
+                          key={item}
+                          className={`flex items-center gap-3 cursor-pointer rounded-lg px-3 py-2.5 border transition-all ${
+                            outcomeData.ordered_items?.includes(item)
+                              ? 'bg-primary-50 border-primary-200'
+                              : 'bg-white border-gray-100 hover:border-gray-200 hover:bg-gray-50'
+                          }`}
+                        >
+                          <Checkbox
+                            checked={outcomeData.ordered_items?.includes(item)}
+                            onCheckedChange={() => toggleOrderedItem(item)}
+                          />
+                          <span className="text-sm text-gray-800 font-medium">{item}</span>
+                        </label>
+                      ))}
+                    </div>
+                  ) : (
+                    <p className="text-xs text-gray-500 py-2">No products configured. Ask admin to add product items in Settings.</p>
+                  )}
+                </div>
+                <div className="space-y-2">
+                  <Label>Order Value (₹)</Label>
+                  <Input
+                    type="number"
+                    value={outcomeData.order_value}
+                    onChange={(e) => setOutcomeData({...outcomeData, order_value: e.target.value})}
+                    placeholder="Enter order value"
+                    data-testid="order-value-input"
+                  />
+                </div>
+              </>
             )}
 
             <div className="space-y-2">

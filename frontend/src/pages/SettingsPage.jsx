@@ -21,7 +21,8 @@ import {
   Crosshair,
   Lightning,
   CheckCircle,
-  WarningCircle
+  WarningCircle,
+  Package
 } from '@phosphor-icons/react';
 import { useAuth } from '../context/AuthContext';
 import { toast } from 'sonner';
@@ -35,6 +36,7 @@ const SettingsPage = () => {
   const [company, setCompany] = useState(null);
   const [config, setConfig] = useState({
     product_categories: [],
+    product_items: [],
     dealer_types: ['Retailer', 'Distributor', 'Wholesaler'],
     working_hours: { start: '09:00', end: '18:00' },
     visit_radius: 500,
@@ -42,6 +44,7 @@ const SettingsPage = () => {
     sales_target: null
   });
   const [newCategory, setNewCategory] = useState('');
+  const [newItem, setNewItem] = useState('');
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
 
@@ -89,6 +92,23 @@ const SettingsPage = () => {
     setConfig({
       ...config,
       product_categories: config.product_categories.filter(c => c !== cat)
+    });
+  };
+
+  const addItem = () => {
+    if (newItem.trim() && !(config.product_items || []).includes(newItem.trim())) {
+      setConfig({
+        ...config,
+        product_items: [...(config.product_items || []), newItem.trim()]
+      });
+      setNewItem('');
+    }
+  };
+
+  const removeItem = (item) => {
+    setConfig({
+      ...config,
+      product_items: (config.product_items || []).filter(i => i !== item)
     });
   };
 
@@ -191,6 +211,50 @@ const SettingsPage = () => {
                     <div className="flex flex-col items-center justify-center w-full py-3 text-gray-400">
                       <Tag className="w-6 h-6 mb-1" />
                       <p className="text-xs">No categories added yet</p>
+                    </div>
+                  )}
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* Product Items - for Order Booked selection */}
+            <Card className="border border-gray-200 shadow-sm">
+              <CardContent className="p-5">
+                <div className="flex items-center justify-between mb-4">
+                  <div className="flex items-center gap-2">
+                    <div className="p-1.5 rounded-lg bg-gradient-to-br from-emerald-400 to-emerald-500">
+                      <Package className="text-white" weight="fill" size={14} />
+                    </div>
+                    <h3 className="text-sm font-bold text-gray-800">Product Items</h3>
+                  </div>
+                </div>
+                <p className="text-xs text-gray-500 mb-4">Items sales executives can select when booking an order</p>
+
+                <div className="flex gap-2 mb-4">
+                  <Input
+                    value={newItem}
+                    onChange={(e) => setNewItem(e.target.value)}
+                    placeholder="Add item (e.g. Paracetamol 500mg)..."
+                    onKeyPress={(e) => e.key === 'Enter' && addItem()}
+                    className="border-gray-200 focus:border-primary-400 focus:ring-primary-400"
+                  />
+                  <Button onClick={addItem} className="bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-600 hover:to-teal-600 text-white text-xs px-4 shadow-sm">Add</Button>
+                </div>
+
+                <div className="flex flex-wrap gap-2 min-h-[60px] p-3 border-2 border-dashed border-gray-200 rounded-lg bg-gray-50/50">
+                  {(config.product_items || []).map((item) => (
+                    <Badge 
+                      key={item} 
+                      className="bg-white border border-gray-200 text-gray-700 hover:bg-red-50 hover:text-red-600 hover:border-red-200 cursor-pointer transition-all text-xs px-2.5 py-1 shadow-sm"
+                      onClick={() => removeItem(item)}
+                    >
+                      {item} <span className="ml-1 text-gray-400 hover:text-red-500">&times;</span>
+                    </Badge>
+                  ))}
+                  {(config.product_items || []).length === 0 && (
+                    <div className="flex flex-col items-center justify-center w-full py-3 text-gray-400">
+                      <Package className="w-6 h-6 mb-1" />
+                      <p className="text-xs">No items added. Uses product categories if empty.</p>
                     </div>
                   )}
                 </div>

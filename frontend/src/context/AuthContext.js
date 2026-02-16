@@ -34,10 +34,14 @@ export const AuthProvider = ({ children }) => {
 
   const login = useCallback(async (email, password) => {
     const response = await axios.post(`${API}/auth/login`, { email, password });
-    const { token, ...userData } = response.data;
+    const { token } = response.data;
     localStorage.setItem('fieldops_token', token);
-    setUser(userData);
-    return userData;
+    // Fetch full user profile (includes daily_sales_target, etc.)
+    const meRes = await axios.get(`${API}/auth/me`, {
+      headers: { Authorization: `Bearer ${token}` }
+    });
+    setUser(meRes.data);
+    return meRes.data;
   }, []);
 
   const register = useCallback(async (companyData) => {

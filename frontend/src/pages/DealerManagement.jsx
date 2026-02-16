@@ -10,6 +10,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from 
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../components/ui/select';
 import { Plus, MagnifyingGlass, MapPin, Trash, Pencil } from '@phosphor-icons/react';
 import { useAuth } from '../context/AuthContext';
+import DealerOrderItemsView from '../components/DealerOrderItemsView';
 import { toast } from 'sonner';
 
 const API = `${process.env.REACT_APP_BACKEND_URL}/api`;
@@ -356,75 +357,79 @@ const DealerManagement = () => {
               </div>
             ) : (
               <div className="overflow-x-auto">
-                <table className="data-table">
+                <table className="w-full text-left">
                   <thead>
-                    <tr>
-                      <th>Dealer</th>
-                      <th>Type</th>
-                      <th>Territory</th>
-                      <th>Contact</th>
-                      <th>Phone</th>
-                      <th>Found By</th>
-                      <th>Priority</th>
-                      <th>Last Visit</th>
-                      <th>Visited By</th>
-                      <th>Outcome</th>
-                      <th>Next Visit</th>
-                      <th>Actions</th>
+                    <tr className="border-b border-gray-100">
+                      <th className="text-[10px] text-gray-500 uppercase tracking-wider font-medium px-2 py-2">Dealer</th>
+                      <th className="text-[10px] text-gray-500 uppercase tracking-wider font-medium px-2 py-2">Address</th>
+                      <th className="text-[10px] text-gray-500 uppercase tracking-wider font-medium px-2 py-2">Type</th>
+                      <th className="text-[10px] text-gray-500 uppercase tracking-wider font-medium px-2 py-2">Territory</th>
+                      <th className="text-[10px] text-gray-500 uppercase tracking-wider font-medium px-2 py-2">Contact</th>
+                      <th className="text-[10px] text-gray-500 uppercase tracking-wider font-medium px-2 py-2">Phone</th>
+                      <th className="text-[10px] text-gray-500 uppercase tracking-wider font-medium px-2 py-2">Found By</th>
+                      <th className="text-[10px] text-gray-500 uppercase tracking-wider font-medium px-2 py-2">Priority</th>
+                      <th className="text-[10px] text-gray-500 uppercase tracking-wider font-medium px-2 py-2">Last Visit</th>
+                      <th className="text-[10px] text-gray-500 uppercase tracking-wider font-medium px-2 py-2">Visited By</th>
+                      <th className="text-[10px] text-gray-500 uppercase tracking-wider font-medium px-2 py-2">Outcome</th>
+                      <th className="text-[10px] text-gray-500 uppercase tracking-wider font-medium px-2 py-2">Next Visit</th>
+                      <th className="text-[10px] text-gray-500 uppercase tracking-wider font-medium px-2 py-2 text-right">Actions</th>
                     </tr>
                   </thead>
                   <tbody>
                     {filteredDealers.map((dealer) => (
-                      <tr key={dealer.id}>
-                        <td>
-                          <div>
-                            <p className="font-medium text-sm text-gray-800">{dealer.name}</p>
-                            <p className="text-[10px] text-gray-500 flex items-center gap-1 mt-0.5">
-                              <MapPin size={10} />
-                              {dealer.address}
-                            </p>
-                          </div>
+                      <tr key={dealer.id} className="border-b border-gray-50 hover:bg-gray-50/50 transition-colors">
+                        <td className="px-2 py-1.5">
+                          <p className="text-xs font-medium text-gray-800">{dealer.name}</p>
                         </td>
-                        <td>
-                          <Badge variant="outline">{dealer.dealer_type}</Badge>
+                        <td className="px-2 py-1.5">
+                          <p className="text-[11px] text-gray-600 flex items-start gap-1.5 min-w-0 max-w-[220px]" title={dealer.address}>
+                            <MapPin size={12} className="flex-shrink-0 mt-0.5 text-gray-400" />
+                            <span className="truncate">{dealer.address || '–'}</span>
+                          </p>
                         </td>
-                        <td className="text-xs text-gray-600">{getTerritoryName(dealer.territory_id)}</td>
-                        <td className="text-xs text-gray-600">{dealer.contact_person || '–'}</td>
-                        <td className="text-xs text-gray-600 font-mono">{dealer.phone || '–'}</td>
-                        <td className="text-xs text-gray-600">{dealer.found_by || '–'}</td>
-                        <td>
-                          <Badge className={
+                        <td className="px-2 py-1.5">
+                          <Badge variant="outline" className="text-[10px] px-1.5 py-0">{dealer.dealer_type}</Badge>
+                        </td>
+                        <td className="px-2 py-1.5 text-[11px] text-gray-600">{getTerritoryName(dealer.territory_id)}</td>
+                        <td className="px-2 py-1.5 text-[11px] text-gray-600 truncate max-w-[100px]">{dealer.contact_person || '–'}</td>
+                        <td className="px-2 py-1.5 font-mono text-[11px] text-gray-600 whitespace-nowrap">{dealer.phone || '–'}</td>
+                        <td className="px-2 py-1.5 text-[11px] text-gray-600 truncate max-w-[100px]">{dealer.found_by || '–'}</td>
+                        <td className="px-2 py-1.5">
+                          <Badge className={`text-[10px] px-1.5 py-0 ${
                             dealer.priority_level === 1 ? 'priority-high' :
                             dealer.priority_level === 2 ? 'priority-medium' : 'priority-low'
-                          }>
+                          }`}>
                             {dealer.priority_level === 1 ? 'High' : dealer.priority_level === 2 ? 'Medium' : 'Low'}
                           </Badge>
                         </td>
-                        <td className="font-mono text-xs text-gray-600 whitespace-nowrap">
+                        <td className="px-2 py-1.5 font-mono text-[11px] text-gray-600 whitespace-nowrap">
                           {dealer.last_visit_date ? new Date(dealer.last_visit_date).toLocaleDateString() : 'Never'}
                         </td>
-                        <td className="text-xs text-gray-600 truncate max-w-[100px]">
+                        <td className="px-2 py-1.5 text-[11px] text-gray-600 truncate max-w-[100px]">
                           {dealer.last_visited_by || '–'}
                         </td>
-                        <td>
-                          {dealer.last_outcome ? (
-                            <Badge className={`text-[10px] px-1.5 py-0 ${
-                              dealer.last_outcome === 'Order Booked' ? 'bg-emerald-100 text-emerald-700' :
-                              dealer.last_outcome === 'Follow-up Required' ? 'bg-amber-100 text-amber-700' :
-                              dealer.last_outcome === 'Lost Visit' ? 'bg-red-100 text-red-700' :
-                              'bg-slate-100 text-slate-600'
-                            }`}>
-                              {dealer.last_outcome}
-                            </Badge>
-                          ) : (
-                            <span className="text-xs text-gray-400">–</span>
-                          )}
+                        <td className="px-2 py-1.5">
+                          <div className="flex items-center gap-1.5">
+                            {dealer.last_outcome ? (
+                              <Badge className={`text-[10px] px-1.5 py-0 ${
+                                dealer.last_outcome === 'Order Booked' ? 'bg-emerald-100 text-emerald-700' :
+                                dealer.last_outcome === 'Follow-up Required' ? 'bg-amber-100 text-amber-700' :
+                                dealer.last_outcome === 'Lost Visit' ? 'bg-red-100 text-red-700' :
+                                'bg-slate-100 text-slate-600'
+                              }`}>
+                                {dealer.last_outcome}
+                              </Badge>
+                            ) : (
+                              <span className="text-[11px] text-gray-400">–</span>
+                            )}
+                            <DealerOrderItemsView dealer={dealer} />
+                          </div>
                         </td>
-                        <td className="font-mono text-xs text-gray-600 whitespace-nowrap">
+                        <td className="px-2 py-1.5 font-mono text-[11px] text-gray-600 whitespace-nowrap">
                           {dealer.next_visit_date ? new Date(dealer.next_visit_date).toLocaleDateString() : '–'}
                         </td>
-                        <td>
-                          <div className="flex items-center gap-1">
+                        <td className="px-2 py-1.5 text-right">
+                          <div className="flex items-center justify-end gap-1">
                             <Button 
                               variant="ghost" 
                               size="sm" 
