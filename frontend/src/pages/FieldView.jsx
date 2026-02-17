@@ -30,6 +30,7 @@ import OrderItemsView from '../components/OrderItemsView';
 import { MapContainer, TileLayer, Marker, Popup, Circle } from 'react-leaflet';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
+import SalesExecutiveSidebar from '../components/layout/SalesExecutiveSidebar';
 
 // Fix Leaflet markers
 delete L.Icon.Default.prototype._getIconUrl;
@@ -66,6 +67,7 @@ const FieldView = () => {
   const [visitTab, setVisitTab] = useState('today'); // 'today' or 'overall'
   const [loading, setLoading] = useState(true);
   const [viewMode, setViewMode] = useState('map'); // 'map' or 'list'
+  const [sidebarOpen, setSidebarOpen] = useState(false);
   
   // Check-in state
   const [activeVisit, setActiveVisit] = useState(null);
@@ -83,6 +85,7 @@ const FieldView = () => {
     contact_email: ''
   });
   const [companyProducts, setCompanyProducts] = useState([]);
+  const [itemDetails, setItemDetails] = useState({});
 
   const getCurrentLocation = () => {
     if (navigator.geolocation) {
@@ -231,12 +234,53 @@ const FieldView = () => {
   };
 
   const toggleOrderedItem = (item) => {
+    const isSelected = outcomeData.ordered_items.some(i => i.name === item);
+    
+    if (isSelected) {
+      setOutcomeData(prev => ({
+        ...prev,
+        ordered_items: prev.ordered_items.filter(i => i.name !== item)
+      }));
+      const newDetails = { ...itemDetails };
+      delete newDetails[item];
+      setItemDetails(newDetails);
+    } else {
+      setOutcomeData(prev => ({
+        ...prev,
+        ordered_items: [...prev.ordered_items, { name: item, quantity: 1, rate: 0 }]
+      }));
+      setItemDetails(prev => ({
+        ...prev,
+        [item]: { quantity: 1, rate: 0 }
+      }));
+    }
+  };
+
+  const updateItemDetail = (itemName, field, value) => {
+    const numValue = parseFloat(value) || 0;
+    
+    setItemDetails(prev => ({
+      ...prev,
+      [itemName]: {
+        ...prev[itemName],
+        [field]: numValue
+      }
+    }));
+
     setOutcomeData(prev => ({
       ...prev,
-      ordered_items: prev.ordered_items.includes(item)
-        ? prev.ordered_items.filter(i => i !== item)
-        : [...prev.ordered_items, item]
+      ordered_items: prev.ordered_items.map(item => 
+        item.name === itemName 
+          ? { ...item, [field]: numValue }
+          : item
+      )
     }));
+  };
+
+  const calculateTotalOrderValue = () => {
+    return outcomeData.ordered_items.reduce((total, item) => {
+      return total + (item.quantity * item.rate);
+    }, 0);
   };
 
   const handleCheckOut = async () => {
@@ -245,7 +289,6 @@ const FieldView = () => {
       return;
     }
     
-    // Handle both cases: id (from GET /visits/today) and visit_id (from POST /check-in response)
     const visitId = activeVisit.id || activeVisit.visit_id;
     
     if (!visitId) {
@@ -253,10 +296,12 @@ const FieldView = () => {
       return;
     }
 
+    const totalOrderValue = calculateTotalOrderValue();
+
     try {
       await axios.post(`${API}/visit/${visitId}/check-out`, {
         outcome: outcomeData.outcome,
-        order_value: outcomeData.order_value ? parseFloat(outcomeData.order_value) : null,
+        order_value: totalOrderValue,
         ordered_items: outcomeData.ordered_items || [],
         notes: outcomeData.notes || null,
         next_visit_date: outcomeData.next_visit_date || null,
@@ -271,6 +316,7 @@ const FieldView = () => {
       setActiveVisit(null);
       setCheckOutDialogOpen(false);
       setOutcomeData({ outcome: '', order_value: '', ordered_items: [], notes: '', next_visit_date: '', contact_name: '', contact_phone: '', contact_email: '' });
+      setItemDetails({});
       toast.success('Visit completed!');
       fetchTodayVisits();
       fetchNearbyDealers(); // Re-fetch to show shops again
@@ -327,11 +373,20 @@ const FieldView = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 pb-20" data-testid="field-view">
+    <div className="min-h-screen bg-gray-50 pb-20 md:ml-60" data-testid="field-view">
+      {/* Sidebar */}
+      <SalesExecutiveSidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} />
+      
       {/* Header */}
-      <header className="sticky top-0 z-40 bg-white border-b border-gray-100 px-4 py-2.5">
+      <header className="sticky top-0 z-40 bg-white border-b border-gray-100 px-4 py-2.5 md:ml-60">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
+            <button 
+              onClick={() => setSidebarOpen(true)}
+              className="md:hidden p-1.5 hover:bg-gray-100 rounded-lg transition-colors"
+            >
+              <List size={20} className="text-gray-600" />
+            </button>
             <div className="bg-gradient-to-r from-primary-500 to-orange-500 w-8 h-8 rounded-lg flex items-center justify-center shadow-sm">
               <MapPin weight="fill" className="w-5 h-5 text-white" />
             </div>
@@ -341,7 +396,7 @@ const FieldView = () => {
             <Badge className={isInMarket ? 'status-active' : 'status-offline'}>
               {isInMarket ? 'In Market' : 'Not Started'}
             </Badge>
-            <Button variant="ghost" size="sm" onClick={logout}>
+            <Button variant="ghost" size="sm" onClick={logout} className="hidden md:flex">
               <SignOut size={18} />
             </Button>
           </div>
@@ -776,13 +831,22 @@ const FieldView = () => {
         </DialogContent>
       </Dialog>
 
-      {/* Check-out Dialog - high z-index to appear above map */}
+      {/* Check-out Dialog - Comprehensive Visit Recording Modal */}
+      {/* This modal captures: Visit Outcome, Order Details, Items Ordered, Contact Info, Notes, Next Visit Date */}
       <Dialog open={checkOutDialogOpen} onOpenChange={setCheckOutDialogOpen}>
-        <DialogContent className="z-[9999] overflow-visible" overlayClassName="z-[9998]">
+        <DialogContent className="z-[9999] overflow-visible max-h-[90vh] overflow-y-auto" overlayClassName="z-[9998]">
           <DialogHeader>
-            <DialogTitle>Complete Visit</DialogTitle>
+            <DialogTitle className="text-lg font-bold">Complete Visit & Record Details</DialogTitle>
+            <p className="text-xs text-gray-500 mt-1">Capture dealer information, order details, and follow-up notes</p>
           </DialogHeader>
           <div className="space-y-4">
+            {activeVisit && (
+              <div className="bg-slate-50 rounded-lg p-3 border border-slate-200">
+                <p className="text-sm font-semibold text-slate-800">{activeVisit.dealer_name}</p>
+                <p className="text-xs text-slate-500 mt-0.5">Recording visit details...</p>
+              </div>
+            )}
+            
             <div className="space-y-2">
               <Label>Visit Outcome *</Label>
               <Select value={outcomeData.outcome} onValueChange={(val) => setOutcomeData({...outcomeData, outcome: val})}>
@@ -805,39 +869,73 @@ const FieldView = () => {
                     <Package size={14} />
                     Select Items Ordered
                   </Label>
-                  <p className="text-[11px] text-gray-500">Pick only the items that were ordered (optional)</p>
+                  <p className="text-[11px] text-gray-500">Select items and enter quantity & rate</p>
                   {companyProducts.length > 0 ? (
-                    <div className="border border-gray-200 rounded-lg p-2 max-h-[180px] overflow-y-auto bg-gray-50/50 space-y-1.5">
-                      {companyProducts.map((item) => (
-                        <label
-                          key={item}
-                          className={`flex items-center gap-3 cursor-pointer rounded-lg px-3 py-2.5 border transition-all ${
-                            outcomeData.ordered_items?.includes(item)
-                              ? 'bg-primary-50 border-primary-200'
-                              : 'bg-white border-gray-100 hover:border-gray-200 hover:bg-gray-50'
-                          }`}
-                        >
-                          <Checkbox
-                            checked={outcomeData.ordered_items?.includes(item)}
-                            onCheckedChange={() => toggleOrderedItem(item)}
-                          />
-                          <span className="text-sm text-gray-800 font-medium">{item}</span>
-                        </label>
-                      ))}
+                    <div className="border border-gray-200 rounded-lg p-2 max-h-[300px] overflow-y-auto bg-gray-50/50 space-y-2">
+                      {companyProducts.map((item) => {
+                        const isSelected = outcomeData.ordered_items.some(i => i.name === item);
+                        return (
+                          <div
+                            key={item}
+                            className={`rounded-lg p-3 border transition-all ${
+                              isSelected
+                                ? 'bg-primary-50 border-primary-200'
+                                : 'bg-white border-gray-100'
+                            }`}
+                          >
+                            <label className="flex items-center gap-3 cursor-pointer mb-2">
+                              <Checkbox
+                                checked={isSelected}
+                                onCheckedChange={() => toggleOrderedItem(item)}
+                              />
+                              <span className="text-sm text-gray-800 font-medium flex-1">{item}</span>
+                            </label>
+                            {isSelected && (
+                              <div className="grid grid-cols-2 gap-2 ml-8">
+                                <div>
+                                  <Label className="text-[10px] text-gray-600">Quantity</Label>
+                                  <Input
+                                    type="number"
+                                    min="1"
+                                    value={itemDetails[item]?.quantity || 1}
+                                    onChange={(e) => updateItemDetail(item, 'quantity', e.target.value)}
+                                    className="h-8 text-sm mt-1"
+                                    placeholder="Qty"
+                                  />
+                                </div>
+                                <div>
+                                  <Label className="text-[10px] text-gray-600">Rate (₹)</Label>
+                                  <Input
+                                    type="number"
+                                    min="0"
+                                    step="0.01"
+                                    value={itemDetails[item]?.rate || 0}
+                                    onChange={(e) => updateItemDetail(item, 'rate', e.target.value)}
+                                    className="h-8 text-sm mt-1"
+                                    placeholder="Rate"
+                                  />
+                                </div>
+                              </div>
+                            )}
+                          </div>
+                        );
+                      })}
                     </div>
                   ) : (
                     <p className="text-xs text-gray-500 py-2">No products configured. Ask admin to add product items in Settings.</p>
                   )}
                 </div>
                 <div className="space-y-2">
-                  <Label>Order Value (₹)</Label>
+                  <Label>Order Value (₹) - Auto Calculated</Label>
                   <Input
                     type="number"
-                    value={outcomeData.order_value}
-                    onChange={(e) => setOutcomeData({...outcomeData, order_value: e.target.value})}
-                    placeholder="Enter order value"
+                    value={calculateTotalOrderValue()}
+                    readOnly
+                    className="bg-gray-50 font-bold text-primary-600"
+                    placeholder="Auto calculated from items"
                     data-testid="order-value-input"
                   />
+                  <p className="text-[10px] text-gray-500">Total is automatically calculated from quantity × rate</p>
                 </div>
               </>
             )}

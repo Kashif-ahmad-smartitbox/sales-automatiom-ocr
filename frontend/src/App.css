@@ -62,7 +62,7 @@
 
 /* Sidebar - compact */
 .sidebar {
-  @apply fixed left-0 top-0 h-full w-60 bg-white text-gray-800 z-40 transition-transform duration-300 border-r border-gray-100 shadow-lg;
+  @apply fixed left-0 top-0 h-full w-60 bg-white text-gray-800 z-30 transition-transform duration-300 border-r border-gray-100 shadow-lg;
 }
 
 .sidebar-link {

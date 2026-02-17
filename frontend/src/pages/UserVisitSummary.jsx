@@ -4,6 +4,8 @@ import AdminLayout from '../components/layout/AdminLayout';
 import { Card, CardContent } from '../components/ui/card';
 import { Button } from '../components/ui/button';
 import { Badge } from '../components/ui/badge';
+import { Input } from '../components/ui/input';
+import { Label } from '../components/ui/label';
 import {
   Users,
   MapPin,
@@ -12,7 +14,8 @@ import {
   CaretLeft,
   CaretDoubleDown,
   CaretDoubleUp,
-  Funnel
+  Funnel,
+  CalendarBlank
 } from '@phosphor-icons/react';
 import { useAuth } from '../context/AuthContext';
 import { toast } from 'sonner';
@@ -21,6 +24,22 @@ import DealerOrderItemsView from '../components/DealerOrderItemsView';
 const API = `${process.env.REACT_APP_BACKEND_URL}/api`;
 const SESSIONS_INITIAL = 3;
 const PAGE_SIZE = 15;
+
+// Helper to get date in YYYY-MM-DD format
+const getDateString = (date) => {
+  return date.toISOString().split('T')[0];
+};
+
+// Get date 15 days ago
+const getDefault15DaysAgo = () => {
+  const date = new Date();
+  date.setDate(date.getDate() - 15);
+  return getDateString(date);
+};
+
+const getTodayString = () => {
+  return getDateString(new Date());
+};
 
 const UserVisitSummary = () => {
   const { getAuthHeader } = useAuth();
@@ -31,11 +50,20 @@ const UserVisitSummary = () => {
   const [showAllSessions, setShowAllSessions] = useState({});
   const [selectedSession, setSelectedSession] = useState({});
   const [page, setPage] = useState({});
+  
+  // Date range filter - default to last 15 days
+  const [fromDate, setFromDate] = useState(getDefault15DaysAgo());
+  const [toDate, setToDate] = useState(getTodayString());
+  const [showFilters, setShowFilters] = useState(false);
 
-  const fetchSummary = useCallback(async () => {
+  const fetchSummary = useCallback(async (from, to) => {
     try {
+      setLoading(true);
       const [summaryRes, territoriesRes] = await Promise.all([
-        axios.get(`${API}/reports/user-visit-summary`, { headers: getAuthHeader() }),
+        axios.get(`${API}/reports/user-visit-summary`, { 
+          headers: getAuthHeader(),
+          params: { from_date: from, to_date: to }
+        }),
         axios.get(`${API}/territories`, { headers: getAuthHeader() })
       ]);
       setSummary(summaryRes.data);
@@ -48,8 +76,10 @@ const UserVisitSummary = () => {
   }, [getAuthHeader]);
 
   useEffect(() => {
-    fetchSummary();
-  }, [fetchSummary]);
+    // Load initial data with default 15 days
+    fetchSummary(fromDate, toDate);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const toggleExpand = (userId) => {
     if (expandedUser === userId) {
@@ -94,6 +124,10 @@ const UserVisitSummary = () => {
     );
   }
 
+  const handleApplyFilter = () => {
+    fetchSummary(fromDate, toDate);
+  };
+
   return (
     <AdminLayout title="User Visit Summary">
       <div className="space-y-4" data-testid="user-visit-summary">
@@ -105,6 +139,62 @@ const UserVisitSummary = () => {
             Dealers shown when market starts vs visited. Expand each user to see full dealer table (Dealer page layout).
           </p>
         </div>
+
+        {/* Date Range Filter */}
+        <Card className="border-0 shadow-sm">
+          <CardContent className="p-4">
+            <div className="flex items-center justify-between mb-3">
+              <div className="flex items-center gap-2">
+                <CalendarBlank size={18} className="text-primary-600" />
+                <h3 className="text-sm font-semibold text-gray-800">Date Range Filter</h3>
+                <Badge variant="outline" className="text-[10px] px-2 py-0 bg-blue-50 text-blue-700 border-blue-200">
+                  Last 15 days (default)
+                </Badge>
+              </div>
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => setShowFilters(!showFilters)}
+                className="h-7 text-xs"
+              >
+                {showFilters ? 'Hide' : 'Show'} Filters
+                <CaretDown size={14} className={`ml-1 transition-transform ${showFilters ? 'rotate-180' : ''}`} />
+              </Button>
+            </div>
+            
+            {showFilters && (
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-3 pt-3 border-t border-gray-100">
+                <div className="space-y-1.5">
+                  <Label className="text-xs text-gray-600">From Date</Label>
+                  <Input
+                    type="date"
+                    value={fromDate}
+                    onChange={(e) => setFromDate(e.target.value)}
+                    className="h-9 text-sm"
+                  />
+                </div>
+                <div className="space-y-1.5">
+                  <Label className="text-xs text-gray-600">To Date</Label>
+                  <Input
+                    type="date"
+                    value={toDate}
+                    onChange={(e) => setToDate(e.target.value)}
+                    className="h-9 text-sm"
+                  />
+                </div>
+                <div className="space-y-1.5">
+                  <Label className="text-xs text-gray-600">&nbsp;</Label>
+                  <Button
+                    onClick={handleApplyFilter}
+                    className="w-full h-9 bg-gradient-to-r from-primary-500 to-orange-500 hover:from-primary-600 hover:to-orange-600"
+                  >
+                    Apply Filter
+                  </Button>
+                </div>
+              </div>
+            )}
+          </CardContent>
+        </Card>
 
         {summary.length === 0 ? (
           <Card className="border-0 shadow-sm">
@@ -156,7 +246,7 @@ const UserVisitSummary = () => {
 
                   {expandedUser === user.user_id && (
                     <div className="border-t border-gray-100">
-                      {user.market_sessions?.length > 0 && (
+                      {false && user.market_sessions?.length > 0 && (
                         <div className="px-4 py-3 bg-gray-50/50 border-b border-gray-100">
                           <p className="text-[10px] font-semibold text-gray-600 uppercase tracking-wider mb-2 flex items-center gap-2">
                             <Funnel size={12} /> Market Sessions (click to filter table)

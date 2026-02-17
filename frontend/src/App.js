@@ -15,6 +15,7 @@ import UserVisitSummary from "./pages/UserVisitSummary";
 import SettingsPage from "./pages/SettingsPage";
 import FieldView from "./pages/FieldView";
 import PotentialDealers from "./pages/PotentialDealers";
+import AssignedPotentials from "./pages/AssignedPotentials";
 
 // Owner Pages
 import OwnerDashboard from "./pages/OwnerDashboard";
@@ -118,6 +119,11 @@ function AppRoutes() {
       <Route path="/field" element={
         <ProtectedRoute allowedRoles={["sales_executive"]}>
           <FieldView />
+        </ProtectedRoute>
+      } />
+      <Route path="/assigned-potentials" element={
+        <ProtectedRoute allowedRoles={["sales_executive"]}>
+          <AssignedPotentials />
         </ProtectedRoute>
       } />
 
