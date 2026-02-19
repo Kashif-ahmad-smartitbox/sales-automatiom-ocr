@@ -10,6 +10,8 @@ import AdminDashboard from "./pages/AdminDashboard";
 import DealerManagement from "./pages/DealerManagement";
 import TerritoryManagement from "./pages/TerritoryManagement";
 import SalesExecutiveManagement from "./pages/SalesExecutiveManagement";
+import HODManagement from "./pages/HODManagement";
+import HODReports from "./pages/HODReports";
 import ReportsPage from "./pages/ReportsPage";
 import UserVisitSummary from "./pages/UserVisitSummary";
 import SettingsPage from "./pages/SettingsPage";
@@ -73,44 +75,54 @@ function AppRoutes() {
       <Route path="/login" element={user ? <Navigate to={getHomeRoute()} replace /> : <LoginPage />} />
       <Route path="/register" element={user ? <Navigate to={getHomeRoute()} replace /> : <RegisterPage />} />
 
-      {/* Admin Routes */}
+      {/* Admin Routes - Include HOD with filtered data */}
       <Route path="/dashboard" element={
-        <ProtectedRoute allowedRoles={["organization", "admin"]}>
+        <ProtectedRoute allowedRoles={["organization", "admin", "hod"]}>
           <AdminDashboard />
         </ProtectedRoute>
       } />
       <Route path="/dealers" element={
-        <ProtectedRoute allowedRoles={["organization", "admin"]}>
+        <ProtectedRoute allowedRoles={["organization", "admin", "hod"]}>
           <DealerManagement />
         </ProtectedRoute>
       } />
       <Route path="/territories" element={
-        <ProtectedRoute allowedRoles={["organization", "admin"]}>
+        <ProtectedRoute allowedRoles={["organization", "admin", "hod"]}>
           <TerritoryManagement />
         </ProtectedRoute>
       } />
       <Route path="/executives" element={
-        <ProtectedRoute allowedRoles={["organization", "admin"]}>
+        <ProtectedRoute allowedRoles={["organization", "admin", "hod"]}>
           <SalesExecutiveManagement />
         </ProtectedRoute>
       } />
       <Route path="/reports" element={
-        <ProtectedRoute allowedRoles={["organization", "admin"]}>
+        <ProtectedRoute allowedRoles={["organization", "admin", "hod"]}>
           <ReportsPage />
         </ProtectedRoute>
       } />
-      <Route path="/user-visit-summary" element={
+      <Route path="/hod-management" element={
         <ProtectedRoute allowedRoles={["organization", "admin"]}>
+          <HODManagement />
+        </ProtectedRoute>
+      } />
+      <Route path="/hod-reports" element={
+        <ProtectedRoute allowedRoles={["organization", "admin"]}>
+          <HODReports />
+        </ProtectedRoute>
+      } />
+      <Route path="/user-visit-summary" element={
+        <ProtectedRoute allowedRoles={["organization", "admin", "hod"]}>
           <UserVisitSummary />
         </ProtectedRoute>
       } />
       <Route path="/settings" element={
-        <ProtectedRoute allowedRoles={["organization", "admin"]}>
+        <ProtectedRoute allowedRoles={["organization", "admin", "hod"]}>
           <SettingsPage />
         </ProtectedRoute>
       } />
       <Route path="/potentials" element={
-        <ProtectedRoute allowedRoles={["organization", "admin"]}>
+        <ProtectedRoute allowedRoles={["organization", "admin", "hod"]}>
           <PotentialDealers />
         </ProtectedRoute>
       } />

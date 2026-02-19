@@ -10,23 +10,30 @@ import {
   List,
   Buildings,
   X,
-  ChartPieSlice
+  ChartPieSlice,
+  UserCircleGear,
+  Target
 } from '@phosphor-icons/react';
 import { useAuth } from '../../context/AuthContext';
 
 const Sidebar = ({ isOpen, onClose }) => {
   const { logout, user } = useAuth();
 
-  const navItems = [
-    { to: '/dashboard', icon: House, label: 'Dashboard' },
-    { to: '/executives', icon: Users, label: 'Sales Team' },
-    { to: '/dealers', icon: Storefront, label: 'Dealers' },
-    { to: '/potentials', icon: Buildings, label: 'Potential Dealers' },
-    // { to: '/territories', icon: MapPin, label: 'Territories' },
-    { to: '/reports', icon: ChartBar, label: 'Reports' },
-    { to: '/user-visit-summary', icon: ChartPieSlice, label: 'User Visit Summary' },
-    { to: '/settings', icon: Gear, label: 'Settings' },
+  const allNavItems = [
+    { to: '/dashboard', icon: House, label: 'Dashboard', roles: ['organization', 'admin', 'hod'] },
+    { to: '/executives', icon: Users, label: 'Sales Team', roles: ['organization', 'admin', 'hod'] },
+    { to: '/hod-management', icon: UserCircleGear, label: 'HOD Management', roles: ['organization', 'admin'] },
+    { to: '/dealers', icon: Storefront, label: 'Dealers', roles: ['organization', 'admin', 'hod'] },
+    { to: '/potentials', icon: Buildings, label: 'Potential Dealers', roles: ['organization', 'admin', 'hod'] },
+    // { to: '/territories', icon: MapPin, label: 'Territories', roles: ['organization', 'admin', 'hod'] },
+    { to: '/reports', icon: ChartBar, label: 'Reports', roles: ['organization', 'admin', 'hod'] },
+    { to: '/hod-reports', icon: Target, label: 'HOD Reports', roles: ['organization', 'admin'] },
+    { to: '/user-visit-summary', icon: ChartPieSlice, label: 'User Visit Summary', roles: ['organization', 'admin', 'hod'] },
+    { to: '/settings', icon: Gear, label: 'Settings', roles: ['organization', 'admin', 'hod'] },
   ];
+
+  // Filter nav items based on user role
+  const navItems = allNavItems.filter(item => item.roles.includes(user?.role));
 
   return (
     <>
