@@ -4,13 +4,19 @@ import OwnerSidebar from './OwnerSidebar';
 
 const OwnerLayout = ({ children, title }) => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [isCollapsed, setIsCollapsed] = useState(false);
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-gray-50 to-gray-100">
-      <OwnerSidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} />
+      <OwnerSidebar 
+        isOpen={sidebarOpen} 
+        onClose={() => setSidebarOpen(false)}
+        isCollapsed={isCollapsed}
+        setIsCollapsed={setIsCollapsed}
+      />
       
       {/* Main Content */}
-      <div className="md:ml-60 flex flex-col min-h-screen">
+      <div className={`transition-all duration-300 flex flex-col min-h-screen ${isCollapsed ? 'md:ml-16' : 'md:ml-60'}`}>
         {/* Header */}
         <header className="sticky top-0 z-20 bg-white/90 backdrop-blur-md border-b border-gray-100 shadow-sm">
           <div className="flex items-center justify-between h-14 px-4 md:px-6">

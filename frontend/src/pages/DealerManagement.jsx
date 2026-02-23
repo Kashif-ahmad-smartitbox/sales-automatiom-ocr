@@ -368,6 +368,7 @@ const DealerManagement = () => {
                       <th className="text-[10px] text-gray-500 uppercase tracking-wider font-medium px-2 py-2">Phone</th>
                       <th className="text-[10px] text-gray-500 uppercase tracking-wider font-medium px-2 py-2">Found By</th>
                       <th className="text-[10px] text-gray-500 uppercase tracking-wider font-medium px-2 py-2">Priority</th>
+                      <th className="text-[10px] text-gray-500 uppercase tracking-wider font-medium px-2 py-2">Booked Amount</th>
                       <th className="text-[10px] text-gray-500 uppercase tracking-wider font-medium px-2 py-2">Last Visit</th>
                       <th className="text-[10px] text-gray-500 uppercase tracking-wider font-medium px-2 py-2">Visited By</th>
                       <th className="text-[10px] text-gray-500 uppercase tracking-wider font-medium px-2 py-2">Outcome</th>
@@ -388,7 +389,7 @@ const DealerManagement = () => {
                           </p>
                         </td>
                         <td className="px-2 py-1.5">
-                          <Badge variant="outline" className="text-[10px] px-1.5 py-0">{dealer.dealer_type}</Badge>
+                          <td className="px-2 py-1.5 text-[11px] text-gray-600">{getTerritoryName(dealer.dealer_type)}</td>
                         </td>
                         <td className="px-2 py-1.5 text-[11px] text-gray-600">{getTerritoryName(dealer.territory_id)}</td>
                         <td className="px-2 py-1.5 text-[11px] text-gray-600 truncate max-w-[100px]">{dealer.contact_person || '–'}</td>
@@ -401,6 +402,15 @@ const DealerManagement = () => {
                           }`}>
                             {dealer.priority_level === 1 ? 'High' : dealer.priority_level === 2 ? 'Medium' : 'Low'}
                           </Badge>
+                        </td>
+                        <td className="px-2 py-1.5">
+                          {dealer.total_booked_amount > 0 ? (
+                            <span className="text-[11px] font-bold text-emerald-600">
+                              ₹{dealer.total_booked_amount.toLocaleString('en-IN')}
+                            </span>
+                          ) : (
+                            <span className="text-[11px] text-gray-400">₹0</span>
+                          )}
                         </td>
                         <td className="px-2 py-1.5 font-mono text-[11px] text-gray-600 whitespace-nowrap">
                           {dealer.last_visit_date ? new Date(dealer.last_visit_date).toLocaleDateString() : 'Never'}

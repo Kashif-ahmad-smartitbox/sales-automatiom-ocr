@@ -12,12 +12,15 @@ import TerritoryManagement from "./pages/TerritoryManagement";
 import SalesExecutiveManagement from "./pages/SalesExecutiveManagement";
 import HODManagement from "./pages/HODManagement";
 import HODReports from "./pages/HODReports";
+import HODDashboard from "./pages/HODDashboard";
+import HODExecutives from "./pages/HODExecutives";
 import ReportsPage from "./pages/ReportsPage";
 import UserVisitSummary from "./pages/UserVisitSummary";
 import SettingsPage from "./pages/SettingsPage";
 import FieldView from "./pages/FieldView";
 import PotentialDealers from "./pages/PotentialDealers";
 import AssignedPotentials from "./pages/AssignedPotentials";
+import ItemMaster from "./pages/ItemMaster";
 
 // Owner Pages
 import OwnerDashboard from "./pages/OwnerDashboard";
@@ -52,7 +55,8 @@ const ProtectedRoute = ({ children, allowedRoles }) => {
   if (allowedRoles && !allowedRoles.includes(user.role)) {
     // Redirect to appropriate home based on role
     const redirectTo = user.role === 'sales_executive' ? '/field' :
-      user.role === 'owner' ? '/owner' : '/dashboard';
+      user.role === 'owner' ? '/owner' :
+      user.role === 'hod' ? '/hod' : '/dashboard';
     return <Navigate to={redirectTo} replace />;
   }
 
@@ -66,6 +70,7 @@ function AppRoutes() {
   const getHomeRoute = () => {
     if (!user) return null;
     if (user.role === 'owner') return '/owner';
+    if (user.role === 'hod') return '/hod';
     return user.role === 'sales_executive' ? '/field' : '/dashboard';
   };
 
@@ -126,6 +131,11 @@ function AppRoutes() {
           <PotentialDealers />
         </ProtectedRoute>
       } />
+      <Route path="/item-master" element={
+        <ProtectedRoute allowedRoles={["organization", "admin", "hod"]}>
+          <ItemMaster />
+        </ProtectedRoute>
+      } />
 
       {/* Sales Executive Routes */}
       <Route path="/field" element={
@@ -136,6 +146,38 @@ function AppRoutes() {
       <Route path="/assigned-potentials" element={
         <ProtectedRoute allowedRoles={["sales_executive"]}>
           <AssignedPotentials />
+        </ProtectedRoute>
+      } />
+      <Route path="/items" element={
+        <ProtectedRoute allowedRoles={["sales_executive"]}>
+          <ItemMaster />
+        </ProtectedRoute>
+      } />
+
+      {/* HOD Routes */}
+      <Route path="/hod" element={
+        <ProtectedRoute allowedRoles={["hod"]}>
+          <HODDashboard />
+        </ProtectedRoute>
+      } />
+      <Route path="/hod/executives" element={
+        <ProtectedRoute allowedRoles={["hod"]}>
+          <HODExecutives />
+        </ProtectedRoute>
+      } />
+      <Route path="/hod/items" element={
+        <ProtectedRoute allowedRoles={["hod"]}>
+          <ItemMaster />
+        </ProtectedRoute>
+      } />
+      <Route path="/hod/reports" element={
+        <ProtectedRoute allowedRoles={["hod"]}>
+          <ReportsPage />
+        </ProtectedRoute>
+      } />
+      <Route path="/hod/visits" element={
+        <ProtectedRoute allowedRoles={["hod"]}>
+          <UserVisitSummary />
         </ProtectedRoute>
       } />
 
@@ -168,6 +210,11 @@ function AppRoutes() {
       <Route path="/owner/territories" element={
         <ProtectedRoute allowedRoles={["owner"]}>
           <OwnerTerritories />
+        </ProtectedRoute>
+      } />
+      <Route path="/owner/items" element={
+        <ProtectedRoute allowedRoles={["owner"]}>
+          <ItemMaster />
         </ProtectedRoute>
       } />
       <Route path="/owner/visits" element={

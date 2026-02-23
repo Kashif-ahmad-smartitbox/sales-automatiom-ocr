@@ -65,6 +65,12 @@
   @apply fixed left-0 top-0 h-full w-60 bg-white text-gray-800 z-30 transition-transform duration-300 border-r border-gray-100 shadow-lg;
 }
 
+/* Dark Sidebar - matching screenshot */
+.sidebar-dark {
+  @apply fixed left-0 top-0 h-full z-40 transition-all duration-300 shadow-2xl flex flex-col;
+  background: linear-gradient(180deg, #2c3e50 0%, #1a252f 100%);
+}
+
 .sidebar-link {
   @apply flex items-center gap-2.5 px-3 py-2 text-xs font-medium text-gray-500 hover:text-primary-700 hover:bg-gradient-to-r hover:from-primary-50 hover:to-orange-50 transition-all duration-200 rounded-lg mx-2;
 }

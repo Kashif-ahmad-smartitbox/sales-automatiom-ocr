@@ -42,21 +42,18 @@ const AssignedPotentials = () => {
     try {
       setLoading(true);
       console.log('Fetching assigned potentials...');
-      const [potentialsRes, configRes] = await Promise.all([
+      const [potentialsRes, itemsRes] = await Promise.all([
         axios.get(`${API}/visit/my-assigned-potentials`, { headers: getAuthHeader() }),
-        axios.get(`${API}/company/config`, { headers: getAuthHeader() }).catch(() => ({ data: { config: { product_categories: [], product_items: [] } } }))
+        axios.get(`${API}/items`, { headers: getAuthHeader(), params: { active: true } }).catch(() => ({ data: [] }))
       ]);
       console.log('Assigned potentials response:', potentialsRes.data);
-      console.log('Company config response:', configRes.data);
+      console.log('Items response:', itemsRes.data);
       
-      // Use product_categories if product_items is empty
-      const products = configRes.data?.config?.product_items?.length > 0 
-        ? configRes.data.config.product_items 
-        : configRes.data?.config?.product_categories || [];
+      const items = itemsRes.data || [];
       
       setPotentials(potentialsRes.data);
-      setCompanyProducts(products);
-      console.log('Products loaded:', products);
+      setCompanyProducts(items);
+      console.log('Items loaded:', items);
     } catch (error) {
       console.error('Fetch error:', error);
       console.error('Error response:', error.response?.data);
@@ -87,24 +84,26 @@ const AssignedPotentials = () => {
   };
 
   const toggleOrderedItem = (item) => {
-    const isSelected = visitData.ordered_items.some(i => i.name === item);
+    const itemName = item.item_name;
+    const isSelected = visitData.ordered_items.some(i => i.name === itemName);
     
     if (isSelected) {
       setVisitData(prev => ({
         ...prev,
-        ordered_items: prev.ordered_items.filter(i => i.name !== item)
+        ordered_items: prev.ordered_items.filter(i => i.name !== itemName)
       }));
       const newDetails = { ...itemDetails };
-      delete newDetails[item];
+      delete newDetails[itemName];
       setItemDetails(newDetails);
     } else {
+      const defaultRate = item.default_price || 0;
       setVisitData(prev => ({
         ...prev,
-        ordered_items: [...prev.ordered_items, { name: item, quantity: 1, rate: 0 }]
+        ordered_items: [...prev.ordered_items, { name: itemName, quantity: 1, rate: defaultRate }]
       }));
       setItemDetails(prev => ({
         ...prev,
-        [item]: { quantity: 1, rate: 0 }
+        [itemName]: { quantity: 1, rate: defaultRate }
       }));
     }
   };
@@ -393,10 +392,11 @@ const AssignedPotentials = () => {
                   {companyProducts.length > 0 ? (
                     <div className="border border-gray-200 rounded-lg p-2 max-h-[300px] overflow-y-auto bg-gray-50/50 space-y-2">
                       {companyProducts.map((item) => {
-                        const isSelected = visitData.ordered_items.some(i => i.name === item);
+                        const itemName = item.item_name;
+                        const isSelected = visitData.ordered_items.some(i => i.name === itemName);
                         return (
                           <div
-                            key={item}
+                            key={item.id}
                             className={`rounded-lg p-3 border transition-all ${
                               isSelected
                                 ? 'bg-primary-50 border-primary-200'
@@ -408,7 +408,13 @@ const AssignedPotentials = () => {
                                 checked={isSelected}
                                 onCheckedChange={() => toggleOrderedItem(item)}
                               />
-                              <span className="text-sm text-gray-800 font-medium flex-1">{item}</span>
+                              <div className="flex-1">
+                                <div className="flex items-center gap-2">
+                                  <span className="text-sm text-gray-800 font-medium">{itemName}</span>
+                                  <span className="text-xs text-gray-500 bg-gray-100 px-2 py-0.5 rounded-full">{item.product_category}</span>
+                                </div>
+                                <div className="text-xs text-emerald-600 font-semibold mt-0.5">Default: ₹{item.default_price?.toLocaleString()}</div>
+                              </div>
                             </label>
                             {isSelected && (
                               <div className="grid grid-cols-2 gap-2 ml-8">
@@ -417,22 +423,22 @@ const AssignedPotentials = () => {
                                   <Input
                                     type="number"
                                     min="1"
-                                    value={itemDetails[item]?.quantity || 1}
-                                    onChange={(e) => updateItemDetail(item, 'quantity', e.target.value)}
+                                    value={itemDetails[itemName]?.quantity || 1}
+                                    onChange={(e) => updateItemDetail(itemName, 'quantity', e.target.value)}
                                     className="h-8 text-sm mt-1"
                                     placeholder="Qty"
                                   />
                                 </div>
                                 <div>
-                                  <Label className="text-[10px] text-gray-600">Rate (₹)</Label>
+                                  <Label className="text-[10px] text-gray-600">Price (₹) - Editable</Label>
                                   <Input
                                     type="number"
                                     min="0"
                                     step="0.01"
-                                    value={itemDetails[item]?.rate || 0}
-                                    onChange={(e) => updateItemDetail(item, 'rate', e.target.value)}
-                                    className="h-8 text-sm mt-1"
-                                    placeholder="Rate"
+                                    value={itemDetails[itemName]?.rate || item.default_price || 0}
+                                    onChange={(e) => updateItemDetail(itemName, 'rate', e.target.value)}
+                                    className="h-8 text-sm mt-1 font-semibold text-emerald-600"
+                                    placeholder="Price"
                                   />
                                 </div>
                               </div>
@@ -442,7 +448,7 @@ const AssignedPotentials = () => {
                       })}
                     </div>
                   ) : (
-                    <p className="text-xs text-gray-500 py-2">No products configured. Ask admin to add product items in Settings.</p>
+                    <p className="text-xs text-gray-500 py-2">No items available. Ask admin to add items in Item Master.</p>
                   )}
                 </div>
                 <div className="space-y-2">

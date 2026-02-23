@@ -5,6 +5,7 @@ import { useAuth } from '../../context/AuthContext';
 
 const HODLayout = ({ children, title }) => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [isCollapsed, setIsCollapsed] = useState(false);
   const { user } = useAuth();
 
   useEffect(() => {
@@ -13,9 +14,14 @@ const HODLayout = ({ children, title }) => {
 
   return (
     <div className="min-h-screen bg-slate-50">
-      <HODSidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} />
+      <HODSidebar 
+        isOpen={sidebarOpen} 
+        onClose={() => setSidebarOpen(false)}
+        isCollapsed={isCollapsed}
+        setIsCollapsed={setIsCollapsed}
+      />
       
-      <div className="lg:ml-64">
+      <div className={`transition-all duration-300 ${isCollapsed ? 'md:ml-16' : 'md:ml-60'}`}>
         {/* Top Bar */}
         <header className="bg-white border-b border-slate-200 px-4 py-3 sticky top-0 z-30 shadow-sm">
           <div className="flex items-center justify-between">

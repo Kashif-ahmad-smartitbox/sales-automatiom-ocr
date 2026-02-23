@@ -31,7 +31,7 @@ const HODDashboard = () => {
       const [statsRes, execsRes, visitsRes, activityRes] = await Promise.all([
         axios.get(`${API}/hod/dashboard`, { headers: getAuthHeader() }),
         axios.get(`${API}/hod/tracking/live`, { headers: getAuthHeader() }),
-        axios.get(`${API}/hod/visits/today`, { headers: getAuthHeader() }),
+        axios.get(`${API}/hod/visits/history?limit=50`, { headers: getAuthHeader() }),
         axios.get(`${API}/hod/visits/history?limit=10`, { headers: getAuthHeader() })
       ]);
       setStats(statsRes.data);

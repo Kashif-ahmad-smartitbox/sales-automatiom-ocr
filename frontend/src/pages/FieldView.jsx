@@ -1,112 +1,103 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 import axios from 'axios';
-import { Button } from '../components/ui/button';
-import { Card, CardContent, CardHeader, CardTitle } from '../components/ui/card';
-import { Badge } from '../components/ui/badge';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '../components/ui/dialog';
 import { Label } from '../components/ui/label';
 import { Textarea } from '../components/ui/textarea';
 import { Input } from '../components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../components/ui/select';
 import { Checkbox } from '../components/ui/checkbox';
-import { 
-  MapPin, 
-  Play, 
-  Stop, 
+import {
+  MapPin,
+  Play,
+  Stop,
   CheckCircle,
   Clock,
   Storefront,
   NavigationArrow,
-  SignOut,
   List,
   MapTrifold,
-  CurrencyDollar,
+  CurrencyInr,
+  ArrowUp,
+  ArrowsClockwise,
   Target,
   Package
 } from '@phosphor-icons/react';
 import { useAuth } from '../context/AuthContext';
 import { toast } from 'sonner';
 import OrderItemsView from '../components/OrderItemsView';
-import { MapContainer, TileLayer, Marker, Popup, Circle } from 'react-leaflet';
+import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
-import SalesExecutiveSidebar from '../components/layout/SalesExecutiveSidebar';
+import SalesExecutiveLayout from '../components/layout/SalesExecutiveLayout';
 
-// Fix Leaflet markers
+// Fix Leaflet default markers
 delete L.Icon.Default.prototype._getIconUrl;
 L.Icon.Default.mergeOptions({
   iconRetinaUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/images/marker-icon-2x.png',
-  iconUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/images/marker-icon.png',
-  shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/images/marker-shadow.png',
+  iconUrl:       'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/images/marker-icon.png',
+  shadowUrl:     'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/images/marker-shadow.png',
 });
 
 const API = `${process.env.REACT_APP_BACKEND_URL}/api`;
 
 const dealerIcon = new L.DivIcon({
   className: 'custom-marker',
-  html: '<div style="background-color: #2563eb; width: 20px; height: 20px; border-radius: 50%; border: 2px solid white; box-shadow: 0 2px 6px rgba(0,0,0,0.3);"></div>',
-  iconSize: [20, 20],
-  iconAnchor: [10, 10],
+  html: '<div style="background-color:#2563eb;width:20px;height:20px;border-radius:50%;border:2px solid white;box-shadow:0 2px 6px rgba(0,0,0,0.3);"></div>',
+  iconSize: [20, 20], iconAnchor: [10, 10],
 });
 
 const currentIcon = new L.DivIcon({
   className: 'custom-marker',
-  html: '<div style="background-color: #10b981; width: 16px; height: 16px; border-radius: 50%; border: 3px solid white; box-shadow: 0 0 0 3px #10b98140;"></div>',
-  iconSize: [16, 16],
-  iconAnchor: [8, 8],
+  html: '<div style="background-color:#10b981;width:16px;height:16px;border-radius:50%;border:3px solid white;box-shadow:0 0 0 3px #10b98140;"></div>',
+  iconSize: [16, 16], iconAnchor: [8, 8],
 });
 
 const FieldView = () => {
-  const { getAuthHeader, logout, user } = useAuth();
-  const [isInMarket, setIsInMarket] = useState(false);
-  const [sessionId, setSessionId] = useState(null);
+  const { getAuthHeader, user } = useAuth();
+  const [isInMarket, setIsInMarket]       = useState(false);
   const [currentLocation, setCurrentLocation] = useState(null);
   const [nearbyDealers, setNearbyDealers] = useState([]);
-  const [todayVisits, setTodayVisits] = useState([]);
-  const [allVisits, setAllVisits] = useState([]);
-  const [visitTab, setVisitTab] = useState('today'); // 'today' or 'overall'
-  const [loading, setLoading] = useState(true);
-  const [viewMode, setViewMode] = useState('map'); // 'map' or 'list'
-  const [sidebarOpen, setSidebarOpen] = useState(false);
-  
-  // Check-in state
-  const [activeVisit, setActiveVisit] = useState(null);
-  const [checkInDialogOpen, setCheckInDialogOpen] = useState(false);
-  const [checkOutDialogOpen, setCheckOutDialogOpen] = useState(false);
-  const [selectedDealer, setSelectedDealer] = useState(null);
-  const [outcomeData, setOutcomeData] = useState({
-    outcome: '',
-    order_value: '',
-    ordered_items: [],
-    notes: '',
-    next_visit_date: '',
-    contact_name: '',
-    contact_phone: '',
-    contact_email: ''
-  });
-  const [companyProducts, setCompanyProducts] = useState([]);
-  const [itemDetails, setItemDetails] = useState({});
+  const [todayVisits, setTodayVisits]     = useState([]);
+  const [allVisits, setAllVisits]         = useState([]);
+  const [visitTab, setVisitTab]           = useState('today');
+  const [loading, setLoading]             = useState(true);
+  const [viewMode, setViewMode]           = useState('map');
+  const [lastSync, setLastSync]           = useState(null);
+  const [fieldStats, setFieldStats]       = useState(null); // { distance_km, active_count, completed_count, missed_count, duration_mins }
 
+  // Check-in / check-out state
+  const [activeVisit, setActiveVisit]           = useState(null);
+  const [checkInDialogOpen, setCheckInDialogOpen]   = useState(false);
+  const [checkOutDialogOpen, setCheckOutDialogOpen] = useState(false);
+  const [selectedDealer, setSelectedDealer]     = useState(null);
+  const [outcomeData, setOutcomeData]           = useState({
+    outcome: '', order_value: '', ordered_items: [],
+    notes: '', next_visit_date: '',
+    contact_name: '', contact_phone: '', contact_email: ''
+  });
+  const [companyProducts, setCompanyProducts]   = useState([]);
+  const [itemDetails, setItemDetails]           = useState({});
+
+  // ── Geolocation ────────────────────────────────────────────────────
   const getCurrentLocation = () => {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
-        (position) => {
-          setCurrentLocation({
-            lat: position.coords.latitude,
-            lng: position.coords.longitude
-          });
+        (pos) => {
+          setCurrentLocation({ lat: pos.coords.latitude, lng: pos.coords.longitude });
           setLoading(false);
         },
-        (error) => {
-          toast.error('Please enable location access');
-          // Default to Mumbai for demo
+        () => {
           setCurrentLocation({ lat: 19.076, lng: 72.877 });
           setLoading(false);
         }
       );
+    } else {
+      setCurrentLocation({ lat: 19.076, lng: 72.877 });
+      setLoading(false);
     }
   };
 
+  // ── API helpers ─────────────────────────────────────────────────────
   const fetchNearbyDealers = useCallback(async () => {
     if (!currentLocation) return;
     try {
@@ -115,214 +106,151 @@ const FieldView = () => {
         headers: getAuthHeader()
       });
       setNearbyDealers(res.data);
-    } catch (error) {
-      console.error('Failed to fetch nearby dealers');
-    }
+    } catch { /* silent */ }
   }, [currentLocation, getAuthHeader]);
 
   const fetchTodayVisits = useCallback(async () => {
     try {
       const res = await axios.get(`${API}/visits/today`, { headers: getAuthHeader() });
       setTodayVisits(res.data);
-      // Check if there's an active visit
+      setLastSync(new Date());
       const active = res.data.find(v => !v.check_out_time);
-      if (active) {
-        setActiveVisit(active);
-      }
-    } catch (error) {
-      console.error('Failed to fetch today visits');
-    }
+      setActiveVisit(active || null);
+    } catch { /* silent */ }
   }, [getAuthHeader]);
 
   const fetchAllVisits = useCallback(async () => {
     try {
       const res = await axios.get(`${API}/visits/history`, { headers: getAuthHeader() });
       setAllVisits(res.data);
-    } catch (error) {
-      console.error('Failed to fetch visit history');
+    } catch { /* silent */ }
+  }, [getAuthHeader]);
+
+  // Try to get richer field stats from the backend; fall back gracefully
+  const fetchFieldStats = useCallback(async () => {
+    try {
+      const res = await axios.get(`${API}/visits/field-stats`, { headers: getAuthHeader() });
+      setFieldStats(res.data);
+    } catch {
+      // endpoint may not exist yet — we'll compute from todayVisits
+      setFieldStats(null);
     }
   }, [getAuthHeader]);
 
-  // Restore market session state on load
   const fetchUserStatus = useCallback(async () => {
     try {
       const res = await axios.get(`${API}/auth/me`, { headers: getAuthHeader() });
-      if (res.data?.is_in_market) {
-        setIsInMarket(true);
-      }
-    } catch (error) {
-      console.error('Failed to fetch user status');
-    }
+      if (res.data?.is_in_market) setIsInMarket(true);
+    } catch { /* silent */ }
   }, [getAuthHeader]);
 
+  const refreshAll = useCallback(async () => {
+    await Promise.all([fetchTodayVisits(), fetchFieldStats()]);
+    if (currentLocation) fetchNearbyDealers();
+    setLastSync(new Date());
+  }, [fetchTodayVisits, fetchFieldStats, currentLocation, fetchNearbyDealers]);
+
+  // ── Effects ─────────────────────────────────────────────────────────
   useEffect(() => {
     getCurrentLocation();
     fetchTodayVisits();
     fetchUserStatus();
-  }, [fetchTodayVisits, fetchUserStatus]);
+    fetchFieldStats();
+  }, [fetchTodayVisits, fetchUserStatus, fetchFieldStats]);
 
   useEffect(() => {
-    if (visitTab === 'overall') {
-      fetchAllVisits();
-    }
+    if (visitTab === 'overall') fetchAllVisits();
   }, [visitTab, fetchAllVisits]);
 
   useEffect(() => {
-    if (currentLocation && isInMarket && !activeVisit) {
-      fetchNearbyDealers();
-    }
-  }, [currentLocation, isInMarket, activeVisit, fetchNearbyDealers]);
+    if (currentLocation) fetchNearbyDealers();
+  }, [currentLocation, fetchNearbyDealers]);
 
+  // ── Market session ───────────────────────────────────────────────────
   const handleStartMarket = async () => {
-    if (!currentLocation) {
-      toast.error('Location not available');
-      return;
-    }
+    if (!currentLocation) { toast.error('Location not available'); return; }
     try {
-      const res = await axios.post(`${API}/visit/start-market`, currentLocation, { headers: getAuthHeader() });
-      setSessionId(res.data.session_id);
+      await axios.post(`${API}/visit/start-market`, currentLocation, { headers: getAuthHeader() });
       setIsInMarket(true);
       toast.success('Market visit started!');
       fetchNearbyDealers();
-    } catch (error) {
-      toast.error(error.response?.data?.detail || 'Failed to start market');
-    }
+    } catch (e) { toast.error(e.response?.data?.detail || 'Failed to start market'); }
   };
 
   const handleEndMarket = async () => {
     try {
       await axios.post(`${API}/visit/end-market`, {}, { headers: getAuthHeader() });
       setIsInMarket(false);
-      setSessionId(null);
       setNearbyDealers([]);
       toast.success('Market visit ended');
-    } catch (error) {
-      toast.error('Failed to end market');
-    }
+    } catch { toast.error('Failed to end market'); }
   };
 
+  // ── Check-in ─────────────────────────────────────────────────────────
   const handleCheckIn = async () => {
     if (!selectedDealer || !currentLocation) return;
     try {
-      const checkInPayload = {
-        dealer_id: selectedDealer.id,
-        lat: currentLocation.lat,
-        lng: currentLocation.lng
-      };
-      
-      // If this is a Google Place (not from database), include dealer data
-      if (selectedDealer.source === 'google_places') {
-        checkInPayload.dealer_data = selectedDealer;
-      }
-
-      const res = await axios.post(`${API}/visit/check-in`, checkInPayload, { 
-        headers: getAuthHeader() 
-      });
-      
-      setActiveVisit({ 
-        ...selectedDealer, 
-        visit_id: res.data.visit_id, 
-        check_in_time: res.data.check_in_time 
-      });
+      const payload = { dealer_id: selectedDealer.id, lat: currentLocation.lat, lng: currentLocation.lng };
+      if (selectedDealer.source === 'google_places') payload.dealer_data = selectedDealer;
+      const res = await axios.post(`${API}/visit/check-in`, payload, { headers: getAuthHeader() });
+      setActiveVisit({ ...selectedDealer, visit_id: res.data.visit_id, check_in_time: res.data.check_in_time });
       setCheckInDialogOpen(false);
-      setNearbyDealers([]); // Clear list immediately since backend blocks new suggestions
+      setNearbyDealers([]);
       toast.success(`Checked in at ${selectedDealer.name}`);
       fetchTodayVisits();
-    } catch (error) {
-      toast.error(error.response?.data?.detail || 'Check-in failed');
-    }
+    } catch (e) { toast.error(e.response?.data?.detail || 'Check-in failed'); }
   };
 
+  // ── Check-out helpers ─────────────────────────────────────────────────
   const toggleOrderedItem = (item) => {
-    const isSelected = outcomeData.ordered_items.some(i => i.name === item);
-    
+    const itemName = item.item_name;
+    const isSelected = outcomeData.ordered_items.some(i => i.name === itemName);
     if (isSelected) {
-      setOutcomeData(prev => ({
-        ...prev,
-        ordered_items: prev.ordered_items.filter(i => i.name !== item)
-      }));
-      const newDetails = { ...itemDetails };
-      delete newDetails[item];
-      setItemDetails(newDetails);
+      setOutcomeData(p => ({ ...p, ordered_items: p.ordered_items.filter(i => i.name !== itemName) }));
+      const nd = { ...itemDetails }; delete nd[itemName]; setItemDetails(nd);
     } else {
-      setOutcomeData(prev => ({
-        ...prev,
-        ordered_items: [...prev.ordered_items, { name: item, quantity: 1, rate: 0 }]
-      }));
-      setItemDetails(prev => ({
-        ...prev,
-        [item]: { quantity: 1, rate: 0 }
-      }));
+      const defaultRate = item.default_price || 0;
+      setOutcomeData(p => ({ ...p, ordered_items: [...p.ordered_items, { name: itemName, quantity: 1, rate: defaultRate }] }));
+      setItemDetails(p => ({ ...p, [itemName]: { quantity: 1, rate: defaultRate } }));
     }
   };
 
   const updateItemDetail = (itemName, field, value) => {
     const numValue = parseFloat(value) || 0;
-    
-    setItemDetails(prev => ({
-      ...prev,
-      [itemName]: {
-        ...prev[itemName],
-        [field]: numValue
-      }
-    }));
-
-    setOutcomeData(prev => ({
-      ...prev,
-      ordered_items: prev.ordered_items.map(item => 
-        item.name === itemName 
-          ? { ...item, [field]: numValue }
-          : item
-      )
+    setItemDetails(p => ({ ...p, [itemName]: { ...p[itemName], [field]: numValue } }));
+    setOutcomeData(p => ({
+      ...p,
+      ordered_items: p.ordered_items.map(i => i.name === itemName ? { ...i, [field]: numValue } : i)
     }));
   };
 
-  const calculateTotalOrderValue = () => {
-    return outcomeData.ordered_items.reduce((total, item) => {
-      return total + (item.quantity * item.rate);
-    }, 0);
-  };
+  const calculateTotalOrderValue = () =>
+    outcomeData.ordered_items.reduce((t, i) => t + i.quantity * i.rate, 0);
 
   const handleCheckOut = async () => {
-    if (!activeVisit || !outcomeData.outcome) {
-      toast.error('Please select an outcome');
-      return;
-    }
-    
+    if (!activeVisit || !outcomeData.outcome) { toast.error('Please select an outcome'); return; }
     const visitId = activeVisit.id || activeVisit.visit_id;
-    
-    if (!visitId) {
-      toast.error('Invalid visit ID');
-      return;
-    }
-
-    const totalOrderValue = calculateTotalOrderValue();
-
+    if (!visitId) { toast.error('Invalid visit ID'); return; }
     try {
       await axios.post(`${API}/visit/${visitId}/check-out`, {
         outcome: outcomeData.outcome,
-        order_value: totalOrderValue,
-        ordered_items: outcomeData.ordered_items || [],
+        order_value: calculateTotalOrderValue(),
+        ordered_items: outcomeData.ordered_items,
         notes: outcomeData.notes || null,
         next_visit_date: outcomeData.next_visit_date || null,
         contact_name: outcomeData.contact_name || null,
         contact_phone: outcomeData.contact_phone || null,
         contact_email: outcomeData.contact_email || null,
-        lat: currentLocation?.lat,
-        lng: currentLocation?.lng
-      }, {
-        headers: getAuthHeader()
-      });
+        lat: currentLocation?.lat, lng: currentLocation?.lng,
+      }, { headers: getAuthHeader() });
       setActiveVisit(null);
       setCheckOutDialogOpen(false);
       setOutcomeData({ outcome: '', order_value: '', ordered_items: [], notes: '', next_visit_date: '', contact_name: '', contact_phone: '', contact_email: '' });
       setItemDetails({});
       toast.success('Visit completed!');
       fetchTodayVisits();
-      fetchNearbyDealers(); // Re-fetch to show shops again
-    } catch (error) {
-      toast.error(error.response?.data?.detail || 'Check-out failed');
-    }
+      fetchNearbyDealers();
+    } catch (e) { toast.error(e.response?.data?.detail || 'Check-out failed'); }
   };
 
   const handleForceCheckout = async () => {
@@ -330,29 +258,18 @@ const FieldView = () => {
       await axios.post(`${API}/visit/force-checkout`, {}, { headers: getAuthHeader() });
       setActiveVisit(null);
       toast.success('Stale visit closed');
-      fetchTodayVisits();
-      fetchNearbyDealers();
-    } catch (error) {
-      toast.error('Failed to force close visit');
-    }
+      fetchTodayVisits(); fetchNearbyDealers();
+    } catch { toast.error('Failed to force close visit'); }
   };
 
-  const openCheckInDialog = (dealer) => {
-    setSelectedDealer(dealer);
-    setCheckInDialogOpen(true);
-  };
+  const openCheckInDialog = (dealer) => { setSelectedDealer(dealer); setCheckInDialogOpen(true); };
 
   const fetchCompanyProducts = useCallback(async () => {
     try {
-      const res = await axios.get(`${API}/company/config`, { headers: getAuthHeader() });
-      const cfg = res.data?.config || {};
-      // Prefer product_items; fallback to product_categories
-      const items = (cfg.product_items?.length ? cfg.product_items : cfg.product_categories) || [];
+      const res = await axios.get(`${API}/items`, { headers: getAuthHeader(), params: { active: true } });
+      const items = res.data || [];
       setCompanyProducts(Array.isArray(items) ? items : []);
-    } catch (error) {
-      console.error('Failed to fetch company products', error);
-      setCompanyProducts([]);
-    }
+    } catch { setCompanyProducts([]); }
   }, [getAuthHeader]);
 
   useEffect(() => {
@@ -361,498 +278,478 @@ const FieldView = () => {
     }
   }, [checkOutDialogOpen, outcomeData.outcome, companyProducts.length, fetchCompanyProducts]);
 
+  // ── Computed stats ───────────────────────────────────────────────────
+  const activeVisitsCount    = fieldStats?.active_count    ?? todayVisits.filter(v => !v.check_out_time).length;
+  const completedVisitsCount = fieldStats?.completed_count ?? todayVisits.filter(v => !!v.check_out_time).length;
+  const missedVisitsCount    = fieldStats?.missed_count    ?? todayVisits.filter(v => v.outcome === 'Lost Visit' || v.outcome === 'No Meeting').length;
+  const totalRevenue         = todayVisits.reduce((s, v) => s + (v.order_value || 0), 0);
+  const prevRevenue          = fieldStats?.prev_order_value ?? 0;
+  const distanceKm           = fieldStats?.distance_km ?? 0;
+  const prevDistanceKm       = fieldStats?.prev_distance_km ?? 0;
+  const totalDurationMins    = fieldStats?.duration_mins ?? todayVisits.reduce((s, v) => s + (v.time_spent_minutes || 0), 0);
+  const durationStr = totalDurationMins >= 60
+    ? `${Math.floor(totalDurationMins / 60)}hr ${Math.round(totalDurationMins % 60)} mins`
+    : `${Math.round(totalDurationMins)} mins`;
+
+  // Last sync text
+  const syncText = lastSync
+    ? (() => {
+        const diffMins = Math.floor((Date.now() - lastSync.getTime()) / 60000);
+        return diffMins < 1 ? 'Just now' : `${diffMins} min${diffMins !== 1 ? 's' : ''} ago`;
+      })()
+    : '—';
+
+  // ── Loading state ────────────────────────────────────────────────────
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gray-50">
-        <div className="text-center">
-          <div className="spinner mx-auto mb-3" />
-          <p className="text-xs text-gray-500">Getting your location...</p>
+      <SalesExecutiveLayout title="Field View">
+        <div className="flex items-center justify-center h-64">
+          <div className="flex flex-col items-center gap-3">
+            <div className="w-10 h-10 border-4 border-orange-500 border-t-transparent rounded-full animate-spin"></div>
+            <p className="text-sm text-gray-500 font-medium">Getting your location…</p>
+          </div>
         </div>
-      </div>
+      </SalesExecutiveLayout>
     );
   }
 
-  return (
-    <div className="min-h-screen bg-gray-50 pb-20 md:ml-60" data-testid="field-view">
-      {/* Sidebar */}
-      <SalesExecutiveSidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} />
-      
-      {/* Header */}
-      <header className="sticky top-0 z-40 bg-white border-b border-gray-100 px-4 py-2.5 md:ml-60">
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-2">
-            <button 
-              onClick={() => setSidebarOpen(true)}
-              className="md:hidden p-1.5 hover:bg-gray-100 rounded-lg transition-colors"
-            >
-              <List size={20} className="text-gray-600" />
-            </button>
-            <div className="bg-gradient-to-r from-primary-500 to-orange-500 w-8 h-8 rounded-lg flex items-center justify-center shadow-sm">
-              <MapPin weight="fill" className="w-5 h-5 text-white" />
-            </div>
-            <span className="font-bold text-sm bg-gradient-to-r from-primary-600 to-orange-600 bg-clip-text text-transparent">Smart ITBox</span>
-          </div>
-          <div className="flex items-center gap-2">
-            <Badge className={isInMarket ? 'status-active' : 'status-offline'}>
-              {isInMarket ? 'In Market' : 'Not Started'}
-            </Badge>
-            <Button variant="ghost" size="sm" onClick={logout} className="hidden md:flex">
-              <SignOut size={18} />
-            </Button>
-          </div>
-        </div>
-      </header>
+  // ── Outcome badge helper ─────────────────────────────────────────────
+  const outcomeBadge = (outcome) => {
+    const cls =
+      outcome === 'Order Booked'       ? 'bg-emerald-100 text-emerald-700' :
+      outcome === 'Follow-up Required' ? 'bg-amber-100 text-amber-700' :
+      outcome === 'Lost Visit'         ? 'bg-red-100 text-red-700' :
+      !outcome                         ? 'bg-blue-100 text-blue-700' :
+      'bg-gray-100 text-gray-600';
+    return (
+      <span className={`text-[10px] font-semibold px-2 py-0.5 rounded-full ${cls}`}>
+        {outcome || 'In Progress'}
+      </span>
+    );
+  };
 
-      {/* Main Content */}
-      <div className="p-4 space-y-4">
-        {/* Welcome Card */}
-        <Card className="border-0 shadow-sm">
-          <CardContent className="p-3">
-            <p className="text-gray-500 text-xs">Welcome back,</p>
-            <p className="font-bold text-sm text-gray-800">{user?.name || 'Sales Executive'}</p>
-            <div className="flex items-center gap-1.5 mt-1 text-xs text-gray-500">
-              <Clock size={14} />
+  // ── Visit table shared ────────────────────────────────────────────────
+  const VisitTable = ({ visits }) =>
+    visits.length === 0 ? (
+      <p className="text-xs text-gray-400 text-center py-10">No visits yet today</p>
+    ) : (
+      <div className="overflow-x-auto">
+        <table className="w-full text-left">
+          <thead>
+            <tr className="border-b border-gray-100 bg-gray-50">
+              {['Date','Dealer','Contact','Check-in','Duration','Outcome','Value','Items'].map(h => (
+                <th key={h} className="text-[10px] text-gray-500 uppercase tracking-wider font-medium px-3 py-2.5">{h}</th>
+              ))}
+            </tr>
+          </thead>
+          <tbody>
+            {visits.map(visit => (
+              <tr key={visit.id} className="border-b border-gray-50 hover:bg-gray-50/50 transition-colors">
+                <td className="px-3 py-2.5 font-mono text-[11px] text-gray-600 whitespace-nowrap">{new Date(visit.check_in_time).toLocaleDateString()}</td>
+                <td className="px-3 py-2.5 text-xs font-medium text-gray-800 max-w-[120px] truncate">{visit.dealer_name}</td>
+                <td className="px-3 py-2.5 text-[11px] text-gray-500 max-w-[80px] truncate">{visit.contact_name || '–'}</td>
+                <td className="px-3 py-2.5 font-mono text-[11px] text-gray-500 whitespace-nowrap">{new Date(visit.check_in_time).toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'})}</td>
+                <td className="px-3 py-2.5 font-mono text-[11px] text-gray-500 text-center">{visit.time_spent_minutes ? `${Math.round(visit.time_spent_minutes)}m` : '–'}</td>
+                <td className="px-3 py-2.5">{outcomeBadge(visit.outcome)}</td>
+                <td className="px-3 py-2.5 font-mono text-[11px] font-semibold text-orange-600 text-right whitespace-nowrap">{visit.order_value ? `₹${visit.order_value.toLocaleString()}` : '–'}</td>
+                <td className="px-3 py-2.5 text-center"><OrderItemsView visit={visit} /></td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    );
+
+  // ═══════════════════════════════════════════════════════════════════════
+  return (
+    <SalesExecutiveLayout title="Field View">
+      <div className="space-y-4" data-testid="field-view">
+
+        {/* ── ROW 1: Welcome + Status + Start/End Visit ── */}
+        <div className="bg-white rounded-2xl border border-gray-100 shadow-sm px-4 md:px-5 py-3 flex items-center justify-between gap-3 flex-wrap">
+
+          {/* Left: welcome */}
+          <div>
+            <p className="text-xs text-gray-400">Welcome back,</p>
+            <p className="font-bold text-sm md:text-base text-gray-900">{user?.name || 'Sales Executive'}</p>
+            <div className="flex items-center gap-1 mt-0.5 text-[11px] text-gray-400">
+              <Clock size={11} />
               <span>{new Date().toLocaleDateString('en-IN', { weekday: 'long', day: 'numeric', month: 'short' })}</span>
             </div>
-          </CardContent>
-        </Card>
+          </div>
 
-        {/* Active Visit Card */}
-        {activeVisit && (
-          <Card className="border-0 shadow-sm bg-emerald-50">
-            <CardContent className="p-3">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-[10px] text-emerald-600 font-bold uppercase tracking-wider">ACTIVE VISIT</p>
-                  <p className="text-sm font-bold text-gray-800">{activeVisit.dealer_name || activeVisit.name}</p>
-                  <p className="text-xs text-gray-500">
-                    Started at {new Date(activeVisit.check_in_time).toLocaleTimeString()}
-                  </p>
-                </div>
-                <div className="flex items-center gap-2">
-                  <Button 
-                    variant="outline"
-                    size="sm"
-                    className="text-red-600 border-red-200 hover:bg-red-50 text-xs h-8"
-                    onClick={handleForceCheckout}
-                    data-testid="force-checkout-btn"
-                  >
-                    <Stop className="mr-1" size={14} />
-                    Cancel
-                  </Button>
-                  <Button 
-                    className="bg-emerald-600 hover:bg-emerald-700"
-                    onClick={() => setCheckOutDialogOpen(true)}
-                    data-testid="checkout-btn"
-                  >
-                    <CheckCircle className="mr-2" size={18} />
-                    Check Out
-                  </Button>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-        )}
+          {/* Center: Last Sync */}
+          <div className="hidden md:flex items-center gap-1.5 text-xs text-gray-400">
+            <div className="w-2 h-2 rounded-full bg-emerald-400"></div>
+            Last Sync: {syncText}
+            <button onClick={refreshAll} className="ml-1 p-1 hover:bg-gray-100 rounded-lg transition-colors">
+              <ArrowsClockwise size={13} className="text-gray-400" />
+            </button>
+          </div>
 
-        {/* Start/End Market */}
-        {!activeVisit && (
-          <Card>
-            <CardContent className="p-4">
-              {isInMarket ? (
-                <Button 
-                  variant="destructive" 
-                  className="w-full py-6 text-lg"
-                  onClick={handleEndMarket}
-                  data-testid="end-market-btn"
-                >
-                  <Stop className="mr-2" size={20} weight="fill" />
-                  End Market Visit
-                </Button>
-              ) : (
-                <Button 
-                  className="w-full py-6 text-lg bg-gradient-to-r from-primary-500 to-orange-500 hover:from-primary-600 hover:to-orange-600 text-white shadow-md"
-                  onClick={handleStartMarket}
-                  data-testid="start-market-btn"
-                >
-                  <Play className="mr-2" size={20} weight="fill" />
-                  Start Market Visit
-                </Button>
-              )}
-            </CardContent>
-          </Card>
-        )}
-
-        {/* Daily Target vs Achieved */}
-        {(user?.daily_sales_target != null || user?.daily_sales_amount_target != null) && (
-          <Card className="shadow-sm bg-gradient-to-br from-slate-50 to-slate-100 border border-slate-200">
-            <CardContent className="p-3">
-              <p className="text-[10px] font-semibold text-slate-600 uppercase tracking-wider mb-2 flex items-center gap-1">
-                <Target size={12} />
-                Daily Targets
-              </p>
-              <div className="grid grid-cols-2 gap-3">
-                {user?.daily_sales_target != null && (
-                  <div className="bg-white rounded-lg p-2.5 border border-slate-100">
-                    <p className="text-[10px] text-slate-500">Visit Target</p>
-                    <p className="text-sm font-bold text-slate-800">
-                      <span className="text-primary-600">{todayVisits.length}</span>
-                      <span className="text-slate-400 font-normal"> / {user.daily_sales_target}</span>
-                    </p>
-                  </div>
-                )}
-                {user?.daily_sales_amount_target != null && (
-                  <div className="bg-white rounded-lg p-2.5 border border-slate-100">
-                    <p className="text-[10px] text-slate-500">Sales Target (₹)</p>
-                    <p className="text-sm font-bold text-slate-800">
-                      <span className="text-emerald-600">₹{todayVisits.reduce((sum, v) => sum + (v.order_value || 0), 0).toLocaleString()}</span>
-                      <span className="text-slate-400 font-normal"> / ₹{user.daily_sales_amount_target?.toLocaleString()}</span>
-                    </p>
-                  </div>
-                )}
-              </div>
-            </CardContent>
-          </Card>
-        )}
-
-        {/* Today's Stats */}
-        <div className="grid grid-cols-3 gap-2">
-          <Card className="border-0 shadow-sm bg-gradient-to-br from-primary-400 to-primary-500 text-white">
-            <CardContent className="p-2.5 text-center">
-              <p className="text-lg font-bold font-mono">{todayVisits.length}</p>
-              <p className="text-[10px] text-white/80">Visits</p>
-            </CardContent>
-          </Card>
-          <Card className="border-0 shadow-sm bg-gradient-to-br from-emerald-400 to-emerald-500 text-white">
-            <CardContent className="p-2.5 text-center">
-              <p className="text-lg font-bold font-mono">
-                {todayVisits.filter(v => v.outcome === 'Order Booked').length}
-              </p>
-              <p className="text-[10px] text-white/80">Orders</p>
-            </CardContent>
-          </Card>
-          <Card className="border-0 shadow-sm bg-gradient-to-br from-purple-400 to-purple-500 text-white">
-            <CardContent className="p-2.5 text-center">
-              <p className="text-lg font-bold font-mono">
-                ₹{todayVisits.reduce((sum, v) => sum + (v.order_value || 0), 0).toLocaleString()}
-              </p>
-              <p className="text-[10px] text-white/80">Value</p>
-            </CardContent>
-          </Card>
+          {/* Right: GPS + Accuracy + Button */}
+          <div className="flex items-center gap-2 flex-wrap">
+            <div className="flex items-center gap-1.5 bg-blue-50 border border-blue-100 text-blue-700 rounded-full px-2.5 py-1 text-xs font-semibold">
+              <div className="w-2 h-2 rounded-full bg-blue-500"></div>
+              GPS
+            </div>
+            <div className="flex items-center gap-1.5 bg-emerald-50 border border-emerald-100 text-emerald-700 rounded-full px-2.5 py-1 text-xs font-semibold">
+              <MapPin size={11} weight="bold" />
+              Accuracy : 10m
+            </div>
+            {isInMarket ? (
+              <button
+                onClick={handleEndMarket}
+                className="flex items-center gap-1.5 bg-orange-500 hover:bg-orange-600 text-white rounded-full px-4 py-1.5 text-xs font-bold transition-colors shadow-sm"
+                data-testid="end-market-btn"
+              >
+                <Stop size={12} weight="fill" />
+                End Visit
+              </button>
+            ) : (
+              <button
+                onClick={handleStartMarket}
+                className="flex items-center gap-1.5 bg-orange-500 hover:bg-orange-600 text-white rounded-full px-4 py-1.5 text-xs font-bold transition-colors shadow-sm"
+                data-testid="start-market-btn"
+              >
+                <Play size={12} weight="fill" />
+                Start Visit
+              </button>
+            )}
+          </div>
         </div>
 
-        {/* View Toggle */}
-        {isInMarket && (
-          <>
-            <div className="flex gap-2">
-              <Button 
-                variant={viewMode === 'map' ? 'default' : 'outline'}
-                className={viewMode === 'map' ? 'flex-1 bg-gradient-to-r from-primary-500 to-orange-500 text-white' : 'flex-1'}
-                onClick={() => setViewMode('map')}
-              >
-                <MapTrifold className="mr-2" size={18} />
-                Map
-              </Button>
-              <Button 
-                variant={viewMode === 'list' ? 'default' : 'outline'}
-                className={viewMode === 'list' ? 'flex-1 bg-gradient-to-r from-primary-500 to-orange-500 text-white' : 'flex-1'}
-                onClick={() => setViewMode('list')}
-              >
-                <List className="mr-2" size={18} />
-                List
-              </Button>
+        {/* ── Active visit banner ── */}
+        {activeVisit && (
+          <div className="bg-emerald-50 border border-emerald-200 rounded-2xl px-4 py-3 flex items-center justify-between gap-3 flex-wrap">
+            <div>
+              <p className="text-[10px] font-bold text-emerald-600 uppercase tracking-wider">Active Visit</p>
+              <p className="text-sm font-bold text-gray-900">{activeVisit.dealer_name || activeVisit.name}</p>
+              <p className="text-xs text-gray-500">Started at {new Date(activeVisit.check_in_time).toLocaleTimeString()}</p>
             </div>
-
-            {/* Map View */}
-            {viewMode === 'map' && currentLocation && (
-              <Card>
-                <CardContent className="p-0 h-[220px] sm:h-[300px] rounded-lg overflow-hidden">
-                  <MapContainer 
-                    center={[currentLocation.lat, currentLocation.lng]} 
-                    zoom={15}
-                    style={{ height: '100%', width: '100%' }}
-                  >
-                    <TileLayer
-                      attribution='&copy; OpenStreetMap'
-                      url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-                    />
-                    {/* Current location */}
-                    <Marker position={[currentLocation.lat, currentLocation.lng]} icon={currentIcon}>
-                      <Popup>You are here</Popup>
-                    </Marker>
-                    {/* Dealers */}
-                    {nearbyDealers.map((dealer) => (
-                      <Marker 
-                        key={dealer.id} 
-                        position={[dealer.lat, dealer.lng]}
-                        icon={dealerIcon}
-                        eventHandlers={{
-                          click: () => openCheckInDialog(dealer)
-                        }}
-                      >
-                        <Popup>
-                          <div className="text-sm">
-                            <p className="font-semibold">{dealer.name}</p>
-                            <p className="text-slate-500">{dealer.distance}m away</p>
-                          </div>
-                        </Popup>
-                      </Marker>
-                    ))}
-                  </MapContainer>
-                </CardContent>
-              </Card>
-            )}
-
-            {/* List View */}
-            {viewMode === 'list' && (
-              <div className="space-y-2">
-                {nearbyDealers.length === 0 ? (
-                  <Card className="border-0 shadow-sm">
-                    <CardContent className="p-6 text-center text-xs text-gray-500">
-                      No dealers found nearby. Try moving to a different area.
-                    </CardContent>
-                  </Card>
-                ) : (
-                  nearbyDealers.map((dealer) => (
-                    <Card 
-                      key={dealer.id} 
-                      className="visit-card"
-                      onClick={() => openCheckInDialog(dealer)}
-                      data-testid={`dealer-card-${dealer.id}`}
-                    >
-                      <CardContent className="p-4">
-                        <div className="flex items-center justify-between">
-                          <div className="flex items-center gap-3">
-                            <div className="w-10 h-10 rounded-full bg-primary-100 flex items-center justify-center">
-                              <Storefront className="text-primary-600" size={20} />
-                            </div>
-                            <div className="min-w-0 flex-1">
-                              <div className="flex items-center gap-2 flex-wrap">
-                                <p className="font-semibold text-gray-800">{dealer.name}</p>
-                                {dealer.source === 'google_places' && (
-                                  <Badge variant="outline" className="text-xs bg-green-50 text-green-700 border-green-200">
-                                    Google
-                                  </Badge>
-                                )}
-                              </div>
-                              <p className="text-xs text-slate-500">{dealer.dealer_type}</p>
-                              {(dealer.address || dealer.vicinity) && (
-                                <p className="text-[11px] text-slate-600 mt-1 flex items-start gap-1">
-                                  <MapPin size={12} className="flex-shrink-0 mt-0.5 text-slate-400" />
-                                  <span className="line-clamp-2">{dealer.address || dealer.vicinity}</span>
-                                </p>
-                              )}
-                              {dealer.rating && (
-                                <p className="text-xs text-amber-600 mt-0.5">⭐ {dealer.rating}</p>
-                              )}
-                            </div>
-                          </div>
-                          <div className="text-right">
-                            <Badge className={dealer.distance <= 100 ? 'bg-emerald-100 text-emerald-700' : 'bg-slate-100 text-slate-600'}>
-                              <NavigationArrow size={12} className="mr-1" />
-                              {dealer.distance}m
-                            </Badge>
-                            {dealer.source !== 'google_places' && (
-                              <Badge className={`ml-2 ${dealer.priority_level === 1 ? 'priority-high' : dealer.priority_level === 2 ? 'priority-medium' : 'priority-low'}`}>
-                                {dealer.priority_level === 1 ? 'High' : dealer.priority_level === 2 ? 'Med' : 'Low'}
-                              </Badge>
-                            )}
-                          </div>
-                        </div>
-                      </CardContent>
-                    </Card>
-                  ))
-                )}
-              </div>
-            )}
-          </>
+            <div className="flex items-center gap-2">
+              <button
+                onClick={handleForceCheckout}
+                className="text-red-600 border border-red-200 bg-white hover:bg-red-50 text-xs px-3 py-1.5 rounded-lg font-medium transition-colors"
+                data-testid="force-checkout-btn"
+              >Cancel</button>
+              <button
+                onClick={() => setCheckOutDialogOpen(true)}
+                className="bg-emerald-600 hover:bg-emerald-700 text-white text-xs px-4 py-1.5 rounded-lg font-bold flex items-center gap-1.5 transition-colors"
+                data-testid="checkout-btn"
+              >
+                <CheckCircle size={13} weight="bold" /> Check Out
+              </button>
+            </div>
+          </div>
         )}
 
-        {/* Visits History - Today / Overall Tabs */}
-        <Card className="border-0 shadow-sm">
-          <CardHeader className="pb-2">
-            <div className="flex items-center justify-between">
-              <CardTitle className="text-sm font-bold text-gray-800">Visit History</CardTitle>
-              <div className="flex gap-1 bg-gray-100 rounded-lg p-0.5">
-                <button
-                  type="button"
-                  onClick={() => setVisitTab('today')}
-                  className={`px-3 py-1 text-xs font-medium rounded-md transition-colors ${
-                    visitTab === 'today' ? 'bg-white text-primary-600 shadow-sm' : 'text-gray-500 hover:text-gray-700'
-                  }`}
-                >
-                  Today
-                </button>
-                <button
-                  type="button"
-                  onClick={() => setVisitTab('overall')}
-                  className={`px-3 py-1 text-xs font-medium rounded-md transition-colors ${
-                    visitTab === 'overall' ? 'bg-white text-primary-600 shadow-sm' : 'text-gray-500 hover:text-gray-700'
-                  }`}
-                >
-                  Overall
-                </button>
+        {/* ── ROW 2: 3 Stat cards ── */}
+        <div className="grid grid-cols-3 gap-2 md:gap-3">
+
+          {/* Visits Today */}
+          <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-3 md:p-4">
+            <p className="text-[10px] md:text-xs text-gray-400 font-semibold mb-2">Visits Today</p>
+            <div className="flex items-end justify-between gap-1">
+              <div>
+                <div className="text-2xl md:text-3xl font-black text-gray-900">{todayVisits.length}</div>
+                {activeVisitsCount > 0 && (
+                  <div className="flex items-center gap-0.5 text-[10px] text-emerald-600 font-bold mt-0.5">
+                    <ArrowUp size={9} weight="bold" />{activeVisitsCount}
+                  </div>
+                )}
+              </div>
+              <div className="w-8 h-8 md:w-10 md:h-10 rounded-xl bg-orange-100 flex items-center justify-center flex-shrink-0">
+                <MapPin size={15} className="text-orange-500" weight="fill" />
               </div>
             </div>
-          </CardHeader>
-          <CardContent>
-            {visitTab === 'today' ? (
-              todayVisits.length === 0 ? (
-                <p className="text-xs text-gray-500 text-center py-6">No visits yet today</p>
-              ) : (
-                <div className="overflow-x-auto">
-                  <table className="w-full text-left">
-                    <thead>
-                      <tr className="border-b border-gray-100">
-                        <th className="text-[10px] text-gray-500 uppercase tracking-wider font-medium px-2 py-2">Date</th>
-                        <th className="text-[10px] text-gray-500 uppercase tracking-wider font-medium px-2 py-2">Dealer</th>
-                        <th className="text-[10px] text-gray-500 uppercase tracking-wider font-medium px-2 py-2">Contact</th>
-                        <th className="text-[10px] text-gray-500 uppercase tracking-wider font-medium px-2 py-2">Check-in</th>
-                        <th className="text-[10px] text-gray-500 uppercase tracking-wider font-medium px-2 py-2 text-center">Duration</th>
-                        <th className="text-[10px] text-gray-500 uppercase tracking-wider font-medium px-2 py-2">Outcome</th>
-                        <th className="text-[10px] text-gray-500 uppercase tracking-wider font-medium px-2 py-2 text-right">Order Value</th>
-                        <th className="text-[10px] text-gray-500 uppercase tracking-wider font-medium px-2 py-2 text-center">Items</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {todayVisits.map((visit) => (
-                        <tr key={visit.id} className="border-b border-gray-50 hover:bg-gray-50/50 transition-colors">
-                          <td className="px-2 py-1.5 font-mono text-[11px] text-gray-600 whitespace-nowrap">{new Date(visit.check_in_time).toLocaleDateString()}</td>
-                          <td className="px-2 py-1.5 text-xs font-medium text-gray-800 truncate max-w-[140px]">{visit.dealer_name}</td>
-                          <td className="px-2 py-1.5 text-[11px] text-gray-600 truncate max-w-[100px]">{visit.contact_name || '–'}</td>
-                          <td className="px-2 py-1.5 font-mono text-[11px] text-gray-600 whitespace-nowrap">{new Date(visit.check_in_time).toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'})}</td>
-                          <td className="px-2 py-1.5 font-mono text-[11px] text-gray-600 text-center">{visit.time_spent_minutes ? `${Math.round(visit.time_spent_minutes)}m` : '–'}</td>
-                          <td className="px-2 py-1.5">
-                            <Badge className={`text-[10px] px-1.5 py-0 ${
-                              visit.outcome === 'Order Booked' ? 'bg-emerald-100 text-emerald-700' :
-                              visit.outcome === 'Follow-up Required' ? 'bg-amber-100 text-amber-700' :
-                              visit.outcome === 'Lost Visit' ? 'bg-red-100 text-red-700' :
-                              !visit.outcome ? 'bg-primary-100 text-primary-700' :
-                              'bg-slate-100 text-slate-700'
-                            }`}>
-                              {visit.outcome || 'In Progress'}
-                            </Badge>
-                          </td>
-                          <td className="px-2 py-1.5 font-mono text-[11px] font-medium text-primary-600 text-right">{visit.order_value ? `₹${visit.order_value.toLocaleString()}` : '–'}</td>
-                          <td className="px-2 py-1.5 text-center">
-                            <OrderItemsView visit={visit} />
-                          </td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
+          </div>
+
+          {/* Orders Today */}
+          <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-3 md:p-4">
+            <p className="text-[10px] md:text-xs text-gray-400 font-semibold mb-2">Orders Today</p>
+            <div className="flex items-end justify-between gap-1">
+              <div>
+                <div className="text-base md:text-xl font-black text-gray-900 leading-tight">₹{totalRevenue.toLocaleString('en-IN')}</div>
+                {prevRevenue > 0 && (
+                  <div className="flex items-center gap-0.5 text-[10px] text-emerald-600 font-bold mt-0.5">
+                    <ArrowUp size={9} weight="bold" />₹{prevRevenue.toLocaleString('en-IN')}
+                  </div>
+                )}
+              </div>
+              <div className="w-8 h-8 md:w-10 md:h-10 rounded-xl bg-blue-100 flex items-center justify-center flex-shrink-0">
+                <CurrencyInr size={15} className="text-blue-500" weight="bold" />
+              </div>
+            </div>
+          </div>
+
+          {/* Distance Travelled */}
+          <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-3 md:p-4">
+            <p className="text-[10px] md:text-xs text-gray-400 font-semibold mb-2">Distance</p>
+            <div className="flex items-end justify-between gap-1">
+              <div>
+                <div className="text-2xl md:text-3xl font-black text-gray-900">{distanceKm}</div>
+                <div className="flex items-center gap-0.5 text-[10px] font-bold mt-0.5">
+                  {prevDistanceKm > 0
+                    ? <><ArrowUp size={9} className="text-emerald-600" weight="bold" /><span className="text-emerald-600">{prevDistanceKm} km</span></>
+                    : <span className="text-gray-400">km</span>
+                  }
                 </div>
-              )
+              </div>
+              <div className="w-8 h-8 md:w-10 md:h-10 rounded-xl bg-emerald-100 flex items-center justify-center flex-shrink-0">
+                <NavigationArrow size={15} className="text-emerald-500" weight="bold" />
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* ── ROW 3: Activity summary bar ── */}
+        <div className="bg-white rounded-2xl border border-gray-100 shadow-sm px-4 py-2.5 flex items-center gap-3 md:gap-5 flex-wrap text-xs">
+          <div className="flex items-center gap-1.5">
+            <span className="w-3 h-3 rounded-full border-2 border-blue-500 bg-blue-100 flex-shrink-0"></span>
+            <span className="text-gray-500">Active Visits</span>
+            <span className="font-bold text-gray-900">{activeVisitsCount}</span>
+          </div>
+          <div className="w-px h-4 bg-gray-200 hidden sm:block"></div>
+          <div className="flex items-center gap-1.5">
+            <span className="w-3 h-3 rounded-full border-2 border-emerald-500 bg-emerald-100 flex-shrink-0"></span>
+            <span className="text-gray-500">Completed Visits</span>
+            <span className="font-bold text-gray-900">{completedVisitsCount}</span>
+          </div>
+          <div className="w-px h-4 bg-gray-200 hidden sm:block"></div>
+          <div className="flex items-center gap-1.5">
+            <span className="text-red-500 font-bold text-sm leading-none">✕</span>
+            <span className="text-gray-500">Missed Visits</span>
+            <span className="font-bold text-gray-900">{missedVisitsCount} Km</span>
+          </div>
+          <div className="w-px h-4 bg-gray-200 hidden sm:block"></div>
+          <div className="flex items-center gap-1.5">
+            <Clock size={12} className="text-gray-400" />
+            <span className="text-gray-500">Duration</span>
+          </div>
+          <div className="flex items-center gap-1.5">
+            <Clock size={12} className="text-gray-400" />
+            <span className="font-bold text-gray-900">{durationStr}</span>
+          </div>
+        </div>
+
+        {/* ── ROW 4: Map / List tabs (always visible) ── */}
+        <div className="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
+          {/* Tab header */}
+          <div className="flex items-center justify-between border-b border-gray-100 px-4 py-2.5">
+            <div className="flex items-center gap-0">
+              <button
+                onClick={() => setViewMode('map')}
+                className={`flex items-center gap-1.5 px-4 py-2 rounded-lg text-sm font-semibold transition-colors ${
+                  viewMode === 'map' ? 'text-orange-500 border-b-2 border-orange-500' : 'text-gray-400 hover:text-gray-600'
+                }`}
+              >
+                <MapTrifold size={15} weight={viewMode === 'map' ? 'fill' : 'regular'} />
+                Map
+              </button>
+              <button
+                onClick={() => setViewMode('list')}
+                className={`flex items-center gap-1.5 px-4 py-2 rounded-lg text-sm font-semibold transition-colors ${
+                  viewMode === 'list' ? 'text-orange-500 border-b-2 border-orange-500' : 'text-gray-400 hover:text-gray-600'
+                }`}
+              >
+                <List size={15} weight={viewMode === 'list' ? 'fill' : 'regular'} />
+                List
+              </button>
+            </div>
+            <button onClick={refreshAll} className="p-1.5 hover:bg-gray-100 rounded-lg transition-colors">
+              <ArrowsClockwise size={14} className="text-gray-400" />
+            </button>
+          </div>
+
+          {/* Map view */}
+          {viewMode === 'map' && currentLocation && (
+            <div className="h-[240px] sm:h-[300px] md:h-[380px]">
+              <MapContainer
+                center={[currentLocation.lat, currentLocation.lng]}
+                zoom={15}
+                style={{ height: '100%', width: '100%' }}
+              >
+                <TileLayer
+                  attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+                  url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                />
+                <Marker position={[currentLocation.lat, currentLocation.lng]} icon={currentIcon}>
+                  <Popup>You are here</Popup>
+                </Marker>
+                {nearbyDealers.map(dealer => (
+                  <Marker
+                    key={dealer.id}
+                    position={[dealer.lat, dealer.lng]}
+                    icon={dealerIcon}
+                    eventHandlers={{ click: () => openCheckInDialog(dealer) }}
+                  >
+                    <Popup>
+                      <p className="font-semibold text-sm">{dealer.name}</p>
+                      <p className="text-xs text-gray-400">{dealer.distance}m away</p>
+                    </Popup>
+                  </Marker>
+                ))}
+              </MapContainer>
+            </div>
+          )}
+
+          {/* List view */}
+          {viewMode === 'list' && (
+            <div className="p-3 space-y-2">
+              {nearbyDealers.length === 0 ? (
+                <div className="text-center py-10">
+                  <MapPin size={36} className="text-gray-200 mx-auto mb-2" />
+                  <p className="text-xs text-gray-400">
+                    {isInMarket ? 'No dealers found nearby.' : 'Start a market visit to see nearby dealers.'}
+                  </p>
+                  {!isInMarket && (
+                    <button
+                      onClick={handleStartMarket}
+                      className="mt-3 flex items-center gap-1.5 bg-orange-500 hover:bg-orange-600 text-white text-xs font-bold px-4 py-2 rounded-full mx-auto transition-colors"
+                    >
+                      <Play size={12} weight="fill" /> Start Visit
+                    </button>
+                  )}
+                </div>
+              ) : (
+                nearbyDealers.map(dealer => (
+                  <div
+                    key={dealer.id}
+                    className="flex items-center justify-between gap-3 p-3 rounded-xl border border-gray-100 hover:bg-gray-50 cursor-pointer transition-colors"
+                    onClick={() => openCheckInDialog(dealer)}
+                    data-testid={`dealer-card-${dealer.id}`}
+                  >
+                    <div className="flex items-center gap-3">
+                      <div className="w-9 h-9 rounded-full bg-orange-100 flex items-center justify-center flex-shrink-0">
+                        <Storefront size={18} className="text-orange-500" />
+                      </div>
+                      <div>
+                        <p className="text-sm font-semibold text-gray-900">{dealer.name}</p>
+                        <p className="text-xs text-gray-400">{dealer.dealer_type}</p>
+                      </div>
+                    </div>
+                    <span className={`inline-flex items-center gap-1 text-xs font-semibold px-2.5 py-1 rounded-full flex-shrink-0 ${
+                      dealer.distance <= 100 ? 'bg-emerald-100 text-emerald-700' : 'bg-gray-100 text-gray-600'
+                    }`}>
+                      <NavigationArrow size={10} />{dealer.distance}m
+                    </span>
+                  </div>
+                ))
+              )}
+            </div>
+          )}
+        </div>
+
+        {/* ── Daily Targets (optional) ── */}
+        {(user?.daily_sales_target != null || user?.daily_sales_amount_target != null) && (
+          <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-4">
+            <p className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-3 flex items-center gap-1.5">
+              <Target size={13} /> Daily Targets
+            </p>
+            <div className="grid grid-cols-2 gap-3">
+              {user?.daily_sales_target != null && (
+                <div className="bg-gray-50 rounded-xl p-3">
+                  <p className="text-[10px] text-gray-400">Visit Target</p>
+                  <p className="text-base font-bold text-gray-900 mt-0.5">
+                    <span className="text-orange-600">{todayVisits.length}</span>
+                    <span className="text-gray-300 font-normal"> / {user.daily_sales_target}</span>
+                  </p>
+                </div>
+              )}
+              {user?.daily_sales_amount_target != null && (
+                <div className="bg-gray-50 rounded-xl p-3">
+                  <p className="text-[10px] text-gray-400">Sales Target (₹)</p>
+                  <p className="text-base font-bold text-gray-900 mt-0.5">
+                    <span className="text-emerald-600">₹{totalRevenue.toLocaleString()}</span>
+                    <span className="text-gray-300 font-normal"> / ₹{user.daily_sales_amount_target?.toLocaleString()}</span>
+                  </p>
+                </div>
+              )}
+            </div>
+          </div>
+        )}
+
+        {/* ── ROW 5: Visit History ── */}
+        <div className="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
+          <div className="flex items-center justify-between px-4 md:px-5 py-3 border-b border-gray-100">
+            <span className="font-bold text-sm text-gray-900">Visit History</span>
+            <div className="flex items-center gap-1 bg-gray-100 rounded-lg p-0.5">
+              {['today','overall'].map(tab => (
+                <button
+                  key={tab}
+                  onClick={() => setVisitTab(tab)}
+                  className={`px-3 py-1 text-xs font-semibold rounded-md transition-colors ${
+                    visitTab === tab ? 'bg-white text-orange-600 shadow-sm' : 'text-gray-500 hover:text-gray-700'
+                  }`}
+                >
+                  {tab.charAt(0).toUpperCase() + tab.slice(1)}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          {visitTab === 'today' ? (
+            <VisitTable visits={todayVisits} />
+          ) : (
+            allVisits.length === 0 ? (
+              <p className="text-xs text-gray-400 text-center py-10">No visits recorded yet</p>
             ) : (
-              allVisits.length === 0 ? (
-                <p className="text-xs text-gray-500 text-center py-6">No visits recorded yet</p>
-              ) : (
-                <div className="overflow-x-auto max-h-[320px] overflow-y-auto">
-                  <table className="w-full text-left">
-                    <thead className="sticky top-0 bg-white z-10">
-                      <tr className="border-b border-gray-100">
-                        <th className="text-[10px] text-gray-500 uppercase tracking-wider font-medium px-2 py-2">Date</th>
-                        <th className="text-[10px] text-gray-500 uppercase tracking-wider font-medium px-2 py-2">Dealer</th>
-                        <th className="text-[10px] text-gray-500 uppercase tracking-wider font-medium px-2 py-2">Contact</th>
-                        <th className="text-[10px] text-gray-500 uppercase tracking-wider font-medium px-2 py-2">Check-in</th>
-                        <th className="text-[10px] text-gray-500 uppercase tracking-wider font-medium px-2 py-2 text-center">Duration</th>
-                        <th className="text-[10px] text-gray-500 uppercase tracking-wider font-medium px-2 py-2">Outcome</th>
-                        <th className="text-[10px] text-gray-500 uppercase tracking-wider font-medium px-2 py-2 text-right">Order Value</th>
-                        <th className="text-[10px] text-gray-500 uppercase tracking-wider font-medium px-2 py-2 text-center">Items</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {allVisits.map((visit) => (
-                        <tr key={visit.id} className="border-b border-gray-50 hover:bg-gray-50/50 transition-colors">
-                          <td className="px-2 py-1.5 font-mono text-[11px] text-gray-600 whitespace-nowrap">{new Date(visit.check_in_time).toLocaleDateString()}</td>
-                          <td className="px-2 py-1.5 text-xs font-medium text-gray-800 truncate max-w-[140px]">{visit.dealer_name}</td>
-                          <td className="px-2 py-1.5 text-[11px] text-gray-600 truncate max-w-[100px]">{visit.contact_name || '–'}</td>
-                          <td className="px-2 py-1.5 font-mono text-[11px] text-gray-600 whitespace-nowrap">{new Date(visit.check_in_time).toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'})}</td>
-                          <td className="px-2 py-1.5 font-mono text-[11px] text-gray-600 text-center">{visit.time_spent_minutes ? `${Math.round(visit.time_spent_minutes)}m` : '–'}</td>
-                          <td className="px-2 py-1.5">
-                            <Badge className={`text-[10px] px-1.5 py-0 ${
-                              visit.outcome === 'Order Booked' ? 'bg-emerald-100 text-emerald-700' :
-                              visit.outcome === 'Follow-up Required' ? 'bg-amber-100 text-amber-700' :
-                              visit.outcome === 'Lost Visit' ? 'bg-red-100 text-red-700' :
-                              !visit.outcome ? 'bg-primary-100 text-primary-700' :
-                              'bg-slate-100 text-slate-700'
-                            }`}>
-                              {visit.outcome || 'In Progress'}
-                            </Badge>
-                          </td>
-                          <td className="px-2 py-1.5 font-mono text-[11px] font-medium text-primary-600 text-right">{visit.order_value ? `₹${visit.order_value.toLocaleString()}` : '–'}</td>
-                          <td className="px-2 py-1.5 text-center">
-                            <OrderItemsView visit={visit} />
-                          </td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
-                </div>
-              )
-            )}
-          </CardContent>
-        </Card>
+              <div className="max-h-[400px] overflow-y-auto">
+                <VisitTable visits={allVisits} />
+              </div>
+            )
+          )}
+        </div>
+
       </div>
 
-      {/* Check-in Dialog */}
+      {/* ═══════ Check-in Dialog ═══════ */}
       <Dialog open={checkInDialogOpen} onOpenChange={setCheckInDialogOpen}>
         <DialogContent>
-          <DialogHeader>
-            <DialogTitle>Check In</DialogTitle>
-          </DialogHeader>
+          <DialogHeader><DialogTitle>Check In</DialogTitle></DialogHeader>
           {selectedDealer && (
             <div className="space-y-4">
-              <div className="p-4 bg-slate-50 rounded-lg">
-                <p className="font-semibold text-lg">{selectedDealer.name}</p>
-                <p className="text-sm text-slate-500">{selectedDealer.address}</p>
+              <div className="p-4 bg-gray-50 rounded-xl">
+                <p className="font-semibold text-gray-900">{selectedDealer.name}</p>
+                <p className="text-sm text-gray-400 mt-0.5">{selectedDealer.address}</p>
                 <div className="flex items-center gap-2 mt-2">
-                  <Badge variant="outline">{selectedDealer.dealer_type}</Badge>
-                  <Badge className="bg-primary-100 text-primary-700">
-                    <NavigationArrow size={12} className="mr-1" />
-                    {selectedDealer.distance}m away
-                  </Badge>
+                  <span className="text-xs bg-gray-200 text-gray-700 rounded-full px-2 py-0.5">{selectedDealer.dealer_type}</span>
+                  <span className="text-xs bg-orange-100 text-orange-700 rounded-full px-2 py-0.5 flex items-center gap-1">
+                    <NavigationArrow size={10} />{selectedDealer.distance}m away
+                  </span>
                 </div>
               </div>
               <div className="flex gap-2">
-                <Button variant="outline" className="flex-1" onClick={() => setCheckInDialogOpen(false)}>
-                  Cancel
-                </Button>
-                <Button 
-                  className="flex-1 bg-gradient-to-r from-primary-500 to-orange-500 hover:from-primary-600 hover:to-orange-600 text-white shadow-md"
-                  onClick={handleCheckIn}
-                  data-testid="confirm-checkin-btn"
-                >
-                  <MapPin className="mr-2" size={18} />
-                  Confirm Check-in
-                </Button>
+                <button className="flex-1 border border-gray-200 text-gray-600 hover:bg-gray-50 py-2.5 rounded-xl text-sm font-medium transition-colors" onClick={() => setCheckInDialogOpen(false)}>Cancel</button>
+                <button className="flex-1 bg-orange-500 hover:bg-orange-600 text-white py-2.5 rounded-xl text-sm font-bold transition-colors flex items-center justify-center gap-2" onClick={handleCheckIn} data-testid="confirm-checkin-btn">
+                  <MapPin size={15} weight="bold" /> Confirm Check-in
+                </button>
               </div>
             </div>
           )}
         </DialogContent>
       </Dialog>
 
-      {/* Check-out Dialog - Comprehensive Visit Recording Modal */}
-      {/* This modal captures: Visit Outcome, Order Details, Items Ordered, Contact Info, Notes, Next Visit Date */}
+      {/* ═══════ Check-out Dialog ═══════ */}
       <Dialog open={checkOutDialogOpen} onOpenChange={setCheckOutDialogOpen}>
-        <DialogContent className="z-[9999] overflow-visible max-h-[90vh] overflow-y-auto" overlayClassName="z-[9998]">
+        <DialogContent className="z-[9999] max-h-[90vh] overflow-y-auto" overlayClassName="z-[9998]">
           <DialogHeader>
-            <DialogTitle className="text-lg font-bold">Complete Visit & Record Details</DialogTitle>
-            <p className="text-xs text-gray-500 mt-1">Capture dealer information, order details, and follow-up notes</p>
+            <DialogTitle className="text-lg font-bold">Complete Visit &amp; Record Details</DialogTitle>
+            <p className="text-xs text-gray-400 mt-1">Capture dealer information, order details, and follow-up notes</p>
           </DialogHeader>
           <div className="space-y-4">
             {activeVisit && (
-              <div className="bg-slate-50 rounded-lg p-3 border border-slate-200">
-                <p className="text-sm font-semibold text-slate-800">{activeVisit.dealer_name}</p>
-                <p className="text-xs text-slate-500 mt-0.5">Recording visit details...</p>
+              <div className="bg-gray-50 rounded-xl p-3 border border-gray-100">
+                <p className="text-sm font-semibold text-gray-900">{activeVisit.dealer_name}</p>
+                <p className="text-xs text-gray-400 mt-0.5">Recording visit details…</p>
               </div>
             )}
-            
+
             <div className="space-y-2">
               <Label>Visit Outcome *</Label>
-              <Select value={outcomeData.outcome} onValueChange={(val) => setOutcomeData({...outcomeData, outcome: val})}>
-                <SelectTrigger data-testid="outcome-select">
-                  <SelectValue placeholder="Select outcome" />
-                </SelectTrigger>
+              <Select value={outcomeData.outcome} onValueChange={val => setOutcomeData({...outcomeData, outcome: val})}>
+                <SelectTrigger data-testid="outcome-select"><SelectValue placeholder="Select outcome" /></SelectTrigger>
                 <SelectContent className="!z-[10001]">
                   <SelectItem value="Order Booked">Order Booked</SelectItem>
                   <SelectItem value="Follow-up Required">Follow-up Required</SelectItem>
@@ -865,55 +762,36 @@ const FieldView = () => {
             {outcomeData.outcome === 'Order Booked' && (
               <>
                 <div className="space-y-2">
-                  <Label className="flex items-center gap-1.5">
-                    <Package size={14} />
-                    Select Items Ordered
-                  </Label>
-                  <p className="text-[11px] text-gray-500">Select items and enter quantity & rate</p>
+                  <Label className="flex items-center gap-1.5"><Package size={14} /> Select Items Ordered</Label>
+                  <p className="text-[11px] text-gray-400">Select items and enter quantity &amp; rate</p>
                   {companyProducts.length > 0 ? (
-                    <div className="border border-gray-200 rounded-lg p-2 max-h-[300px] overflow-y-auto bg-gray-50/50 space-y-2">
-                      {companyProducts.map((item) => {
-                        const isSelected = outcomeData.ordered_items.some(i => i.name === item);
+                    <div className="border border-gray-200 rounded-xl p-2 max-h-[280px] overflow-y-auto space-y-2 bg-gray-50/50">
+                      {companyProducts.map(item => {
+                        const itemName = item.item_name;
+                        const isSelected = outcomeData.ordered_items.some(i => i.name === itemName);
                         return (
-                          <div
-                            key={item}
-                            className={`rounded-lg p-3 border transition-all ${
-                              isSelected
-                                ? 'bg-primary-50 border-primary-200'
-                                : 'bg-white border-gray-100'
-                            }`}
-                          >
+                          <div key={item.id} className={`rounded-xl p-3 border transition-all ${isSelected ? 'bg-orange-50 border-orange-200' : 'bg-white border-gray-100'}`}>
                             <label className="flex items-center gap-3 cursor-pointer mb-2">
-                              <Checkbox
-                                checked={isSelected}
-                                onCheckedChange={() => toggleOrderedItem(item)}
-                              />
-                              <span className="text-sm text-gray-800 font-medium flex-1">{item}</span>
+                              <Checkbox checked={isSelected} onCheckedChange={() => toggleOrderedItem(item)} />
+                              <div className="flex-1">
+                                <div className="flex items-center gap-2">
+                                  <span className="text-sm font-medium text-gray-900">{itemName}</span>
+                                  <span className="text-xs text-gray-500 bg-gray-100 px-2 py-0.5 rounded-full">{item.product_category}</span>
+                                </div>
+                                <div className="text-xs text-emerald-600 font-semibold mt-0.5">Default: ₹{item.default_price?.toLocaleString()}</div>
+                              </div>
                             </label>
                             {isSelected && (
                               <div className="grid grid-cols-2 gap-2 ml-8">
                                 <div>
-                                  <Label className="text-[10px] text-gray-600">Quantity</Label>
-                                  <Input
-                                    type="number"
-                                    min="1"
-                                    value={itemDetails[item]?.quantity || 1}
-                                    onChange={(e) => updateItemDetail(item, 'quantity', e.target.value)}
-                                    className="h-8 text-sm mt-1"
-                                    placeholder="Qty"
-                                  />
+                                  <Label className="text-[10px] text-gray-500">Quantity</Label>
+                                  <Input type="number" min="1" value={itemDetails[itemName]?.quantity || 1}
+                                    onChange={e => updateItemDetail(itemName, 'quantity', e.target.value)} className="h-8 text-sm mt-1" placeholder="Qty" />
                                 </div>
                                 <div>
-                                  <Label className="text-[10px] text-gray-600">Rate (₹)</Label>
-                                  <Input
-                                    type="number"
-                                    min="0"
-                                    step="0.01"
-                                    value={itemDetails[item]?.rate || 0}
-                                    onChange={(e) => updateItemDetail(item, 'rate', e.target.value)}
-                                    className="h-8 text-sm mt-1"
-                                    placeholder="Rate"
-                                  />
+                                  <Label className="text-[10px] text-gray-500">Price (₹) - Editable</Label>
+                                  <Input type="number" min="0" step="0.01" value={itemDetails[itemName]?.rate || item.default_price || 0}
+                                    onChange={e => updateItemDetail(itemName, 'rate', e.target.value)} className="h-8 text-sm mt-1 font-semibold text-emerald-600" placeholder="Price" />
                                 </div>
                               </div>
                             )}
@@ -922,97 +800,64 @@ const FieldView = () => {
                       })}
                     </div>
                   ) : (
-                    <p className="text-xs text-gray-500 py-2">No products configured. Ask admin to add product items in Settings.</p>
+                    <p className="text-xs text-gray-400 py-2">No items available. Ask admin to add items in Item Master.</p>
                   )}
                 </div>
                 <div className="space-y-2">
-                  <Label>Order Value (₹) - Auto Calculated</Label>
-                  <Input
-                    type="number"
-                    value={calculateTotalOrderValue()}
-                    readOnly
-                    className="bg-gray-50 font-bold text-primary-600"
-                    placeholder="Auto calculated from items"
-                    data-testid="order-value-input"
-                  />
-                  <p className="text-[10px] text-gray-500">Total is automatically calculated from quantity × rate</p>
+                  <Label>Order Value (₹) — Auto Calculated</Label>
+                  <Input type="number" value={calculateTotalOrderValue()} readOnly className="bg-gray-50 font-bold text-orange-600"
+                    placeholder="Auto calculated" data-testid="order-value-input" />
+                  <p className="text-[10px] text-gray-400">Total is automatically calculated from quantity × rate</p>
                 </div>
               </>
             )}
 
             <div className="space-y-2">
               <Label>Notes</Label>
-              <Textarea
-                value={outcomeData.notes}
-                onChange={(e) => setOutcomeData({...outcomeData, notes: e.target.value})}
-                placeholder="Add any notes about this visit..."
-                data-testid="visit-notes-input"
-              />
+              <Textarea value={outcomeData.notes} onChange={e => setOutcomeData({...outcomeData, notes: e.target.value})}
+                placeholder="Add any notes about this visit…" data-testid="visit-notes-input" />
             </div>
 
             <div className="space-y-2">
               <Label>Next Visit Date (Optional)</Label>
-              <Input
-                type="date"
-                value={outcomeData.next_visit_date}
-                onChange={(e) => setOutcomeData({...outcomeData, next_visit_date: e.target.value})}
-                data-testid="next-visit-date-input"
-              />
+              <Input type="date" value={outcomeData.next_visit_date}
+                onChange={e => setOutcomeData({...outcomeData, next_visit_date: e.target.value})} data-testid="next-visit-date-input" />
             </div>
 
-            {/* Contact Details */}
             <div className="border-t border-gray-100 pt-3 space-y-3">
-              <p className="text-xs font-semibold text-gray-600 uppercase tracking-wider">Contact Details</p>
+              <p className="text-xs font-semibold text-gray-500 uppercase tracking-wider">Contact Details</p>
               <div className="grid grid-cols-2 gap-3">
                 <div className="space-y-1">
                   <Label className="text-xs">Name</Label>
-                  <Input
-                    value={outcomeData.contact_name}
-                    onChange={(e) => setOutcomeData({...outcomeData, contact_name: e.target.value})}
-                    placeholder="Contact name"
-                    data-testid="contact-name-input"
-                  />
+                  <Input value={outcomeData.contact_name} onChange={e => setOutcomeData({...outcomeData, contact_name: e.target.value})}
+                    placeholder="Contact name" data-testid="contact-name-input" />
                 </div>
                 <div className="space-y-1">
                   <Label className="text-xs">Phone</Label>
-                  <Input
-                    type="tel"
-                    value={outcomeData.contact_phone}
-                    onChange={(e) => setOutcomeData({...outcomeData, contact_phone: e.target.value})}
-                    placeholder="Phone number"
-                    data-testid="contact-phone-input"
-                  />
+                  <Input type="tel" value={outcomeData.contact_phone} onChange={e => setOutcomeData({...outcomeData, contact_phone: e.target.value})}
+                    placeholder="Phone number" data-testid="contact-phone-input" />
                 </div>
               </div>
               <div className="space-y-1">
                 <Label className="text-xs">Email (Optional)</Label>
-                <Input
-                  type="email"
-                  value={outcomeData.contact_email}
-                  onChange={(e) => setOutcomeData({...outcomeData, contact_email: e.target.value})}
-                  placeholder="Email address"
-                  data-testid="contact-email-input"
-                />
+                <Input type="email" value={outcomeData.contact_email} onChange={e => setOutcomeData({...outcomeData, contact_email: e.target.value})}
+                  placeholder="Email address" data-testid="contact-email-input" />
               </div>
             </div>
 
             <div className="flex gap-2">
-              <Button variant="outline" className="flex-1" onClick={() => setCheckOutDialogOpen(false)}>
-                Cancel
-              </Button>
-              <Button 
-                className="flex-1 bg-emerald-600 hover:bg-emerald-700"
-                onClick={handleCheckOut}
-                data-testid="confirm-checkout-btn"
-              >
-                <CheckCircle className="mr-2" size={18} />
-                Complete Visit
-              </Button>
+              <button className="flex-1 border border-gray-200 text-gray-600 hover:bg-gray-50 py-2.5 rounded-xl text-sm font-medium transition-colors"
+                onClick={() => setCheckOutDialogOpen(false)}>Cancel</button>
+              <button className="flex-1 bg-emerald-600 hover:bg-emerald-700 text-white py-2.5 rounded-xl text-sm font-bold flex items-center justify-center gap-2 transition-colors"
+                onClick={handleCheckOut} data-testid="confirm-checkout-btn">
+                <CheckCircle size={15} weight="bold" /> Complete Visit
+              </button>
             </div>
           </div>
         </DialogContent>
       </Dialog>
-    </div>
+
+    </SalesExecutiveLayout>
   );
 };
 
