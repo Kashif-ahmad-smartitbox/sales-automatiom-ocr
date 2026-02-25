@@ -43,9 +43,9 @@ const OwnerSidebar = ({ isOpen, onClose, isCollapsed, setIsCollapsed }) => {
         />
       )}
       
-      <aside className={`sidebar-dark ${isOpen ? 'translate-x-0' : '-translate-x-full'} md:translate-x-0 ${isCollapsed ? 'w-16 md:w-16' : 'w-60 md:w-60'}`}>
+      <aside className={`fixed top-0 left-0 h-full z-40 flex flex-col bg-white border-r border-gray-200 shadow-sm transition-all duration-300 ${isOpen ? 'translate-x-0' : '-translate-x-full'} md:translate-x-0 ${isCollapsed ? 'w-16 md:w-16' : 'w-60 md:w-60'}`}>
         {/* Logo */}
-        <div className={`flex items-center h-16 border-b border-gray-700 ${isCollapsed ? 'justify-center px-2' : 'justify-between px-4'}`}>
+        <div className={`flex items-center h-16 bg-gradient-to-r from-orange-500 to-orange-600 ${isCollapsed ? 'justify-center px-2' : 'justify-between px-4'}`}>
           {!isCollapsed && (
             <div className="flex items-center gap-3">
               <img 
@@ -55,9 +55,9 @@ const OwnerSidebar = ({ isOpen, onClose, isCollapsed, setIsCollapsed }) => {
               />
               <div>
                 <div className="font-bold text-sm text-white">
-                  SMART ITBox
+                  Smart ITBox
                 </div>
-                <div className="text-xs text-gray-400">
+                <div className="text-xs text-white/80">
                   Owner Panel
                 </div>
               </div>
@@ -70,16 +70,16 @@ const OwnerSidebar = ({ isOpen, onClose, isCollapsed, setIsCollapsed }) => {
               className="w-8 h-8 object-contain"
             />
           )}
-          <button onClick={onClose} className="md:hidden text-gray-400 hover:text-white">
+          <button onClick={onClose} className="md:hidden text-white/80 hover:text-white">
             <X size={20} />
           </button>
         </div>
 
         {/* Collapse Toggle Button - Desktop only */}
-        <div className={`hidden md:flex py-2 ${isCollapsed ? 'justify-center px-1' : 'justify-end px-2'}`}>
+        <div className={`hidden md:flex py-2 bg-white ${isCollapsed ? 'justify-center px-1' : 'justify-end px-2'}`}>
           <button
             onClick={() => setIsCollapsed(!isCollapsed)}
-            className="p-1.5 rounded-lg text-gray-400 hover:text-white hover:bg-gray-700 transition-colors"
+            className="p-1.5 rounded-lg text-gray-400 hover:text-gray-700 hover:bg-gray-100 transition-colors"
             title={isCollapsed ? "Expand sidebar" : "Collapse sidebar"}
           >
             {isCollapsed ? <CaretRight size={16} weight="bold" /> : <CaretLeft size={16} weight="bold" />}
@@ -87,7 +87,7 @@ const OwnerSidebar = ({ isOpen, onClose, isCollapsed, setIsCollapsed }) => {
         </div>
 
         {/* Navigation */}
-        <nav className={`flex-1 py-3 space-y-1 overflow-y-auto ${isCollapsed ? 'px-1' : 'px-3'}`}>
+        <nav className={`flex-1 py-3 space-y-1 overflow-y-auto bg-white ${isCollapsed ? 'px-1' : 'px-3'}`}>
           {navItems.map((item) => (
             <NavLink
               key={item.to}
@@ -96,8 +96,8 @@ const OwnerSidebar = ({ isOpen, onClose, isCollapsed, setIsCollapsed }) => {
               className={({ isActive }) => `
                 flex items-center ${isCollapsed ? 'justify-center px-0 py-3' : 'gap-3 px-4 py-3'} rounded-lg text-sm font-medium transition-all
                 ${isActive 
-                  ? 'bg-orange-500 text-white shadow-md' 
-                  : 'text-gray-300 hover:text-white hover:bg-gray-700'
+                  ? 'bg-orange-500 text-white shadow-sm' 
+                  : 'text-gray-600 hover:text-gray-900 hover:bg-gray-50'
                 }
               `}
               onClick={onClose}
@@ -110,22 +110,21 @@ const OwnerSidebar = ({ isOpen, onClose, isCollapsed, setIsCollapsed }) => {
         </nav>
 
         {/* User Info & Logout */}
-        <div className={`border-t border-gray-700 ${isCollapsed ? 'p-2' : 'p-4'}`}>
+        <div className={`border-t border-gray-200 bg-white ${isCollapsed ? 'p-2' : 'p-4'}`}>
           {!isCollapsed ? (
             <>
               <div className="flex items-center gap-3 mb-3">
-                <div className="w-9 h-9 rounded-full bg-gradient-to-br from-orange-400 to-orange-500 flex items-center justify-center text-white text-sm font-bold shadow-sm relative">
+                <div className="w-9 h-9 rounded-full bg-gradient-to-br from-orange-400 to-orange-500 flex items-center justify-center text-white text-sm font-bold shadow-sm">
                   {user?.name?.charAt(0) || 'O'}
-                  <div className="absolute bottom-0 right-0 w-2.5 h-2.5 bg-emerald-500 rounded-full border-2 border-gray-800"></div>
                 </div>
                 <div className="flex-1 min-w-0">
-                  <p className="text-sm font-semibold text-white truncate capitalize">{user?.name || 'Owner'}</p>
-                  <p className="text-xs text-gray-400 truncate capitalize">Owner</p>
+                  <p className="text-sm font-semibold text-gray-900 truncate capitalize">{user?.name || 'Owner'}</p>
+                  <p className="text-xs text-gray-500 truncate capitalize">Owner</p>
                 </div>
               </div>
               <button
                 onClick={logout}
-                className="w-full flex items-center gap-2 px-4 py-2.5 text-sm font-medium text-gray-300 hover:text-white hover:bg-gray-700 rounded-lg transition-colors"
+                className="w-full flex items-center gap-2 px-4 py-2.5 text-sm font-medium text-gray-600 hover:text-gray-900 hover:bg-gray-50 rounded-lg transition-colors"
               >
                 <SignOut size={16} />
                 <span>Sign Out</span>
@@ -133,13 +132,12 @@ const OwnerSidebar = ({ isOpen, onClose, isCollapsed, setIsCollapsed }) => {
             </>
           ) : (
             <div className="flex flex-col items-center gap-2.5">
-              <div className="w-9 h-9 rounded-full bg-gradient-to-br from-orange-400 to-orange-500 flex items-center justify-center text-white text-sm font-bold shadow-sm relative">
+              <div className="w-9 h-9 rounded-full bg-gradient-to-br from-orange-400 to-orange-500 flex items-center justify-center text-white text-sm font-bold shadow-sm">
                 {user?.name?.charAt(0) || 'O'}
-                <div className="absolute bottom-0 right-0 w-2.5 h-2.5 bg-emerald-500 rounded-full border-2 border-gray-800"></div>
               </div>
               <button
                 onClick={logout}
-                className="p-2 text-gray-300 hover:text-white hover:bg-gray-700 rounded-lg transition-colors"
+                className="p-2 text-gray-600 hover:text-gray-900 hover:bg-gray-50 rounded-lg transition-colors"
                 title="Sign Out"
               >
                 <SignOut size={20} />

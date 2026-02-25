@@ -8,7 +8,6 @@ import {
   Crown,
   Buildings,
   Users,
-  MagnifyingGlass,
   Phone,
   Envelope,
   MapPin,
@@ -17,6 +16,7 @@ import {
   UsersFour
 } from '@phosphor-icons/react';
 import { useAuth } from '../context/AuthContext';
+import { useSearch } from '../context/SearchContext';
 import { 
   Collapsible,
   CollapsibleContent,
@@ -27,10 +27,10 @@ const API = `${process.env.REACT_APP_BACKEND_URL}/api`;
 
 const OwnerSuperAdmins = () => {
   const { getAuthHeader } = useAuth();
+  const { searchTerm } = useSearch();
   const [superAdmins, setSuperAdmins] = useState([]);
   const [teamMembers, setTeamMembers] = useState({});
   const [loading, setLoading] = useState(true);
-  const [searchTerm, setSearchTerm] = useState('');
   const [expandedAdmins, setExpandedAdmins] = useState({});
 
   const fetchSuperAdmins = useCallback(async () => {
@@ -96,14 +96,12 @@ const OwnerSuperAdmins = () => {
 
         {/* Controls */}
         <div className="flex flex-col md:flex-row gap-3 items-center justify-between">
-          <div className="relative w-full md:w-72">
-            <MagnifyingGlass className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
-            <Input
-              placeholder="Search super admins..."
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              className="pl-10 bg-white border-slate-200 text-slate-900 placeholder:text-slate-400 focus:border-primary-500"
-            />
+          <div className="flex-1">
+            {searchTerm && (
+              <p className="text-xs text-slate-500">
+                Showing results for: <span className="font-semibold text-slate-700">"{searchTerm}"</span>
+              </p>
+            )}
           </div>
           <Badge className="bg-amber-100 text-amber-700 text-[10px] px-1.5 py-0">
             {filteredAdmins.length} super admins

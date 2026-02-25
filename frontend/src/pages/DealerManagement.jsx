@@ -8,8 +8,9 @@ import { Label } from '../components/ui/label';
 import { Badge } from '../components/ui/badge';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '../components/ui/dialog';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../components/ui/select';
-import { Plus, MagnifyingGlass, MapPin, Trash, Pencil } from '@phosphor-icons/react';
+import { Plus, MapPin, Trash, Pencil } from '@phosphor-icons/react';
 import { useAuth } from '../context/AuthContext';
+import { useSearch } from '../context/SearchContext';
 import DealerOrderItemsView from '../components/DealerOrderItemsView';
 import { toast } from 'sonner';
 
@@ -32,10 +33,10 @@ const emptyForm = {
 
 const DealerManagement = () => {
   const { getAuthHeader } = useAuth();
+  const { searchTerm } = useSearch();
   const [dealers, setDealers] = useState([]);
   const [territories, setTerritories] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [searchTerm, setSearchTerm] = useState('');
   const [dialogOpen, setDialogOpen] = useState(false);
   const [editingId, setEditingId] = useState(null);
   const [formData, setFormData] = useState(emptyForm);
@@ -119,10 +120,19 @@ const DealerManagement = () => {
     }
   };
 
-  const filteredDealers = dealers.filter(d => 
-    d.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    d.address.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+const filteredDealers = dealers.filter(d => {
+    const search = searchTerm.toLowerCase();
+    return (
+      d.name?.toLowerCase().includes(search) ||
+      d.address?.toLowerCase().includes(search) ||
+      d.dealer_type?.toLowerCase().includes(search) ||
+      getTerritoryName(d.territory_id)?.toLowerCase().includes(search) ||
+      d.contact_person?.toLowerCase().includes(search) ||
+      d.phone?.toLowerCase().includes(search) ||
+      d.found_by?.toLowerCase().includes(search) ||
+      d.last_visited_by?.toLowerCase().includes(search)
+    );
+  });
 
   const getTerritoryName = (id) => {
       if (!id) return 'Unknown';
@@ -152,15 +162,12 @@ const DealerManagement = () => {
 
         {/* Search & Actions */}
         <div className="flex flex-col sm:flex-row gap-3 items-start sm:items-center justify-between">
-          <div className="relative flex-1 w-full sm:max-w-sm">
-            <MagnifyingGlass className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={16} />
-            <Input
-              placeholder="Search dealers..."
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              className="pl-10"
-              data-testid="dealer-search"
-            />
+          <div className="flex-1">
+            {searchTerm && (
+              <p className="text-xs text-gray-500">
+                Showing results for: <span className="font-semibold text-gray-700">"{searchTerm}"</span>
+              </p>
+            )}
           </div>
           
           <Dialog open={dialogOpen} onOpenChange={(open) => { if (!open) closeDialog(); else setDialogOpen(true); }}>
@@ -366,7 +373,7 @@ const DealerManagement = () => {
                       <th className="text-[10px] text-gray-500 uppercase tracking-wider font-medium px-2 py-2">Territory</th>
                       <th className="text-[10px] text-gray-500 uppercase tracking-wider font-medium px-2 py-2">Contact</th>
                       <th className="text-[10px] text-gray-500 uppercase tracking-wider font-medium px-2 py-2">Phone</th>
-                      <th className="text-[10px] text-gray-500 uppercase tracking-wider font-medium px-2 py-2">Found By</th>
+                      {/* <th className="text-[10px] text-gray-500 uppercase tracking-wider font-medium px-2 py-2">Found By</th> */}
                       <th className="text-[10px] text-gray-500 uppercase tracking-wider font-medium px-2 py-2">Priority</th>
                       <th className="text-[10px] text-gray-500 uppercase tracking-wider font-medium px-2 py-2">Booked Amount</th>
                       <th className="text-[10px] text-gray-500 uppercase tracking-wider font-medium px-2 py-2">Last Visit</th>
@@ -394,7 +401,7 @@ const DealerManagement = () => {
                         <td className="px-2 py-1.5 text-[11px] text-gray-600">{getTerritoryName(dealer.territory_id)}</td>
                         <td className="px-2 py-1.5 text-[11px] text-gray-600 truncate max-w-[100px]">{dealer.contact_person || '–'}</td>
                         <td className="px-2 py-1.5 font-mono text-[11px] text-gray-600 whitespace-nowrap">{dealer.phone || '–'}</td>
-                        <td className="px-2 py-1.5 text-[11px] text-gray-600 truncate max-w-[100px]">{dealer.found_by || '–'}</td>
+                        {/* <td className="px-2 py-1.5 text-[11px] text-gray-600 truncate max-w-[100px]">{dealer.found_by || '–'}</td> */}
                         <td className="px-2 py-1.5">
                           <Badge className={`text-[10px] px-1.5 py-0 ${
                             dealer.priority_level === 1 ? 'priority-high' :

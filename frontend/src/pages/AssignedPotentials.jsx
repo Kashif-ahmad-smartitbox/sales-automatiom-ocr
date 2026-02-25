@@ -4,8 +4,9 @@ import SalesExecutiveLayout from '../components/layout/SalesExecutiveLayout';
 import { Card, CardContent } from '../components/ui/card';
 import { Input } from '../components/ui/input';
 import { Button } from '../components/ui/button';
-import { MagnifyingGlass, MapPin, Calendar, User, Buildings, ArrowRight, CheckCircle, Package } from '@phosphor-icons/react';
+import { MapPin, Calendar, Buildings, ArrowRight, CheckCircle, Package } from '@phosphor-icons/react';
 import { useAuth } from '../context/AuthContext';
+import { useSearch } from '../context/SearchContext';
 import { toast } from 'sonner';
 import { Badge } from '../components/ui/badge';
 import { useNavigate } from 'react-router-dom';
@@ -19,10 +20,10 @@ const API = `${process.env.REACT_APP_BACKEND_URL}/api`;
 
 const AssignedPotentials = () => {
   const { getAuthHeader } = useAuth();
+  const { searchTerm } = useSearch();
   const navigate = useNavigate();
   const [potentials, setPotentials] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [searchTerm, setSearchTerm] = useState('');
   const [visitDialogOpen, setVisitDialogOpen] = useState(false);
   const [selectedDealer, setSelectedDealer] = useState(null);
   const [companyProducts, setCompanyProducts] = useState([]);
@@ -238,14 +239,12 @@ const AssignedPotentials = () => {
 
         {/* Controls */}
         <div className="flex flex-col sm:flex-row gap-3 items-start sm:items-center justify-between">
-          <div className="relative flex-1 w-full sm:max-w-md">
-            <MagnifyingGlass className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={16} />
-            <Input
-              placeholder="Search by name or address..."
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              className="pl-10"
-            />
+          <div className="flex-1">
+            {searchTerm && (
+              <p className="text-xs text-gray-500">
+                Showing results for: <span className="font-semibold text-gray-700">"{searchTerm}"</span>
+              </p>
+            )}
           </div>
           <Button variant="outline" onClick={fetchData}>
              Refresh

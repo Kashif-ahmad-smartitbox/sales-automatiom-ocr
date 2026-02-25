@@ -4,16 +4,17 @@ import HODLayout from '../components/layout/HODLayout';
 import { Card, CardContent } from '../components/ui/card';
 import { Badge } from '../components/ui/badge';
 import { Input } from '../components/ui/input';
-import { Phone, MagnifyingGlass, MapPin, Globe } from '@phosphor-icons/react';
+import { Phone, MapPin, Globe } from '@phosphor-icons/react';
 import { useAuth } from '../context/AuthContext';
+import { useSearch } from '../context/SearchContext';
 
 const API = `${process.env.REACT_APP_BACKEND_URL}/api`;
 
 const HODExecutives = () => {
   const { getAuthHeader } = useAuth();
+  const { searchTerm } = useSearch();
   const [executives, setExecutives] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [searchTerm, setSearchTerm] = useState('');
 
   const fetchExecutives = useCallback(async () => {
     try {
@@ -60,14 +61,12 @@ const HODExecutives = () => {
         </div>
 
         {/* Search */}
-        <div className="relative max-w-sm">
-          <MagnifyingGlass className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={16} />
-          <Input
-            placeholder="Search by name or code..."
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-            className="pl-10"
-          />
+        <div className="max-w-sm">
+          {searchTerm && (
+            <p className="text-xs text-gray-500">
+              Showing results for: <span className="font-semibold text-gray-700">"{searchTerm}"</span>
+            </p>
+          )}
         </div>
 
         {/* Stats */}

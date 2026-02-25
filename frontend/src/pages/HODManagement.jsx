@@ -7,8 +7,9 @@ import { Input } from '../components/ui/input';
 import { Label } from '../components/ui/label';
 import { Badge } from '../components/ui/badge';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '../components/ui/dialog';
-import { Plus, MagnifyingGlass, Trash, Phone, Pencil, Users, UserCircleGear } from '@phosphor-icons/react';
+import { Plus, Trash, Phone, Pencil, Users, UserCircleGear } from '@phosphor-icons/react';
 import { useAuth } from '../context/AuthContext';
+import { useSearch } from '../context/SearchContext';
 import { toast } from 'sonner';
 import { Checkbox } from '../components/ui/checkbox';
 
@@ -25,10 +26,10 @@ const emptyForm = {
 
 const HODManagement = () => {
   const { getAuthHeader } = useAuth();
+  const { searchTerm } = useSearch();
   const [hods, setHODs] = useState([]);
   const [salesExecutives, setSalesExecutives] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [searchTerm, setSearchTerm] = useState('');
   const [dialogOpen, setDialogOpen] = useState(false);
   const [editingId, setEditingId] = useState(null);
   const [formData, setFormData] = useState(emptyForm);
@@ -110,10 +111,17 @@ const HODManagement = () => {
     });
   };
 
-  const filteredHODs = hods.filter(hod => 
-    hod.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    hod.employee_code?.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  const filteredHODs = hods.filter(hod => {
+    const search = searchTerm.toLowerCase();
+    const assignedExecutivesNames = hod.assigned_sales_executives?.map(exec => exec.name.toLowerCase()).join(' ') || '';
+    return (
+      hod.name?.toLowerCase().includes(search) ||
+      hod.employee_code?.toLowerCase().includes(search) ||
+      hod.mobile?.toLowerCase().includes(search) ||
+      hod.email?.toLowerCase().includes(search) ||
+      assignedExecutivesNames.includes(search)
+    );
+  });
 
   return (
     <AdminLayout title="HOD Management">
@@ -128,14 +136,12 @@ const HODManagement = () => {
 
         {/* Search & Actions */}
         <div className="flex flex-col sm:flex-row gap-3 items-start sm:items-center justify-between">
-          <div className="relative flex-1 w-full sm:max-w-sm">
-            <MagnifyingGlass className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={16} />
-            <Input
-              placeholder="Search by name or code..."
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              className="pl-10"
-            />
+          <div className="flex-1">
+            {searchTerm && (
+              <p className="text-xs text-gray-500">
+                Showing results for: <span className="font-semibold text-gray-700">"{searchTerm}"</span>
+              </p>
+            )}
           </div>
           
           <Dialog open={dialogOpen} onOpenChange={(open) => { if (!open) closeDialog(); else setDialogOpen(true); }}>

@@ -13,21 +13,21 @@ import {
 } from '../components/ui/select';
 import { 
   MapPin,
-  MagnifyingGlass,
   Funnel,
   Buildings,
   TreeStructure
 } from '@phosphor-icons/react';
 import { useAuth } from '../context/AuthContext';
+import { useSearch } from '../context/SearchContext';
 
 const API = `${process.env.REACT_APP_BACKEND_URL}/api`;
 
 const OwnerTerritories = () => {
   const { getAuthHeader } = useAuth();
+  const { searchTerm } = useSearch();
   const [territories, setTerritories] = useState([]);
   const [organizations, setOrganizations] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [searchTerm, setSearchTerm] = useState('');
   const [companyFilter, setCompanyFilter] = useState('all');
   const [typeFilter, setTypeFilter] = useState('all');
 
@@ -121,14 +121,12 @@ const OwnerTerritories = () => {
         {/* Controls */}
         <div className="flex flex-col md:flex-row gap-3 items-center justify-between">
           <div className="flex flex-col md:flex-row gap-2 flex-1 w-full">
-            <div className="relative flex-1">
-              <MagnifyingGlass className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
-              <Input
-                placeholder="Search territories..."
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-                className="pl-10 bg-white border-slate-200 text-slate-900 placeholder:text-slate-400 focus:border-primary-500"
-              />
+            <div className="flex-1">
+              {searchTerm && (
+                <p className="text-xs text-slate-500">
+                  Showing results for: <span className="font-semibold text-slate-700">"{searchTerm}"</span>
+                </p>
+              )}
             </div>
             <Select value={companyFilter} onValueChange={setCompanyFilter}>
               <SelectTrigger className="w-full md:w-48 bg-white border-slate-200 text-slate-900">

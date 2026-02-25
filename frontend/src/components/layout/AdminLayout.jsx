@@ -12,11 +12,13 @@ import {
 } from '@phosphor-icons/react';
 import Sidebar from './Sidebar';
 import { useAuth } from '../../context/AuthContext';
+import { useSearch } from '../../context/SearchContext';
 
 const AdminLayout = ({ children, title }) => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [isCollapsed, setIsCollapsed] = useState(false);
   const { user } = useAuth();
+  const { searchTerm, setSearchTerm } = useSearch();
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -68,6 +70,8 @@ const AdminLayout = ({ children, title }) => {
                 <input
                   type="text"
                   placeholder="Search..."
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
                   className="w-full pl-9 pr-4 py-2 text-sm bg-gray-50 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-orange-300 focus:border-orange-300 transition-all"
                 />
               </div>
@@ -75,10 +79,10 @@ const AdminLayout = ({ children, title }) => {
 
             {/* Right: Notification + Avatar */}
             <div className="flex items-center gap-2 md:gap-3">
-              <button className="p-2 text-gray-500 hover:text-gray-900 hover:bg-gray-100 rounded-lg transition-colors relative">
+              {/* <button className="p-2 text-gray-500 hover:text-gray-900 hover:bg-gray-100 rounded-lg transition-colors relative">
                 <Bell size={20} />
                 <span className="absolute top-1.5 right-1.5 w-2 h-2 bg-orange-500 rounded-full"></span>
-              </button>
+              </button> */}
 
               {/* User Avatar */}
               <div className="flex items-center gap-2 cursor-pointer">

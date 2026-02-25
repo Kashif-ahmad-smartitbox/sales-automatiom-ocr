@@ -35,6 +35,7 @@ import OwnerActivity from "./pages/OwnerActivity";
 
 // Auth Context
 import { AuthProvider, useAuth } from "./context/AuthContext";
+import { SearchProvider } from "./context/SearchContext";
 
 // Protected Route Component
 const ProtectedRoute = ({ children, allowedRoles }) => {
@@ -241,10 +242,12 @@ function AppRoutes() {
 function App() {
   return (
     <AuthProvider>
-      <BrowserRouter>
-        <AppRoutes />
-        <Toaster position="top-right" richColors />
-      </BrowserRouter>
+      <SearchProvider>
+        <BrowserRouter>
+          <AppRoutes />
+          <Toaster position="top-right" richColors />
+        </BrowserRouter>
+      </SearchProvider>
     </AuthProvider>
   );
 }

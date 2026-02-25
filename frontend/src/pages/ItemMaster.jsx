@@ -8,23 +8,23 @@ import { Input } from '../components/ui/input';
 import { 
   Package, 
   Plus, 
-  MagnifyingGlass,
   PencilSimple,
   Trash,
   X,
   Tag
 } from '@phosphor-icons/react';
 import { useAuth } from '../context/AuthContext';
+import { useSearch } from '../context/SearchContext';
 import { toast } from 'sonner';
 
 const API = `${process.env.REACT_APP_BACKEND_URL}/api`;
 
 const ItemMaster = () => {
   const { getAuthHeader } = useAuth();
+  const { searchTerm } = useSearch();
   const [items, setItems] = useState([]);
   const [categories, setCategories] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [searchTerm, setSearchTerm] = useState('');
   const [filterCategory, setFilterCategory] = useState('all');
   const [showAddModal, setShowAddModal] = useState(false);
   const [showEditModal, setShowEditModal] = useState(false);
@@ -155,14 +155,12 @@ const ItemMaster = () => {
         {/* Controls */}
         <div className="flex flex-col md:flex-row gap-3 items-center justify-between">
           <div className="flex gap-2 w-full md:w-auto">
-            <div className="relative flex-1 md:w-72">
-              <MagnifyingGlass className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
-              <Input
-                placeholder="Search items..."
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-                className="pl-10 bg-white border-slate-200 text-slate-900 placeholder:text-slate-400 focus:border-primary-500"
-              />
+            <div className="flex-1 md:w-72">
+              {searchTerm && (
+                <p className="text-xs text-slate-500">
+                  Showing results for: <span className="font-semibold text-slate-700">"{searchTerm}"</span>
+                </p>
+              )}
             </div>
             <select
               value={filterCategory}

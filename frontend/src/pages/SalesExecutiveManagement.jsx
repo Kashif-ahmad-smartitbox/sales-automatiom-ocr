@@ -7,8 +7,9 @@ import { Input } from '../components/ui/input';
 import { Label } from '../components/ui/label';
 import { Badge } from '../components/ui/badge';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '../components/ui/dialog';
-import { Plus, MagnifyingGlass, Trash, MapPin, Phone, Pencil, Globe, Crosshair, ChartBar } from '@phosphor-icons/react';
+import { Plus, Trash, MapPin, Phone, Pencil, Globe, Crosshair, ChartBar } from '@phosphor-icons/react';
 import { useAuth } from '../context/AuthContext';
+import { useSearch } from '../context/SearchContext';
 import { toast } from 'sonner';
 import OrderItemsView from '../components/OrderItemsView';
 import { Checkbox } from '../components/ui/checkbox';
@@ -40,9 +41,9 @@ const emptyForm = {
 
 const SalesExecutiveManagement = () => {
   const { getAuthHeader } = useAuth();
+  const { searchTerm } = useSearch();
   const [executives, setExecutives] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [searchTerm, setSearchTerm] = useState('');
   const [dialogOpen, setDialogOpen] = useState(false);
   const [editingId, setEditingId] = useState(null);
   const [formData, setFormData] = useState(emptyForm);
@@ -196,10 +197,17 @@ const SalesExecutiveManagement = () => {
     return 'offline';
   };
 
-  const filteredExecutives = executives.filter(e => 
-    e.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    e.employee_code?.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  const filteredExecutives = executives.filter(e => {
+    const search = searchTerm.toLowerCase();
+    return (
+      e.name?.toLowerCase().includes(search) ||
+      e.employee_code?.toLowerCase().includes(search) ||
+      e.mobile?.toLowerCase().includes(search) ||
+      e.email?.toLowerCase().includes(search) ||
+      e.assigned_city?.toLowerCase().includes(search) ||
+      e.assigned_state?.toLowerCase().includes(search)
+    );
+  });
 
   return (
     <AdminLayout title="Sales Team">
@@ -214,15 +222,12 @@ const SalesExecutiveManagement = () => {
 
         {/* Search & Actions */}
         <div className="flex flex-col sm:flex-row gap-3 items-start sm:items-center justify-between">
-          <div className="relative flex-1 w-full sm:max-w-sm">
-            <MagnifyingGlass className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={16} />
-            <Input
-              placeholder="Search by name or code..."
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              className="pl-10"
-              data-testid="executive-search"
-            />
+          <div className="flex-1">
+            {searchTerm && (
+              <p className="text-xs text-gray-500">
+                Showing results for: <span className="font-semibold text-gray-700">"{searchTerm}"</span>
+              </p>
+            )}
           </div>
           
           <Dialog open={dialogOpen} onOpenChange={(open) => { if (!open) closeDialog(); else setDialogOpen(true); }}>

@@ -4,8 +4,9 @@ import AdminLayout from '../components/layout/AdminLayout';
 import { Card, CardContent } from '../components/ui/card';
 import { Input } from '../components/ui/input';
 import { Button } from '../components/ui/button';
-import { MagnifyingGlass, MapPin, Calendar, User, Buildings, Check } from '@phosphor-icons/react';
+import { MapPin, Calendar, Buildings, Check } from '@phosphor-icons/react';
 import { useAuth } from '../context/AuthContext';
+import { useSearch } from '../context/SearchContext';
 import { toast } from 'sonner';
 import { Badge } from '../components/ui/badge';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '../components/ui/dialog';
@@ -16,9 +17,9 @@ const API = `${process.env.REACT_APP_BACKEND_URL}/api`;
 
 const PotentialDealers = () => {
   const { getAuthHeader } = useAuth();
+  const { searchTerm } = useSearch();
   const [potentials, setPotentials] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [searchTerm, setSearchTerm] = useState('');
   const [salesExecutives, setSalesExecutives] = useState([]);
   const [assignDialogOpen, setAssignDialogOpen] = useState(false);
   const [selectedPotential, setSelectedPotential] = useState(null);
@@ -79,11 +80,16 @@ const PotentialDealers = () => {
     }
   };
 
-  const filteredPotentials = potentials.filter(p => 
-    p.place_name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    p.address?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    p.found_by_name?.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  const filteredPotentials = potentials.filter(p => {
+    const search = searchTerm.toLowerCase();
+    return (
+      p.place_name?.toLowerCase().includes(search) ||
+      p.address?.toLowerCase().includes(search) ||
+      p.found_by_name?.toLowerCase().includes(search) ||
+      p.place_id?.toLowerCase().includes(search) ||
+      p.assigned_to_name?.toLowerCase().includes(search)
+    );
+  });
 
   return (
     <AdminLayout title="Potential Dealers">
@@ -96,14 +102,12 @@ const PotentialDealers = () => {
 
         {/* Controls */}
         <div className="flex flex-col sm:flex-row gap-3 items-start sm:items-center justify-between">
-          <div className="relative flex-1 w-full sm:max-w-md">
-            <MagnifyingGlass className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={16} />
-            <Input
-              placeholder="Search by name, address or executive..."
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              className="pl-10"
-            />
+          <div className="flex-1">
+            {searchTerm && (
+              <p className="text-xs text-gray-500">
+                Showing results for: <span className="font-semibold text-gray-700">"{searchTerm}"</span>
+              </p>
+            )}
           </div>
           <Button variant="outline" onClick={fetchData}>
              Refresh
