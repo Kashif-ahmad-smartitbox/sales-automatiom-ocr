@@ -819,7 +819,7 @@ const FieldView = () => {
             </div>
 
             <div className="space-y-2">
-              <Label>Next Visit Date (Optional)</Label>
+              <Label>Next Visit Date</Label>
               <Input type="date" value={outcomeData.next_visit_date}
                 onChange={e => setOutcomeData({...outcomeData, next_visit_date: e.target.value})} data-testid="next-visit-date-input" />
             </div>

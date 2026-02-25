@@ -141,6 +141,10 @@ const AssignedPotentials = () => {
       toast.error('Please select visit outcome');
       return;
     }
+    if (visitData.outcome === 'Follow-up Required' && !visitData.next_visit_date) {
+      toast.error('Please select next visit date for follow-up');
+      return;
+    }
 
     try {
       const position = await new Promise((resolve, reject) => {
@@ -197,6 +201,10 @@ const AssignedPotentials = () => {
       fetchData();
     } catch (error) {
       console.error('Save visit error:', error);
+      if (error?.code === 1) {
+        toast.error('Location permission denied. Please allow location access to record visits.');
+        return;
+      }
       toast.error(error.response?.data?.detail || 'Failed to record visit');
     }
   };
@@ -475,7 +483,7 @@ const AssignedPotentials = () => {
             </div>
 
             <div className="space-y-2">
-              <Label>Next Visit Date (Optional)</Label>
+              <Label>Next Visit Date</Label>
               <Input
                 type="date"
                 value={visitData.next_visit_date}

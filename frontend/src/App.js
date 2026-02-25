@@ -20,6 +20,7 @@ import SettingsPage from "./pages/SettingsPage";
 import FieldView from "./pages/FieldView";
 import PotentialDealers from "./pages/PotentialDealers";
 import AssignedPotentials from "./pages/AssignedPotentials";
+import FollowupDealers from "./pages/FollowupDealers";
 import ItemMaster from "./pages/ItemMaster";
 
 // Owner Pages
@@ -147,6 +148,11 @@ function AppRoutes() {
       <Route path="/assigned-potentials" element={
         <ProtectedRoute allowedRoles={["sales_executive"]}>
           <AssignedPotentials />
+        </ProtectedRoute>
+      } />
+      <Route path="/followup-dealers" element={
+        <ProtectedRoute allowedRoles={["sales_executive"]}>
+          <FollowupDealers />
         </ProtectedRoute>
       } />
       <Route path="/items" element={

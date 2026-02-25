@@ -16,7 +16,8 @@ import {
   ArrowRight,
   Plus,
   ChartBar,
-  Eye
+  Eye,
+  ChartPieSlice
 } from '@phosphor-icons/react';
 import { useAuth } from '../context/AuthContext';
 
@@ -242,10 +243,11 @@ const AdminDashboard = () => {
           </div>
         </div>
 
-        {/* ─── MIDDLE ROW: Activity Log | Field Team | Dealer Visits ─── */}
+        {/* ─── MIDDLE ROW: All-Time Progress | Field Team | Dealer Visits ─── */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-3 md:gap-4">
           
-          {/* Activity Log */}
+          {/* Activity Log (commented out for now) */}
+          {/*
           <div className="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden" data-testid="activity-log-card">
             <div className="flex items-center justify-between px-5 py-4 border-b border-gray-100">
               <div className="flex items-center gap-2">
@@ -289,6 +291,39 @@ const AdminDashboard = () => {
                   );
                 })
               )}
+            </div>
+          </div>
+          */}
+
+          {/* All-Time Progress */}
+          <div className="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden" data-testid="all-time-progress-card">
+            <div className="flex items-center justify-between px-5 py-4 border-b border-gray-100">
+              <div className="flex items-center gap-2">
+                <div className="w-8 h-8 rounded-lg bg-orange-100 flex items-center justify-center">
+                  <ChartPieSlice size={16} className="text-orange-500" weight="bold" />
+                </div>
+                <span className="font-bold text-gray-900 text-sm">All-Time Progress</span>
+              </div>
+            </div>
+            <div className="px-5 py-4">
+              <div className="grid grid-cols-2 gap-3">
+                <div className="bg-white rounded-xl p-3 border border-gray-100">
+                  <div className="text-xl font-black text-gray-900">{totalVisitsCount}</div>
+                  <div className="text-xs text-gray-400 mt-0.5">Total Visits</div>
+                </div>
+                <div className="bg-white rounded-xl p-3 border border-gray-100">
+                  <div className="text-xl font-black text-emerald-600">₹{totalRevenue.toLocaleString('en-IN')}</div>
+                  <div className="text-xs text-gray-400 mt-0.5">Total Revenue</div>
+                </div>
+                <div className="bg-white rounded-xl p-3 border border-gray-100">
+                  <div className="text-xl font-black text-gray-900">{activeVisitsCount}</div>
+                  <div className="text-xs text-gray-400 mt-0.5">Active Visits</div>
+                </div>
+                <div className="bg-white rounded-xl p-3 border border-gray-100">
+                  <div className="text-xl font-black text-blue-600">{totalDistanceKm} km</div>
+                  <div className="text-xs text-gray-400 mt-0.5">Distance Covered</div>
+                </div>
+              </div>
             </div>
           </div>
 
@@ -350,32 +385,7 @@ const AdminDashboard = () => {
             </div>
 
 
-            {/* Progress Section */}
-            <div className="px-5 py-3 border-t border-gray-100 bg-gray-50">
-              <p className="text-xs font-bold text-gray-500 uppercase tracking-wider mb-3">All-Time Progress</p>
-              <div className="grid grid-cols-2 gap-3">
-                <div className="bg-white rounded-xl p-3 border border-gray-100">
-                  <div className="text-xl font-black text-gray-900">{totalVisitsCount}</div>
-                  <div className="text-xs text-gray-400 mt-0.5">Total Visits</div>
-                </div>
-                <div className="bg-white rounded-xl p-3 border border-gray-100">
-                  <div className="text-xl font-black text-emerald-600">₹{totalRevenue.toLocaleString('en-IN')}</div>
-                  <div className="text-xs text-gray-400 mt-0.5">Total Revenue</div>
-                </div>
-                <div className="bg-white rounded-xl p-3 border border-gray-100">
-                  <div className="text-xl font-black text-gray-900">{activeVisitsCount}</div>
-                  <div className="text-xs text-gray-400 mt-0.5">Active Visits</div>
-                </div>
-                <div className="bg-white rounded-xl p-3 border border-gray-100">
-                  <div className="text-xl font-black text-blue-600">{totalDistanceKm} km</div>
-                  <div className="text-xs text-gray-400 mt-0.5">Distance Covered</div>
-                </div>
-              </div>
-              {/* <button className="mt-3 w-full flex items-center justify-center gap-2 py-2.5 rounded-xl bg-orange-500 text-white text-xs font-bold hover:bg-orange-600 transition-colors">
-                <Plus size={14} weight="bold" />
-                Add Visit
-              </button> */}
-            </div>
+            {/* Progress Section (moved to All-Time Progress card) */}
           </div>
 
           {/* Dealer Visits */}

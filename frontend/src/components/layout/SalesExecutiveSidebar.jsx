@@ -6,7 +6,8 @@ import {
   SignOut,
   X,
   CaretLeft,
-  CaretRight
+  CaretRight,
+  CalendarCheck
 } from '@phosphor-icons/react';
 import { useAuth } from '../../context/AuthContext';
 
@@ -14,9 +15,10 @@ const SalesExecutiveSidebar = ({ isOpen, onClose, isCollapsed, setIsCollapsed })
   const { logout, user } = useAuth();
 
   const navItems = [
-    { to: '/field',               icon: MapPin,      label: 'Field View' },
-    { to: '/assigned-potentials', icon: Buildings,   label: 'Assigned Dealers' },
-    // { to: '/items',               icon: Package,     label: 'Items' },
+    { to: '/field',               icon: MapPin,        label: 'Field View' },
+    { to: '/assigned-potentials', icon: Buildings,     label: 'Assigned Dealers' },
+    { to: '/followup-dealers',    icon: CalendarCheck, label: 'Follow-up Dealers' },
+    // { to: '/items',               icon: Package,       label: 'Items' },
   ];
 
   return (
@@ -39,25 +41,14 @@ const SalesExecutiveSidebar = ({ isOpen, onClose, isCollapsed, setIsCollapsed })
         `}
       >
         {/* Logo */}
-        <div className={`flex items-center h-16 bg-gradient-to-r from-orange-500 to-orange-600 ${isCollapsed ? 'justify-center px-2' : 'justify-between px-4'}`}>
+        <div className={`flex items-center h-16 bg-white border-b border-gray-100 ${isCollapsed ? 'justify-center px-2' : 'justify-between px-4'}`}>
           {!isCollapsed && (
             <div className="flex items-center gap-3">
               <img
                 src="/logo.png"
                 alt="SMART ITBox Logo"
-                className="w-8 h-8 object-contain"
-                onError={(e) => {
-                  e.target.style.display = 'none';
-                  e.target.nextSibling.style.display = 'flex';
-                }}
+                className="h-9 w-auto object-contain"
               />
-              <div
-                className="w-8 h-8 rounded-lg bg-orange-400 items-center justify-center text-white font-bold text-sm hidden"
-              >S</div>
-              <div>
-                <div className="font-bold text-sm text-white">Smart ITBox</div>
-                <div className="text-xs text-white/80">Field Sales Automation</div>
-              </div>
             </div>
           )}
           {isCollapsed && (
@@ -67,7 +58,7 @@ const SalesExecutiveSidebar = ({ isOpen, onClose, isCollapsed, setIsCollapsed })
               className="w-8 h-8 object-contain"
             />
           )}
-          <button onClick={onClose} className="md:hidden text-white/80 hover:text-white">
+          <button onClick={onClose} className="md:hidden text-gray-500 hover:text-gray-800">
             <X size={20} />
           </button>
         </div>
@@ -76,7 +67,7 @@ const SalesExecutiveSidebar = ({ isOpen, onClose, isCollapsed, setIsCollapsed })
         <div className={`hidden md:flex py-2 bg-white ${isCollapsed ? 'justify-center px-1' : 'justify-end px-2'}`}>
           <button
             onClick={() => setIsCollapsed && setIsCollapsed(!isCollapsed)}
-            className="p-1.5 rounded-lg text-gray-400 hover:text-gray-700 hover:bg-gray-100 transition-colors"
+            className="p-1.5 rounded-lg bg-gradient-to-r from-primary-500 to-orange-500 text-white hover:from-primary-600 hover:to-orange-600 shadow-sm transition-colors"
             title={isCollapsed ? 'Expand sidebar' : 'Collapse sidebar'}
           >
             {isCollapsed ? <CaretRight size={16} weight="bold" /> : <CaretLeft size={16} weight="bold" />}
@@ -92,7 +83,7 @@ const SalesExecutiveSidebar = ({ isOpen, onClose, isCollapsed, setIsCollapsed })
               className={({ isActive }) => `
                 flex items-center ${isCollapsed ? 'justify-center px-0 py-3' : 'gap-3 px-4 py-3'} rounded-lg text-sm font-medium transition-all
                 ${isActive
-                  ? 'bg-orange-500 text-white shadow-sm'
+                  ? 'bg-gradient-to-r from-primary-500 to-orange-500 text-white shadow-sm'
                   : 'text-gray-600 hover:text-gray-900 hover:bg-gray-50'
                 }
               `}
@@ -120,7 +111,7 @@ const SalesExecutiveSidebar = ({ isOpen, onClose, isCollapsed, setIsCollapsed })
               </div>
               <button
                 onClick={logout}
-                className="w-full flex items-center gap-2 px-4 py-2.5 text-sm font-medium text-gray-600 hover:text-gray-900 hover:bg-gray-50 rounded-lg transition-colors"
+                className="w-full flex items-center justify-center gap-2 px-4 py-2.5 text-sm font-semibold text-white rounded-lg bg-gradient-to-r from-primary-500 to-orange-500 hover:from-primary-600 hover:to-orange-600 shadow-sm transition-colors"
               >
                 <SignOut size={16} />
                 <span>Sign Out</span>
@@ -133,7 +124,7 @@ const SalesExecutiveSidebar = ({ isOpen, onClose, isCollapsed, setIsCollapsed })
               </div>
               <button
                 onClick={logout}
-                className="p-2 text-gray-600 hover:text-gray-900 hover:bg-gray-50 rounded-lg transition-colors"
+                className="p-2 rounded-lg bg-gradient-to-r from-primary-500 to-orange-500 text-white hover:from-primary-600 hover:to-orange-600 shadow-sm transition-colors"
                 title="Sign Out"
               >
                 <SignOut size={20} />
