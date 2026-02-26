@@ -8,7 +8,7 @@ import { Label } from '../components/ui/label';
 import { Badge } from '../components/ui/badge';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '../components/ui/dialog';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../components/ui/select';
-import { Plus, MapPin, Trash, Pencil } from '@phosphor-icons/react';
+import { Plus, MapPin, Trash, Pencil, ClockClockwise, Calendar, User } from '@phosphor-icons/react';
 import { useAuth } from '../context/AuthContext';
 import { useSearch } from '../context/SearchContext';
 import DealerOrderItemsView from '../components/DealerOrderItemsView';
@@ -40,6 +40,10 @@ const DealerManagement = () => {
   const [dialogOpen, setDialogOpen] = useState(false);
   const [editingId, setEditingId] = useState(null);
   const [formData, setFormData] = useState(emptyForm);
+  const [historyDialogOpen, setHistoryDialogOpen] = useState(false);
+  const [selectedDealer, setSelectedDealer] = useState(null);
+  const [followupHistory, setFollowupHistory] = useState([]);
+  const [loadingHistory, setLoadingHistory] = useState(false);
 
   const fetchData = useCallback(async () => {
     try {
@@ -118,6 +122,31 @@ const DealerManagement = () => {
     } catch (error) {
       toast.error('Failed to delete dealer');
     }
+  };
+
+  const handleViewHistory = async (dealer) => {
+    setSelectedDealer(dealer);
+    setHistoryDialogOpen(true);
+    setLoadingHistory(true);
+
+    try {
+      const response = await axios.get(
+        `${API}/visit/dealer/${dealer.id}/followup-history`,
+        { headers: getAuthHeader() }
+      );
+      setFollowupHistory(response.data);
+    } catch (error) {
+      console.error('Fetch history error:', error);
+      toast.error('Failed to load follow-up history');
+    } finally {
+      setLoadingHistory(false);
+    }
+  };
+
+  const formatDate = (dateStr) => {
+    if (!dateStr) return 'N/A';
+    const date = new Date(dateStr);
+    return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
   };
 
 const filteredDealers = dealers.filter(d => {
@@ -450,6 +479,16 @@ const filteredDealers = dealers.filter(d => {
                             <Button 
                               variant="ghost" 
                               size="sm" 
+                              className="text-blue-600 hover:text-blue-700 hover:bg-blue-50 h-7 w-7 p-0"
+                              onClick={() => handleViewHistory(dealer)}
+                              title="View History"
+                              data-testid={`history-dealer-${dealer.id}`}
+                            >
+                              <ClockClockwise size={14} />
+                            </Button>
+                            <Button 
+                              variant="ghost" 
+                              size="sm" 
                               className="text-primary-600 hover:text-primary-700 hover:bg-gradient-to-r hover:from-primary-50 hover:to-orange-50 h-7 w-7 p-0"
                               onClick={() => handleEdit(dealer)}
                               data-testid={`edit-dealer-${dealer.id}`}
@@ -476,6 +515,98 @@ const filteredDealers = dealers.filter(d => {
           </CardContent>
         </Card>
       </div>
+
+      {/* Follow-up History Dialog */}
+      <Dialog open={historyDialogOpen} onOpenChange={setHistoryDialogOpen}>
+        <DialogContent className="max-w-3xl max-h-[90vh] overflow-y-auto">
+          <DialogHeader>
+            <DialogTitle className="text-lg font-bold">Follow-up History</DialogTitle>
+            <p className="text-xs text-gray-500 mt-1">View all visits and follow-ups for this dealer</p>
+          </DialogHeader>
+          <div className="space-y-3">
+            {selectedDealer && (
+              <div className="bg-slate-50 rounded-lg p-3 border border-slate-200">
+                <p className="text-sm font-semibold text-slate-800">{selectedDealer.name}</p>
+                <p className="text-xs text-slate-500 mt-0.5">{selectedDealer.address}</p>
+              </div>
+            )}
+
+            {loadingHistory ? (
+              <div className="flex justify-center items-center gap-2 text-xs text-gray-500 py-8">
+                <div className="spinner w-4 h-4" /> Loading history...
+              </div>
+            ) : followupHistory.length === 0 ? (
+              <div className="text-center text-sm text-gray-500 py-8">
+                No visit history found for this dealer
+              </div>
+            ) : (
+              <div className="space-y-2 max-h-96 overflow-y-auto">
+                {followupHistory.map((visit, index) => (
+                  <div
+                    key={visit.id || index}
+                    className="border border-gray-200 rounded-lg p-3 hover:bg-gray-50 transition-colors"
+                  >
+                    <div className="flex items-start justify-between mb-2">
+                      <div className="flex-1">
+                        <div className="flex items-center gap-2 mb-1">
+                          <Calendar size={14} className="text-gray-400" />
+                          <span className="text-xs font-medium text-gray-700">
+                            {new Date(visit.check_in_time).toLocaleDateString('en-US', {
+                              month: 'short',
+                              day: 'numeric',
+                              year: 'numeric'
+                            })}
+                          </span>
+                          <span className="text-xs text-gray-400">
+                            {new Date(visit.check_in_time).toLocaleTimeString([], {
+                              hour: '2-digit',
+                              minute: '2-digit'
+                            })}
+                          </span>
+                        </div>
+                        <div className="flex items-center gap-2 text-xs text-gray-600">
+                          <User size={12} className="text-gray-400" />
+                          <span>{visit.user_name}</span>
+                        </div>
+                      </div>
+                      {visit.outcome && (
+                        <Badge
+                          variant="outline"
+                          className={`text-[10px] px-1.5 py-0 ${
+                            visit.outcome === 'Order Booked'
+                              ? 'bg-green-50 text-green-700 border-green-200'
+                              : visit.outcome === 'Follow-up Required' || visit.outcome === 'Follow-up Scheduled'
+                              ? 'bg-yellow-50 text-yellow-700 border-yellow-200'
+                              : 'bg-gray-50 text-gray-700 border-gray-200'
+                          }`}
+                        >
+                          {visit.outcome}
+                        </Badge>
+                      )}
+                    </div>
+                    {visit.notes && (
+                      <p className="text-xs text-gray-600 mt-2 pl-5">{visit.notes}</p>
+                    )}
+                    {visit.order_value && visit.order_value > 0 && (
+                      <div className="flex items-center gap-1.5 text-xs text-green-600 mt-2 pl-5">
+                        <span className="font-semibold">Order Value:</span>
+                        <span>₹{visit.order_value.toLocaleString()}</span>
+                      </div>
+                    )}
+                    {visit.next_visit_date && (
+                      <div className="flex items-center gap-1.5 text-xs text-blue-600 mt-2 pl-5">
+                        <Calendar size={12} />
+                        <span className="font-medium">Next Visit:</span>
+                        <span>{formatDate(visit.next_visit_date)}</span>
+                      </div>
+                    )}
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+        </DialogContent>
+      </Dialog>
     </AdminLayout>
   );
 };
