@@ -275,7 +275,7 @@ const HODManagement = () => {
           </Card>
         </div>
 
-        {/* HODs Grid */}
+        {/* HODs Table */}
         {loading ? (
           <div className="flex items-center justify-center py-12">
             <div className="spinner" />
@@ -287,74 +287,95 @@ const HODManagement = () => {
             </CardContent>
           </Card>
         ) : (
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-3">
-            {filteredHODs.map((hod) => (
-              <Card key={hod.id} className="border-0 shadow-sm hover:shadow-md hover:border-primary-200 transition-all duration-300">
-                <CardContent className="p-3">
-                  <div className="flex items-start justify-between mb-3">
-                    <div className="flex items-center gap-2.5">
-                      <div className="w-9 h-9 rounded-full flex items-center justify-center text-white text-sm font-bold bg-gradient-to-br from-purple-500 to-indigo-600">
-                        {hod.name.charAt(0)}
-                      </div>
-                      <div>
-                        <p className="text-sm font-semibold text-gray-800">{hod.name}</p>
-                        <p className="text-[10px] text-gray-500 font-mono">{hod.employee_code}</p>
-                      </div>
-                    </div>
-                    <Badge className="bg-purple-100 text-purple-700 border-purple-200">
-                      HOD
-                    </Badge>
-                  </div>
-
-                  <div className="space-y-1.5 text-xs mb-3">
-                    <div className="flex items-center gap-2 text-gray-500">
-                      <Phone size={12} />
-                      <span>{hod.mobile}</span>
-                    </div>
-                    <div className="flex items-center gap-2 text-gray-500">
-                      <Users size={12} />
-                      <span>{hod.assigned_sales_executive_ids?.length || 0} Sales Executives</span>
-                    </div>
-                  </div>
-
-                  {hod.assigned_sales_executives && hod.assigned_sales_executives.length > 0 && (
-                    <div className="mb-3 p-2 bg-gray-50 rounded border border-gray-100">
-                      <p className="text-[10px] text-gray-500 uppercase tracking-wider mb-1">Assigned Team</p>
-                      <div className="space-y-1">
-                        {hod.assigned_sales_executives.slice(0, 3).map((exec) => (
-                          <p key={exec.id} className="text-xs text-gray-700">• {exec.name}</p>
-                        ))}
-                        {hod.assigned_sales_executives.length > 3 && (
-                          <p className="text-xs text-gray-500">+ {hod.assigned_sales_executives.length - 3} more</p>
-                        )}
-                      </div>
-                    </div>
-                  )}
-
-                  <div className="flex justify-end pt-3 border-t border-gray-100 gap-1">
-                    <Button 
-                      variant="ghost" 
-                      size="sm" 
-                      className="text-primary-600 hover:text-primary-700 hover:bg-gradient-to-r hover:from-primary-50 hover:to-orange-50 text-xs h-7 px-2"
-                      onClick={() => handleEdit(hod)}
-                    >
-                      <Pencil size={12} className="mr-1" />
-                      Edit
-                    </Button>
-                    <Button 
-                      variant="ghost" 
-                      size="sm" 
-                      className="text-red-600 hover:text-red-700 hover:bg-red-50 text-xs h-7 px-2"
-                      onClick={() => handleDelete(hod.id)}
-                    >
-                      <Trash size={12} className="mr-1" />
-                      Remove
-                    </Button>
-                  </div>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
+          <Card className="border-0 shadow-sm">
+            <CardContent className="p-0">
+              <div className="overflow-x-auto">
+                <table className="w-full border-collapse">
+                  <thead>
+                    <tr className="border-y border-gray-200 bg-gray-50">
+                      <th className="text-left px-2 py-1.5 text-[10px] font-semibold text-gray-600 uppercase tracking-wider border-r border-gray-200">HOD Name</th>
+                      <th className="text-left px-2 py-1.5 text-[10px] font-semibold text-gray-600 uppercase tracking-wider border-r border-gray-200">Employee Code</th>
+                      <th className="text-left px-2 py-1.5 text-[10px] font-semibold text-gray-600 uppercase tracking-wider border-r border-gray-200">Email</th>
+                      <th className="text-left px-2 py-1.5 text-[10px] font-semibold text-gray-600 uppercase tracking-wider border-r border-gray-200">Mobile</th>
+                      <th className="text-center px-2 py-1.5 text-[10px] font-semibold text-gray-600 uppercase tracking-wider border-r border-gray-200">Team Size</th>
+                      <th className="text-left px-2 py-1.5 text-[10px] font-semibold text-gray-600 uppercase tracking-wider border-r border-gray-200">Assigned Team</th>
+                      <th className="text-center px-2 py-1.5 text-[10px] font-semibold text-gray-600 uppercase tracking-wider">Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {filteredHODs.map((hod) => (
+                      <tr key={hod.id} className="border-b border-gray-100 hover:bg-gray-50 transition-colors">
+                        <td className="px-2 py-1.5 border-r border-gray-100">
+                          <div className="flex items-center gap-2">
+                            <div className="w-8 h-8 rounded-full flex items-center justify-center text-white text-xs font-bold bg-gradient-to-br from-purple-500 to-indigo-600 flex-shrink-0">
+                              {hod.name.charAt(0)}
+                            </div>
+                            <span className="text-[11px] font-semibold text-gray-800">{hod.name}</span>
+                          </div>
+                        </td>
+                        <td className="px-2 py-1.5 text-[11px] text-gray-600 font-mono border-r border-gray-100">
+                          {hod.employee_code}
+                        </td>
+                        <td className="px-2 py-1.5 text-[11px] text-gray-600 border-r border-gray-100">
+                          {hod.email}
+                        </td>
+                        <td className="px-2 py-1.5 text-[11px] text-gray-600 border-r border-gray-100">
+                          <div className="flex items-center gap-1.5">
+                            <Phone size={12} className="text-gray-400" />
+                            <span>{hod.mobile}</span>
+                          </div>
+                        </td>
+                        <td className="px-2 py-1.5 text-center border-r border-gray-100">
+                          <Badge className="bg-purple-100 text-purple-700 border-purple-200 text-[10px] px-1.5 py-0">
+                            <Users size={10} className="mr-1" />
+                            {hod.assigned_sales_executive_ids?.length || 0}
+                          </Badge>
+                        </td>
+                        <td className="px-2 py-1.5 border-r border-gray-100">
+                          {hod.assigned_sales_executives && hod.assigned_sales_executives.length > 0 ? (
+                            <div className="text-[11px] text-gray-700">
+                              {hod.assigned_sales_executives.slice(0, 2).map((exec, idx) => (
+                                <span key={exec.id}>
+                                  {exec.name}{idx < Math.min(1, hod.assigned_sales_executives.length - 1) ? ', ' : ''}
+                                </span>
+                              ))}
+                              {hod.assigned_sales_executives.length > 2 && (
+                                <span className="text-gray-500"> +{hod.assigned_sales_executives.length - 2} more</span>
+                              )}
+                            </div>
+                          ) : (
+                            <span className="text-[11px] text-gray-400">No team assigned</span>
+                          )}
+                        </td>
+                        <td className="px-2 py-1.5 text-center">
+                          <div className="flex items-center justify-center gap-1">
+                            <Button 
+                              variant="ghost" 
+                              size="sm" 
+                              className="text-primary-600 hover:text-primary-700 hover:bg-primary-50 text-xs h-6 px-2"
+                              onClick={() => handleEdit(hod)}
+                            >
+                              <Pencil size={12} className="mr-0.5" />
+                              Edit
+                            </Button>
+                            <Button 
+                              variant="ghost" 
+                              size="sm" 
+                              className="text-red-600 hover:text-red-700 hover:bg-red-50 text-xs h-6 px-2"
+                              onClick={() => handleDelete(hod.id)}
+                            >
+                              <Trash size={12} className="mr-0.5" />
+                              Delete
+                            </Button>
+                          </div>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </CardContent>
+          </Card>
         )}
       </div>
     </AdminLayout>

@@ -396,67 +396,67 @@ const FollowupDealers = () => {
         {/* Content */}
         <Card className="border-0 shadow-sm overflow-hidden">
           <div className="overflow-x-auto">
-            <table className="data-table">
-              <thead>
-                <tr>
-                  <th>Dealer Name</th>
-                  <th>Contact Info</th>
-                  <th>Location</th>
-                  <th>Last Visit</th>
-                  <th>Next Visit Date</th>
-                  <th className="text-center">Status</th>
-                  <th>Last Outcome</th>
-                  <th className="text-center">Actions</th>
+            <table className="w-full border-collapse">
+              <thead className="bg-gray-50">
+                <tr className="border-y border-gray-200">
+                  <th className="px-2 py-2 text-left text-[10px] font-semibold text-gray-600 uppercase tracking-wider border-r border-gray-200">Dealer Name</th>
+                  <th className="px-2 py-2 text-left text-[10px] font-semibold text-gray-600 uppercase tracking-wider border-r border-gray-200">Contact Info</th>
+                  <th className="px-2 py-2 text-left text-[10px] font-semibold text-gray-600 uppercase tracking-wider border-r border-gray-200">Location</th>
+                  <th className="px-2 py-2 text-left text-[10px] font-semibold text-gray-600 uppercase tracking-wider border-r border-gray-200">Last Visit</th>
+                  <th className="px-2 py-2 text-left text-[10px] font-semibold text-gray-600 uppercase tracking-wider border-r border-gray-200">Next Visit Date</th>
+                  <th className="px-2 py-2 text-center text-[10px] font-semibold text-gray-600 uppercase tracking-wider border-r border-gray-200">Status</th>
+                  <th className="px-2 py-2 text-left text-[10px] font-semibold text-gray-600 uppercase tracking-wider border-r border-gray-200">Last Outcome</th>
+                  <th className="px-2 py-2 text-center text-[10px] font-semibold text-gray-600 uppercase tracking-wider">Actions</th>
                 </tr>
               </thead>
               <tbody>
                 {loading ? (
                   <tr>
-                    <td colSpan="8" className="px-4 py-8 text-center">
-                      <div className="flex justify-center items-center gap-2 text-xs text-gray-500">
+                    <td colSpan="8" className="px-2 py-8 text-center">
+                      <div className="flex justify-center items-center gap-2 text-[11px] text-gray-500">
                         <div className="spinner w-4 h-4" /> Loading data...
                       </div>
                     </td>
                   </tr>
                 ) : filteredDealers.length === 0 ? (
                   <tr>
-                    <td colSpan="8" className="px-4 py-8 text-center text-xs text-gray-500">
+                    <td colSpan="8" className="px-2 py-8 text-center text-[11px] text-gray-500">
                       {searchTerm ? 'No matches found.' : 'No follow-ups scheduled at this time.'}
                     </td>
                   </tr>
                 ) : (
                   filteredDealers.map((dealer) => (
-                    <tr key={dealer.id} className={dealer.followup_status === 'overdue' ? 'bg-red-50/30' : ''}>
-                      <td>
-                        <div className="font-medium text-sm text-gray-800">{dealer.name}</div>
+                    <tr key={dealer.id} className={`border-b border-gray-100 hover:bg-gray-50 transition-colors ${dealer.followup_status === 'overdue' ? 'bg-red-50' : ''}`}>
+                      <td className="px-2 py-1.5 border-r border-gray-100">
+                        <div className="font-medium text-xs text-gray-800">{dealer.name}</div>
                         <div className="text-[10px] text-gray-400 mt-0.5">
                           {dealer.dealer_type} • Priority {dealer.priority_level}
                         </div>
                       </td>
-                      <td>
+                      <td className="px-2 py-1.5 border-r border-gray-100">
                         {dealer.contact_person && (
-                          <div className="flex items-center gap-1.5 text-xs text-gray-600">
+                          <div className="flex items-center gap-1.5 text-[11px] text-gray-600">
                             <User size={12} className="text-gray-400" />
                             <span>{dealer.contact_person}</span>
                           </div>
                         )}
                         {dealer.phone && (
-                          <div className="flex items-center gap-1.5 text-xs text-gray-600 mt-1">
+                          <div className="flex items-center gap-1.5 text-[11px] text-gray-600 mt-1">
                             <Phone size={12} className="text-gray-400" />
                             <span>{dealer.phone}</span>
                           </div>
                         )}
                         {!dealer.contact_person && !dealer.phone && (
-                          <span className="text-xs text-gray-400">Not available</span>
+                          <span className="text-[11px] text-gray-400">Not available</span>
                         )}
                       </td>
-                      <td className="max-w-xs">
+                      <td className="px-2 py-1.5 max-w-xs border-r border-gray-100">
                         {dealer.city && (
-                          <div className="text-xs font-medium text-gray-700 mb-1">
+                          <div className="text-[11px] font-medium text-gray-700 mb-1">
                             {dealer.city}
                           </div>
                         )}
-                        <div className="flex items-start gap-1.5 text-xs text-gray-600">
+                        <div className="flex items-start gap-1.5 text-[11px] text-gray-600">
                           <MapPin size={12} className="mt-0.5 shrink-0 text-gray-400" />
                           <span className="line-clamp-2" title={dealer.address}>
                             {dealer.address || 'Address not available'}

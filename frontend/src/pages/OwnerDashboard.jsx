@@ -374,29 +374,29 @@ const OwnerDashboard = () => {
               <p className="text-xs text-gray-500 text-center py-6">No recent activity</p>
             ) : (
               <div className="overflow-x-auto">
-                <table className="data-table">
+                <table className="w-full border-collapse">
                   <thead>
-                    <tr>
-                      <th>Company</th>
-                      <th>User</th>
-                      <th>Dealer</th>
-                      <th>Check-in</th>
-                      <th>Outcome</th>
-                      <th>Order Value</th>
+                    <tr className="border-y border-gray-200 bg-gray-50">
+                      <th className="text-left px-2 py-1.5 text-[10px] font-semibold text-gray-600 uppercase tracking-wider border-r border-gray-200">Company</th>
+                      <th className="text-left px-2 py-1.5 text-[10px] font-semibold text-gray-600 uppercase tracking-wider border-r border-gray-200">User</th>
+                      <th className="text-left px-2 py-1.5 text-[10px] font-semibold text-gray-600 uppercase tracking-wider border-r border-gray-200">Dealer</th>
+                      <th className="text-left px-2 py-1.5 text-[10px] font-semibold text-gray-600 uppercase tracking-wider border-r border-gray-200">Check-in</th>
+                      <th className="text-center px-2 py-1.5 text-[10px] font-semibold text-gray-600 uppercase tracking-wider border-r border-gray-200">Outcome</th>
+                      <th className="text-right px-2 py-1.5 text-[10px] font-semibold text-gray-600 uppercase tracking-wider">Order Value</th>
                     </tr>
                   </thead>
                   <tbody>
                     {recentActivity.slice(0, 10).map((visit) => (
-                      <tr key={visit.id}>
-                        <td>
-                          <span className="font-medium text-sm text-gray-800">{visit.company_name}</span>
+                      <tr key={visit.id} className="border-b border-gray-100 hover:bg-gray-50 transition-colors">
+                        <td className="px-2 py-1.5 border-r border-gray-100">
+                          <span className="font-medium text-[11px] text-gray-800">{visit.company_name}</span>
                         </td>
-                        <td className="text-xs text-gray-600">{visit.user_name}</td>
-                        <td className="text-xs text-gray-600">{visit.dealer_name}</td>
-                        <td className="font-mono text-xs text-gray-600">
+                        <td className="px-2 py-1.5 text-[11px] text-gray-600 border-r border-gray-100">{visit.user_name}</td>
+                        <td className="px-2 py-1.5 text-[11px] text-gray-600 border-r border-gray-100">{visit.dealer_name}</td>
+                        <td className="px-2 py-1.5 font-mono text-[11px] text-gray-600 border-r border-gray-100">
                           {new Date(visit.check_in_time).toLocaleString()}
                         </td>
-                        <td>
+                        <td className="px-2 py-1.5 text-center border-r border-gray-100">
                           <Badge className={
                             visit.outcome === 'Order Booked' ? 'bg-emerald-100 text-emerald-700' :
                             visit.outcome === 'Follow-up Required' ? 'bg-amber-100 text-amber-700' :
@@ -406,7 +406,7 @@ const OwnerDashboard = () => {
                             {visit.outcome || 'In Progress'}
                           </Badge>
                         </td>
-                        <td className="font-mono text-xs font-medium text-primary-600">
+                        <td className="px-2 py-1.5 font-mono text-[11px] font-medium text-primary-600 text-right">
                           {visit.order_value ? `₹${visit.order_value.toLocaleString()}` : '–'}
                         </td>
                       </tr>

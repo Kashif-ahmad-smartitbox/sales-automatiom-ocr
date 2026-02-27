@@ -194,74 +194,74 @@ const ItemMaster = () => {
               </div>
             ) : (
               <div className="overflow-x-auto">
-                <table className="w-full">
-                  <thead className="bg-slate-50 border-b border-slate-200">
-                    <tr>
-                      <th className="px-4 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                <table className="w-full border-collapse">
+                  <thead className="bg-gray-50">
+                    <tr className="border-y border-gray-200">
+                      <th className="px-2 py-2 text-left text-[10px] font-semibold text-gray-600 uppercase tracking-wider border-r border-gray-200">
                         Item Name
                       </th>
-                      <th className="px-4 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                      <th className="px-2 py-2 text-left text-[10px] font-semibold text-gray-600 uppercase tracking-wider border-r border-gray-200">
                         Category
                       </th>
-                      <th className="px-4 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                      <th className="px-2 py-2 text-left text-[10px] font-semibold text-gray-600 uppercase tracking-wider border-r border-gray-200">
                         Price
                       </th>
-                      <th className="px-4 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                      <th className="px-2 py-2 text-left text-[10px] font-semibold text-gray-600 uppercase tracking-wider border-r border-gray-200">
                         Description
                       </th>
-                      <th className="px-4 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                      <th className="px-2 py-2 text-left text-[10px] font-semibold text-gray-600 uppercase tracking-wider border-r border-gray-200">
                         Added Date
                       </th>
-                      <th className="px-4 py-3 text-center text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                      <th className="px-2 py-2 text-center text-[10px] font-semibold text-gray-600 uppercase tracking-wider">
                         Actions
                       </th>
                     </tr>
                   </thead>
-                  <tbody className="bg-white divide-y divide-slate-200">
+                  <tbody className="bg-white divide-y divide-gray-100">
                     {filteredItems.map((item) => (
-                      <tr key={item.id} className="hover:bg-slate-50 transition-colors">
-                        <td className="px-4 py-3">
+                      <tr key={item.id} className="hover:bg-gray-50 transition-colors">
+                        <td className="px-2 py-1.5 border-r border-gray-100">
                           <div className="flex items-center gap-2">
                             <Package className="w-4 h-4 text-primary-500" weight="duotone" />
-                            <span className="text-sm font-medium text-gray-900">{item.item_name}</span>
+                            <span className="text-xs font-medium text-gray-900">{item.item_name}</span>
                           </div>
                         </td>
-                        <td className="px-4 py-3">
-                          <Badge variant="outline" className="text-xs text-primary-600 border-primary-300">
+                        <td className="px-2 py-1.5 border-r border-gray-100">
+                          <Badge variant="outline" className="text-[10px] text-primary-600 border-primary-300">
                             <Tag className="w-3 h-3 mr-1" />
                             {item.product_category}
                           </Badge>
                         </td>
-                        <td className="px-4 py-3">
-                          <span className="text-sm font-bold text-emerald-600">
+                        <td className="px-2 py-1.5 border-r border-gray-100">
+                          <span className="text-[11px] font-bold text-emerald-600">
                             ₹{item.default_price.toLocaleString()}
                           </span>
                         </td>
-                        <td className="px-4 py-3">
-                          <span className="text-xs text-gray-600 line-clamp-2">
+                        <td className="px-2 py-1.5 border-r border-gray-100">
+                          <span className="text-[11px] text-gray-600 line-clamp-2">
                             {item.description || '-'}
                           </span>
                         </td>
-                        <td className="px-4 py-3">
-                          <span className="text-xs text-gray-500">
+                        <td className="px-2 py-1.5 border-r border-gray-100">
+                          <span className="text-[11px] text-gray-500">
                             {new Date(item.created_at).toLocaleDateString()}
                           </span>
                         </td>
-                        <td className="px-4 py-3">
-                          <div className="flex items-center justify-center gap-2">
+                        <td className="px-2 py-1.5">
+                          <div className="flex items-center justify-center gap-1">
                             <button
                               onClick={() => openEditModal(item)}
                               className="p-1.5 text-blue-600 hover:bg-blue-50 rounded-lg transition-colors"
                               title="Edit"
                             >
-                              <PencilSimple size={18} weight="bold" />
+                              <PencilSimple size={14} weight="bold" />
                             </button>
                             <button
                               onClick={() => handleDeleteItem(item.id, item.item_name)}
                               className="p-1.5 text-red-600 hover:bg-red-50 rounded-lg transition-colors"
                               title="Delete"
                             >
-                              <Trash size={18} weight="bold" />
+                              <Trash size={14} weight="bold" />
                             </button>
                           </div>
                         </td>

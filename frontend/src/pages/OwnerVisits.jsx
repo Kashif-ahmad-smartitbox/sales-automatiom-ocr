@@ -163,38 +163,38 @@ const OwnerVisits = () => {
           <Card className="border-0 shadow-sm overflow-hidden">
             <CardContent className="p-0">
               <div className="overflow-x-auto">
-                <table className="data-table">
-                  <thead>
-                    <tr>
-                      <th>Company</th>
-                      <th>User</th>
-                      <th>Dealer</th>
-                      <th>Contact</th>
-                      <th>Phone</th>
-                      <th>Check-in</th>
-                      <th>Check-out</th>
-                      <th>Duration</th>
-                      <th>Outcome</th>
-                      <th>Order Value</th>
+                <table className="w-full border-collapse">
+                  <thead className="bg-gray-50">
+                    <tr className="border-y border-gray-200">
+                      <th className="px-2 py-2 text-left text-[10px] font-semibold text-gray-600 uppercase tracking-wider border-r border-gray-200">Company</th>
+                      <th className="px-2 py-2 text-left text-[10px] font-semibold text-gray-600 uppercase tracking-wider border-r border-gray-200">User</th>
+                      <th className="px-2 py-2 text-left text-[10px] font-semibold text-gray-600 uppercase tracking-wider border-r border-gray-200">Dealer</th>
+                      <th className="px-2 py-2 text-left text-[10px] font-semibold text-gray-600 uppercase tracking-wider border-r border-gray-200">Contact</th>
+                      <th className="px-2 py-2 text-left text-[10px] font-semibold text-gray-600 uppercase tracking-wider border-r border-gray-200">Phone</th>
+                      <th className="px-2 py-2 text-left text-[10px] font-semibold text-gray-600 uppercase tracking-wider border-r border-gray-200">Check-in</th>
+                      <th className="px-2 py-2 text-left text-[10px] font-semibold text-gray-600 uppercase tracking-wider border-r border-gray-200">Check-out</th>
+                      <th className="px-2 py-2 text-left text-[10px] font-semibold text-gray-600 uppercase tracking-wider border-r border-gray-200">Duration</th>
+                      <th className="px-2 py-2 text-left text-[10px] font-semibold text-gray-600 uppercase tracking-wider border-r border-gray-200">Outcome</th>
+                      <th className="px-2 py-2 text-left text-[10px] font-semibold text-gray-600 uppercase tracking-wider">Order Value</th>
                     </tr>
                   </thead>
                   <tbody>
                     {filteredVisits.map((visit) => (
-                      <tr key={visit.id}>
-                        <td>
+                      <tr key={visit.id} className="border-b border-gray-100 hover:bg-gray-50 transition-colors">
+                        <td className="px-2 py-1.5 border-r border-gray-100">
                           <div className="flex items-center gap-1.5">
                             <Buildings className="w-3 h-3 text-purple-600" />
-                            <span className="font-medium text-sm text-gray-800 truncate max-w-[130px]">{visit.company_name}</span>
+                            <span className="font-medium text-xs text-gray-800 truncate max-w-[130px]">{visit.company_name}</span>
                           </div>
                         </td>
-                        <td>
-                          <div className="flex items-center gap-1.5 text-xs text-gray-600">
+                        <td className="px-2 py-1.5 border-r border-gray-100">
+                          <div className="flex items-center gap-1.5 text-[11px] text-gray-600">
                             <User className="w-3 h-3 text-emerald-600" />
                             <span className="truncate max-w-[100px]">{visit.user_name}</span>
                           </div>
                         </td>
-                        <td>
-                          <div className="flex items-center gap-1.5 text-xs text-gray-600">
+                        <td className="px-2 py-1.5 border-r border-gray-100">
+                          <div className="flex items-center gap-1.5 text-[11px] text-gray-600">
                             <Storefront className="w-3 h-3 text-primary-600" />
                             <span className="truncate max-w-[100px]">{visit.dealer_name}</span>
                           </div>

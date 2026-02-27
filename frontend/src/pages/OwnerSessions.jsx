@@ -177,41 +177,41 @@ const OwnerSessions = () => {
             ) : (
               <div className="p-4">
                 <div className="overflow-x-auto">
-                  <table className="w-full text-left">
+                  <table className="w-full border-collapse text-left">
                     <thead>
-                      <tr className="border-b border-gray-100">
-                        <th className="text-[10px] text-gray-500 uppercase tracking-wider font-medium px-2 py-2">User</th>
-                        <th className="text-[10px] text-gray-500 uppercase tracking-wider font-medium px-2 py-2">Company</th>
-                        <th className="text-[10px] text-gray-500 uppercase tracking-wider font-medium px-2 py-2">Date</th>
-                        <th className="text-[10px] text-gray-500 uppercase tracking-wider font-medium px-2 py-2">Time</th>
-                        <th className="text-[10px] text-gray-500 uppercase tracking-wider font-medium px-2 py-2">Status</th>
-                        <th className="text-[10px] text-gray-500 uppercase tracking-wider font-medium px-2 py-2 text-center">Duration</th>
-                        <th className="text-[10px] text-gray-500 uppercase tracking-wider font-medium px-2 py-2 text-center">Distance</th>
-                        <th className="text-[10px] text-gray-500 uppercase tracking-wider font-medium px-2 py-2 text-center">Shown</th>
-                        <th className="text-[10px] text-gray-500 uppercase tracking-wider font-medium px-2 py-2 text-center">Visited</th>
-                        <th className="text-[10px] text-gray-500 uppercase tracking-wider font-medium px-2 py-2 text-center">Lost</th>
-                        <th className="text-[10px] text-gray-500 uppercase tracking-wider font-medium px-2 py-2 text-right">Action</th>
+                      <tr className="border-y border-gray-200 bg-gray-50">
+                        <th className="text-[10px] text-gray-600 uppercase tracking-wider font-semibold px-2 py-1.5 border-r border-gray-200">User</th>
+                        <th className="text-[10px] text-gray-600 uppercase tracking-wider font-semibold px-2 py-1.5 border-r border-gray-200">Company</th>
+                        <th className="text-[10px] text-gray-600 uppercase tracking-wider font-semibold px-2 py-1.5 border-r border-gray-200">Date</th>
+                        <th className="text-[10px] text-gray-600 uppercase tracking-wider font-semibold px-2 py-1.5 border-r border-gray-200">Time</th>
+                        <th className="text-[10px] text-gray-600 uppercase tracking-wider font-semibold px-2 py-1.5 border-r border-gray-200">Status</th>
+                        <th className="text-[10px] text-gray-600 uppercase tracking-wider font-semibold px-2 py-1.5 text-center border-r border-gray-200">Duration</th>
+                        <th className="text-[10px] text-gray-600 uppercase tracking-wider font-semibold px-2 py-1.5 text-center border-r border-gray-200">Distance</th>
+                        <th className="text-[10px] text-gray-600 uppercase tracking-wider font-semibold px-2 py-1.5 text-center border-r border-gray-200">Shown</th>
+                        <th className="text-[10px] text-gray-600 uppercase tracking-wider font-semibold px-2 py-1.5 text-center border-r border-gray-200">Visited</th>
+                        <th className="text-[10px] text-gray-600 uppercase tracking-wider font-semibold px-2 py-1.5 text-center border-r border-gray-200">Lost</th>
+                        <th className="text-[10px] text-gray-600 uppercase tracking-wider font-semibold px-2 py-1.5 text-right">Action</th>
                       </tr>
                     </thead>
                     <tbody>
                       {filteredSessions
                         .slice((currentPage - 1) * ROWS_PER_PAGE, currentPage * ROWS_PER_PAGE)
                         .map((session) => (
-                        <tr key={session.id} className="border-b border-gray-50 hover:bg-gray-50/50 transition-colors">
-                          <td className="px-2 py-1.5 text-xs font-medium text-gray-800 truncate max-w-[120px]">{session.user_name}</td>
-                          <td className="px-2 py-1.5 text-[11px] text-gray-600 truncate max-w-[120px]">{session.company_name}</td>
-                          <td className="px-2 py-1.5 font-mono text-[11px] text-gray-600 whitespace-nowrap">{new Date(session.start_time).toLocaleDateString()}</td>
-                          <td className="px-2 py-1.5 font-mono text-[11px] text-gray-600 whitespace-nowrap">{new Date(session.start_time).toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'})}</td>
-                          <td className="px-2 py-1.5">
+                        <tr key={session.id} className="border-b border-gray-100 hover:bg-gray-50 transition-colors">
+                          <td className="px-2 py-1.5 text-xs font-medium text-gray-800 truncate max-w-[120px] border-r border-gray-100">{session.user_name}</td>
+                          <td className="px-2 py-1.5 text-[11px] text-gray-600 truncate max-w-[120px] border-r border-gray-100">{session.company_name}</td>
+                          <td className="px-2 py-1.5 font-mono text-[11px] text-gray-600 whitespace-nowrap border-r border-gray-100">{new Date(session.start_time).toLocaleDateString()}</td>
+                          <td className="px-2 py-1.5 font-mono text-[11px] text-gray-600 whitespace-nowrap border-r border-gray-100">{new Date(session.start_time).toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'})}</td>
+                          <td className="px-2 py-1.5 border-r border-gray-100">
                             <Badge className={`text-[10px] px-1.5 py-0 ${session.end_time ? 'bg-slate-100 text-slate-600' : 'bg-emerald-100 text-emerald-700'}`}>
                               {session.end_time ? 'Done' : 'Active'}
                             </Badge>
                           </td>
-                          <td className="px-2 py-1.5 font-mono text-[11px] text-gray-600 text-center">{formatDuration(session.start_time, session.end_time)}</td>
-                          <td className="px-2 py-1.5 font-mono text-[11px] text-gray-600 text-center">{session.total_distance ? `${(session.total_distance / 1000).toFixed(1)} km` : '–'}</td>
-                          <td className="px-2 py-1.5 font-mono text-[11px] font-bold text-slate-700 text-center">{session.potential_visits_count || 0}</td>
-                          <td className="px-2 py-1.5 font-mono text-[11px] font-bold text-emerald-700 text-center">{session.visits_completed || 0}</td>
-                          <td className="px-2 py-1.5 font-mono text-[11px] font-bold text-red-600 text-center">{session.calculated_lost_visits || 0}</td>
+                          <td className="px-2 py-1.5 font-mono text-[11px] text-gray-600 text-center border-r border-gray-100">{formatDuration(session.start_time, session.end_time)}</td>
+                          <td className="px-2 py-1.5 font-mono text-[11px] text-gray-600 text-center border-r border-gray-100">{session.total_distance ? `${(session.total_distance / 1000).toFixed(1)} km` : '–'}</td>
+                          <td className="px-2 py-1.5 font-mono text-[11px] font-bold text-slate-700 text-center border-r border-gray-100">{session.potential_visits_count || 0}</td>
+                          <td className="px-2 py-1.5 font-mono text-[11px] font-bold text-emerald-700 text-center border-r border-gray-100">{session.visits_completed || 0}</td>
+                          <td className="px-2 py-1.5 font-mono text-[11px] font-bold text-red-600 text-center border-r border-gray-100">{session.calculated_lost_visits || 0}</td>
                           <td className="px-2 py-1.5 text-right">
                             <Button 
                               variant="ghost" 

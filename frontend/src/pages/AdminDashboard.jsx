@@ -127,6 +127,10 @@ const AdminDashboard = () => {
   const activeVisitsCount  = allTimeSummary.active_visits  || 0;
   const completedVisitsCount = allTimeSummary.completed_visits || 0;
   const missedVisitsCount  = allTimeSummary.missed_visits   || 0;
+  const totalDealers       = allTimeSummary.total_dealers || 0;
+  const visitsHappened     = allTimeSummary.visits_happened || 0;
+  const visitsPending      = allTimeSummary.visits_pending || 0;
+  const visitPercentage    = allTimeSummary.visit_percentage || 0;
 
   if (loading) {
     return (
@@ -323,6 +327,22 @@ const AdminDashboard = () => {
                   <div className="text-xl font-black text-blue-600">{totalDistanceKm} km</div>
                   <div className="text-xs text-gray-400 mt-0.5">Distance Covered</div>
                 </div>
+                <div className="bg-white rounded-xl p-3 border border-gray-100">
+                  <div className="text-xl font-black text-purple-600">{totalDealers}</div>
+                  <div className="text-xs text-gray-400 mt-0.5">Dealers Shown</div>
+                </div>
+                <div className="bg-white rounded-xl p-3 border border-gray-100">
+                  <div className="text-xl font-black text-green-600">{visitsHappened}</div>
+                  <div className="text-xs text-gray-400 mt-0.5">Visits Happened</div>
+                </div>
+                <div className="bg-white rounded-xl p-3 border border-gray-100">
+                  <div className="text-xl font-black text-amber-600">{visitsPending}</div>
+                  <div className="text-xs text-gray-400 mt-0.5">Visits Left</div>
+                </div>
+                <div className="bg-white rounded-xl p-3 border border-gray-100">
+                  <div className="text-xl font-black text-indigo-600">{visitPercentage}%</div>
+                  <div className="text-xs text-gray-400 mt-0.5">Visit %</div>
+                </div>
               </div>
             </div>
           </div>
@@ -508,66 +528,66 @@ const AdminDashboard = () => {
             {(!dealerVisitsData?.visits || dealerVisitsData.visits.length === 0) ? (
               <p className="text-sm text-gray-400 text-center py-10">No visit data available</p>
             ) : (
-              <table className="w-full">
-                <thead>
-                  <tr className="border-b border-gray-100 bg-gray-50">
-                    <th className="text-left text-xs font-semibold text-gray-500 px-5 py-3">Next Visit</th>
-                    <th className="text-left text-xs font-semibold text-gray-500 px-3 py-3">Dealer</th>
-                    <th className="text-left text-xs font-semibold text-gray-500 px-3 py-3">Territory</th>
-                    <th className="text-left text-xs font-semibold text-gray-500 px-3 py-3">Status</th>
-                    <th className="text-left text-xs font-semibold text-gray-500 px-3 py-3">Distance</th>
-                    <th className="text-left text-xs font-semibold text-gray-500 px-3 py-3">Duration</th>
-                    <th className="text-left text-xs font-semibold text-gray-500 px-3 py-3">Rep</th>
-                    <th className="text-left text-xs font-semibold text-gray-500 px-3 py-3">Outcome</th>
+              <table className="w-full border-collapse">
+                <thead className="bg-gray-50">
+                  <tr className="border-y border-gray-200">
+                    <th className="text-left text-[10px] font-semibold text-gray-600 px-2 py-2 border-r border-gray-200">Next Visit</th>
+                    <th className="text-left text-[10px] font-semibold text-gray-600 px-2 py-2 border-r border-gray-200">Dealer</th>
+                    <th className="text-left text-[10px] font-semibold text-gray-600 px-2 py-2 border-r border-gray-200">Territory</th>
+                    <th className="text-left text-[10px] font-semibold text-gray-600 px-2 py-2 border-r border-gray-200">Status</th>
+                    <th className="text-left text-[10px] font-semibold text-gray-600 px-2 py-2 border-r border-gray-200">Distance</th>
+                    <th className="text-left text-[10px] font-semibold text-gray-600 px-2 py-2 border-r border-gray-200">Duration</th>
+                    <th className="text-left text-[10px] font-semibold text-gray-600 px-2 py-2 border-r border-gray-200">Rep</th>
+                    <th className="text-left text-[10px] font-semibold text-gray-600 px-2 py-2">Outcome</th>
                   </tr>
                 </thead>
                 <tbody>
                   {dealerVisitsData.visits.slice(0, 10).map((visit, idx) => {
                     const outcomeStyle = getOutcomeStyle(visit.outcome);
                     return (
-                      <tr key={visit.id} className={`border-b border-gray-50 hover:bg-gray-50 transition-colors ${idx % 2 === 0 ? '' : 'bg-gray-50/30'}`}>
-                        <td className="px-5 py-3">
-                          <span className="text-xs text-gray-600">
+                      <tr key={visit.id} className="border-b border-gray-100 hover:bg-gray-50 transition-colors">
+                        <td className="px-2 py-1.5 border-r border-gray-100">
+                          <span className="text-[11px] text-gray-600">
                             {visit.next_visit_date ? formatDate(visit.next_visit_date) : formatDate(visit.check_in_time)}
                           </span>
                         </td>
-                        <td className="px-3 py-3">
+                        <td className="px-2 py-1.5 border-r border-gray-100">
                           <div>
                             <p className="text-xs font-semibold text-gray-900 max-w-[130px] truncate">{visit.dealer_name}</p>
                           </div>
                         </td>
-                        <td className="px-3 py-3">
-                          <span className="text-xs text-gray-600">{visit.territory || 'N/A'}</span>
+                        <td className="px-2 py-1.5 border-r border-gray-100">
+                          <span className="text-[11px] text-gray-600">{visit.territory || 'N/A'}</span>
                         </td>
-                        <td className="px-3 py-3">
-                          <span className={`inline-block text-xs font-semibold px-2.5 py-1 rounded-full ${outcomeStyle.bg} ${outcomeStyle.text}`}>
+                        <td className="px-2 py-1.5 border-r border-gray-100">
+                          <span className={`inline-block text-[10px] font-semibold px-1.5 py-0.5 rounded-full ${outcomeStyle.bg} ${outcomeStyle.text}`}>
                             {visit.check_out_time ? outcomeStyle.label : 'In Progress'}
                           </span>
                         </td>
-                        <td className="px-3 py-3">
+                        <td className="px-2 py-1.5 border-r border-gray-100">
                           <div className="flex items-center gap-1">
                             <MapPin size={11} className="text-gray-400" />
-                            <span className="text-xs text-gray-600">{visit.distance_km ? `${visit.distance_km} km` : '-'}</span>
+                            <span className="text-[11px] text-gray-600">{visit.distance_km ? `${visit.distance_km} km` : '-'}</span>
                           </div>
                         </td>
-                        <td className="px-3 py-3">
+                        <td className="px-2 py-1.5 border-r border-gray-100">
                           <div className="flex items-center gap-1">
                             <Clock size={11} className="text-gray-400" />
-                            <span className="text-xs text-gray-600">{visit.duration_formatted || '-'}</span>
+                            <span className="text-[11px] text-gray-600">{visit.duration_formatted || '-'}</span>
                           </div>
                         </td>
-                        <td className="px-3 py-3">
+                        <td className="px-2 py-1.5 border-r border-gray-100">
                           <div className="flex items-center gap-1.5">
-                            <div className="w-5 h-5 rounded-full bg-orange-400 flex items-center justify-center text-white text-xs font-bold flex-shrink-0">
+                            <div className="w-5 h-5 rounded-full bg-orange-400 flex items-center justify-center text-white text-[10px] font-bold flex-shrink-0">
                               {(visit.rep_name || 'U').charAt(0).toUpperCase()}
                             </div>
-                            <span className="text-xs text-gray-700">{visit.rep_name}</span>
+                            <span className="text-[11px] text-gray-700">{visit.rep_name}</span>
                           </div>
                         </td>
-                        <td className="px-3 py-3">
+                        <td className="px-2 py-1.5">
                           <div className="flex items-center gap-2">
                             {visit.order_value > 0 && (
-                              <span className="text-xs font-bold text-emerald-600">₹{visit.order_value.toLocaleString('en-IN')}</span>
+                              <span className="text-[11px] font-bold text-emerald-600">₹{visit.order_value.toLocaleString('en-IN')}</span>
                             )}
                             {!visit.check_out_time && (
                               <span className="text-xs text-gray-400">Active</span>

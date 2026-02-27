@@ -435,7 +435,7 @@ const SalesExecutiveManagement = () => {
           </Card>
         </div>
 
-        {/* Executives Grid */}
+        {/* Executives Table */}
         {loading ? (
           <div className="flex items-center justify-center py-12">
             <div className="spinner" />
@@ -447,81 +447,111 @@ const SalesExecutiveManagement = () => {
             </CardContent>
           </Card>
         ) : (
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-3">
-            {filteredExecutives.map((exec) => {
-              const status = getStatus(exec);
-              return (
-                <Card key={exec.id} className="border-0 shadow-sm hover:shadow-md hover:border-primary-200 transition-all duration-300" data-testid={`executive-card-${exec.id}`}>
-                  <CardContent className="p-3">
-                    <div className="flex items-start justify-between mb-3">
-                      <div className="flex items-center gap-2.5">
-                        <div className={`w-9 h-9 rounded-full flex items-center justify-center text-white text-sm font-bold ${
-                          status === 'active' ? 'bg-emerald-500' : status === 'idle' ? 'bg-amber-500' : 'bg-slate-400'
-                        }`}>
-                          {exec.name.charAt(0)}
-                        </div>
-                        <div>
-                          <p className="text-sm font-semibold text-gray-800">{exec.name}</p>
-                          <p className="text-[10px] text-gray-500 font-mono">{exec.employee_code}</p>
-                        </div>
-                      </div>
-                      <Badge className={
-                        status === 'active' ? 'status-active' : status === 'idle' ? 'status-idle' : 'status-offline'
-                      }>
-                        {status}
-                      </Badge>
-                    </div>
-
-                    <div className="space-y-1.5 text-xs">
-                      <div className="flex items-center gap-2 text-gray-500">
-                        <Phone size={12} />
-                        <span>{exec.mobile}</span>
-                      </div>
-                      <div className="flex items-center gap-2 text-gray-500">
-                        {exec.is_live_tracking ? (
-                           <><Globe size={12} className="text-emerald-500" /> <span>Live Tracking (All Cities)</span></>
-                        ) : (
-                           <><MapPin size={12} className="text-amber-500" /> <span>{exec.assigned_city || 'No City'}, {exec.assigned_state}</span></>
-                        )}
-                      </div>
-                    </div>
-
-                    <div className="flex justify-end mt-3 pt-3 border-t border-gray-100 gap-1">
-                      <Button 
-                        variant="ghost" 
-                        size="sm" 
-                        className="text-emerald-600 hover:text-emerald-700 hover:bg-emerald-50 text-xs h-7 px-2"
-                        onClick={() => handleViewReport(exec)}
-                      >
-                         <ChartBar size={12} className="mr-1" />
-                         Report
-                      </Button>
-                      <Button 
-                        variant="ghost" 
-                        size="sm" 
-                        className="text-primary-600 hover:text-primary-700 hover:bg-gradient-to-r hover:from-primary-50 hover:to-orange-50 text-xs h-7 px-2"
-                        onClick={() => handleEdit(exec)}
-                        data-testid={`edit-executive-${exec.id}`}
-                      >
-                        <Pencil size={12} className="mr-1" />
-                        Edit
-                      </Button>
-                      <Button 
-                        variant="ghost" 
-                        size="sm" 
-                        className="text-red-600 hover:text-red-700 hover:bg-red-50 text-xs h-7 px-2"
-                        onClick={() => handleDelete(exec.id)}
-                        data-testid={`delete-executive-${exec.id}`}
-                      >
-                        <Trash size={12} className="mr-1" />
-                        Remove
-                      </Button>
-                    </div>
-                  </CardContent>
-                </Card>
-              );
-            })}
-          </div>
+          <Card className="border-0 shadow-sm">
+            <CardContent className="p-0">
+              <div className="overflow-x-auto">
+                <table className="w-full border-collapse">
+                  <thead>
+                    <tr className="border-y border-gray-200 bg-gray-50">
+                      <th className="text-left px-2 py-1.5 text-[10px] font-semibold text-gray-600 uppercase tracking-wider border-r border-gray-200">Executive Name</th>
+                      <th className="text-left px-2 py-1.5 text-[10px] font-semibold text-gray-600 uppercase tracking-wider border-r border-gray-200">Employee Code</th>
+                      <th className="text-left px-2 py-1.5 text-[10px] font-semibold text-gray-600 uppercase tracking-wider border-r border-gray-200">Email</th>
+                      <th className="text-left px-2 py-1.5 text-[10px] font-semibold text-gray-600 uppercase tracking-wider border-r border-gray-200">Mobile</th>
+                      <th className="text-left px-2 py-1.5 text-[10px] font-semibold text-gray-600 uppercase tracking-wider border-r border-gray-200">Location/Tracking</th>
+                      <th className="text-center px-2 py-1.5 text-[10px] font-semibold text-gray-600 uppercase tracking-wider border-r border-gray-200">Status</th>
+                      <th className="text-center px-2 py-1.5 text-[10px] font-semibold text-gray-600 uppercase tracking-wider">Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {filteredExecutives.map((exec) => {
+                      const status = getStatus(exec);
+                      return (
+                        <tr key={exec.id} className="border-b border-gray-100 hover:bg-gray-50 transition-colors" data-testid={`executive-row-${exec.id}`}>
+                          <td className="px-2 py-1.5 border-r border-gray-100">
+                            <div className="flex items-center gap-2">
+                              <div className={`w-8 h-8 rounded-full flex items-center justify-center text-white text-xs font-bold flex-shrink-0 ${
+                                status === 'active' ? 'bg-emerald-500' : status === 'idle' ? 'bg-amber-500' : 'bg-slate-400'
+                              }`}>
+                                {exec.name.charAt(0)}
+                              </div>
+                              <span className="text-[11px] font-semibold text-gray-800">{exec.name}</span>
+                            </div>
+                          </td>
+                          <td className="px-2 py-1.5 text-[11px] text-gray-600 font-mono border-r border-gray-100">
+                            {exec.employee_code}
+                          </td>
+                          <td className="px-2 py-1.5 text-[11px] text-gray-600 border-r border-gray-100">
+                            {exec.email}
+                          </td>
+                          <td className="px-2 py-1.5 text-[11px] text-gray-600 border-r border-gray-100">
+                            <div className="flex items-center gap-1.5">
+                              <Phone size={12} className="text-gray-400" />
+                              <span>{exec.mobile}</span>
+                            </div>
+                          </td>
+                          <td className="px-2 py-1.5 text-[11px] text-gray-600 border-r border-gray-100">
+                            <div className="flex items-center gap-1.5">
+                              {exec.is_live_tracking ? (
+                                <>
+                                  <Globe size={12} className="text-emerald-500 flex-shrink-0" />
+                                  <span className="text-emerald-700 font-medium">Live Tracking (All Cities)</span>
+                                </>
+                              ) : (
+                                <>
+                                  <MapPin size={12} className="text-amber-500 flex-shrink-0" />
+                                  <span>{exec.assigned_city || 'No City'}, {exec.assigned_state}</span>
+                                </>
+                              )}
+                            </div>
+                          </td>
+                          <td className="px-2 py-1.5 text-center border-r border-gray-100">
+                            <Badge className={
+                              status === 'active' ? 'status-active' : status === 'idle' ? 'status-idle' : 'status-offline'
+                            }>
+                              {status}
+                            </Badge>
+                          </td>
+                          <td className="px-2 py-1.5 text-center">
+                            <div className="flex items-center justify-center gap-1">
+                              <Button 
+                                variant="ghost" 
+                                size="sm" 
+                                className="text-emerald-600 hover:text-emerald-700 hover:bg-emerald-50 text-xs h-6 px-2"
+                                onClick={() => handleViewReport(exec)}
+                              >
+                                <ChartBar size={12} className="mr-0.5" />
+                                Report
+                              </Button>
+                              <Button 
+                                variant="ghost" 
+                                size="sm" 
+                                className="text-primary-600 hover:text-primary-700 hover:bg-primary-50 text-xs h-6 px-2"
+                                onClick={() => handleEdit(exec)}
+                                data-testid={`edit-executive-${exec.id}`}
+                              >
+                                <Pencil size={12} className="mr-0.5" />
+                                Edit
+                              </Button>
+                              <Button 
+                                variant="ghost" 
+                                size="sm" 
+                                className="text-red-600 hover:text-red-700 hover:bg-red-50 text-xs h-6 px-2"
+                                onClick={() => handleDelete(exec.id)}
+                                data-testid={`delete-executive-${exec.id}`}
+                              >
+                                <Trash size={12} className="mr-0.5" />
+                                Delete
+                              </Button>
+                            </div>
+                          </td>
+                        </tr>
+                      );
+                    })}
+                  </tbody>
+                </table>
+              </div>
+            </CardContent>
+          </Card>
         )}
 
       {/* Report Modal */}
@@ -575,45 +605,45 @@ const SalesExecutiveManagement = () => {
                       <div>
                           <h4 className="text-sm font-bold text-gray-800 mb-2">Recent Visit History</h4>
                           <div className="border border-gray-100 rounded-lg overflow-x-auto">
-                              <table className="w-full text-left min-w-[500px]">
+                              <table className="w-full border-collapse text-left min-w-[500px]">
                                   <thead>
-                                      <tr style={{background: 'linear-gradient(to right, #f9fafb, #ffffff)'}}>
-                                          <th className="px-3 py-2.5 text-xs font-semibold text-gray-500 uppercase tracking-wider border-b border-gray-200">Date & Time</th>
-                                          <th className="px-3 py-2.5 text-xs font-semibold text-gray-500 uppercase tracking-wider border-b border-gray-200">Dealer / Location</th>
-                                          <th className="px-3 py-2.5 text-xs font-semibold text-gray-500 uppercase tracking-wider border-b border-gray-200">Duration</th>
-                                          <th className="px-3 py-2.5 text-xs font-semibold text-gray-500 uppercase tracking-wider border-b border-gray-200">Outcome</th>
-                                          <th className="px-3 py-2.5 text-xs font-semibold text-gray-500 uppercase tracking-wider border-b border-gray-200 text-right">Order Value</th>
-                                          <th className="px-3 py-2.5 text-xs font-semibold text-gray-500 uppercase tracking-wider border-b border-gray-200 text-center">Items</th>
+                                      <tr className="border-y border-gray-200 bg-gray-50">
+                                          <th className="px-2 py-1.5 text-[10px] font-semibold text-gray-600 uppercase tracking-wider border-r border-gray-200">Date & Time</th>
+                                          <th className="px-2 py-1.5 text-[10px] font-semibold text-gray-600 uppercase tracking-wider border-r border-gray-200">Dealer / Location</th>
+                                          <th className="px-2 py-1.5 text-[10px] font-semibold text-gray-600 uppercase tracking-wider border-r border-gray-200">Duration</th>
+                                          <th className="px-2 py-1.5 text-[10px] font-semibold text-gray-600 uppercase tracking-wider border-r border-gray-200">Outcome</th>
+                                          <th className="px-2 py-1.5 text-[10px] font-semibold text-gray-600 uppercase tracking-wider border-r border-gray-200 text-right">Order Value</th>
+                                          <th className="px-2 py-1.5 text-[10px] font-semibold text-gray-600 uppercase tracking-wider text-center">Items</th>
                                       </tr>
                                   </thead>
-                                  <tbody className="divide-y divide-gray-50">
+                                  <tbody>
                                       {execVisits.length === 0 ? (
                                           <tr>
-                                              <td colSpan="6" className="px-3 py-6 text-center text-xs text-gray-500">
+                                              <td colSpan="6" className="px-2 py-6 text-center text-[11px] text-gray-500">
                                                   No visit history found.
                                               </td>
                                           </tr>
                                       ) : (
                                           execVisits.map((visit) => (
-                                              <tr key={visit.id} className="hover:bg-gradient-to-r hover:from-primary-50 hover:to-orange-50 transition-colors">
-                                                  <td className="px-3 py-2.5 whitespace-nowrap">
-                                                      <div className="text-sm font-medium text-gray-700">
+                                              <tr key={visit.id} className="border-b border-gray-100 hover:bg-gray-50 transition-colors">
+                                                  <td className="px-2 py-1.5 whitespace-nowrap border-r border-gray-100">
+                                                      <div className="text-[11px] font-medium text-gray-700">
                                                           {new Date(visit.check_in_time).toLocaleDateString()}
                                                       </div>
                                                       <div className="text-[10px] text-gray-400">
                                                           {new Date(visit.check_in_time).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}
                                                       </div>
                                                   </td>
-                                                  <td className="px-3 py-2.5">
-                                                      <div className="text-sm font-medium text-gray-800">{visit.dealer_name || 'Unknown Dealer'}</div>
+                                                  <td className="px-2 py-1.5 border-r border-gray-100">
+                                                      <div className="text-[11px] font-medium text-gray-800">{visit.dealer_name || 'Unknown Dealer'}</div>
                                                       <div className="text-[10px] text-gray-500 truncate max-w-[200px]">
                                                           {visit.location_address || 'No address'}
                                                       </div>
                                                   </td>
-                                                  <td className="px-3 py-2.5 text-xs text-gray-600">
+                                                  <td className="px-2 py-1.5 text-[11px] text-gray-600 border-r border-gray-100">
                                                       {visit.duration_minutes ? `${visit.duration_minutes}m` : '-'}
                                                   </td>
-                                                  <td className="px-4 py-3">
+                                                  <td className="px-2 py-1.5 border-r border-gray-100">
                                                       <Badge variant="outline" className={
                                                           visit.outcome === 'Order Booked' ? 'bg-primary-50 text-primary-700 border-primary-200' :
                                                           visit.outcome === 'No Meeting' ? 'bg-red-50 text-red-700 border-red-200' :
@@ -622,10 +652,10 @@ const SalesExecutiveManagement = () => {
                                                           {visit.outcome || 'Pending'}
                                                       </Badge>
                                                   </td>
-                                                  <td className="px-3 py-2.5 text-right font-mono text-xs font-medium text-primary-600">
+                                                  <td className="px-2 py-1.5 text-right font-mono text-[11px] font-medium text-primary-600 border-r border-gray-100">
                                                       {visit.order_value > 0 ? `₹${visit.order_value.toLocaleString()}` : '-'}
                                                   </td>
-                                                  <td className="px-3 py-2.5 text-center">
+                                                  <td className="px-2 py-1.5 text-center">
                                                       <OrderItemsView visit={visit} />
                                                   </td>
                                               </tr>

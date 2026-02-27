@@ -334,25 +334,25 @@ const FieldView = () => {
       <p className="text-xs text-gray-400 text-center py-10">No visits yet today</p>
     ) : (
       <div className="overflow-x-auto">
-        <table className="w-full text-left">
-          <thead>
-            <tr className="border-b border-gray-100 bg-gray-50">
+        <table className="w-full text-left border-collapse">
+          <thead className="bg-gray-50">
+            <tr className="border-y border-gray-200">
               {['Date','Dealer','Contact','Check-in','Duration','Outcome','Value','Items'].map(h => (
-                <th key={h} className="text-[10px] text-gray-500 uppercase tracking-wider font-medium px-3 py-2.5">{h}</th>
+                <th key={h} className="text-[10px] text-gray-600 uppercase tracking-wider font-semibold px-2 py-2 border-r border-gray-200">{h}</th>
               ))}
             </tr>
           </thead>
           <tbody>
             {visits.map(visit => (
-              <tr key={visit.id} className="border-b border-gray-50 hover:bg-gray-50/50 transition-colors">
-                <td className="px-3 py-2.5 font-mono text-[11px] text-gray-600 whitespace-nowrap">{new Date(visit.check_in_time).toLocaleDateString()}</td>
-                <td className="px-3 py-2.5 text-xs font-medium text-gray-800 max-w-[120px] truncate">{visit.dealer_name}</td>
-                <td className="px-3 py-2.5 text-[11px] text-gray-500 max-w-[80px] truncate">{visit.contact_name || '–'}</td>
-                <td className="px-3 py-2.5 font-mono text-[11px] text-gray-500 whitespace-nowrap">{new Date(visit.check_in_time).toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'})}</td>
-                <td className="px-3 py-2.5 font-mono text-[11px] text-gray-500 text-center">{visit.time_spent_minutes ? `${Math.round(visit.time_spent_minutes)}m` : '–'}</td>
-                <td className="px-3 py-2.5">{outcomeBadge(visit.outcome)}</td>
-                <td className="px-3 py-2.5 font-mono text-[11px] font-semibold text-orange-600 text-right whitespace-nowrap">{visit.order_value ? `₹${visit.order_value.toLocaleString()}` : '–'}</td>
-                <td className="px-3 py-2.5 text-center"><OrderItemsView visit={visit} /></td>
+              <tr key={visit.id} className="border-b border-gray-100 hover:bg-gray-50 transition-colors">
+                <td className="px-2 py-1.5 font-mono text-[11px] text-gray-600 whitespace-nowrap border-r border-gray-100">{new Date(visit.check_in_time).toLocaleDateString()}</td>
+                <td className="px-2 py-1.5 text-xs font-medium text-gray-800 max-w-[120px] truncate border-r border-gray-100">{visit.dealer_name}</td>
+                <td className="px-2 py-1.5 text-[11px] text-gray-500 max-w-[80px] truncate border-r border-gray-100">{visit.contact_name || '–'}</td>
+                <td className="px-2 py-1.5 font-mono text-[11px] text-gray-500 whitespace-nowrap border-r border-gray-100">{new Date(visit.check_in_time).toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'})}</td>
+                <td className="px-2 py-1.5 font-mono text-[11px] text-gray-500 text-center border-r border-gray-100">{visit.time_spent_minutes ? `${Math.round(visit.time_spent_minutes)}m` : '–'}</td>
+                <td className="px-2 py-1.5 border-r border-gray-100">{outcomeBadge(visit.outcome)}</td>
+                <td className="px-2 py-1.5 font-mono text-[11px] font-semibold text-orange-600 text-right whitespace-nowrap border-r border-gray-100">{visit.order_value ? `₹${visit.order_value.toLocaleString()}` : '–'}</td>
+                <td className="px-2 py-1.5 text-center"><OrderItemsView visit={visit} /></td>
               </tr>
             ))}
           </tbody>

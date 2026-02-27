@@ -154,36 +154,36 @@ const HODReports = () => {
           <CardContent className="p-3">
             <h2 className="text-sm font-bold text-gray-900 mb-3">HOD Overview</h2>
             <div className="overflow-x-auto">
-              <table className="w-full">
-                <thead>
-                  <tr className="border-b border-gray-200">
-                    <th className="text-left py-2 px-3 text-xs font-semibold text-gray-700">HOD Name</th>
-                    <th className="text-center py-2 px-3 text-xs font-semibold text-gray-700">Team Size</th>
-                    <th className="text-center py-2 px-3 text-xs font-semibold text-gray-700">Total Visit</th>
-                    <th className="text-right py-2 px-3 text-xs font-semibold text-gray-700">Order Value</th>
+              <table className="w-full border-collapse">
+                <thead className="bg-gray-50">
+                  <tr className="border-y border-gray-200">
+                    <th className="text-left py-2 px-2 text-[10px] font-semibold text-gray-600 uppercase tracking-wider border-r border-gray-200">HOD Name</th>
+                    <th className="text-center py-2 px-2 text-[10px] font-semibold text-gray-600 uppercase tracking-wider border-r border-gray-200">Team Size</th>
+                    <th className="text-center py-2 px-2 text-[10px] font-semibold text-gray-600 uppercase tracking-wider border-r border-gray-200">Total Visit</th>
+                    <th className="text-right py-2 px-2 text-[10px] font-semibold text-gray-600 uppercase tracking-wider">Order Value</th>
                   </tr>
                 </thead>
                 <tbody>
                   {hodData.length === 0 ? (
                     <tr>
-                      <td colSpan="4" className="text-center py-6 text-gray-500 text-xs">
+                      <td colSpan="4" className="text-center py-6 text-gray-500 text-[11px]">
                         No data available for selected date range
                       </td>
                     </tr>
                   ) : (
                     hodData.map((hod) => (
                       <tr key={hod.id} className="border-b border-gray-100 hover:bg-gray-50 transition-colors">
-                        <td className="py-2 px-3 text-xs font-medium text-gray-900">{hod.name}</td>
-                        <td className="py-2 px-3 text-center">
+                        <td className="py-1.5 px-2 text-xs font-medium text-gray-900 border-r border-gray-100">{hod.name}</td>
+                        <td className="py-1.5 px-2 text-center border-r border-gray-100">
                           <button
                             onClick={() => handleTeamSizeClick(hod)}
-                            className="inline-flex items-center justify-center w-8 h-8 bg-orange-100 text-orange-600 font-bold rounded-lg hover:bg-orange-200 transition-colors cursor-pointer text-xs"
+                            className="inline-flex items-center justify-center w-7 h-7 bg-orange-100 text-orange-600 font-bold rounded-lg hover:bg-orange-200 transition-colors cursor-pointer text-[11px]"
                           >
                             {hod.team_size}
                           </button>
                         </td>
-                        <td className="py-2 px-3 text-center text-xs font-mono text-gray-700">{hod.total_visits}</td>
-                        <td className="py-2 px-3 text-right text-xs font-mono text-gray-900">
+                        <td className="py-1.5 px-2 text-center text-[11px] font-mono text-gray-700 border-r border-gray-100">{hod.total_visits}</td>
+                        <td className="py-1.5 px-2 text-right text-[11px] font-mono text-gray-900">
                           ₹{hod.order_value.toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
                         </td>
                       </tr>
@@ -209,30 +209,30 @@ const HODReports = () => {
               </div>
               
               <div className="overflow-x-auto">
-                <table className="w-full">
+                <table className="w-full border-collapse">
                   <thead>
-                    <tr className="border-b border-green-200 bg-green-100">
-                      <th className="text-left py-1.5 px-2 text-[10px] font-semibold text-green-800">HOD Name</th>
-                      <th className="text-left py-1.5 px-2 text-[10px] font-semibold text-green-800">Executive</th>
-                      <th className="text-center py-1.5 px-2 text-[10px] font-semibold text-green-800">Visit</th>
-                      <th className="text-right py-1.5 px-2 text-[10px] font-semibold text-green-800">Order Value</th>
-                      <th className="text-center py-1.5 px-2 text-[10px] font-semibold text-green-800">Position</th>
+                    <tr className="border-y border-green-200 bg-green-100">
+                      <th className="text-left py-1.5 px-2 text-[10px] font-semibold text-green-800 uppercase tracking-wider border-r border-green-200">HOD Name</th>
+                      <th className="text-left py-1.5 px-2 text-[10px] font-semibold text-green-800 uppercase tracking-wider border-r border-green-200">Executive</th>
+                      <th className="text-center py-1.5 px-2 text-[10px] font-semibold text-green-800 uppercase tracking-wider border-r border-green-200">Visit</th>
+                      <th className="text-right py-1.5 px-2 text-[10px] font-semibold text-green-800 uppercase tracking-wider border-r border-green-200">Order Value</th>
+                      <th className="text-center py-1.5 px-2 text-[10px] font-semibold text-green-800 uppercase tracking-wider">Position</th>
                     </tr>
                   </thead>
                   <tbody>
                     {topPerformers.length === 0 ? (
                       <tr>
-                        <td colSpan="5" className="text-center py-4 text-gray-600 text-xs">
+                        <td colSpan="5" className="text-center py-4 text-gray-600 text-[11px]">
                           No performer data available
                         </td>
                       </tr>
                     ) : (
                       topPerformers.map((performer, index) => (
-                        <tr key={`${performer.executive_id}-${index}`} className="border-b border-green-100 bg-white">
-                          <td className="py-1.5 px-2 text-xs text-gray-900">{performer.hod_name}</td>
-                          <td className="py-1.5 px-2 text-xs text-gray-900">{performer.executive_name}</td>
-                          <td className="py-1.5 px-2 text-center text-xs font-mono text-gray-700">{performer.visits}</td>
-                          <td className="py-1.5 px-2 text-right text-xs font-mono text-gray-900">
+                        <tr key={`${performer.executive_id}-${index}`} className="border-b border-green-100 bg-white hover:bg-gray-50 transition-colors">
+                          <td className="py-1.5 px-2 text-[11px] text-gray-900 border-r border-green-100">{performer.hod_name}</td>
+                          <td className="py-1.5 px-2 text-[11px] text-gray-900 border-r border-green-100">{performer.executive_name}</td>
+                          <td className="py-1.5 px-2 text-center text-[11px] font-mono text-gray-700 border-r border-green-100">{performer.visits}</td>
+                          <td className="py-1.5 px-2 text-right text-[11px] font-mono text-gray-900 border-r border-green-100">
                             {performer.order_value.toLocaleString('en-IN')}
                           </td>
                           <td className="py-1.5 px-2 text-center">
@@ -263,30 +263,30 @@ const HODReports = () => {
               </div>
               
               <div className="overflow-x-auto">
-                <table className="w-full">
+                <table className="w-full border-collapse">
                   <thead>
-                    <tr className="border-b border-amber-200 bg-amber-100">
-                      <th className="text-left py-1.5 px-2 text-[10px] font-semibold text-amber-800">HOD Name</th>
-                      <th className="text-left py-1.5 px-2 text-[10px] font-semibold text-amber-800">Executive</th>
-                      <th className="text-center py-1.5 px-2 text-[10px] font-semibold text-amber-800">Visit</th>
-                      <th className="text-right py-1.5 px-2 text-[10px] font-semibold text-amber-800">Order Value</th>
-                      <th className="text-center py-1.5 px-2 text-[10px] font-semibold text-amber-800">Type</th>
+                    <tr className="border-y border-amber-200 bg-amber-100">
+                      <th className="text-left py-1.5 px-2 text-[10px] font-semibold text-amber-800 uppercase tracking-wider border-r border-amber-200">HOD Name</th>
+                      <th className="text-left py-1.5 px-2 text-[10px] font-semibold text-amber-800 uppercase tracking-wider border-r border-amber-200">Executive</th>
+                      <th className="text-center py-1.5 px-2 text-[10px] font-semibold text-amber-800 uppercase tracking-wider border-r border-amber-200">Visit</th>
+                      <th className="text-right py-1.5 px-2 text-[10px] font-semibold text-amber-800 uppercase tracking-wider border-r border-amber-200">Order Value</th>
+                      <th className="text-center py-1.5 px-2 text-[10px] font-semibold text-amber-800 uppercase tracking-wider">Type</th>
                     </tr>
                   </thead>
                   <tbody>
                     {underperformers.length === 0 ? (
                       <tr>
-                        <td colSpan="5" className="text-center py-4 text-gray-600 text-xs">
+                        <td colSpan="5" className="text-center py-4 text-gray-600 text-[11px]">
                           No underperformer data available
                         </td>
                       </tr>
                     ) : (
                       underperformers.map((performer, index) => (
-                        <tr key={`${performer.executive_id}-${index}`} className="border-b border-amber-100 bg-white">
-                          <td className="py-1.5 px-2 text-xs text-gray-900">{performer.hod_name}</td>
-                          <td className="py-1.5 px-2 text-xs text-gray-900">{performer.executive_name}</td>
-                          <td className="py-1.5 px-2 text-center text-xs font-mono text-gray-700">{performer.visits}</td>
-                          <td className="py-1.5 px-2 text-right text-xs font-mono text-gray-900">
+                        <tr key={`${performer.executive_id}-${index}`} className="border-b border-amber-100 bg-white hover:bg-gray-50 transition-colors">
+                          <td className="py-1.5 px-2 text-[11px] text-gray-900 border-r border-amber-100">{performer.hod_name}</td>
+                          <td className="py-1.5 px-2 text-[11px] text-gray-900 border-r border-amber-100">{performer.executive_name}</td>
+                          <td className="py-1.5 px-2 text-center text-[11px] font-mono text-gray-700 border-r border-amber-100">{performer.visits}</td>
+                          <td className="py-1.5 px-2 text-right text-[11px] font-mono text-gray-900 border-r border-amber-100">
                             {performer.order_value.toLocaleString('en-IN')}
                           </td>
                           <td className="py-1.5 px-2 text-center">
