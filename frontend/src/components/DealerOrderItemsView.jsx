@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import axios from 'axios';
 import { Button } from './ui/button';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from './ui/dialog';
@@ -28,14 +28,7 @@ const DealerOrderItemsView = ({ dealer, externalOpen = false, onExternalClose = 
     }
   };
 
-  // Fetch data when externally opened
-  useEffect(() => {
-    if (externalOpen && isOrderBooked) {
-      handleView();
-    }
-  }, [externalOpen]);
-
-  const handleView = async () => {
+  const handleView = useCallback(async () => {
     if (!dealer?.id || !isOrderBooked) return;
     setVisit(null);
     setLoading(true);
@@ -53,7 +46,14 @@ const DealerOrderItemsView = ({ dealer, externalOpen = false, onExternalClose = 
     } finally {
       setLoading(false);
     }
-  };
+  }, [dealer?.id, isOrderBooked, getAuthHeader]);
+
+  // Fetch data when externally opened
+  useEffect(() => {
+    if (externalOpen && isOrderBooked) {
+      handleView();
+    }
+  }, [externalOpen, handleView, isOrderBooked]);
 
   const items = visit?.ordered_items || [];
   const hasItems = Array.isArray(items) && items.length > 0;
