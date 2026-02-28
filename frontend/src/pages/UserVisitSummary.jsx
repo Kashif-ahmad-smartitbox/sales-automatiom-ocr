@@ -7,6 +7,14 @@ import { Badge } from '../components/ui/badge';
 import { Input } from '../components/ui/input';
 import { Label } from '../components/ui/label';
 import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from '../components/ui/table';
+import {
   Users,
   MapPin,
   CaretDown,
@@ -312,34 +320,62 @@ const UserVisitSummary = () => {
                         const paginatedDealers = filteredDealers.slice(startIdx, startIdx + PAGE_SIZE);
 
                         return (
-                          <div className="overflow-x-auto">
-                            <table className="w-full border-collapse text-left">
-                              <thead>
-                                <tr className="border-y border-gray-200 bg-gray-50">
-                                  <th className="text-[10px] text-gray-600 uppercase tracking-wider font-semibold px-2 py-1.5 border-r border-gray-200 w-8">#</th>
-                                  <th className="text-[10px] text-gray-600 uppercase tracking-wider font-semibold px-2 py-1.5 border-r border-gray-200">Dealer</th>
-                                  <th className="text-[10px] text-gray-600 uppercase tracking-wider font-semibold px-2 py-1.5 border-r border-gray-200">Address</th>
-                                  <th className="text-[10px] text-gray-600 uppercase tracking-wider font-semibold px-2 py-1.5 border-r border-gray-200">Type</th>
-                                  <th className="text-[10px] text-gray-600 uppercase tracking-wider font-semibold px-2 py-1.5 border-r border-gray-200">Territory</th>
-                                  <th className="text-[10px] text-gray-600 uppercase tracking-wider font-semibold px-2 py-1.5 border-r border-gray-200">Contact</th>
-                                  <th className="text-[10px] text-gray-600 uppercase tracking-wider font-semibold px-2 py-1.5 border-r border-gray-200">Phone</th>
-                                  <th className="text-[10px] text-gray-600 uppercase tracking-wider font-semibold px-2 py-1.5 border-r border-gray-200">Found By</th>
-                                  <th className="text-[10px] text-gray-600 uppercase tracking-wider font-semibold px-2 py-1.5 border-r border-gray-200">Priority</th>
-                                  <th className="text-[10px] text-gray-600 uppercase tracking-wider font-semibold px-2 py-1.5 border-r border-gray-200">Status</th>
-                                  <th className="text-[10px] text-gray-600 uppercase tracking-wider font-semibold px-2 py-1.5 border-r border-gray-200">Last Visit</th>
-                                  <th className="text-[10px] text-gray-600 uppercase tracking-wider font-semibold px-2 py-1.5 border-r border-gray-200">Visited By</th>
-                                  <th className="text-[10px] text-gray-600 uppercase tracking-wider font-semibold px-2 py-1.5 border-r border-gray-200">Outcome</th>
-                                  <th className="text-[10px] text-gray-600 uppercase tracking-wider font-semibold px-2 py-1.5 border-r border-gray-200">Next Visit</th>
-                                  <th className="text-[10px] text-gray-600 uppercase tracking-wider font-semibold px-2 py-1.5 text-center">Items</th>
-                                </tr>
-                              </thead>
-                              <tbody>
+                          <div className="overflow-auto rounded-lg border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 shadow-sm w-full max-h-[40rem]">
+                            <Table className="table-auto border-collapse">
+                              <TableHeader className="bg-gradient-to-r from-primary-50 to-indigo-50 dark:from-gray-800 dark:to-gray-900 text-nowrap sticky top-0 text-xs z-10 border-b border-primary-100 dark:border-gray-700">
+                                <TableHead className="p-2 text-gray-700 dark:text-gray-300 font-medium text-center w-8">
+                                  #
+                                </TableHead>
+                                <TableHead className="p-2 text-gray-700 dark:text-gray-300 font-medium">
+                                  Dealer
+                                </TableHead>
+                                <TableHead className="p-2 text-gray-700 dark:text-gray-300 font-medium">
+                                  Address
+                                </TableHead>
+                                <TableHead className="p-2 text-gray-700 dark:text-gray-300 font-medium">
+                                  Type
+                                </TableHead>
+                                <TableHead className="p-2 text-gray-700 dark:text-gray-300 font-medium">
+                                  Territory
+                                </TableHead>
+                                <TableHead className="p-2 text-gray-700 dark:text-gray-300 font-medium">
+                                  Contact
+                                </TableHead>
+                                <TableHead className="p-2 text-gray-700 dark:text-gray-300 font-medium">
+                                  Phone
+                                </TableHead>
+                                <TableHead className="p-2 text-gray-700 dark:text-gray-300 font-medium">
+                                  Found By
+                                </TableHead>
+                                <TableHead className="p-2 text-gray-700 dark:text-gray-300 font-medium">
+                                  Priority
+                                </TableHead>
+                                <TableHead className="p-2 text-gray-700 dark:text-gray-300 font-medium">
+                                  Status
+                                </TableHead>
+                                <TableHead className="p-2 text-gray-700 dark:text-gray-300 font-medium">
+                                  Last Visit
+                                </TableHead>
+                                <TableHead className="p-2 text-gray-700 dark:text-gray-300 font-medium">
+                                  Visited By
+                                </TableHead>
+                                <TableHead className="p-2 text-gray-700 dark:text-gray-300 font-medium">
+                                  Outcome
+                                </TableHead>
+                                <TableHead className="p-2 text-gray-700 dark:text-gray-300 font-medium">
+                                  Next Visit
+                                </TableHead>
+                                <TableHead className="p-2 text-gray-700 dark:text-gray-300 font-medium text-center">
+                                  Items
+                                </TableHead>
+                              </TableHeader>
+                              <TableBody className="divide-y divide-gray-100 dark:divide-gray-800">
                                 {filteredDealers.length === 0 ? (
-                                  <tr>
-                                    <td colSpan="15" className="px-2 py-8 text-center text-[11px] text-gray-500">
+                                  <TableRow>
+                                    <TableCell colSpan="15" className="px-2 py-8 text-center text-[11px] text-gray-500">
                                       {sid ? 'No dealers in this session' : 'No dealers shown yet (start a market session to see dealers)'}
-                                    </td>
-                                  </tr>
+                                    </TableCell>
+                                  </TableRow>
                                 ) : (
                                   paginatedDealers.map((dealer, idx) => {
                                     const serialNumber = startIdx + idx + 1;
@@ -349,48 +385,63 @@ const UserVisitSummary = () => {
                                     const visitedBy = getTruncatedText(dealer.last_visited_by, 15);
                                     
                                     return (
-                                      <tr key={dealer.id || dealer.place_id} className="border-b border-gray-100 hover:bg-gray-50 transition-colors">
-                                        <td className="px-2 py-1.5 border-r border-gray-100 text-xs font-medium text-gray-600 w-8">{serialNumber}</td>
-                                        <td className="px-2 py-1.5 border-r border-gray-100">
-                                          <p className="text-xs font-medium text-gray-800" title={dealerName.full}>{dealerName.display}</p>
-                                        </td>
-                                        <td className="px-2 py-1.5 border-r border-gray-100">
-                                          <p className="text-[11px] text-gray-600 flex items-start gap-1.5 min-w-0 max-w-[220px]" title={dealer.address}>
+                                      <TableRow 
+                                        key={dealer.id || dealer.place_id} 
+                                        className="group cursor-pointer transition-all text-xs text-gray-700 duration-200 hover:bg-gray-50 dark:hover:bg-gray-800 border-b border-gray-200 dark:border-gray-700"
+                                      >
+                                        <TableCell className="px-2 py-1.5 text-center">
+                                          <span className="p-1 bg-gray-200 dark:bg-gray-700 font-medium rounded-full text-gray-600 dark:text-gray-300">
+                                            {serialNumber}
+                                          </span>
+                                        </TableCell>
+                                        <TableCell className="px-2 py-1.5">
+                                          <p className="text-xs font-medium text-gray-800 dark:text-gray-200" title={dealerName.full}>
+                                            {dealerName.display}
+                                          </p>
+                                        </TableCell>
+                                        <TableCell className="px-2 py-1.5">
+                                          <p className="text-[11px] text-gray-600 dark:text-gray-400 flex items-start gap-1.5 min-w-0 max-w-[220px]" title={dealer.address}>
                                             <MapPin size={12} className="flex-shrink-0 mt-0.5 text-gray-400" />
                                             <span className="truncate">{dealer.address || '–'}</span>
                                           </p>
-                                        </td>
-                                        <td className="px-2 py-1.5 border-r border-gray-100">
-                                          <span className="text-[10px] px-1.5 py-0">{dealer.dealer_type || '–'}</span>
-                                        </td>
-                                        <td className="px-2 py-1.5 text-[11px] text-gray-600 border-r border-gray-100">{getTerritoryName(dealer.territory_id)}</td>
-                                        <td className="px-2 py-1.5 text-[11px] text-gray-600 border-r border-gray-100" title={contactPerson.full}>
+                                        </TableCell>
+                                        <TableCell className="px-2 py-1.5">
+                                          <span className="text-[10px] px-1.5 py-0 text-gray-600 dark:text-gray-400">
+                                            {dealer.dealer_type || '–'}
+                                          </span>
+                                        </TableCell>
+                                        <TableCell className="px-2 py-1.5 text-[11px] text-gray-600 dark:text-gray-400">
+                                          {getTerritoryName(dealer.territory_id)}
+                                        </TableCell>
+                                        <TableCell className="px-2 py-1.5 text-[11px] text-gray-600 dark:text-gray-400" title={contactPerson.full}>
                                           <span>{contactPerson.display}</span>
-                                        </td>
-                                        <td className="px-2 py-1.5 font-mono text-[11px] text-gray-600 whitespace-nowrap border-r border-gray-100">{dealer.phone || '–'}</td>
-                                        <td className="px-2 py-1.5 text-[11px] text-gray-600 border-r border-gray-100" title={foundBy.full}>
+                                        </TableCell>
+                                        <TableCell className="px-2 py-1.5 font-mono text-[11px] text-gray-600 dark:text-gray-400 whitespace-nowrap">
+                                          {dealer.phone || '–'}
+                                        </TableCell>
+                                        <TableCell className="px-2 py-1.5 text-[11px] text-gray-600 dark:text-gray-400" title={foundBy.full}>
                                           <span>{foundBy.display}</span>
-                                        </td>
-                                        <td className="px-2 py-1.5 border-r border-gray-100">
+                                        </TableCell>
+                                        <TableCell className="px-2 py-1.5">
                                           <Badge className={`text-[10px] px-1.5 py-0 ${
                                             dealer.priority_level === 1 ? 'priority-high' :
                                             dealer.priority_level === 2 ? 'priority-medium' : 'priority-low'
                                           }`}>
                                             {dealer.priority_level === 1 ? 'High' : dealer.priority_level === 2 ? 'Medium' : 'Low'}
                                           </Badge>
-                                        </td>
-                                        <td className="px-2 py-1.5 border-r border-gray-100">
+                                        </TableCell>
+                                        <TableCell className="px-2 py-1.5">
                                           <Badge className={`text-[10px] px-1.5 py-0 ${dealer.is_visited ? 'bg-emerald-100 text-emerald-700' : 'bg-gray-100 text-gray-500'}`}>
                                             {dealer.is_visited ? 'Visited' : 'Not Visited'}
                                           </Badge>
-                                        </td>
-                                        <td className="px-2 py-1.5 font-mono text-[11px] text-gray-600 whitespace-nowrap border-r border-gray-100">
+                                        </TableCell>
+                                        <TableCell className="px-2 py-1.5 font-mono text-[11px] text-gray-600 dark:text-gray-400 whitespace-nowrap">
                                           {dealer.last_visit_date ? formatDateDDMmmYYYY(dealer.last_visit_date) : '–'}
-                                        </td>
-                                        <td className="px-2 py-1.5 text-[11px] text-gray-600 border-r border-gray-100" title={visitedBy.full}>
+                                        </TableCell>
+                                        <TableCell className="px-2 py-1.5 text-[11px] text-gray-600 dark:text-gray-400" title={visitedBy.full}>
                                           <span>{visitedBy.display}</span>
-                                        </td>
-                                        <td className="px-2 py-1.5 border-r border-gray-100">
+                                        </TableCell>
+                                        <TableCell className="px-2 py-1.5">
                                           {dealer.last_outcome ? (
                                             <Badge className={`text-[10px] px-1.5 py-0 ${
                                               dealer.last_outcome === 'Order Booked' ? 'bg-emerald-100 text-emerald-700' :
@@ -403,19 +454,19 @@ const UserVisitSummary = () => {
                                           ) : (
                                             <span className="text-[11px] text-gray-400">–</span>
                                           )}
-                                        </td>
-                                        <td className="px-2 py-1.5 font-mono text-[11px] text-gray-600 whitespace-nowrap border-r border-gray-100">
+                                        </TableCell>
+                                        <TableCell className="px-2 py-1.5 font-mono text-[11px] text-gray-600 dark:text-gray-400 whitespace-nowrap">
                                           {dealer.next_visit_date ? formatDateDDMmmYYYY(dealer.next_visit_date) : '–'}
-                                        </td>
-                                        <td className="px-2 py-1.5 text-center">
+                                        </TableCell>
+                                        <TableCell className="px-2 py-1.5 text-center">
                                           <DealerOrderItemsView dealer={dealer} />
-                                        </td>
-                                      </tr>
+                                        </TableCell>
+                                      </TableRow>
                                     );
                                   })
                                 )}
-                              </tbody>
-                            </table>
+                              </TableBody>
+                            </Table>
                             {filteredDealers.length > PAGE_SIZE && (
                               <div className="flex items-center justify-between px-4 py-3 border-t border-gray-100 bg-gray-50/50">
                                 <span className="text-xs text-gray-600">

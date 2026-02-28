@@ -2,6 +2,14 @@ import { useState, useEffect, useCallback } from 'react';
 import axios from 'axios';
 import AdminLayout from '../components/layout/AdminLayout';
 import { Card, CardContent } from '../components/ui/card';
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from '../components/ui/table';
 import { 
   CalendarBlank, 
   Users, 
@@ -153,44 +161,42 @@ const HODReports = () => {
         <Card className="border-0 shadow-sm">
           <CardContent className="p-3">
             <h2 className="text-sm font-bold text-gray-900 mb-3">HOD Overview</h2>
-            <div className="overflow-x-auto">
-              <table className="w-full border-collapse">
-                <thead className="bg-gray-50">
-                  <tr className="border-y border-gray-200">
-                    <th className="text-left py-2 px-2 text-[10px] font-semibold text-gray-600 uppercase tracking-wider border-r border-gray-200">HOD Name</th>
-                    <th className="text-center py-2 px-2 text-[10px] font-semibold text-gray-600 uppercase tracking-wider border-r border-gray-200">Team Size</th>
-                    <th className="text-center py-2 px-2 text-[10px] font-semibold text-gray-600 uppercase tracking-wider border-r border-gray-200">Total Visit</th>
-                    <th className="text-right py-2 px-2 text-[10px] font-semibold text-gray-600 uppercase tracking-wider">Order Value</th>
-                  </tr>
-                </thead>
-                <tbody>
+            <div className="overflow-auto rounded-lg border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 shadow-sm w-full max-h-[40rem]">
+              <Table className="table-auto border-collapse">
+                <TableHeader className="bg-gradient-to-r from-primary-50 to-indigo-50 dark:from-gray-800 dark:to-gray-900 text-nowrap sticky top-0 text-xs z-10 border-b border-primary-100 dark:border-gray-700">
+                  <TableHead className="p-2 text-gray-700 dark:text-gray-300 font-medium">HOD Name</TableHead>
+                  <TableHead className="p-2 text-gray-700 dark:text-gray-300 font-medium text-center">Team Size</TableHead>
+                  <TableHead className="p-2 text-gray-700 dark:text-gray-300 font-medium text-center">Total Visit</TableHead>
+                  <TableHead className="p-2 text-gray-700 dark:text-gray-300 font-medium text-right">Order Value</TableHead>
+                </TableHeader>
+                <TableBody className="divide-y divide-gray-100 dark:divide-gray-800">
                   {hodData.length === 0 ? (
-                    <tr>
-                      <td colSpan="4" className="text-center py-6 text-gray-500 text-[11px]">
+                    <TableRow>
+                      <TableCell colSpan="4" className="text-center py-6 text-gray-500 text-[11px]">
                         No data available for selected date range
-                      </td>
-                    </tr>
+                      </TableCell>
+                    </TableRow>
                   ) : (
                     hodData.map((hod) => (
-                      <tr key={hod.id} className="border-b border-gray-100 hover:bg-gray-50 transition-colors">
-                        <td className="py-1.5 px-2 text-xs font-medium text-gray-900 border-r border-gray-100">{hod.name}</td>
-                        <td className="py-1.5 px-2 text-center border-r border-gray-100">
+                      <TableRow key={hod.id} className="group cursor-pointer transition-all text-xs text-gray-700 duration-200 hover:bg-gray-50 dark:hover:bg-gray-800 border-b border-gray-200 dark:border-gray-700">
+                        <TableCell className="py-1.5 px-2 text-xs font-medium text-gray-900 dark:text-gray-200">{hod.name}</TableCell>
+                        <TableCell className="py-1.5 px-2 text-center">
                           <button
                             onClick={() => handleTeamSizeClick(hod)}
                             className="inline-flex items-center justify-center w-7 h-7 bg-orange-100 text-orange-600 font-bold rounded-lg hover:bg-orange-200 transition-colors cursor-pointer text-[11px]"
                           >
                             {hod.team_size}
                           </button>
-                        </td>
-                        <td className="py-1.5 px-2 text-center text-[11px] font-mono text-gray-700 border-r border-gray-100">{hod.total_visits}</td>
-                        <td className="py-1.5 px-2 text-right text-[11px] font-mono text-gray-900">
+                        </TableCell>
+                        <TableCell className="py-1.5 px-2 text-center text-[11px] font-mono text-gray-700 dark:text-gray-400">{hod.total_visits}</TableCell>
+                        <TableCell className="py-1.5 px-2 text-right text-[11px] font-mono text-gray-900 dark:text-gray-200">
                           ₹{hod.order_value.toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
-                        </td>
-                      </tr>
+                        </TableCell>
+                      </TableRow>
                     ))
                   )}
-                </tbody>
-              </table>
+                </TableBody>
+              </Table>
             </div>
             <p className="text-[10px] text-gray-500 mt-2 italic">
               <strong>Note:</strong> Click on Team Size to view detailed team data with filters
@@ -208,34 +214,32 @@ const HODReports = () => {
                 <h2 className="text-sm font-bold text-green-900">Top Performers of the Day</h2>
               </div>
               
-              <div className="overflow-x-auto">
-                <table className="w-full border-collapse">
-                  <thead>
-                    <tr className="border-y border-green-200 bg-green-100">
-                      <th className="text-left py-1.5 px-2 text-[10px] font-semibold text-green-800 uppercase tracking-wider border-r border-green-200">HOD Name</th>
-                      <th className="text-left py-1.5 px-2 text-[10px] font-semibold text-green-800 uppercase tracking-wider border-r border-green-200">Executive</th>
-                      <th className="text-center py-1.5 px-2 text-[10px] font-semibold text-green-800 uppercase tracking-wider border-r border-green-200">Visit</th>
-                      <th className="text-right py-1.5 px-2 text-[10px] font-semibold text-green-800 uppercase tracking-wider border-r border-green-200">Order Value</th>
-                      <th className="text-center py-1.5 px-2 text-[10px] font-semibold text-green-800 uppercase tracking-wider">Position</th>
-                    </tr>
-                  </thead>
-                  <tbody>
+              <div className="overflow-auto rounded-lg border border-green-200 bg-white shadow-sm w-full max-h-[40rem]">
+                <Table className="table-auto border-collapse">
+                  <TableHeader className="bg-gradient-to-r from-green-100 to-emerald-100 text-nowrap sticky top-0 text-xs z-10 border-b border-green-200">
+                    <TableHead className="p-2 text-green-800 font-medium">HOD Name</TableHead>
+                    <TableHead className="p-2 text-green-800 font-medium">Executive</TableHead>
+                    <TableHead className="p-2 text-green-800 font-medium text-center">Visit</TableHead>
+                    <TableHead className="p-2 text-green-800 font-medium text-right">Order Value</TableHead>
+                    <TableHead className="p-2 text-green-800 font-medium text-center">Position</TableHead>
+                  </TableHeader>
+                  <TableBody className="divide-y divide-green-100">
                     {topPerformers.length === 0 ? (
-                      <tr>
-                        <td colSpan="5" className="text-center py-4 text-gray-600 text-[11px]">
+                      <TableRow>
+                        <TableCell colSpan="5" className="text-center py-4 text-gray-600 text-[11px]">
                           No performer data available
-                        </td>
-                      </tr>
+                        </TableCell>
+                      </TableRow>
                     ) : (
                       topPerformers.map((performer, index) => (
-                        <tr key={`${performer.executive_id}-${index}`} className="border-b border-green-100 bg-white hover:bg-gray-50 transition-colors">
-                          <td className="py-1.5 px-2 text-[11px] text-gray-900 border-r border-green-100">{performer.hod_name}</td>
-                          <td className="py-1.5 px-2 text-[11px] text-gray-900 border-r border-green-100">{performer.executive_name}</td>
-                          <td className="py-1.5 px-2 text-center text-[11px] font-mono text-gray-700 border-r border-green-100">{performer.visits}</td>
-                          <td className="py-1.5 px-2 text-right text-[11px] font-mono text-gray-900 border-r border-green-100">
+                        <TableRow key={`${performer.executive_id}-${index}`} className="transition-all text-xs duration-200 hover:bg-gray-50 border-b border-green-100">
+                          <TableCell className="py-1.5 px-2 text-[11px] text-gray-900">{performer.hod_name}</TableCell>
+                          <TableCell className="py-1.5 px-2 text-[11px] text-gray-900">{performer.executive_name}</TableCell>
+                          <TableCell className="py-1.5 px-2 text-center text-[11px] font-mono text-gray-700">{performer.visits}</TableCell>
+                          <TableCell className="py-1.5 px-2 text-right text-[11px] font-mono text-gray-900">
                             {performer.order_value.toLocaleString('en-IN')}
-                          </td>
-                          <td className="py-1.5 px-2 text-center">
+                          </TableCell>
+                          <TableCell className="py-1.5 px-2 text-center">
                             <span className={`inline-block px-2 py-0.5 text-[10px] font-semibold rounded ${
                               index === 0 ? 'bg-yellow-400 text-yellow-900' :
                               index === 1 ? 'bg-gray-300 text-gray-800' :
@@ -244,12 +248,12 @@ const HODReports = () => {
                             }`}>
                               {performer.position_label}
                             </span>
-                          </td>
-                        </tr>
+                          </TableCell>
+                        </TableRow>
                       ))
                     )}
-                  </tbody>
-                </table>
+                  </TableBody>
+                </Table>
               </div>
             </CardContent>
           </Card>
@@ -262,43 +266,41 @@ const HODReports = () => {
                 <h2 className="text-sm font-bold text-amber-900">Top Underperformers of the Day</h2>
               </div>
               
-              <div className="overflow-x-auto">
-                <table className="w-full border-collapse">
-                  <thead>
-                    <tr className="border-y border-amber-200 bg-amber-100">
-                      <th className="text-left py-1.5 px-2 text-[10px] font-semibold text-amber-800 uppercase tracking-wider border-r border-amber-200">HOD Name</th>
-                      <th className="text-left py-1.5 px-2 text-[10px] font-semibold text-amber-800 uppercase tracking-wider border-r border-amber-200">Executive</th>
-                      <th className="text-center py-1.5 px-2 text-[10px] font-semibold text-amber-800 uppercase tracking-wider border-r border-amber-200">Visit</th>
-                      <th className="text-right py-1.5 px-2 text-[10px] font-semibold text-amber-800 uppercase tracking-wider border-r border-amber-200">Order Value</th>
-                      <th className="text-center py-1.5 px-2 text-[10px] font-semibold text-amber-800 uppercase tracking-wider">Type</th>
-                    </tr>
-                  </thead>
-                  <tbody>
+              <div className="overflow-auto rounded-lg border border-amber-200 bg-white shadow-sm w-full max-h-[40rem]">
+                <Table className="table-auto border-collapse">
+                  <TableHeader className="bg-gradient-to-r from-amber-100 to-yellow-100 text-nowrap sticky top-0 text-xs z-10 border-b border-amber-200">
+                    <TableHead className="p-2 text-amber-800 font-medium">HOD Name</TableHead>
+                    <TableHead className="p-2 text-amber-800 font-medium">Executive</TableHead>
+                    <TableHead className="p-2 text-amber-800 font-medium text-center">Visit</TableHead>
+                    <TableHead className="p-2 text-amber-800 font-medium text-right">Order Value</TableHead>
+                    <TableHead className="p-2 text-amber-800 font-medium text-center">Type</TableHead>
+                  </TableHeader>
+                  <TableBody className="divide-y divide-amber-100">
                     {underperformers.length === 0 ? (
-                      <tr>
-                        <td colSpan="5" className="text-center py-4 text-gray-600 text-[11px]">
+                      <TableRow>
+                        <TableCell colSpan="5" className="text-center py-4 text-gray-600 text-[11px]">
                           No underperformer data available
-                        </td>
-                      </tr>
+                        </TableCell>
+                      </TableRow>
                     ) : (
                       underperformers.map((performer, index) => (
-                        <tr key={`${performer.executive_id}-${index}`} className="border-b border-amber-100 bg-white hover:bg-gray-50 transition-colors">
-                          <td className="py-1.5 px-2 text-[11px] text-gray-900 border-r border-amber-100">{performer.hod_name}</td>
-                          <td className="py-1.5 px-2 text-[11px] text-gray-900 border-r border-amber-100">{performer.executive_name}</td>
-                          <td className="py-1.5 px-2 text-center text-[11px] font-mono text-gray-700 border-r border-amber-100">{performer.visits}</td>
-                          <td className="py-1.5 px-2 text-right text-[11px] font-mono text-gray-900 border-r border-amber-100">
+                        <TableRow key={`${performer.executive_id}-${index}`} className="transition-all text-xs duration-200 hover:bg-gray-50 border-b border-amber-100">
+                          <TableCell className="py-1.5 px-2 text-[11px] text-gray-900">{performer.hod_name}</TableCell>
+                          <TableCell className="py-1.5 px-2 text-[11px] text-gray-900">{performer.executive_name}</TableCell>
+                          <TableCell className="py-1.5 px-2 text-center text-[11px] font-mono text-gray-700">{performer.visits}</TableCell>
+                          <TableCell className="py-1.5 px-2 text-right text-[11px] font-mono text-gray-900">
                             {performer.order_value.toLocaleString('en-IN')}
-                          </td>
-                          <td className="py-1.5 px-2 text-center">
+                          </TableCell>
+                          <TableCell className="py-1.5 px-2 text-center">
                             <span className="inline-block px-2 py-0.5 text-[10px] font-medium rounded bg-amber-200 text-amber-900">
                               {performer.type}
                             </span>
-                          </td>
-                        </tr>
+                          </TableCell>
+                        </TableRow>
                       ))
                     )}
-                  </tbody>
-                </table>
+                  </TableBody>
+                </Table>
               </div>
             </CardContent>
           </Card>
@@ -346,38 +348,36 @@ const HODReports = () => {
 
               {/* Modal Content */}
               <div className="flex-1 overflow-y-auto p-4">
-                <div className="overflow-x-auto">
-                  <table className="w-full">
-                    <thead>
-                      <tr className="border-b border-gray-200 bg-gray-100">
-                        <th className="text-left py-2 px-3 text-xs font-semibold text-gray-700">Executive Name</th>
-                        <th className="text-left py-2 px-3 text-xs font-semibold text-gray-700">Employee Code</th>
-                        <th className="text-center py-2 px-3 text-xs font-semibold text-gray-700">Total Visits</th>
-                        <th className="text-center py-2 px-3 text-xs font-semibold text-gray-700">Completed</th>
-                        <th className="text-center py-2 px-3 text-xs font-semibold text-gray-700">Pending</th>
-                        <th className="text-right py-2 px-3 text-xs font-semibold text-gray-700">Order Value</th>
-                        <th className="text-center py-2 px-3 text-xs font-semibold text-gray-700">Status</th>
-                      </tr>
-                    </thead>
-                    <tbody>
+                <div className="overflow-auto rounded-lg border border-gray-200 bg-white shadow-sm w-full max-h-[40rem]">
+                  <Table className="table-auto border-collapse">
+                    <TableHeader className="bg-gradient-to-r from-gray-100 to-gray-200 text-nowrap sticky top-0 text-xs z-10 border-b border-gray-200">
+                      <TableHead className="p-2 text-gray-700 font-medium">Executive Name</TableHead>
+                      <TableHead className="p-2 text-gray-700 font-medium">Employee Code</TableHead>
+                      <TableHead className="p-2 text-gray-700 font-medium text-center">Total Visits</TableHead>
+                      <TableHead className="p-2 text-gray-700 font-medium text-center">Completed</TableHead>
+                      <TableHead className="p-2 text-gray-700 font-medium text-center">Pending</TableHead>
+                      <TableHead className="p-2 text-gray-700 font-medium text-right">Order Value</TableHead>
+                      <TableHead className="p-2 text-gray-700 font-medium text-center">Status</TableHead>
+                    </TableHeader>
+                    <TableBody className="divide-y divide-gray-100">
                       {teamDetails.length === 0 ? (
-                        <tr>
-                          <td colSpan="7" className="text-center py-6 text-gray-500 text-xs">
+                        <TableRow>
+                          <TableCell colSpan="7" className="text-center py-6 text-gray-500 text-xs">
                             No team data available
-                          </td>
-                        </tr>
+                          </TableCell>
+                        </TableRow>
                       ) : (
                         teamDetails.map((member) => (
-                          <tr key={member.executive_id} className="border-b border-gray-100 hover:bg-gray-50 transition-colors">
-                            <td className="py-2 px-3 text-xs font-medium text-gray-900">{member.executive_name}</td>
-                            <td className="py-2 px-3 text-xs text-gray-700">{member.employee_code}</td>
-                            <td className="py-2 px-3 text-center text-xs font-mono text-gray-700">{member.total_visits}</td>
-                            <td className="py-2 px-3 text-center text-xs font-mono text-green-600">{member.completed_visits}</td>
-                            <td className="py-2 px-3 text-center text-xs font-mono text-orange-600">{member.pending_visits}</td>
-                            <td className="py-2 px-3 text-right text-xs font-mono text-gray-900">
+                          <TableRow key={member.executive_id} className="transition-all text-xs duration-200 hover:bg-gray-50 border-b border-gray-100">
+                            <TableCell className="py-2 px-3 text-xs font-medium text-gray-900">{member.executive_name}</TableCell>
+                            <TableCell className="py-2 px-3 text-xs text-gray-700">{member.employee_code}</TableCell>
+                            <TableCell className="py-2 px-3 text-center text-xs font-mono text-gray-700">{member.total_visits}</TableCell>
+                            <TableCell className="py-2 px-3 text-center text-xs font-mono text-green-600">{member.completed_visits}</TableCell>
+                            <TableCell className="py-2 px-3 text-center text-xs font-mono text-orange-600">{member.pending_visits}</TableCell>
+                            <TableCell className="py-2 px-3 text-right text-xs font-mono text-gray-900">
                               ₹{member.order_value.toLocaleString('en-IN')}
-                            </td>
-                            <td className="py-2 px-3 text-center">
+                            </TableCell>
+                            <TableCell className="py-2 px-3 text-center">
                               <span className={`inline-block px-2 py-0.5 text-[10px] font-medium rounded ${
                                 member.is_in_market 
                                   ? 'bg-green-100 text-green-700' 
@@ -385,12 +385,12 @@ const HODReports = () => {
                               }`}>
                                 {member.is_in_market ? 'In Market' : 'Offline'}
                               </span>
-                            </td>
-                          </tr>
+                            </TableCell>
+                          </TableRow>
                         ))
                       )}
-                    </tbody>
-                  </table>
+                    </TableBody>
+                  </Table>
                 </div>
               </div>
 

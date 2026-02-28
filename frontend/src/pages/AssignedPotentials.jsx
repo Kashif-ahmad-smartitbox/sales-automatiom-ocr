@@ -4,6 +4,7 @@ import SalesExecutiveLayout from '../components/layout/SalesExecutiveLayout';
 import { Card, CardContent } from '../components/ui/card';
 import { Input } from '../components/ui/input';
 import { Button } from '../components/ui/button';
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { MapPin, Calendar, Buildings, ArrowRight, CheckCircle, Package } from '@phosphor-icons/react';
 import { useAuth } from '../context/AuthContext';
 import { useSearch } from '../context/SearchContext';
@@ -278,75 +279,73 @@ const AssignedPotentials = () => {
 
         {/* Content */}
         <Card className="border-0 shadow-sm overflow-hidden">
-            <div className="overflow-x-auto">
-                <table className="w-full border-collapse">
-                    <thead className="bg-gray-50">
-                        <tr className="border-y border-gray-200">
-                      <th className="px-2 py-2 text-left text-[10px] font-semibold text-gray-600 uppercase tracking-wider border-r border-gray-200 w-8">#</th>
-                            <th className="px-2 py-2 text-left text-[10px] font-semibold text-gray-600 uppercase tracking-wider border-r border-gray-200">Dealer Name</th>
-                            <th className="px-2 py-2 text-left text-[10px] font-semibold text-gray-600 uppercase tracking-wider border-r border-gray-200">Location / Address</th>
-                            <th className="px-2 py-2 text-left text-[10px] font-semibold text-gray-600 uppercase tracking-wider border-r border-gray-200">Originally Found By</th>
-                            <th className="px-2 py-2 text-left text-[10px] font-semibold text-gray-600 uppercase tracking-wider border-r border-gray-200">Assigned Date</th>
-                            <th className="px-2 py-2 text-center text-[10px] font-semibold text-gray-600 uppercase tracking-wider border-r border-gray-200">Status</th>
-                            <th className="px-2 py-2 text-center text-[10px] font-semibold text-gray-600 uppercase tracking-wider">Action</th>
-                        </tr>
-                    </thead>
-                    <tbody>
+            <div className="overflow-auto rounded-lg border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 shadow-sm w-full max-h-[40rem]">
+                <Table className="table-auto border-collapse">
+                    <TableHeader className="bg-gradient-to-r from-primary-50 to-indigo-50 dark:from-gray-800 dark:to-gray-900 text-nowrap sticky top-0 text-xs z-10 border-b border-primary-100 dark:border-gray-700">
+                      <TableHead className="p-2 text-gray-700 dark:text-gray-300 font-medium w-8">#</TableHead>
+                      <TableHead className="p-2 text-gray-700 dark:text-gray-300 font-medium">Dealer Name</TableHead>
+                      <TableHead className="p-2 text-gray-700 dark:text-gray-300 font-medium">Location / Address</TableHead>
+                      <TableHead className="p-2 text-gray-700 dark:text-gray-300 font-medium">Originally Found By</TableHead>
+                      <TableHead className="p-2 text-gray-700 dark:text-gray-300 font-medium">Assigned Date</TableHead>
+                      <TableHead className="p-2 text-gray-700 dark:text-gray-300 font-medium text-center">Status</TableHead>
+                      <TableHead className="p-2 text-gray-700 dark:text-gray-300 font-medium text-center">Action</TableHead>
+                    </TableHeader>
+                    <TableBody className="divide-y divide-gray-100 dark:divide-gray-800">
                         {loading ? (
-                            <tr>
-                            <td colSpan="7" className="px-2 py-8 text-center">
-                                    <div className="flex justify-center items-center gap-2 text-[11px] text-gray-500">
+                            <TableRow>
+                            <TableCell colSpan="7" className="px-2 py-8 text-center">
+                                    <div className="flex justify-center items-center gap-2 text-[11px] text-gray-500 dark:text-gray-400">
                                         <div className="spinner w-4 h-4" /> Loading data...
                                     </div>
-                                </td>
-                            </tr>
+                                </TableCell>
+                            </TableRow>
                         ) : filteredPotentials.length === 0 ? (
-                            <tr>
-                            <td colSpan="7" className="px-2 py-8 text-center text-[11px] text-gray-500">
+                            <TableRow>
+                            <TableCell colSpan="7" className="px-2 py-8 text-center text-[11px] text-gray-500 dark:text-gray-400">
                                     {searchTerm ? 'No matches found.' : 'No dealers assigned to you yet.'}
-                                </td>
-                            </tr>
+                                </TableCell>
+                            </TableRow>
                         ) : (
                           filteredPotentials.map((item, idx) => {
                             const placeName = getTruncatedText(item.place_name, 18);
                             const foundByName = getTruncatedText(item.found_by_name, 16);
 
                             return (
-                            <tr key={item._id || item.id} className="border-b border-gray-100 hover:bg-gray-50 transition-colors">
-                              <td className="px-2 py-1.5 border-r border-gray-100 text-xs font-medium text-gray-600 w-8">{idx + 1}</td>
-                              <td className="px-2 py-1.5 border-r border-gray-100">
-                                <div className="font-medium text-xs text-gray-800" title={placeName.full}>{placeName.display}</div>
-                                        <div className="text-[10px] text-gray-400 mt-0.5 font-mono">ID: {item.place_id.substring(0, 10)}...</div>
-                                    </td>
-                                    <td className="px-2 py-1.5 max-w-xs border-r border-gray-100">
-                                        <div className="flex items-start gap-1.5 text-[11px] text-gray-600">
-                                            <MapPin size={12} className="mt-0.5 shrink-0 text-gray-400" />
+                            <TableRow key={item._id || item.id} className="group cursor-pointer transition-all text-xs text-gray-700 duration-200 hover:bg-gray-50 dark:hover:bg-gray-800 border-b border-gray-200 dark:border-gray-700">
+                              <TableCell className="px-2 py-1.5 text-xs font-medium text-gray-600 dark:text-gray-400 w-8">{idx + 1}</TableCell>
+                              <TableCell className="px-2 py-1.5">
+                                <div className="font-medium text-xs text-gray-800 dark:text-gray-200" title={placeName.full}>{placeName.display}</div>
+                                        <div className="text-[10px] text-gray-400 dark:text-gray-500 mt-0.5 font-mono">ID: {item.place_id.substring(0, 10)}...</div>
+                                    </TableCell>
+                                    <TableCell className="px-2 py-1.5 max-w-xs">
+                                        <div className="flex items-start gap-1.5 text-[11px] text-gray-600 dark:text-gray-400">
+                                            <MapPin size={12} className="mt-0.5 shrink-0 text-gray-400 dark:text-gray-500" />
                                             <span className="line-clamp-2" title={item.address}>{item.address || 'Address not available'}</span>
                                         </div>
-                                    </td>
-                                    <td className="px-2 py-1.5 border-r border-gray-100">
+                                    </TableCell>
+                                    <TableCell className="px-2 py-1.5">
                                         <div className="flex items-center gap-2">
-                                            <div className="w-6 h-6 rounded-full bg-indigo-100 text-indigo-600 flex items-center justify-center text-[10px] font-bold">
+                                            <div className="w-6 h-6 rounded-full bg-indigo-100 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400 flex items-center justify-center text-[10px] font-bold">
                                                 {item.found_by_name.charAt(0)}
                                             </div>
-                                            <span className="text-xs font-medium text-gray-700" title={foundByName.full}>{foundByName.display}</span>
+                                            <span className="text-xs font-medium text-gray-700 dark:text-gray-200" title={foundByName.full}>{foundByName.display}</span>
                                         </div>
-                                    </td>
-                                    <td className="px-2 py-1.5 border-r border-gray-100">
-                                        <div className="flex items-center gap-1.5 text-[11px] text-gray-600">
-                                            <Calendar size={12} className="text-gray-400" />
+                                    </TableCell>
+                                    <TableCell className="px-2 py-1.5">
+                                        <div className="flex items-center gap-1.5 text-[11px] text-gray-600 dark:text-gray-400">
+                                            <Calendar size={12} className="text-gray-400 dark:text-gray-500" />
                                             <span>{formatDateDDMmmYYYY(item.assigned_at)}</span>
                                         </div>
-                                        <div className="text-[10px] text-gray-400 pl-5">
+                                        <div className="text-[10px] text-gray-400 dark:text-gray-500 pl-5">
                                             {new Date(item.assigned_at).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}
                                         </div>
-                                    </td>
-                                    <td className="px-2 py-1.5 text-center border-r border-gray-100">
+                                    </TableCell>
+                                    <TableCell className="px-2 py-1.5 text-center">
                                         <Badge variant="outline" className="bg-blue-50 text-blue-700 border-blue-200 text-[10px] px-1.5 py-0">
                                             Assigned
                                         </Badge>
-                                    </td>
-                                    <td className="px-2 py-1.5 text-center">
+                                    </TableCell>
+                                    <TableCell className="px-2 py-1.5 text-center">
                                         <Button
                                             size="sm"
                                             onClick={() => handleRecordVisit(item)}
@@ -355,13 +354,13 @@ const AssignedPotentials = () => {
                                             <CheckCircle size={14} className="mr-1" />
                                             Record Visit
                                         </Button>
-                                    </td>
-                                </tr>
+                                    </TableCell>
+                                </TableRow>
                                 );
                               })
                         )}
-                    </tbody>
-                </table>
+                    </TableBody>
+                </Table>
             </div>
         </Card>
       </div>

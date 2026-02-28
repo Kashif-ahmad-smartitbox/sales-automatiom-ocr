@@ -2,6 +2,7 @@ import { useState, useEffect, useCallback } from 'react';
 import axios from 'axios';
 import { Button } from './ui/button';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from './ui/dialog';
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from './ui/table';
 import { Package, Eye } from '@phosphor-icons/react';
 import { useAuth } from '../context/AuthContext';
 
@@ -80,42 +81,40 @@ const DealerOrderItemsView = ({ dealer, externalOpen = false, onExternalClose = 
         ) : hasItems ? (
           isDetailedFormat ? (
             <div className="space-y-2">
-              <table className="w-full border-collapse">
-                <thead>
-                  <tr className="border-y border-gray-200 bg-gray-50">
-                    <th className="text-left py-1.5 px-2 text-[10px] font-semibold text-gray-600 uppercase tracking-wider border-r border-gray-200">#</th>
-                    <th className="text-left py-1.5 px-2 text-[10px] font-semibold text-gray-600 uppercase tracking-wider border-r border-gray-200">Item</th>
-                    <th className="text-center py-1.5 px-2 text-[10px] font-semibold text-gray-600 uppercase tracking-wider border-r border-gray-200">Qty</th>
-                    <th className="text-right py-1.5 px-2 text-[10px] font-semibold text-gray-600 uppercase tracking-wider border-r border-gray-200">Rate (₹)</th>
-                    <th className="text-right py-1.5 px-2 text-[10px] font-semibold text-gray-600 uppercase tracking-wider">Total (₹)</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {items.map((item, idx) => (
-                    <tr key={idx} className="border-b border-gray-100 hover:bg-gray-50 transition-colors">
-                      <td className="py-1.5 px-2 border-r border-gray-100">
-                        <span className="w-5 h-5 rounded-full bg-primary-100 text-primary-700 flex items-center justify-center text-[10px] font-medium">
-                          {idx + 1}
-                        </span>
-                      </td>
-                      <td className="py-1.5 px-2 text-[11px] text-gray-800 font-medium border-r border-gray-100">{item.name}</td>
-                      <td className="py-1.5 px-2 text-center text-[11px] text-gray-700 border-r border-gray-100">{item.quantity}</td>
-                      <td className="py-1.5 px-2 text-right text-[11px] text-gray-700 border-r border-gray-100">₹{item.rate.toFixed(2)}</td>
-                      <td className="py-1.5 px-2 text-right text-[11px] text-primary-600 font-semibold">
-                        ₹{(item.quantity * item.rate).toFixed(2)}
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-                <tfoot>
-                  <tr className="bg-gray-50 font-bold border-t border-gray-200">
-                    <td colSpan="4" className="py-1.5 px-2 text-right text-[11px] text-gray-700">Total:</td>
-                    <td className="py-1.5 px-2 text-right text-[11px] text-primary-600">
-                      ₹{items.reduce((sum, item) => sum + (item.quantity * item.rate), 0).toFixed(2)}
-                    </td>
-                  </tr>
-                </tfoot>
-              </table>
+              <div className="overflow-auto rounded-lg border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 shadow-sm max-h-[400px]">
+                <Table className="table-auto border-collapse">
+                  <TableHeader className="bg-gradient-to-r from-primary-50 to-indigo-50 dark:from-gray-800 dark:to-gray-900 sticky top-0 z-10 border-b border-primary-100 dark:border-gray-700">
+                    <TableHead className="py-1.5 px-2 text-gray-700 dark:text-gray-300 font-medium text-[10px]">#</TableHead>
+                    <TableHead className="py-1.5 px-2 text-gray-700 dark:text-gray-300 font-medium text-[10px]">Item</TableHead>
+                    <TableHead className="py-1.5 px-2 text-gray-700 dark:text-gray-300 font-medium text-[10px] text-center">Qty</TableHead>
+                    <TableHead className="py-1.5 px-2 text-gray-700 dark:text-gray-300 font-medium text-[10px] text-right">Rate (₹)</TableHead>
+                    <TableHead className="py-1.5 px-2 text-gray-700 dark:text-gray-300 font-medium text-[10px] text-right">Total (₹)</TableHead>
+                  </TableHeader>
+                  <TableBody className="divide-y divide-gray-100 dark:divide-gray-800">
+                    {items.map((item, idx) => (
+                      <TableRow key={idx} className="group transition-all duration-200 hover:bg-gray-50 dark:hover:bg-gray-800 border-b border-gray-200 dark:border-gray-700">
+                        <TableCell className="py-1.5 px-2">
+                          <span className="w-5 h-5 rounded-full bg-primary-100 dark:bg-primary-900/30 text-primary-700 dark:text-primary-400 flex items-center justify-center text-[10px] font-medium">
+                            {idx + 1}
+                          </span>
+                        </TableCell>
+                        <TableCell className="py-1.5 px-2 text-[11px] text-gray-800 dark:text-gray-200 font-medium">{item.name}</TableCell>
+                        <TableCell className="py-1.5 px-2 text-center text-[11px] text-gray-700 dark:text-gray-300">{item.quantity}</TableCell>
+                        <TableCell className="py-1.5 px-2 text-right text-[11px] text-gray-700 dark:text-gray-300">₹{item.rate.toFixed(2)}</TableCell>
+                        <TableCell className="py-1.5 px-2 text-right text-[11px] text-primary-600 dark:text-primary-400 font-semibold">
+                          ₹{(item.quantity * item.rate).toFixed(2)}
+                        </TableCell>
+                      </TableRow>
+                    ))}
+                    <TableRow className="bg-gray-50 dark:bg-gray-800 font-bold border-t-2 border-gray-200 dark:border-gray-700">
+                      <TableCell colSpan={4} className="py-1.5 px-2 text-right text-[11px] text-gray-700 dark:text-gray-300">Total:</TableCell>
+                      <TableCell className="py-1.5 px-2 text-right text-[11px] text-primary-600 dark:text-primary-400 font-bold">
+                        ₹{items.reduce((sum, item) => sum + (item.quantity * item.rate), 0).toFixed(2)}
+                      </TableCell>
+                    </TableRow>
+                  </TableBody>
+                </Table>
+              </div>
             </div>
           ) : (
             <ul className="space-y-2">

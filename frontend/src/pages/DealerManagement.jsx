@@ -8,6 +8,14 @@ import { Label } from '../components/ui/label';
 import { Badge } from '../components/ui/badge';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '../components/ui/dialog';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../components/ui/select';
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from '../components/ui/table';
 import { Plus, MapPin, Trash, Pencil, ClockClockwise, Calendar, User } from '@phosphor-icons/react';
 import { useAuth } from '../context/AuthContext';
 import { useSearch } from '../context/SearchContext';
@@ -395,39 +403,39 @@ const filteredDealers = dealers.filter(d => {
                 {searchTerm ? 'No dealers match your search' : 'No dealers added yet. Click "Add Dealer" to get started.'}
               </div>
             ) : (
-              <div className="overflow-x-auto">
-                <table className="w-full text-left border-collapse">
-                  <thead className="bg-gray-50">
-                    <tr className="border-y border-gray-200">
-                      <th className="text-[10px] text-gray-600 uppercase tracking-wider font-semibold px-2 py-2 border-r border-gray-200 w-8">#</th>
-                      <th className="text-[10px] text-gray-600 uppercase tracking-wider font-semibold px-2 py-2 border-r border-gray-200">Dealer</th>
-                      <th className="text-[10px] text-gray-600 uppercase tracking-wider font-semibold px-2 py-2 border-r border-gray-200 text-center">Address</th>
-                      <th className="text-[10px] text-gray-600 uppercase tracking-wider font-semibold px-2 py-2 border-r border-gray-200">Type</th>
-                      <th className="text-[10px] text-gray-600 uppercase tracking-wider font-semibold px-2 py-2 border-r border-gray-200">Territory</th>
-                      <th className="text-[10px] text-gray-600 uppercase tracking-wider font-semibold px-2 py-2 border-r border-gray-200">Contact</th>
-                      <th className="text-[10px] text-gray-600 uppercase tracking-wider font-semibold px-2 py-2 border-r border-gray-200">Phone</th>
-                      <th className="text-[10px] text-gray-600 uppercase tracking-wider font-semibold px-2 py-2 border-r border-gray-200">Priority</th>
-                      <th className="text-[10px] text-gray-600 uppercase tracking-wider font-semibold px-2 py-2 border-r border-gray-200">Booked Amount</th>
-                      <th className="text-[10px] text-gray-600 uppercase tracking-wider font-semibold px-2 py-2 border-r border-gray-200">Last Visit</th>
-                      <th className="text-[10px] text-gray-600 uppercase tracking-wider font-semibold px-2 py-2 border-r border-gray-200">Visited By</th>
-                      <th className="text-[10px] text-gray-600 uppercase tracking-wider font-semibold px-2 py-2 border-r border-gray-200">Outcome</th>
-                      <th className="text-[10px] text-gray-600 uppercase tracking-wider font-semibold px-2 py-2 border-r border-gray-200">Next Visit</th>
-                      <th className="text-[10px] text-gray-600 uppercase tracking-wider font-semibold px-2 py-2 text-center">Actions</th>
-                    </tr>
-                  </thead>
-                  <tbody className="bg-white divide-y divide-gray-100">
+              <div className="overflow-auto rounded-lg border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 shadow-sm w-full max-h-[40rem]">
+                <Table className="table-auto border-collapse">
+                  <TableHeader className="bg-gradient-to-r from-primary-50 to-indigo-50 dark:from-gray-800 dark:to-gray-900 text-nowrap sticky top-0 text-xs z-10 border-b border-primary-100 dark:border-gray-700">
+                    <TableHead className="p-2 text-gray-700 dark:text-gray-300 font-medium text-center w-8">#</TableHead>
+                    <TableHead className="p-2 text-gray-700 dark:text-gray-300 font-medium">Dealer</TableHead>
+                    <TableHead className="p-2 text-gray-700 dark:text-gray-300 font-medium text-center">Address</TableHead>
+                    <TableHead className="p-2 text-gray-700 dark:text-gray-300 font-medium">Type</TableHead>
+                    <TableHead className="p-2 text-gray-700 dark:text-gray-300 font-medium">Territory</TableHead>
+                    <TableHead className="p-2 text-gray-700 dark:text-gray-300 font-medium">Contact</TableHead>
+                    <TableHead className="p-2 text-gray-700 dark:text-gray-300 font-medium">Phone</TableHead>
+                    <TableHead className="p-2 text-gray-700 dark:text-gray-300 font-medium">Priority</TableHead>
+                    <TableHead className="p-2 text-gray-700 dark:text-gray-300 font-medium">Booked Amount</TableHead>
+                    <TableHead className="p-2 text-gray-700 dark:text-gray-300 font-medium">Last Visit</TableHead>
+                    <TableHead className="p-2 text-gray-700 dark:text-gray-300 font-medium">Visited By</TableHead>
+                    <TableHead className="p-2 text-gray-700 dark:text-gray-300 font-medium">Outcome</TableHead>
+                    <TableHead className="p-2 text-gray-700 dark:text-gray-300 font-medium">Next Visit</TableHead>
+                    <TableHead className="p-2 text-gray-700 dark:text-gray-300 font-medium text-center">Actions</TableHead>
+                  </TableHeader>
+                  <TableBody className="divide-y divide-gray-100 dark:divide-gray-800">
                     {filteredDealers.map((dealer, idx) => {
                       const dealerName = getTruncatedText(dealer.name, 18);
                       const contactPerson = getTruncatedText(dealer.contact_person || '–', 15);
                       const visitedBy = getTruncatedText(dealer.last_visited_by || '–', 15);
 
                       return (
-                      <tr key={dealer.id} className="hover:bg-gray-50 transition-colors">
-                        <td className="px-2 py-1.5 border-r border-gray-100 text-xs font-medium text-gray-600 w-8">{idx + 1}</td>
-                        <td className="px-2 py-1.5 border-r border-gray-100">
-                          <p className="text-xs font-medium text-gray-900" title={dealerName.full}>{dealerName.display}</p>
-                        </td>
-                        <td className="px-2 py-1.5 border-r border-gray-100">
+                      <TableRow key={dealer.id} className="group cursor-pointer transition-all text-xs text-gray-700 duration-200 hover:bg-gray-50 dark:hover:bg-gray-800 border-b border-gray-200 dark:border-gray-700">
+                        <TableCell className="px-2 py-1.5 text-center">
+                          <span className="p-1 bg-gray-200 dark:bg-gray-700 font-medium rounded-full text-gray-600 dark:text-gray-300">{idx + 1}</span>
+                        </TableCell>
+                        <TableCell className="px-2 py-1.5">
+                          <p className="text-xs font-medium text-gray-800 dark:text-gray-200" title={dealerName.full}>{dealerName.display}</p>
+                        </TableCell>
+                        <TableCell className="px-2 py-1.5">
                           <TooltipProvider>
                             <Tooltip>
                               <TooltipTrigger asChild>
@@ -440,20 +448,20 @@ const filteredDealers = dealers.filter(d => {
                               </TooltipContent>
                             </Tooltip>
                           </TooltipProvider>
-                        </td>
-                        <td className="px-2 py-1.5 border-r border-gray-100 text-[11px] text-gray-600">{dealer.dealer_type}</td>
-                        <td className="px-2 py-1.5 border-r border-gray-100 text-[11px] text-gray-600">{getTerritoryName(dealer.territory_id)}</td>
-                        <td className="px-2 py-1.5 border-r border-gray-100 text-[11px] text-gray-600" title={contactPerson.full}>{contactPerson.display}</td>
-                        <td className="px-2 py-1.5 border-r border-gray-100 font-mono text-[11px] text-gray-600 whitespace-nowrap">{dealer.phone || '–'}</td>
-                        <td className="px-2 py-1.5 border-r border-gray-100">
+                        </TableCell>
+                        <TableCell className="px-2 py-1.5 text-[11px] text-gray-600 dark:text-gray-400">{dealer.dealer_type}</TableCell>
+                        <TableCell className="px-2 py-1.5 text-[11px] text-gray-600 dark:text-gray-400">{getTerritoryName(dealer.territory_id)}</TableCell>
+                        <TableCell className="px-2 py-1.5 text-[11px] text-gray-600 dark:text-gray-400" title={contactPerson.full}>{contactPerson.display}</TableCell>
+                        <TableCell className="px-2 py-1.5 font-mono text-[11px] text-gray-600 dark:text-gray-400 whitespace-nowrap">{dealer.phone || '–'}</TableCell>
+                        <TableCell className="px-2 py-1.5">
                           <Badge className={`text-[10px] px-1.5 py-0 ${
                             dealer.priority_level === 1 ? 'priority-high' :
                             dealer.priority_level === 2 ? 'priority-medium' : 'priority-low'
                           }`}>
                             {dealer.priority_level === 1 ? 'High' : dealer.priority_level === 2 ? 'Medium' : 'Low'}
                           </Badge>
-                        </td>
-                        <td className="px-2 py-1.5 border-r border-gray-100">
+                        </TableCell>
+                        <TableCell className="px-2 py-1.5">
                           {dealer.total_booked_amount > 0 ? (
                             <span className="text-[11px] font-bold text-emerald-600">
                               ₹{dealer.total_booked_amount.toLocaleString('en-IN')}
@@ -461,14 +469,14 @@ const filteredDealers = dealers.filter(d => {
                           ) : (
                             <span className="text-[11px] text-gray-400">₹0</span>
                           )}
-                        </td>
-                        <td className="px-2 py-1.5 border-r border-gray-100 font-mono text-[11px] text-gray-600 whitespace-nowrap">
+                        </TableCell>
+                        <TableCell className="px-2 py-1.5 font-mono text-[11px] text-gray-600 dark:text-gray-400 whitespace-nowrap">
                           {dealer.last_visit_date ? formatDateDDMmmYYYY(dealer.last_visit_date) : 'Never'}
-                        </td>
-                        <td className="px-2 py-1.5 border-r border-gray-100 text-[11px] text-gray-600" title={visitedBy.full}>
+                        </TableCell>
+                        <TableCell className="px-2 py-1.5 text-[11px] text-gray-600 dark:text-gray-400" title={visitedBy.full}>
                           {visitedBy.display}
-                        </td>
-                        <td className="px-2 py-1.5 border-r border-gray-100">
+                        </TableCell>
+                        <TableCell className="px-2 py-1.5">
                           <div className="flex items-center gap-1.5">
                             {dealer.last_outcome ? (
                               dealer.last_outcome === 'Order Booked' ? (
@@ -491,11 +499,11 @@ const filteredDealers = dealers.filter(d => {
                               <span className="text-[11px] text-gray-400">–</span>
                             )}
                           </div>
-                        </td>
-                        <td className="px-2 py-1.5 border-r border-gray-100 font-mono text-[11px] text-gray-600 whitespace-nowrap">
+                        </TableCell>
+                        <TableCell className="px-2 py-1.5 font-mono text-[11px] text-gray-600 dark:text-gray-400 whitespace-nowrap">
                           {dealer.next_visit_date ? formatDateDDMmmYYYY(dealer.next_visit_date) : '–'}
-                        </td>
-                        <td className="px-2 py-1.5">
+                        </TableCell>
+                        <TableCell className="px-2 py-1.5">
                           <div className="flex items-center justify-center gap-1">
                             <Button 
                               variant="ghost" 
@@ -526,12 +534,12 @@ const filteredDealers = dealers.filter(d => {
                               <Trash size={14} />
                             </Button>
                           </div>
-                        </td>
-                      </tr>
+                        </TableCell>
+                      </TableRow>
                       );
                     })}
-                  </tbody>
-                </table>
+                  </TableBody>
+                </Table>
               </div>
             )}
           </CardContent>

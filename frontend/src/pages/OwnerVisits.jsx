@@ -11,6 +11,14 @@ import {
   SelectTrigger,
   SelectValue,
 } from '../components/ui/select';
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from '../components/ui/table';
 import { 
   Target,
   Funnel,
@@ -161,96 +169,121 @@ const OwnerVisits = () => {
             </CardContent>
           </Card>
         ) : (
-          <Card className="border-0 shadow-sm overflow-hidden">
-            <CardContent className="p-0">
-              <div className="overflow-x-auto">
-                <table className="w-full border-collapse">
-                  <thead className="bg-gray-50">
-                    <tr className="border-y border-gray-200">
-                        <th className="px-2 py-2 text-left text-[10px] font-semibold text-gray-600 uppercase tracking-wider border-r border-gray-200 w-8">#</th>
-                      <th className="px-2 py-2 text-left text-[10px] font-semibold text-gray-600 uppercase tracking-wider border-r border-gray-200">Company</th>
-                      <th className="px-2 py-2 text-left text-[10px] font-semibold text-gray-600 uppercase tracking-wider border-r border-gray-200">User</th>
-                      <th className="px-2 py-2 text-left text-[10px] font-semibold text-gray-600 uppercase tracking-wider border-r border-gray-200">Dealer</th>
-                      <th className="px-2 py-2 text-left text-[10px] font-semibold text-gray-600 uppercase tracking-wider border-r border-gray-200">Contact</th>
-                      <th className="px-2 py-2 text-left text-[10px] font-semibold text-gray-600 uppercase tracking-wider border-r border-gray-200">Phone</th>
-                      <th className="px-2 py-2 text-left text-[10px] font-semibold text-gray-600 uppercase tracking-wider border-r border-gray-200">Check-in</th>
-                      <th className="px-2 py-2 text-left text-[10px] font-semibold text-gray-600 uppercase tracking-wider border-r border-gray-200">Check-out</th>
-                      <th className="px-2 py-2 text-left text-[10px] font-semibold text-gray-600 uppercase tracking-wider border-r border-gray-200">Duration</th>
-                      <th className="px-2 py-2 text-left text-[10px] font-semibold text-gray-600 uppercase tracking-wider border-r border-gray-200">Outcome</th>
-                      <th className="px-2 py-2 text-left text-[10px] font-semibold text-gray-600 uppercase tracking-wider">Order Value</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {filteredVisits.map((visit, idx) => {
-                      const companyName = getTruncatedText(visit.company_name, 18);
-                      const userName = getTruncatedText(visit.user_name, 15);
-                      const dealerName = getTruncatedText(visit.dealer_name, 15);
-                      const contactName = getTruncatedText(visit.contact_name || '–', 15);
+          <div className="overflow-auto rounded-lg border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 shadow-sm w-full max-h-[40rem]">
+            <Table className="table-auto border-collapse">
+              <TableHeader className="bg-gradient-to-r from-primary-50 to-indigo-50 dark:from-gray-800 dark:to-gray-900 text-nowrap sticky top-0 text-xs z-10 border-b border-primary-100 dark:border-gray-700">
+                <TableHead className="p-2 text-gray-700 dark:text-gray-300 font-medium text-center w-8">
+                  #
+                </TableHead>
+                <TableHead className="p-2 text-gray-700 dark:text-gray-300 font-medium">
+                  Company
+                </TableHead>
+                <TableHead className="p-2 text-gray-700 dark:text-gray-300 font-medium">
+                  User
+                </TableHead>
+                <TableHead className="p-2 text-gray-700 dark:text-gray-300 font-medium">
+                  Dealer
+                </TableHead>
+                <TableHead className="p-2 text-gray-700 dark:text-gray-300 font-medium">
+                  Contact
+                </TableHead>
+                <TableHead className="p-2 text-gray-700 dark:text-gray-300 font-medium">
+                  Phone
+                </TableHead>
+                <TableHead className="p-2 text-gray-700 dark:text-gray-300 font-medium">
+                  Check-in
+                </TableHead>
+                <TableHead className="p-2 text-gray-700 dark:text-gray-300 font-medium">
+                  Check-out
+                </TableHead>
+                <TableHead className="p-2 text-gray-700 dark:text-gray-300 font-medium">
+                  Duration
+                </TableHead>
+                <TableHead className="p-2 text-gray-700 dark:text-gray-300 font-medium">
+                  Outcome
+                </TableHead>
+                <TableHead className="p-2 text-gray-700 dark:text-gray-300 font-medium">
+                  Order Value
+                </TableHead>
+              </TableHeader>
+              <TableBody className="divide-y divide-gray-100 dark:divide-gray-800">
+                {filteredVisits.map((visit, idx) => {
+                  const companyName = getTruncatedText(visit.company_name, 18);
+                  const userName = getTruncatedText(visit.user_name, 15);
+                  const dealerName = getTruncatedText(visit.dealer_name, 15);
+                  const contactName = getTruncatedText(visit.contact_name || '–', 15);
 
-                      return (
-                        <tr key={visit.id} className="border-b border-gray-100 hover:bg-gray-50 transition-colors">
-                          <td className="px-2 py-1.5 border-r border-gray-100 text-xs font-medium text-gray-600 w-8">{idx + 1}</td>
-                          <td className="px-2 py-1.5 border-r border-gray-100">
-                            <div className="flex items-center gap-1.5">
-                              <Buildings className="w-3 h-3 text-purple-600" />
-                              <span className="font-medium text-xs text-gray-800" title={companyName.full}>{companyName.display}</span>
-                            </div>
-                          </td>
-                          <td className="px-2 py-1.5 border-r border-gray-100">
-                            <div className="flex items-center gap-1.5 text-[11px] text-gray-600">
-                              <User className="w-3 h-3 text-emerald-600" />
-                              <span title={userName.full}>{userName.display}</span>
-                            </div>
-                          </td>
-                          <td className="px-2 py-1.5 border-r border-gray-100">
-                            <div className="flex items-center gap-1.5 text-[11px] text-gray-600">
-                              <Storefront className="w-3 h-3 text-primary-600" />
-                              <span title={dealerName.full}>{dealerName.display}</span>
-                            </div>
-                          </td>
-                          <td className="text-xs text-gray-600" title={contactName.full}>
-                            {contactName.display}
-                          </td>
-                          <td className="font-mono text-xs text-gray-600 whitespace-nowrap">
-                            {visit.contact_phone || '–'}
-                          </td>
-                          <td className="font-mono text-xs text-gray-600">
-                            {formatDateDDMmmYYYY(visit.check_in_time)}
-                          </td>
-                          <td className="font-mono text-xs text-gray-600">
-                            {visit.check_out_time ? formatDateDDMmmYYYY(visit.check_out_time) : '–'}
-                          </td>
-                          <td className="text-xs text-gray-600">
-                            {visit.time_spent_minutes ? (
-                              <span className="flex items-center gap-1">
-                                <Clock className="w-2.5 h-2.5 text-gray-400" />
-                                {Math.round(visit.time_spent_minutes)} min
-                              </span>
-                            ) : '–'}
-                          </td>
-                          <td>
-                            <Badge variant="outline" className={getOutcomeBadgeClass(visit.outcome)}>
-                              {visit.outcome || 'In Progress'}
-                            </Badge>
-                          </td>
-                          <td>
-                            {visit.order_value ? (
-                              <span className="flex items-center gap-1 text-primary-600 font-mono text-xs font-medium">
-                                <CurrencyDollar className="w-2.5 h-2.5" />
-                                ₹{visit.order_value.toLocaleString()}
-                              </span>
-                            ) : (
-                              <span className="text-gray-400 text-xs">–</span>
-                            )}
-                          </td>
-                        </tr>
-                      );
-                    })}
-                  </tbody>
-                </table>
-              </div>
-            </CardContent>
-          </Card>
+                  return (
+                    <TableRow 
+                      key={visit.id} 
+                      className="group cursor-pointer transition-all text-xs text-gray-700 duration-200 hover:bg-gray-50 dark:hover:bg-gray-800 border-b border-gray-200 dark:border-gray-700"
+                    >
+                      <TableCell className="px-2 py-1.5 text-center">
+                        <span className="p-1 bg-gray-200 dark:bg-gray-700 font-medium rounded-full text-gray-600 dark:text-gray-300">
+                          {idx + 1}
+                        </span>
+                      </TableCell>
+                      <TableCell className="px-2 py-1.5">
+                        <div className="flex items-center gap-1.5">
+                          <Buildings className="w-3 h-3 text-purple-600" />
+                          <span className="font-medium text-xs text-gray-800 dark:text-gray-200" title={companyName.full}>
+                            {companyName.display}
+                          </span>
+                        </div>
+                      </TableCell>
+                      <TableCell className="px-2 py-1.5">
+                        <div className="flex items-center gap-1.5 text-[11px] text-gray-600 dark:text-gray-400">
+                          <User className="w-3 h-3 text-emerald-600" />
+                          <span title={userName.full}>{userName.display}</span>
+                        </div>
+                      </TableCell>
+                      <TableCell className="px-2 py-1.5">
+                        <div className="flex items-center gap-1.5 text-[11px] text-gray-600 dark:text-gray-400">
+                          <Storefront className="w-3 h-3 text-primary-600" />
+                          <span title={dealerName.full}>{dealerName.display}</span>
+                        </div>
+                      </TableCell>
+                      <TableCell className="px-2 py-1.5 text-xs text-gray-600 dark:text-gray-400" title={contactName.full}>
+                        {contactName.display}
+                      </TableCell>
+                      <TableCell className="px-2 py-1.5 font-mono text-xs text-gray-600 dark:text-gray-400 whitespace-nowrap">
+                        {visit.contact_phone || '–'}
+                      </TableCell>
+                      <TableCell className="px-2 py-1.5 font-mono text-xs text-gray-600 dark:text-gray-400">
+                        {formatDateDDMmmYYYY(visit.check_in_time)}
+                      </TableCell>
+                      <TableCell className="px-2 py-1.5 font-mono text-xs text-gray-600 dark:text-gray-400">
+                        {visit.check_out_time ? formatDateDDMmmYYYY(visit.check_out_time) : '–'}
+                      </TableCell>
+                      <TableCell className="px-2 py-1.5 text-xs text-gray-600 dark:text-gray-400">
+                        {visit.time_spent_minutes ? (
+                          <span className="flex items-center gap-1">
+                            <Clock className="w-2.5 h-2.5 text-gray-400" />
+                            {Math.round(visit.time_spent_minutes)} min
+                          </span>
+                        ) : '–'}
+                      </TableCell>
+                      <TableCell className="px-2 py-1.5">
+                        <Badge variant="outline" className={`text-xs text-nowrap px-2 py-0.5 ${getOutcomeBadgeClass(visit.outcome)}`}>
+                          {visit.outcome || 'In Progress'}
+                        </Badge>
+                      </TableCell>
+                      <TableCell className="px-2 py-1.5">
+                        {visit.order_value ? (
+                          <span className="flex items-center gap-1 text-primary-600 font-mono text-xs font-medium">
+                            <CurrencyDollar className="w-2.5 h-2.5" />
+                            ₹{visit.order_value.toLocaleString()}
+                          </span>
+                        ) : (
+                          <span className="text-gray-400 text-xs">–</span>
+                        )}
+                      </TableCell>
+                    </TableRow>
+                  );
+                })}
+              </TableBody>
+            </Table>
+          </div>
         )}
       </div>
     </OwnerLayout>

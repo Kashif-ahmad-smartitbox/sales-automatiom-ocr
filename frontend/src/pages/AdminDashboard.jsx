@@ -1,6 +1,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import axios from 'axios';
 import AdminLayout from '../components/layout/AdminLayout';
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { 
   Users, 
   CalendarCheck,
@@ -527,87 +528,87 @@ const AdminDashboard = () => {
           {/* Table */}
           <div className="overflow-x-auto -mx-0">
             {(!dealerVisitsData?.visits || dealerVisitsData.visits.length === 0) ? (
-              <p className="text-sm text-gray-400 text-center py-10">No visit data available</p>
+              <p className="text-sm text-gray-400 dark:text-gray-500 text-center py-10">No visit data available</p>
             ) : (
-              <table className="w-full border-collapse">
-                <thead className="bg-gray-50">
-                  <tr className="border-y border-gray-200">
-                    <th className="text-left text-[10px] font-semibold text-gray-600 px-2 py-2 border-r border-gray-200 w-8">#</th>
-                    <th className="text-left text-[10px] font-semibold text-gray-600 px-2 py-2 border-r border-gray-200">Next Visit</th>
-                    <th className="text-left text-[10px] font-semibold text-gray-600 px-2 py-2 border-r border-gray-200">Dealer</th>
-                    <th className="text-left text-[10px] font-semibold text-gray-600 px-2 py-2 border-r border-gray-200">Territory</th>
-                    <th className="text-left text-[10px] font-semibold text-gray-600 px-2 py-2 border-r border-gray-200">Status</th>
-                    <th className="text-left text-[10px] font-semibold text-gray-600 px-2 py-2 border-r border-gray-200">Distance</th>
-                    <th className="text-left text-[10px] font-semibold text-gray-600 px-2 py-2 border-r border-gray-200">Duration</th>
-                    <th className="text-left text-[10px] font-semibold text-gray-600 px-2 py-2 border-r border-gray-200">Rep</th>
-                    <th className="text-left text-[10px] font-semibold text-gray-600 px-2 py-2">Outcome</th>
-                  </tr>
-                </thead>
-                <tbody>
+              <div className="overflow-auto rounded-lg border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 shadow-sm">
+                <Table className="table-auto border-collapse">
+                  <TableHeader className="bg-gradient-to-r from-primary-50 to-indigo-50 dark:from-gray-800 dark:to-gray-900 text-nowrap sticky top-0 text-xs z-10 border-b border-primary-100 dark:border-gray-700">
+                    <TableHead className="p-2 text-gray-700 dark:text-gray-300 font-medium w-8">#</TableHead>
+                    <TableHead className="p-2 text-gray-700 dark:text-gray-300 font-medium">Next Visit</TableHead>
+                    <TableHead className="p-2 text-gray-700 dark:text-gray-300 font-medium">Dealer</TableHead>
+                    <TableHead className="p-2 text-gray-700 dark:text-gray-300 font-medium">Territory</TableHead>
+                    <TableHead className="p-2 text-gray-700 dark:text-gray-300 font-medium">Status</TableHead>
+                    <TableHead className="p-2 text-gray-700 dark:text-gray-300 font-medium">Distance</TableHead>
+                    <TableHead className="p-2 text-gray-700 dark:text-gray-300 font-medium">Duration</TableHead>
+                    <TableHead className="p-2 text-gray-700 dark:text-gray-300 font-medium">Rep</TableHead>
+                    <TableHead className="p-2 text-gray-700 dark:text-gray-300 font-medium">Outcome</TableHead>
+                  </TableHeader>
+                  <TableBody className="divide-y divide-gray-100 dark:divide-gray-800">
                   {dealerVisitsData.visits.slice(0, 10).map((visit, idx) => {
                     const outcomeStyle = getOutcomeStyle(visit.outcome);
                     const dealerName = getTruncatedText(visit.dealer_name, 18);
                     const repName = getTruncatedText(visit.rep_name, 12);
                     
                     return (
-                      <tr key={visit.id} className="border-b border-gray-100 hover:bg-gray-50 transition-colors">
-                        <td className="px-2 py-1.5 border-r border-gray-100 text-xs font-medium text-gray-600 w-8">{idx + 1}</td>
-                        <td className="px-2 py-1.5 border-r border-gray-100">
-                          <span className="text-[11px] text-gray-600">
+                      <TableRow key={visit.id} className="group cursor-pointer transition-all text-xs text-gray-700 duration-200 hover:bg-gray-50 dark:hover:bg-gray-800 border-b border-gray-200 dark:border-gray-700">
+                        <TableCell className="px-2 py-1.5 text-xs font-medium text-gray-600 dark:text-gray-400 w-8">{idx + 1}</TableCell>
+                        <TableCell className="px-2 py-1.5">
+                          <span className="text-[11px] text-gray-600 dark:text-gray-400">
                             {visit.next_visit_date ? formatDateDDMmmYYYY(visit.next_visit_date) : formatDateDDMmmYYYY(visit.check_in_time)}
                           </span>
-                        </td>
-                        <td className="px-2 py-1.5 border-r border-gray-100">
+                        </TableCell>
+                        <TableCell className="px-2 py-1.5">
                           <div>
-                            <p className="text-xs font-semibold text-gray-900" title={dealerName.full}>{dealerName.display}</p>
+                            <p className="text-xs font-semibold text-gray-900 dark:text-gray-100" title={dealerName.full}>{dealerName.display}</p>
                           </div>
-                        </td>
-                        <td className="px-2 py-1.5 border-r border-gray-100">
-                          <span className="text-[11px] text-gray-600">{visit.territory || 'N/A'}</span>
-                        </td>
-                        <td className="px-2 py-1.5 border-r border-gray-100">
+                        </TableCell>
+                        <TableCell className="px-2 py-1.5">
+                          <span className="text-[11px] text-gray-600 dark:text-gray-400">{visit.territory || 'N/A'}</span>
+                        </TableCell>
+                        <TableCell className="px-2 py-1.5">
                           <span className={`inline-block text-[10px] font-semibold px-1.5 py-0.5 rounded-full ${outcomeStyle.bg} ${outcomeStyle.text}`}>
                             {visit.check_out_time ? outcomeStyle.label : 'In Progress'}
                           </span>
-                        </td>
-                        <td className="px-2 py-1.5 border-r border-gray-100">
+                        </TableCell>
+                        <TableCell className="px-2 py-1.5">
                           <div className="flex items-center gap-1">
-                            <MapPin size={11} className="text-gray-400" />
-                            <span className="text-[11px] text-gray-600">{visit.distance_km ? `${visit.distance_km} km` : '-'}</span>
+                            <MapPin size={11} className="text-gray-400 dark:text-gray-500" />
+                            <span className="text-[11px] text-gray-600 dark:text-gray-400">{visit.distance_km ? `${visit.distance_km} km` : '-'}</span>
                           </div>
-                        </td>
-                        <td className="px-2 py-1.5 border-r border-gray-100">
+                        </TableCell>
+                        <TableCell className="px-2 py-1.5">
                           <div className="flex items-center gap-1">
-                            <Clock size={11} className="text-gray-400" />
-                            <span className="text-[11px] text-gray-600">{visit.duration_formatted || '-'}</span>
+                            <Clock size={11} className="text-gray-400 dark:text-gray-500" />
+                            <span className="text-[11px] text-gray-600 dark:text-gray-400">{visit.duration_formatted || '-'}</span>
                           </div>
-                        </td>
-                        <td className="px-2 py-1.5 border-r border-gray-100">
+                        </TableCell>
+                        <TableCell className="px-2 py-1.5">
                           <div className="flex items-center gap-1.5">
                             <div className="w-5 h-5 rounded-full bg-orange-400 flex items-center justify-center text-white text-[10px] font-bold flex-shrink-0">
                               {(repName.full || 'U').charAt(0).toUpperCase()}
                             </div>
-                            <span className="text-[11px] text-gray-700" title={repName.full}>{repName.display}</span>
+                            <span className="text-[11px] text-gray-700 dark:text-gray-200" title={repName.full}>{repName.display}</span>
                           </div>
-                        </td>
-                        <td className="px-2 py-1.5">
+                        </TableCell>
+                        <TableCell className="px-2 py-1.5">
                           <div className="flex items-center gap-2">
                             {visit.order_value > 0 && (
                               <span className="text-[11px] font-bold text-emerald-600">₹{visit.order_value.toLocaleString('en-IN')}</span>
                             )}
                             {!visit.check_out_time && (
-                              <span className="text-xs text-gray-400">Active</span>
+                              <span className="text-xs text-gray-400 dark:text-gray-500">Active</span>
                             )}
                             {visit.check_out_time && !visit.order_value && (
-                              <span className="text-xs text-gray-400">{outcomeStyle.label}</span>
+                              <span className="text-xs text-gray-400 dark:text-gray-500">{outcomeStyle.label}</span>
                             )}
                           </div>
-                        </td>
-                      </tr>
+                        </TableCell>
+                      </TableRow>
                     );
                   })}
-                </tbody>
-              </table>
+                </TableBody>
+              </Table>
+              </div>
             )}
           </div>
         </div>

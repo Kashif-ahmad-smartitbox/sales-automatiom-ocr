@@ -4,6 +4,14 @@ import OwnerLayout from '../components/layout/OwnerLayout';
 import { Card, CardContent, CardHeader, CardTitle } from '../components/ui/card';
 import { Badge } from '../components/ui/badge';
 import { Button } from '../components/ui/button';
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from '../components/ui/table';
 import { 
   Buildings, 
   Users, 
@@ -374,37 +382,37 @@ const OwnerDashboard = () => {
             {recentActivity.length === 0 ? (
               <p className="text-xs text-gray-500 text-center py-6">No recent activity</p>
             ) : (
-              <div className="overflow-x-auto">
-                <table className="w-full border-collapse">
-                  <thead>
-                    <tr className="border-y border-gray-200 bg-gray-50">
-                      <th className="text-left px-2 py-1.5 text-[10px] font-semibold text-gray-600 uppercase tracking-wider border-r border-gray-200 w-8">#</th>
-                      <th className="text-left px-2 py-1.5 text-[10px] font-semibold text-gray-600 uppercase tracking-wider border-r border-gray-200">Company</th>
-                      <th className="text-left px-2 py-1.5 text-[10px] font-semibold text-gray-600 uppercase tracking-wider border-r border-gray-200">User</th>
-                      <th className="text-left px-2 py-1.5 text-[10px] font-semibold text-gray-600 uppercase tracking-wider border-r border-gray-200">Dealer</th>
-                      <th className="text-left px-2 py-1.5 text-[10px] font-semibold text-gray-600 uppercase tracking-wider border-r border-gray-200">Check-in</th>
-                      <th className="text-center px-2 py-1.5 text-[10px] font-semibold text-gray-600 uppercase tracking-wider border-r border-gray-200">Outcome</th>
-                      <th className="text-right px-2 py-1.5 text-[10px] font-semibold text-gray-600 uppercase tracking-wider">Order Value</th>
-                    </tr>
-                  </thead>
-                  <tbody>
+              <div className="overflow-auto rounded-lg border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 shadow-sm w-full max-h-[40rem]">
+                <Table className="table-auto border-collapse">
+                  <TableHeader className="bg-gradient-to-r from-primary-50 to-indigo-50 dark:from-gray-800 dark:to-gray-900 text-nowrap sticky top-0 text-xs z-10 border-b border-primary-100 dark:border-gray-700">
+                    <TableHead className="p-2 text-gray-700 dark:text-gray-300 font-medium text-center w-8">#</TableHead>
+                    <TableHead className="p-2 text-gray-700 dark:text-gray-300 font-medium">Company</TableHead>
+                    <TableHead className="p-2 text-gray-700 dark:text-gray-300 font-medium">User</TableHead>
+                    <TableHead className="p-2 text-gray-700 dark:text-gray-300 font-medium">Dealer</TableHead>
+                    <TableHead className="p-2 text-gray-700 dark:text-gray-300 font-medium">Check-in</TableHead>
+                    <TableHead className="p-2 text-gray-700 dark:text-gray-300 font-medium text-center">Outcome</TableHead>
+                    <TableHead className="p-2 text-gray-700 dark:text-gray-300 font-medium text-right">Order Value</TableHead>
+                  </TableHeader>
+                  <TableBody className="divide-y divide-gray-100 dark:divide-gray-800">
                     {recentActivity.slice(0, 10).map((visit, idx) => {
                       const companyName = getTruncatedText(visit.company_name, 18);
                       const userName = getTruncatedText(visit.user_name, 15);
                       const dealerName = getTruncatedText(visit.dealer_name, 15);
 
                       return (
-                        <tr key={visit.id} className="border-b border-gray-100 hover:bg-gray-50 transition-colors">
-                          <td className="px-2 py-1.5 border-r border-gray-100 text-xs font-medium text-gray-600 w-8">{idx + 1}</td>
-                          <td className="px-2 py-1.5 border-r border-gray-100">
-                            <span className="font-medium text-[11px] text-gray-800" title={companyName.full}>{companyName.display}</span>
-                          </td>
-                          <td className="px-2 py-1.5 text-[11px] text-gray-600 border-r border-gray-100" title={userName.full}>{userName.display}</td>
-                          <td className="px-2 py-1.5 text-[11px] text-gray-600 border-r border-gray-100" title={dealerName.full}>{dealerName.display}</td>
-                          <td className="px-2 py-1.5 font-mono text-[11px] text-gray-600 border-r border-gray-100">
+                        <TableRow key={visit.id} className="group cursor-pointer transition-all text-xs text-gray-700 duration-200 hover:bg-gray-50 dark:hover:bg-gray-800 border-b border-gray-200 dark:border-gray-700">
+                          <TableCell className="px-2 py-1.5 text-center">
+                            <span className="p-1 bg-gray-200 dark:bg-gray-700 font-medium rounded-full text-gray-600 dark:text-gray-300">{idx + 1}</span>
+                          </TableCell>
+                          <TableCell className="px-2 py-1.5">
+                            <span className="font-medium text-[11px] text-gray-800 dark:text-gray-200" title={companyName.full}>{companyName.display}</span>
+                          </TableCell>
+                          <TableCell className="px-2 py-1.5 text-[11px] text-gray-600 dark:text-gray-400" title={userName.full}>{userName.display}</TableCell>
+                          <TableCell className="px-2 py-1.5 text-[11px] text-gray-600 dark:text-gray-400" title={dealerName.full}>{dealerName.display}</TableCell>
+                          <TableCell className="px-2 py-1.5 font-mono text-[11px] text-gray-600 dark:text-gray-400">
                             {formatDateDDMmmYYYY(visit.check_in_time)}
-                          </td>
-                          <td className="px-2 py-1.5 text-center border-r border-gray-100">
+                          </TableCell>
+                          <TableCell className="px-2 py-1.5 text-center">
                             <Badge className={
                               visit.outcome === 'Order Booked' ? 'bg-emerald-100 text-emerald-700' :
                               visit.outcome === 'Follow-up Required' ? 'bg-amber-100 text-amber-700' :
@@ -413,15 +421,15 @@ const OwnerDashboard = () => {
                             }>
                               {visit.outcome || 'In Progress'}
                             </Badge>
-                          </td>
-                          <td className="px-2 py-1.5 font-mono text-[11px] font-medium text-primary-600 text-right">
+                          </TableCell>
+                          <TableCell className="px-2 py-1.5 font-mono text-[11px] font-medium text-primary-600 text-right">
                             {visit.order_value ? `₹${visit.order_value.toLocaleString()}` : '–'}
-                          </td>
-                        </tr>
+                          </TableCell>
+                        </TableRow>
                       );
                     })}
-                  </tbody>
-                </table>
+                  </TableBody>
+                </Table>
               </div>
             )}
           </CardContent>
