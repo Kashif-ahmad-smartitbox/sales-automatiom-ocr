@@ -12,6 +12,7 @@ import { Badge } from '../components/ui/badge';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '../components/ui/dialog';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../components/ui/select';
 import { Label } from '../components/ui/label';
+import { formatDateDDMmmYYYY, getTruncatedText } from '../utils/tableHelpers';
 
 const API = `${process.env.REACT_APP_BACKEND_URL}/api`;
 
@@ -136,6 +137,7 @@ const PotentialDealers = () => {
                 <table className="w-full border-collapse">
                     <thead className="bg-gray-50">
                         <tr className="border-y border-gray-200">
+                      <th className="px-2 py-2 text-left text-[10px] font-semibold text-gray-600 uppercase tracking-wider border-r border-gray-200 w-8">#</th>
                             <th className="px-2 py-2 text-left text-[10px] font-semibold text-gray-600 uppercase tracking-wider border-r border-gray-200">Potential Dealer</th>
                             <th className="px-2 py-2 text-left text-[10px] font-semibold text-gray-600 uppercase tracking-wider border-r border-gray-200">Location / Address</th>
                             <th className="px-2 py-2 text-left text-[10px] font-semibold text-gray-600 uppercase tracking-wider border-r border-gray-200">Found By</th>
@@ -147,7 +149,7 @@ const PotentialDealers = () => {
                     <tbody>
                         {loading ? (
                             <tr>
-                                <td colSpan="6" className="px-2 py-8 text-center">
+                        <td colSpan="7" className="px-2 py-8 text-center">
                                     <div className="flex justify-center items-center gap-2 text-[11px] text-gray-500">
                                         <div className="spinner w-4 h-4" /> Loading data...
                                     </div>
@@ -155,17 +157,23 @@ const PotentialDealers = () => {
                             </tr>
                         ) : filteredPotentials.length === 0 ? (
                             <tr>
-                                <td colSpan="6" className="px-2 py-8 text-center text-[11px] text-gray-500">
+                        <td colSpan="7" className="px-2 py-8 text-center text-[11px] text-gray-500">
                                     {searchTerm ? 'No matches found.' : 'No potential dealers found yet.'}
                                 </td>
                             </tr>
                         ) : (
-                            filteredPotentials.map((item) => (
-                                <tr key={item._id || item.id} className="border-b border-gray-100 hover:bg-gray-50 transition-colors">
-                                    <td className="px-2 py-1.5 border-r border-gray-100">
-                                        <div className="font-medium text-xs text-gray-800">{item.place_name}</div>
-                                        <div className="text-[10px] text-gray-400 mt-0.5 font-mono">ID: {item.place_id.substring(0, 10)}...</div>
-                                    </td>
+                      filteredPotentials.map((item, idx) => {
+                        const placeName = getTruncatedText(item.place_name, 18);
+                        const foundByName = getTruncatedText(item.found_by_name, 16);
+                        const assignedToName = getTruncatedText(item.assigned_to_name || '–', 16);
+
+                        return (
+                        <tr key={item._id || item.id} className="border-b border-gray-100 hover:bg-gray-50 transition-colors">
+                          <td className="px-2 py-1.5 border-r border-gray-100 text-xs font-medium text-gray-600 w-8">{idx + 1}</td>
+                          <td className="px-2 py-1.5 border-r border-gray-100">
+                            <div className="font-medium text-xs text-gray-800" title={placeName.full}>{placeName.display}</div>
+                            <div className="text-[10px] text-gray-400 mt-0.5 font-mono">ID: {item.place_id.substring(0, 10)}...</div>
+                          </td>
                                     <td className="px-2 py-1.5 max-w-xs border-r border-gray-100">
                                         <div className="flex items-start gap-1.5 text-[11px] text-gray-600">
                                             <MapPin size={12} className="mt-0.5 shrink-0 text-gray-400" />
@@ -177,13 +185,13 @@ const PotentialDealers = () => {
                                             <div className="w-6 h-6 rounded-full bg-indigo-100 text-indigo-600 flex items-center justify-center text-[10px] font-bold">
                                                 {item.found_by_name.charAt(0)}
                                             </div>
-                                            <span className="text-xs font-medium text-gray-700">{item.found_by_name}</span>
+                              <span className="text-xs font-medium text-gray-700" title={foundByName.full}>{foundByName.display}</span>
                                         </div>
                                     </td>
                                     <td className="px-2 py-1.5 border-r border-gray-100">
                                         <div className="flex items-center gap-1.5 text-[11px] text-gray-600">
                                             <Calendar size={12} className="text-gray-400" />
-                                            <span>{new Date(item.created_at).toLocaleDateString()}</span>
+                              <span>{formatDateDDMmmYYYY(item.created_at)}</span>
                                         </div>
                                         <div className="text-[10px] text-gray-400 pl-5">
                                             {new Date(item.created_at).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}
@@ -195,7 +203,7 @@ const PotentialDealers = () => {
                                                 <Badge variant="outline" className="bg-green-50 text-green-700 border-green-200 text-[10px] px-1.5 py-0">
                                                     Assigned
                                                 </Badge>
-                                                <span className="text-[11px] text-gray-600">{item.assigned_to_name}</span>
+                                <span className="text-[11px] text-gray-600" title={assignedToName.full}>{assignedToName.display}</span>
                                             </div>
                                         ) : (
                                             <Badge variant="outline" className="bg-gray-50 text-gray-600 border-gray-200 text-[10px] px-1.5 py-0">
@@ -224,7 +232,8 @@ const PotentialDealers = () => {
                                         </Button>
                                     </td>
                                 </tr>
-                            ))
+                                );
+                              })
                         )}
                     </tbody>
                 </table>

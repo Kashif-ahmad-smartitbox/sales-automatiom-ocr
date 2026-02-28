@@ -22,6 +22,7 @@ import {
   SelectValue,
 } from "../components/ui/select";
 import { State, City } from 'country-state-city';
+import { formatDateDDMmmYYYY, getTruncatedText } from '../utils/tableHelpers';
 
 const API = `${process.env.REACT_APP_BACKEND_URL}/api`;
 
@@ -453,6 +454,7 @@ const SalesExecutiveManagement = () => {
                 <table className="w-full border-collapse">
                   <thead>
                     <tr className="border-y border-gray-200 bg-gray-50">
+                      <th className="text-left px-2 py-1.5 text-[10px] font-semibold text-gray-600 uppercase tracking-wider border-r border-gray-200 w-8">#</th>
                       <th className="text-left px-2 py-1.5 text-[10px] font-semibold text-gray-600 uppercase tracking-wider border-r border-gray-200">Executive Name</th>
                       <th className="text-left px-2 py-1.5 text-[10px] font-semibold text-gray-600 uppercase tracking-wider border-r border-gray-200">Employee Code</th>
                       <th className="text-left px-2 py-1.5 text-[10px] font-semibold text-gray-600 uppercase tracking-wider border-r border-gray-200">Email</th>
@@ -463,10 +465,13 @@ const SalesExecutiveManagement = () => {
                     </tr>
                   </thead>
                   <tbody>
-                    {filteredExecutives.map((exec) => {
+                    {filteredExecutives.map((exec, idx) => {
                       const status = getStatus(exec);
+                      const nameText = getTruncatedText(exec.name, 20);
+                      const emailText = getTruncatedText(exec.email, 20);
                       return (
                         <tr key={exec.id} className="border-b border-gray-100 hover:bg-gray-50 transition-colors" data-testid={`executive-row-${exec.id}`}>
+                          <td className="px-2 py-1.5 border-r border-gray-100 text-xs font-medium text-gray-600 w-8">{idx + 1}</td>
                           <td className="px-2 py-1.5 border-r border-gray-100">
                             <div className="flex items-center gap-2">
                               <div className={`w-8 h-8 rounded-full flex items-center justify-center text-white text-xs font-bold flex-shrink-0 ${
@@ -474,14 +479,14 @@ const SalesExecutiveManagement = () => {
                               }`}>
                                 {exec.name.charAt(0)}
                               </div>
-                              <span className="text-[11px] font-semibold text-gray-800">{exec.name}</span>
+                              <span className="text-[11px] font-semibold text-gray-800" title={nameText.full}>{nameText.display}</span>
                             </div>
                           </td>
                           <td className="px-2 py-1.5 text-[11px] text-gray-600 font-mono border-r border-gray-100">
                             {exec.employee_code}
                           </td>
-                          <td className="px-2 py-1.5 text-[11px] text-gray-600 border-r border-gray-100">
-                            {exec.email}
+                          <td className="px-2 py-1.5 text-[11px] text-gray-600 border-r border-gray-100" title={emailText.full}>
+                            {emailText.display}
                           </td>
                           <td className="px-2 py-1.5 text-[11px] text-gray-600 border-r border-gray-100">
                             <div className="flex items-center gap-1.5">
@@ -608,6 +613,7 @@ const SalesExecutiveManagement = () => {
                               <table className="w-full border-collapse text-left min-w-[500px]">
                                   <thead>
                                       <tr className="border-y border-gray-200 bg-gray-50">
+                                          <th className="px-2 py-1.5 text-[10px] font-semibold text-gray-600 uppercase tracking-wider border-r border-gray-200 w-8">#</th>
                                           <th className="px-2 py-1.5 text-[10px] font-semibold text-gray-600 uppercase tracking-wider border-r border-gray-200">Date & Time</th>
                                           <th className="px-2 py-1.5 text-[10px] font-semibold text-gray-600 uppercase tracking-wider border-r border-gray-200">Dealer / Location</th>
                                           <th className="px-2 py-1.5 text-[10px] font-semibold text-gray-600 uppercase tracking-wider border-r border-gray-200">Duration</th>
@@ -619,25 +625,30 @@ const SalesExecutiveManagement = () => {
                                   <tbody>
                                       {execVisits.length === 0 ? (
                                           <tr>
-                                              <td colSpan="6" className="px-2 py-6 text-center text-[11px] text-gray-500">
+                                              <td colSpan="7" className="px-2 py-6 text-center text-[11px] text-gray-500">
                                                   No visit history found.
                                               </td>
                                           </tr>
                                       ) : (
-                                          execVisits.map((visit) => (
+                                          execVisits.map((visit, idx) => {
+                                            const dealerName = getTruncatedText(visit.dealer_name || 'Unknown Dealer', 20);
+                                            const locationAddress = getTruncatedText(visit.location_address || 'No address', 25);
+                                            
+                                            return (
                                               <tr key={visit.id} className="border-b border-gray-100 hover:bg-gray-50 transition-colors">
+                                                  <td className="px-2 py-1.5 border-r border-gray-100 text-xs font-medium text-gray-600 w-8">{idx + 1}</td>
                                                   <td className="px-2 py-1.5 whitespace-nowrap border-r border-gray-100">
                                                       <div className="text-[11px] font-medium text-gray-700">
-                                                          {new Date(visit.check_in_time).toLocaleDateString()}
+                                                          {formatDateDDMmmYYYY(visit.check_in_time)}
                                                       </div>
                                                       <div className="text-[10px] text-gray-400">
                                                           {new Date(visit.check_in_time).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}
                                                       </div>
                                                   </td>
                                                   <td className="px-2 py-1.5 border-r border-gray-100">
-                                                      <div className="text-[11px] font-medium text-gray-800">{visit.dealer_name || 'Unknown Dealer'}</div>
-                                                      <div className="text-[10px] text-gray-500 truncate max-w-[200px]">
-                                                          {visit.location_address || 'No address'}
+                                                      <div className="text-[11px] font-medium text-gray-800" title={dealerName.full}>{dealerName.display}</div>
+                                                      <div className="text-[10px] text-gray-500" title={locationAddress.full}>
+                                                          {locationAddress.display}
                                                       </div>
                                                   </td>
                                                   <td className="px-2 py-1.5 text-[11px] text-gray-600 border-r border-gray-100">
@@ -659,7 +670,8 @@ const SalesExecutiveManagement = () => {
                                                       <OrderItemsView visit={visit} />
                                                   </td>
                                               </tr>
-                                          ))
+                                            );
+                                          })
                                       )}
                                   </tbody>
                               </table>

@@ -12,6 +12,7 @@ import { useAuth } from '../context/AuthContext';
 import { useSearch } from '../context/SearchContext';
 import { toast } from 'sonner';
 import { Checkbox } from '../components/ui/checkbox';
+import { getTruncatedText } from '../utils/tableHelpers';
 
 const API = `${process.env.REACT_APP_BACKEND_URL}/api`;
 
@@ -293,6 +294,7 @@ const HODManagement = () => {
                 <table className="w-full border-collapse">
                   <thead>
                     <tr className="border-y border-gray-200 bg-gray-50">
+                      <th className="text-left px-2 py-1.5 text-[10px] font-semibold text-gray-600 uppercase tracking-wider border-r border-gray-200 w-8">#</th>
                       <th className="text-left px-2 py-1.5 text-[10px] font-semibold text-gray-600 uppercase tracking-wider border-r border-gray-200">HOD Name</th>
                       <th className="text-left px-2 py-1.5 text-[10px] font-semibold text-gray-600 uppercase tracking-wider border-r border-gray-200">Employee Code</th>
                       <th className="text-left px-2 py-1.5 text-[10px] font-semibold text-gray-600 uppercase tracking-wider border-r border-gray-200">Email</th>
@@ -303,21 +305,27 @@ const HODManagement = () => {
                     </tr>
                   </thead>
                   <tbody>
-                    {filteredHODs.map((hod) => (
-                      <tr key={hod.id} className="border-b border-gray-100 hover:bg-gray-50 transition-colors">
-                        <td className="px-2 py-1.5 border-r border-gray-100">
-                          <div className="flex items-center gap-2">
-                            <div className="w-8 h-8 rounded-full flex items-center justify-center text-white text-xs font-bold bg-gradient-to-br from-purple-500 to-indigo-600 flex-shrink-0">
-                              {hod.name.charAt(0)}
+                    {filteredHODs.map((hod, idx) => {
+                      const hodName = getTruncatedText(hod.name, 18);
+                      const hodEmail = getTruncatedText(hod.email, 20);
+                      const assignedTeamNames = (hod.assigned_sales_executives || []).map(exec => exec.name).join(', ');
+
+                      return (
+                        <tr key={hod.id} className="border-b border-gray-100 hover:bg-gray-50 transition-colors">
+                          <td className="px-2 py-1.5 border-r border-gray-100 text-xs font-medium text-gray-600 w-8">{idx + 1}</td>
+                          <td className="px-2 py-1.5 border-r border-gray-100">
+                            <div className="flex items-center gap-2">
+                              <div className="w-8 h-8 rounded-full flex items-center justify-center text-white text-xs font-bold bg-gradient-to-br from-purple-500 to-indigo-600 flex-shrink-0">
+                                {hod.name.charAt(0)}
+                              </div>
+                              <span className="text-[11px] font-semibold text-gray-800" title={hodName.full}>{hodName.display}</span>
                             </div>
-                            <span className="text-[11px] font-semibold text-gray-800">{hod.name}</span>
-                          </div>
-                        </td>
+                          </td>
                         <td className="px-2 py-1.5 text-[11px] text-gray-600 font-mono border-r border-gray-100">
                           {hod.employee_code}
                         </td>
-                        <td className="px-2 py-1.5 text-[11px] text-gray-600 border-r border-gray-100">
-                          {hod.email}
+                        <td className="px-2 py-1.5 text-[11px] text-gray-600 border-r border-gray-100" title={hodEmail.full}>
+                          {hodEmail.display}
                         </td>
                         <td className="px-2 py-1.5 text-[11px] text-gray-600 border-r border-gray-100">
                           <div className="flex items-center gap-1.5">
@@ -331,12 +339,12 @@ const HODManagement = () => {
                             {hod.assigned_sales_executive_ids?.length || 0}
                           </Badge>
                         </td>
-                        <td className="px-2 py-1.5 border-r border-gray-100">
+                        <td className="px-2 py-1.5 border-r border-gray-100" title={assignedTeamNames || 'No team assigned'}>
                           {hod.assigned_sales_executives && hod.assigned_sales_executives.length > 0 ? (
                             <div className="text-[11px] text-gray-700">
-                              {hod.assigned_sales_executives.slice(0, 2).map((exec, idx) => (
+                              {hod.assigned_sales_executives.slice(0, 2).map((exec, execIdx) => (
                                 <span key={exec.id}>
-                                  {exec.name}{idx < Math.min(1, hod.assigned_sales_executives.length - 1) ? ', ' : ''}
+                                  {exec.name}{execIdx < Math.min(1, hod.assigned_sales_executives.length - 1) ? ', ' : ''}
                                 </span>
                               ))}
                               {hod.assigned_sales_executives.length > 2 && (
@@ -369,8 +377,9 @@ const HODManagement = () => {
                             </Button>
                           </div>
                         </td>
-                      </tr>
-                    ))}
+                        </tr>
+                      );
+                    })}
                   </tbody>
                 </table>
               </div>

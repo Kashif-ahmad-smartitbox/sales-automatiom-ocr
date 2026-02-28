@@ -151,7 +151,7 @@ function AppRoutes() {
         </ProtectedRoute>
       } />
       <Route path="/followup-dealers" element={
-        <ProtectedRoute allowedRoles={["sales_executive"]}>
+        <ProtectedRoute allowedRoles={["sales_executive", "organization", "admin", "hod"]}>
           <FollowupDealers />
         </ProtectedRoute>
       } />

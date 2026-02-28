@@ -6,6 +6,7 @@ import {
   Users, 
   ChartBar,
   ListBullets,
+  CalendarCheck,
   X,
   CaretLeft,
   CaretRight,
@@ -26,6 +27,7 @@ const HODSidebar = ({ isOpen, onClose, isCollapsed, setIsCollapsed }) => {
     { to: '/hod', icon: House, label: 'Dashboard' },
     { to: '/hod/executives', icon: Users, label: 'My Team' },
     { to: '/hod/items', icon: Package, label: 'Item Master' },
+    { to: '/followup-dealers', icon: CalendarCheck, label: 'Follow-up Dealers' },
     { to: '/hod/reports', icon: ChartBar, label: 'Reports' },
     { to: '/hod/visits', icon: ListBullets, label: 'Visit History' },
   ];

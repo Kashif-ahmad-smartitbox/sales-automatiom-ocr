@@ -21,6 +21,7 @@ import {
 import { useAuth } from '../context/AuthContext';
 import { toast } from 'sonner';
 import OrderItemsView from '../components/OrderItemsView';
+import { formatDateDDMmmYYYY, getTruncatedText } from '../utils/tableHelpers';
 
 const API = `${process.env.REACT_APP_BACKEND_URL}/api`;
 
@@ -274,6 +275,7 @@ const ReportsPage = () => {
                     <table className="w-full border-collapse">
                       <thead>
                         <tr className="border-y border-gray-200 bg-gray-50">
+                          <th className="text-left px-2 py-1.5 text-[10px] font-semibold text-gray-600 uppercase tracking-wider border-r border-gray-200 w-8">#</th>
                           <th className="text-left px-2 py-1.5 text-[10px] font-semibold text-gray-600 uppercase tracking-wider border-r border-gray-200">Executive</th>
                           <th className="text-center px-2 py-1.5 text-[10px] font-semibold text-gray-600 uppercase tracking-wider border-r border-gray-200">Total Visits</th>
                           <th className="text-center px-2 py-1.5 text-[10px] font-semibold text-gray-600 uppercase tracking-wider border-r border-gray-200">Completed</th>
@@ -283,25 +285,31 @@ const ReportsPage = () => {
                         </tr>
                       </thead>
                       <tbody>
-                        {executivePerformance.map((exec) => (
-                          <tr key={exec.id} className="border-b border-gray-100 hover:bg-gray-50 transition-colors">
-                            <td className="px-2 py-1.5 border-r border-gray-100">
-                              <div>
-                                <p className="font-medium text-[11px] text-gray-800">{exec.name}</p>
-                                <p className="text-[10px] text-gray-500 font-mono">{exec.employee_code}</p>
-                              </div>
-                            </td>
-                            <td className="font-mono text-[11px] text-center border-r border-gray-100">{exec.total_visits}</td>
-                            <td className="font-mono text-[11px] text-center border-r border-gray-100">{exec.completed_visits}</td>
-                            <td className="font-mono text-[11px] font-medium text-primary-600 text-right border-r border-gray-100">₹{exec.total_orders.toLocaleString()}</td>
-                            <td className="font-mono text-[11px] text-center border-r border-gray-100">{exec.avg_time_per_visit} min</td>
-                            <td className="px-2 py-1.5 text-center">
-                              <Badge className={exec.is_in_market ? 'status-active' : 'status-offline'}>
-                                {exec.is_in_market ? 'In Field' : 'Offline'}
-                              </Badge>
-                            </td>
-                          </tr>
-                        ))}
+                        {executivePerformance.map((exec, idx) => {
+                          const execName = getTruncatedText(exec.name, 20);
+                          const execCode = getTruncatedText(exec.employee_code, 15);
+                          
+                          return (
+                            <tr key={exec.id} className="border-b border-gray-100 hover:bg-gray-50 transition-colors">
+                              <td className="px-2 py-1.5 border-r border-gray-100 text-xs font-medium text-gray-600 w-8">{idx + 1}</td>
+                              <td className="px-2 py-1.5 border-r border-gray-100">
+                                <div>
+                                  <p className="font-medium text-[11px] text-gray-800" title={execName.full}>{execName.display}</p>
+                                  <p className="text-[10px] text-gray-500 font-mono" title={execCode.full}>{execCode.display}</p>
+                                </div>
+                              </td>
+                              <td className="font-mono text-[11px] text-center border-r border-gray-100">{exec.total_visits}</td>
+                              <td className="font-mono text-[11px] text-center border-r border-gray-100">{exec.completed_visits}</td>
+                              <td className="font-mono text-[11px] font-medium text-primary-600 text-right border-r border-gray-100">₹{exec.total_orders.toLocaleString()}</td>
+                              <td className="font-mono text-[11px] text-center border-r border-gray-100">{exec.avg_time_per_visit} min</td>
+                              <td className="px-2 py-1.5 text-center">
+                                <Badge className={exec.is_in_market ? 'status-active' : 'status-offline'}>
+                                  {exec.is_in_market ? 'In Field' : 'Offline'}
+                                </Badge>
+                              </td>
+                            </tr>
+                          );
+                        })}
                       </tbody>
                     </table>
                   </div>
@@ -325,6 +333,7 @@ const ReportsPage = () => {
                       <table className="w-full border-collapse text-left">
                         <thead>
                           <tr className="border-y border-gray-200 bg-gray-50">
+                            <th className="text-[10px] text-gray-600 uppercase tracking-wider font-semibold px-2 py-1.5 border-r border-gray-200 w-8">#</th>
                             <th className="text-[10px] text-gray-600 uppercase tracking-wider font-semibold px-2 py-1.5 border-r border-gray-200">Date</th>
                             <th className="text-[10px] text-gray-600 uppercase tracking-wider font-semibold px-2 py-1.5 border-r border-gray-200">User</th>
                             <th className="text-[10px] text-gray-600 uppercase tracking-wider font-semibold px-2 py-1.5 border-r border-gray-200">Dealer</th>
@@ -338,31 +347,38 @@ const ReportsPage = () => {
                           </tr>
                         </thead>
                         <tbody>
-                          {paginate(visitHistory, visitsPage).map((visit) => (
-                            <tr key={visit.id} className="border-b border-gray-100 hover:bg-gray-50 transition-colors">
-                              <td className="px-2 py-1.5 font-mono text-[11px] text-gray-600 whitespace-nowrap border-r border-gray-100">{new Date(visit.check_in_time).toLocaleDateString()}</td>
-                              <td className="px-2 py-1.5 text-xs text-gray-700 truncate max-w-[100px] border-r border-gray-100">{visit.user_name || '–'}</td>
-                              <td className="px-2 py-1.5 text-xs font-medium text-gray-800 truncate max-w-[140px] border-r border-gray-100">{visit.dealer_name}</td>
-                              <td className="px-2 py-1.5 text-[11px] text-gray-600 truncate max-w-[100px] border-r border-gray-100">{visit.contact_name || '–'}</td>
-                              <td className="px-2 py-1.5 font-mono text-[11px] text-gray-600 whitespace-nowrap border-r border-gray-100">{visit.contact_phone || '–'}</td>
-                              <td className="px-2 py-1.5 font-mono text-[11px] text-gray-600 whitespace-nowrap border-r border-gray-100">{new Date(visit.check_in_time).toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'})}</td>
-                              <td className="px-2 py-1.5 font-mono text-[11px] text-gray-600 text-center border-r border-gray-100">{visit.time_spent_minutes ? `${Math.round(visit.time_spent_minutes)}m` : '–'}</td>
-                              <td className="px-2 py-1.5 border-r border-gray-100">
-                                <Badge className={`text-[10px] px-1.5 py-0 ${
-                                  visit.outcome === 'Order Booked' ? 'bg-emerald-100 text-emerald-700' :
-                                  visit.outcome === 'Follow-up Required' ? 'bg-amber-100 text-amber-700' :
-                                  visit.outcome === 'Lost Visit' ? 'bg-red-100 text-red-700' :
-                                  'bg-slate-100 text-slate-700'
-                                }`}>
-                                  {visit.outcome || 'In Progress'}
-                                </Badge>
-                              </td>
-                              <td className="px-2 py-1.5 font-mono text-[11px] font-medium text-primary-600 text-right border-r border-gray-100">{visit.order_value ? `₹${visit.order_value.toLocaleString()}` : '–'}</td>
-                              <td className="px-2 py-1.5 text-center">
-                                <OrderItemsView visit={visit} />
-                              </td>
-                            </tr>
-                          ))}
+                          {paginate(visitHistory, visitsPage).map((visit, idx) => {
+                            const userName = getTruncatedText(visit.user_name, 15);
+                            const dealerName = getTruncatedText(visit.dealer_name, 20);
+                            const contactName = getTruncatedText(visit.contact_name, 15);
+                            
+                            return (
+                              <tr key={visit.id} className="border-b border-gray-100 hover:bg-gray-50 transition-colors">
+                                <td className="px-2 py-1.5 border-r border-gray-100 text-xs font-medium text-gray-600 w-8">{((visitsPage - 1) * 15) + idx + 1}</td>
+                                <td className="px-2 py-1.5 font-mono text-[11px] text-gray-600 whitespace-nowrap border-r border-gray-100">{formatDateDDMmmYYYY(visit.check_in_time)}</td>
+                                <td className="px-2 py-1.5 text-xs text-gray-700 border-r border-gray-100" title={userName.full}>{userName.display}</td>
+                                <td className="px-2 py-1.5 text-xs font-medium text-gray-800 border-r border-gray-100" title={dealerName.full}>{dealerName.display}</td>
+                                <td className="px-2 py-1.5 text-[11px] text-gray-600 border-r border-gray-100" title={contactName.full}>{contactName.display}</td>
+                                <td className="px-2 py-1.5 font-mono text-[11px] text-gray-600 whitespace-nowrap border-r border-gray-100">{visit.contact_phone || '–'}</td>
+                                <td className="px-2 py-1.5 font-mono text-[11px] text-gray-600 whitespace-nowrap border-r border-gray-100">{new Date(visit.check_in_time).toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'})}</td>
+                                <td className="px-2 py-1.5 font-mono text-[11px] text-gray-600 text-center border-r border-gray-100">{visit.time_spent_minutes ? `${Math.round(visit.time_spent_minutes)}m` : '–'}</td>
+                                <td className="px-2 py-1.5 border-r border-gray-100">
+                                  <Badge className={`text-[10px] px-1.5 py-0 ${
+                                    visit.outcome === 'Order Booked' ? 'bg-emerald-100 text-emerald-700' :
+                                    visit.outcome === 'Follow-up Required' ? 'bg-amber-100 text-amber-700' :
+                                    visit.outcome === 'Lost Visit' ? 'bg-red-100 text-red-700' :
+                                    'bg-slate-100 text-slate-700'
+                                  }`}>
+                                    {visit.outcome || 'In Progress'}
+                                  </Badge>
+                                </td>
+                                <td className="px-2 py-1.5 font-mono text-[11px] font-medium text-primary-600 text-right border-r border-gray-100">{visit.order_value ? `₹${visit.order_value.toLocaleString()}` : '–'}</td>
+                                <td className="px-2 py-1.5 text-center">
+                                  <OrderItemsView visit={visit} />
+                                </td>
+                              </tr>
+                            );
+                          })}
                         </tbody>
                       </table>
                     </div>
@@ -396,19 +412,26 @@ const ReportsPage = () => {
                       <table className="w-full border-collapse text-left">
                         <thead>
                           <tr className="border-y border-gray-200 bg-gray-50">
+                            <th className="text-[10px] text-gray-600 uppercase tracking-wider font-semibold px-2 py-1.5 border-r border-gray-200 w-8">#</th>
                             <th className="text-[10px] text-gray-600 uppercase tracking-wider font-semibold px-2 py-1.5 border-r border-gray-200">Date</th>
                             <th className="text-[10px] text-gray-600 uppercase tracking-wider font-semibold px-2 py-1.5 border-r border-gray-200">Dealer</th>
                             <th className="text-[10px] text-gray-600 uppercase tracking-wider font-semibold px-2 py-1.5">Notes</th>
                           </tr>
                         </thead>
                         <tbody>
-                          {paginate(lostVisits, lostPage).map((visit) => (
-                            <tr key={visit.id} className="border-b border-gray-100 hover:bg-gray-50 transition-colors">
-                              <td className="px-2 py-1.5 font-mono text-[11px] text-gray-600 whitespace-nowrap border-r border-gray-100">{new Date(visit.check_in_time).toLocaleDateString()}</td>
-                              <td className="px-2 py-1.5 text-xs font-medium text-gray-800 border-r border-gray-100">{visit.dealer_name}</td>
-                              <td className="px-2 py-1.5 text-xs text-gray-500 truncate max-w-[250px]">{visit.notes || 'No notes'}</td>
-                            </tr>
-                          ))}
+                          {paginate(lostVisits, lostPage).map((visit, idx) => {
+                            const dealerName = getTruncatedText(visit.dealer_name, 20);
+                            const notes = getTruncatedText(visit.notes || 'No notes', 30);
+                            
+                            return (
+                              <tr key={visit.id} className="border-b border-gray-100 hover:bg-gray-50 transition-colors">
+                                <td className="px-2 py-1.5 border-r border-gray-100 text-xs font-medium text-gray-600 w-8">{((lostPage - 1) * 15) + idx + 1}</td>
+                                <td className="px-2 py-1.5 font-mono text-[11px] text-gray-600 whitespace-nowrap border-r border-gray-100">{formatDateDDMmmYYYY(visit.check_in_time)}</td>
+                                <td className="px-2 py-1.5 text-xs font-medium text-gray-800 border-r border-gray-100" title={dealerName.full}>{dealerName.display}</td>
+                                <td className="px-2 py-1.5 text-xs text-gray-500" title={notes.full}>{notes.display}</td>
+                              </tr>
+                            );
+                          })}
                         </tbody>
                       </table>
                     </div>
@@ -433,6 +456,7 @@ const ReportsPage = () => {
                       <table className="w-full border-collapse text-left">
                         <thead>
                           <tr className="border-y border-gray-200 bg-gray-50">
+                            <th className="text-[10px] text-gray-600 uppercase tracking-wider font-semibold px-2 py-1.5 border-r border-gray-200 w-8">#</th>
                             <th className="text-[10px] text-gray-600 uppercase tracking-wider font-semibold px-2 py-1.5 border-r border-gray-200">User</th>
                             <th className="text-[10px] text-gray-600 uppercase tracking-wider font-semibold px-2 py-1.5 border-r border-gray-200">Date</th>
                             <th className="text-[10px] text-gray-600 uppercase tracking-wider font-semibold px-2 py-1.5 border-r border-gray-200">Time</th>
@@ -446,33 +470,38 @@ const ReportsPage = () => {
                           </tr>
                         </thead>
                         <tbody>
-                          {paginate(marketSessions, sessionsPage).map((session) => (
-                            <tr key={session.id} className="border-b border-gray-100 hover:bg-gray-50 transition-colors">
-                              <td className="px-2 py-1.5 text-xs font-medium text-gray-800 truncate max-w-[120px] border-r border-gray-100">{session.user_name}</td>
-                              <td className="px-2 py-1.5 font-mono text-[11px] text-gray-600 whitespace-nowrap border-r border-gray-100">{new Date(session.start_time).toLocaleDateString()}</td>
-                              <td className="px-2 py-1.5 font-mono text-[11px] text-gray-600 whitespace-nowrap border-r border-gray-100">{new Date(session.start_time).toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'})}</td>
-                              <td className="px-2 py-1.5 border-r border-gray-100">
-                                <Badge className={`text-[10px] px-1.5 py-0 ${session.end_time ? 'bg-slate-100 text-slate-600' : 'bg-emerald-100 text-emerald-700'}`}>
-                                  {session.end_time ? 'Done' : 'Active'}
-                                </Badge>
-                              </td>
-                              <td className="px-2 py-1.5 font-mono text-[11px] text-gray-600 text-center border-r border-gray-100">{formatDuration(session.start_time, session.end_time)}</td>
-                              <td className="px-2 py-1.5 font-mono text-[11px] text-gray-600 text-center border-r border-gray-100">{session.total_distance ? `${(session.total_distance / 1000).toFixed(1)} km` : '–'}</td>
-                              <td className="px-2 py-1.5 font-mono text-[11px] font-bold text-slate-700 text-center border-r border-gray-100">{session.potential_visits_count || 0}</td>
-                              <td className="px-2 py-1.5 font-mono text-[11px] font-bold text-emerald-700 text-center border-r border-gray-100">{session.visits_completed || 0}</td>
-                              <td className="px-2 py-1.5 font-mono text-[11px] font-bold text-red-600 text-center border-r border-gray-100">{session.calculated_lost_visits || 0}</td>
-                              <td className="px-2 py-1.5 text-right">
-                                <Button 
-                                  variant="ghost" 
-                                  size="sm" 
-                                  className="h-6 text-[10px] px-2 text-primary-600 hover:text-primary-700 hover:bg-primary-50"
-                                  onClick={() => viewSessionDetails(session)}
-                                >
-                                  <Eye className="w-3 h-3 mr-1" /> Details
-                                </Button>
-                              </td>
-                            </tr>
-                          ))}
+                          {paginate(marketSessions, sessionsPage).map((session, idx) => {
+                            const userName = getTruncatedText(session.user_name, 15);
+                            
+                            return (
+                              <tr key={session.id} className="border-b border-gray-100 hover:bg-gray-50 transition-colors">
+                                <td className="px-2 py-1.5 border-r border-gray-100 text-xs font-medium text-gray-600 w-8">{((sessionsPage - 1) * 15) + idx + 1}</td>
+                                <td className="px-2 py-1.5 text-xs font-medium text-gray-800 border-r border-gray-100" title={userName.full}>{userName.display}</td>
+                                <td className="px-2 py-1.5 font-mono text-[11px] text-gray-600 whitespace-nowrap border-r border-gray-100">{formatDateDDMmmYYYY(session.start_time)}</td>
+                                <td className="px-2 py-1.5 font-mono text-[11px] text-gray-600 whitespace-nowrap border-r border-gray-100">{new Date(session.start_time).toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'})}</td>
+                                <td className="px-2 py-1.5 border-r border-gray-100">
+                                  <Badge className={`text-[10px] px-1.5 py-0 ${session.end_time ? 'bg-slate-100 text-slate-600' : 'bg-emerald-100 text-emerald-700'}`}>
+                                    {session.end_time ? 'Done' : 'Active'}
+                                  </Badge>
+                                </td>
+                                <td className="px-2 py-1.5 font-mono text-[11px] text-gray-600 text-center border-r border-gray-100">{formatDuration(session.start_time, session.end_time)}</td>
+                                <td className="px-2 py-1.5 font-mono text-[11px] text-gray-600 text-center border-r border-gray-100">{session.total_distance ? `${(session.total_distance / 1000).toFixed(1)} km` : '–'}</td>
+                                <td className="px-2 py-1.5 font-mono text-[11px] font-bold text-slate-700 text-center border-r border-gray-100">{session.potential_visits_count || 0}</td>
+                                <td className="px-2 py-1.5 font-mono text-[11px] font-bold text-emerald-700 text-center border-r border-gray-100">{session.visits_completed || 0}</td>
+                                <td className="px-2 py-1.5 font-mono text-[11px] font-bold text-red-600 text-center border-r border-gray-100">{session.calculated_lost_visits || 0}</td>
+                                <td className="px-2 py-1.5 text-right">
+                                  <Button 
+                                    variant="ghost" 
+                                    size="sm" 
+                                    className="h-6 text-[10px] px-2 text-primary-600 hover:text-primary-700 hover:bg-primary-50"
+                                    onClick={() => viewSessionDetails(session)}
+                                  >
+                                    <Eye className="w-3 h-3 mr-1" /> Details
+                                  </Button>
+                                </td>
+                              </tr>
+                            );
+                          })}
                         </tbody>
                       </table>
                     </div>

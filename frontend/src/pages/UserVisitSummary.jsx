@@ -20,6 +20,7 @@ import {
 import { useAuth } from '../context/AuthContext';
 import { toast } from 'sonner';
 import DealerOrderItemsView from '../components/DealerOrderItemsView';
+import { formatDateDDMmmYYYY, getTruncatedText } from '../utils/tableHelpers';
 
 const API = `${process.env.REACT_APP_BACKEND_URL}/api`;
 const SESSIONS_INITIAL = 3;
@@ -315,6 +316,7 @@ const UserVisitSummary = () => {
                             <table className="w-full border-collapse text-left">
                               <thead>
                                 <tr className="border-y border-gray-200 bg-gray-50">
+                                  <th className="text-[10px] text-gray-600 uppercase tracking-wider font-semibold px-2 py-1.5 border-r border-gray-200 w-8">#</th>
                                   <th className="text-[10px] text-gray-600 uppercase tracking-wider font-semibold px-2 py-1.5 border-r border-gray-200">Dealer</th>
                                   <th className="text-[10px] text-gray-600 uppercase tracking-wider font-semibold px-2 py-1.5 border-r border-gray-200">Address</th>
                                   <th className="text-[10px] text-gray-600 uppercase tracking-wider font-semibold px-2 py-1.5 border-r border-gray-200">Type</th>
@@ -334,70 +336,83 @@ const UserVisitSummary = () => {
                               <tbody>
                                 {filteredDealers.length === 0 ? (
                                   <tr>
-                                    <td colSpan="14" className="px-2 py-8 text-center text-[11px] text-gray-500">
+                                    <td colSpan="15" className="px-2 py-8 text-center text-[11px] text-gray-500">
                                       {sid ? 'No dealers in this session' : 'No dealers shown yet (start a market session to see dealers)'}
                                     </td>
                                   </tr>
                                 ) : (
-                                  paginatedDealers.map((dealer) => (
-                                    <tr key={dealer.id || dealer.place_id} className="border-b border-gray-100 hover:bg-gray-50 transition-colors">
-                                      <td className="px-2 py-1.5 border-r border-gray-100">
-                                        <p className="text-xs font-medium text-gray-800">{dealer.name || dealer.dealer_name}</p>
-                                      </td>
-                                      <td className="px-2 py-1.5 border-r border-gray-100">
-                                        <p className="text-[11px] text-gray-600 flex items-start gap-1.5 min-w-0 max-w-[220px]" title={dealer.address}>
-                                          <MapPin size={12} className="flex-shrink-0 mt-0.5 text-gray-400" />
-                                          <span className="truncate">{dealer.address || '–'}</span>
-                                        </p>
-                                      </td>
-                                      <td className="px-2 py-1.5 border-r border-gray-100">
-                                        <span  className="text-[10px] px-1.5 py-0">{dealer.dealer_type || '–'}</span>
-                                      </td>
-                                      <td className="px-2 py-1.5 text-[11px] text-gray-600 border-r border-gray-100">{getTerritoryName(dealer.territory_id)}</td>
-                                      <td className="px-2 py-1.5 text-[11px] text-gray-600 truncate max-w-[100px] border-r border-gray-100">{dealer.contact_person || '–'}</td>
-                                      <td className="px-2 py-1.5 font-mono text-[11px] text-gray-600 whitespace-nowrap border-r border-gray-100">{dealer.phone || '–'}</td>
-                                      <td className="px-2 py-1.5 text-[11px] text-gray-600 truncate max-w-[100px] border-r border-gray-100">{dealer.found_by || '–'}</td>
-                                      <td className="px-2 py-1.5 border-r border-gray-100">
-                                        <Badge className={`text-[10px] px-1.5 py-0 ${
-                                          dealer.priority_level === 1 ? 'priority-high' :
-                                          dealer.priority_level === 2 ? 'priority-medium' : 'priority-low'
-                                        }`}>
-                                          {dealer.priority_level === 1 ? 'High' : dealer.priority_level === 2 ? 'Medium' : 'Low'}
-                                        </Badge>
-                                      </td>
-                                      <td className="px-2 py-1.5 border-r border-gray-100">
-                                        <Badge className={`text-[10px] px-1.5 py-0 ${dealer.is_visited ? 'bg-emerald-100 text-emerald-700' : 'bg-gray-100 text-gray-500'}`}>
-                                          {dealer.is_visited ? 'Visited' : 'Not Visited'}
-                                        </Badge>
-                                      </td>
-                                      <td className="px-2 py-1.5 font-mono text-[11px] text-gray-600 whitespace-nowrap border-r border-gray-100">
-                                        {dealer.last_visit_date ? new Date(dealer.last_visit_date).toLocaleDateString() : '–'}
-                                      </td>
-                                      <td className="px-2 py-1.5 text-[11px] text-gray-600 truncate max-w-[100px] border-r border-gray-100">
-                                        {dealer.last_visited_by || '–'}
-                                      </td>
-                                      <td className="px-2 py-1.5 border-r border-gray-100">
-                                        {dealer.last_outcome ? (
+                                  paginatedDealers.map((dealer, idx) => {
+                                    const serialNumber = startIdx + idx + 1;
+                                    const dealerName = getTruncatedText(dealer.name || dealer.dealer_name, 20);
+                                    const contactPerson = getTruncatedText(dealer.contact_person, 15);
+                                    const foundBy = getTruncatedText(dealer.found_by, 15);
+                                    const visitedBy = getTruncatedText(dealer.last_visited_by, 15);
+                                    
+                                    return (
+                                      <tr key={dealer.id || dealer.place_id} className="border-b border-gray-100 hover:bg-gray-50 transition-colors">
+                                        <td className="px-2 py-1.5 border-r border-gray-100 text-xs font-medium text-gray-600 w-8">{serialNumber}</td>
+                                        <td className="px-2 py-1.5 border-r border-gray-100">
+                                          <p className="text-xs font-medium text-gray-800" title={dealerName.full}>{dealerName.display}</p>
+                                        </td>
+                                        <td className="px-2 py-1.5 border-r border-gray-100">
+                                          <p className="text-[11px] text-gray-600 flex items-start gap-1.5 min-w-0 max-w-[220px]" title={dealer.address}>
+                                            <MapPin size={12} className="flex-shrink-0 mt-0.5 text-gray-400" />
+                                            <span className="truncate">{dealer.address || '–'}</span>
+                                          </p>
+                                        </td>
+                                        <td className="px-2 py-1.5 border-r border-gray-100">
+                                          <span className="text-[10px] px-1.5 py-0">{dealer.dealer_type || '–'}</span>
+                                        </td>
+                                        <td className="px-2 py-1.5 text-[11px] text-gray-600 border-r border-gray-100">{getTerritoryName(dealer.territory_id)}</td>
+                                        <td className="px-2 py-1.5 text-[11px] text-gray-600 border-r border-gray-100" title={contactPerson.full}>
+                                          <span>{contactPerson.display}</span>
+                                        </td>
+                                        <td className="px-2 py-1.5 font-mono text-[11px] text-gray-600 whitespace-nowrap border-r border-gray-100">{dealer.phone || '–'}</td>
+                                        <td className="px-2 py-1.5 text-[11px] text-gray-600 border-r border-gray-100" title={foundBy.full}>
+                                          <span>{foundBy.display}</span>
+                                        </td>
+                                        <td className="px-2 py-1.5 border-r border-gray-100">
                                           <Badge className={`text-[10px] px-1.5 py-0 ${
-                                            dealer.last_outcome === 'Order Booked' ? 'bg-emerald-100 text-emerald-700' :
-                                            dealer.last_outcome === 'Follow-up Required' ? 'bg-amber-100 text-amber-700' :
-                                            dealer.last_outcome === 'Lost Visit' ? 'bg-red-100 text-red-700' :
-                                            'bg-slate-100 text-slate-600'
+                                            dealer.priority_level === 1 ? 'priority-high' :
+                                            dealer.priority_level === 2 ? 'priority-medium' : 'priority-low'
                                           }`}>
-                                            {dealer.last_outcome}
+                                            {dealer.priority_level === 1 ? 'High' : dealer.priority_level === 2 ? 'Medium' : 'Low'}
                                           </Badge>
-                                        ) : (
-                                          <span className="text-[11px] text-gray-400">–</span>
-                                        )}
-                                      </td>
-                                      <td className="px-2 py-1.5 font-mono text-[11px] text-gray-600 whitespace-nowrap border-r border-gray-100">
-                                        {dealer.next_visit_date ? new Date(dealer.next_visit_date).toLocaleDateString() : '–'}
-                                      </td>
-                                      <td className="px-2 py-1.5 text-center">
-                                        <DealerOrderItemsView dealer={dealer} />
-                                      </td>
-                                    </tr>
-                                  ))
+                                        </td>
+                                        <td className="px-2 py-1.5 border-r border-gray-100">
+                                          <Badge className={`text-[10px] px-1.5 py-0 ${dealer.is_visited ? 'bg-emerald-100 text-emerald-700' : 'bg-gray-100 text-gray-500'}`}>
+                                            {dealer.is_visited ? 'Visited' : 'Not Visited'}
+                                          </Badge>
+                                        </td>
+                                        <td className="px-2 py-1.5 font-mono text-[11px] text-gray-600 whitespace-nowrap border-r border-gray-100">
+                                          {dealer.last_visit_date ? formatDateDDMmmYYYY(dealer.last_visit_date) : '–'}
+                                        </td>
+                                        <td className="px-2 py-1.5 text-[11px] text-gray-600 border-r border-gray-100" title={visitedBy.full}>
+                                          <span>{visitedBy.display}</span>
+                                        </td>
+                                        <td className="px-2 py-1.5 border-r border-gray-100">
+                                          {dealer.last_outcome ? (
+                                            <Badge className={`text-[10px] px-1.5 py-0 ${
+                                              dealer.last_outcome === 'Order Booked' ? 'bg-emerald-100 text-emerald-700' :
+                                              dealer.last_outcome === 'Follow-up Required' ? 'bg-amber-100 text-amber-700' :
+                                              dealer.last_outcome === 'Lost Visit' ? 'bg-red-100 text-red-700' :
+                                              'bg-slate-100 text-slate-600'
+                                            }`}>
+                                              {dealer.last_outcome}
+                                            </Badge>
+                                          ) : (
+                                            <span className="text-[11px] text-gray-400">–</span>
+                                          )}
+                                        </td>
+                                        <td className="px-2 py-1.5 font-mono text-[11px] text-gray-600 whitespace-nowrap border-r border-gray-100">
+                                          {dealer.next_visit_date ? formatDateDDMmmYYYY(dealer.next_visit_date) : '–'}
+                                        </td>
+                                        <td className="px-2 py-1.5 text-center">
+                                          <DealerOrderItemsView dealer={dealer} />
+                                        </td>
+                                      </tr>
+                                    );
+                                  })
                                 )}
                               </tbody>
                             </table>

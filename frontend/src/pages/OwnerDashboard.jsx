@@ -22,6 +22,7 @@ import {
   UsersFour
 } from '@phosphor-icons/react';
 import { useAuth } from '../context/AuthContext';
+import { formatDateDDMmmYYYY, getTruncatedText } from '../utils/tableHelpers';
 import { 
   Collapsible,
   CollapsibleContent,
@@ -377,6 +378,7 @@ const OwnerDashboard = () => {
                 <table className="w-full border-collapse">
                   <thead>
                     <tr className="border-y border-gray-200 bg-gray-50">
+                      <th className="text-left px-2 py-1.5 text-[10px] font-semibold text-gray-600 uppercase tracking-wider border-r border-gray-200 w-8">#</th>
                       <th className="text-left px-2 py-1.5 text-[10px] font-semibold text-gray-600 uppercase tracking-wider border-r border-gray-200">Company</th>
                       <th className="text-left px-2 py-1.5 text-[10px] font-semibold text-gray-600 uppercase tracking-wider border-r border-gray-200">User</th>
                       <th className="text-left px-2 py-1.5 text-[10px] font-semibold text-gray-600 uppercase tracking-wider border-r border-gray-200">Dealer</th>
@@ -386,31 +388,38 @@ const OwnerDashboard = () => {
                     </tr>
                   </thead>
                   <tbody>
-                    {recentActivity.slice(0, 10).map((visit) => (
-                      <tr key={visit.id} className="border-b border-gray-100 hover:bg-gray-50 transition-colors">
-                        <td className="px-2 py-1.5 border-r border-gray-100">
-                          <span className="font-medium text-[11px] text-gray-800">{visit.company_name}</span>
-                        </td>
-                        <td className="px-2 py-1.5 text-[11px] text-gray-600 border-r border-gray-100">{visit.user_name}</td>
-                        <td className="px-2 py-1.5 text-[11px] text-gray-600 border-r border-gray-100">{visit.dealer_name}</td>
-                        <td className="px-2 py-1.5 font-mono text-[11px] text-gray-600 border-r border-gray-100">
-                          {new Date(visit.check_in_time).toLocaleString()}
-                        </td>
-                        <td className="px-2 py-1.5 text-center border-r border-gray-100">
-                          <Badge className={
-                            visit.outcome === 'Order Booked' ? 'bg-emerald-100 text-emerald-700' :
-                            visit.outcome === 'Follow-up Required' ? 'bg-amber-100 text-amber-700' :
-                            visit.outcome === 'Lost Visit' ? 'bg-red-100 text-red-700' :
-                            'bg-slate-100 text-slate-600'
-                          }>
-                            {visit.outcome || 'In Progress'}
-                          </Badge>
-                        </td>
-                        <td className="px-2 py-1.5 font-mono text-[11px] font-medium text-primary-600 text-right">
-                          {visit.order_value ? `₹${visit.order_value.toLocaleString()}` : '–'}
-                        </td>
-                      </tr>
-                    ))}
+                    {recentActivity.slice(0, 10).map((visit, idx) => {
+                      const companyName = getTruncatedText(visit.company_name, 18);
+                      const userName = getTruncatedText(visit.user_name, 15);
+                      const dealerName = getTruncatedText(visit.dealer_name, 15);
+
+                      return (
+                        <tr key={visit.id} className="border-b border-gray-100 hover:bg-gray-50 transition-colors">
+                          <td className="px-2 py-1.5 border-r border-gray-100 text-xs font-medium text-gray-600 w-8">{idx + 1}</td>
+                          <td className="px-2 py-1.5 border-r border-gray-100">
+                            <span className="font-medium text-[11px] text-gray-800" title={companyName.full}>{companyName.display}</span>
+                          </td>
+                          <td className="px-2 py-1.5 text-[11px] text-gray-600 border-r border-gray-100" title={userName.full}>{userName.display}</td>
+                          <td className="px-2 py-1.5 text-[11px] text-gray-600 border-r border-gray-100" title={dealerName.full}>{dealerName.display}</td>
+                          <td className="px-2 py-1.5 font-mono text-[11px] text-gray-600 border-r border-gray-100">
+                            {formatDateDDMmmYYYY(visit.check_in_time)}
+                          </td>
+                          <td className="px-2 py-1.5 text-center border-r border-gray-100">
+                            <Badge className={
+                              visit.outcome === 'Order Booked' ? 'bg-emerald-100 text-emerald-700' :
+                              visit.outcome === 'Follow-up Required' ? 'bg-amber-100 text-amber-700' :
+                              visit.outcome === 'Lost Visit' ? 'bg-red-100 text-red-700' :
+                              'bg-slate-100 text-slate-600'
+                            }>
+                              {visit.outcome || 'In Progress'}
+                            </Badge>
+                          </td>
+                          <td className="px-2 py-1.5 font-mono text-[11px] font-medium text-primary-600 text-right">
+                            {visit.order_value ? `₹${visit.order_value.toLocaleString()}` : '–'}
+                          </td>
+                        </tr>
+                      );
+                    })}
                   </tbody>
                 </table>
               </div>

@@ -25,6 +25,7 @@ import {
 } from '@phosphor-icons/react';
 import { useAuth } from '../context/AuthContext';
 import { useSearch } from '../context/SearchContext';
+import { formatDateDDMmmYYYY, getTruncatedText } from '../utils/tableHelpers';
 
 const API = `${process.env.REACT_APP_BACKEND_URL}/api`;
 
@@ -166,6 +167,7 @@ const OwnerVisits = () => {
                 <table className="w-full border-collapse">
                   <thead className="bg-gray-50">
                     <tr className="border-y border-gray-200">
+                        <th className="px-2 py-2 text-left text-[10px] font-semibold text-gray-600 uppercase tracking-wider border-r border-gray-200 w-8">#</th>
                       <th className="px-2 py-2 text-left text-[10px] font-semibold text-gray-600 uppercase tracking-wider border-r border-gray-200">Company</th>
                       <th className="px-2 py-2 text-left text-[10px] font-semibold text-gray-600 uppercase tracking-wider border-r border-gray-200">User</th>
                       <th className="px-2 py-2 text-left text-[10px] font-semibold text-gray-600 uppercase tracking-wider border-r border-gray-200">Dealer</th>
@@ -179,63 +181,71 @@ const OwnerVisits = () => {
                     </tr>
                   </thead>
                   <tbody>
-                    {filteredVisits.map((visit) => (
-                      <tr key={visit.id} className="border-b border-gray-100 hover:bg-gray-50 transition-colors">
-                        <td className="px-2 py-1.5 border-r border-gray-100">
-                          <div className="flex items-center gap-1.5">
-                            <Buildings className="w-3 h-3 text-purple-600" />
-                            <span className="font-medium text-xs text-gray-800 truncate max-w-[130px]">{visit.company_name}</span>
-                          </div>
-                        </td>
-                        <td className="px-2 py-1.5 border-r border-gray-100">
-                          <div className="flex items-center gap-1.5 text-[11px] text-gray-600">
-                            <User className="w-3 h-3 text-emerald-600" />
-                            <span className="truncate max-w-[100px]">{visit.user_name}</span>
-                          </div>
-                        </td>
-                        <td className="px-2 py-1.5 border-r border-gray-100">
-                          <div className="flex items-center gap-1.5 text-[11px] text-gray-600">
-                            <Storefront className="w-3 h-3 text-primary-600" />
-                            <span className="truncate max-w-[100px]">{visit.dealer_name}</span>
-                          </div>
-                        </td>
-                        <td className="text-xs text-gray-600 truncate max-w-[100px]">
-                          {visit.contact_name || '–'}
-                        </td>
-                        <td className="font-mono text-xs text-gray-600 whitespace-nowrap">
-                          {visit.contact_phone || '–'}
-                        </td>
-                        <td className="font-mono text-xs text-gray-600">
-                          {new Date(visit.check_in_time).toLocaleString()}
-                        </td>
-                        <td className="font-mono text-xs text-gray-600">
-                          {visit.check_out_time ? new Date(visit.check_out_time).toLocaleString() : '–'}
-                        </td>
-                        <td className="text-xs text-gray-600">
-                          {visit.time_spent_minutes ? (
-                            <span className="flex items-center gap-1">
-                              <Clock className="w-2.5 h-2.5 text-gray-400" />
-                              {Math.round(visit.time_spent_minutes)} min
-                            </span>
-                          ) : '–'}
-                        </td>
-                        <td>
-                          <Badge variant="outline" className={getOutcomeBadgeClass(visit.outcome)}>
-                            {visit.outcome || 'In Progress'}
-                          </Badge>
-                        </td>
-                        <td>
-                          {visit.order_value ? (
-                            <span className="flex items-center gap-1 text-primary-600 font-mono text-xs font-medium">
-                              <CurrencyDollar className="w-2.5 h-2.5" />
-                              ₹{visit.order_value.toLocaleString()}
-                            </span>
-                          ) : (
-                            <span className="text-gray-400 text-xs">–</span>
-                          )}
-                        </td>
-                      </tr>
-                    ))}
+                    {filteredVisits.map((visit, idx) => {
+                      const companyName = getTruncatedText(visit.company_name, 18);
+                      const userName = getTruncatedText(visit.user_name, 15);
+                      const dealerName = getTruncatedText(visit.dealer_name, 15);
+                      const contactName = getTruncatedText(visit.contact_name || '–', 15);
+
+                      return (
+                        <tr key={visit.id} className="border-b border-gray-100 hover:bg-gray-50 transition-colors">
+                          <td className="px-2 py-1.5 border-r border-gray-100 text-xs font-medium text-gray-600 w-8">{idx + 1}</td>
+                          <td className="px-2 py-1.5 border-r border-gray-100">
+                            <div className="flex items-center gap-1.5">
+                              <Buildings className="w-3 h-3 text-purple-600" />
+                              <span className="font-medium text-xs text-gray-800" title={companyName.full}>{companyName.display}</span>
+                            </div>
+                          </td>
+                          <td className="px-2 py-1.5 border-r border-gray-100">
+                            <div className="flex items-center gap-1.5 text-[11px] text-gray-600">
+                              <User className="w-3 h-3 text-emerald-600" />
+                              <span title={userName.full}>{userName.display}</span>
+                            </div>
+                          </td>
+                          <td className="px-2 py-1.5 border-r border-gray-100">
+                            <div className="flex items-center gap-1.5 text-[11px] text-gray-600">
+                              <Storefront className="w-3 h-3 text-primary-600" />
+                              <span title={dealerName.full}>{dealerName.display}</span>
+                            </div>
+                          </td>
+                          <td className="text-xs text-gray-600" title={contactName.full}>
+                            {contactName.display}
+                          </td>
+                          <td className="font-mono text-xs text-gray-600 whitespace-nowrap">
+                            {visit.contact_phone || '–'}
+                          </td>
+                          <td className="font-mono text-xs text-gray-600">
+                            {formatDateDDMmmYYYY(visit.check_in_time)}
+                          </td>
+                          <td className="font-mono text-xs text-gray-600">
+                            {visit.check_out_time ? formatDateDDMmmYYYY(visit.check_out_time) : '–'}
+                          </td>
+                          <td className="text-xs text-gray-600">
+                            {visit.time_spent_minutes ? (
+                              <span className="flex items-center gap-1">
+                                <Clock className="w-2.5 h-2.5 text-gray-400" />
+                                {Math.round(visit.time_spent_minutes)} min
+                              </span>
+                            ) : '–'}
+                          </td>
+                          <td>
+                            <Badge variant="outline" className={getOutcomeBadgeClass(visit.outcome)}>
+                              {visit.outcome || 'In Progress'}
+                            </Badge>
+                          </td>
+                          <td>
+                            {visit.order_value ? (
+                              <span className="flex items-center gap-1 text-primary-600 font-mono text-xs font-medium">
+                                <CurrencyDollar className="w-2.5 h-2.5" />
+                                ₹{visit.order_value.toLocaleString()}
+                              </span>
+                            ) : (
+                              <span className="text-gray-400 text-xs">–</span>
+                            )}
+                          </td>
+                        </tr>
+                      );
+                    })}
                   </tbody>
                 </table>
               </div>

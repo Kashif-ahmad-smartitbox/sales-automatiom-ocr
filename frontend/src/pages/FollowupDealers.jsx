@@ -1,6 +1,8 @@
 import { useState, useEffect, useCallback } from 'react';
 import axios from 'axios';
 import SalesExecutiveLayout from '../components/layout/SalesExecutiveLayout';
+import AdminLayout from '../components/layout/AdminLayout';
+import HODLayout from '../components/layout/HODLayout';
 import { Card, CardContent } from '../components/ui/card';
 import { Button } from '../components/ui/button';
 import { MapPin, Calendar, Buildings, Phone, User, Clock, WarningCircle, PencilSimple, ClockClockwise, Package, CheckCircle } from '@phosphor-icons/react';
@@ -10,6 +12,7 @@ import { toast } from 'sonner';
 import { Badge } from '../components/ui/badge';
 import { useNavigate } from 'react-router-dom';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '../components/ui/dialog';
+import { formatDateDDMmmYYYY, getTruncatedText } from '../utils/tableHelpers';
 import { Label } from '../components/ui/label';
 import { Input } from '../components/ui/input';
 import { Textarea } from '../components/ui/textarea';
@@ -19,7 +22,7 @@ import { Checkbox } from '../components/ui/checkbox';
 const API = `${process.env.REACT_APP_BACKEND_URL}/api`;
 
 const FollowupDealers = () => {
-  const { getAuthHeader } = useAuth();
+  const { getAuthHeader, user } = useAuth();
   const { searchTerm } = useSearch();
   const navigate = useNavigate();
   const [dealers, setDealers] = useState([]);
@@ -51,8 +54,12 @@ const FollowupDealers = () => {
     try {
       setLoading(true);
       console.log('Fetching followup dealers...');
+      const followupEndpoint = user?.role === 'sales_executive'
+        ? `${API}/visit/my-followup-dealers`
+        : `${API}/visit/followup-dealers`;
+
       const [dealersRes, itemsRes] = await Promise.all([
-        axios.get(`${API}/visit/my-followup-dealers`, { headers: getAuthHeader() }),
+        axios.get(followupEndpoint, { headers: getAuthHeader() }),
         axios.get(`${API}/items`, { headers: getAuthHeader(), params: { active: true } }).catch(() => ({ data: [] }))
       ]);
       console.log('Followup dealers response:', dealersRes.data);
@@ -76,7 +83,7 @@ const FollowupDealers = () => {
     } finally {
       setLoading(false);
     }
-  }, [getAuthHeader]);
+  }, [getAuthHeader, user?.role]);
 
   useEffect(() => {
     fetchData();
@@ -85,6 +92,12 @@ const FollowupDealers = () => {
   const handleNavigateToField = () => {
     navigate('/field');
   };
+
+  const isSalesExecutive = user?.role === 'sales_executive';
+  const isHod = user?.role === 'hod';
+  const Layout = isSalesExecutive ? SalesExecutiveLayout : isHod ? HODLayout : AdminLayout;
+  const showExecutiveColumn = !isSalesExecutive;
+  const tableColumnCount = showExecutiveColumn ? 10 : 9;
 
   const handleOpenFollowup = (dealer) => {
     setSelectedDealer(dealer);
@@ -291,7 +304,7 @@ const FollowupDealers = () => {
   );
 
   return (
-    <SalesExecutiveLayout title="Followup Dealers">
+    <Layout title="Followup Dealers">
       <div className="space-y-4">
         {/* Header */}
         <div>
@@ -299,7 +312,9 @@ const FollowupDealers = () => {
             Followup Dealers
           </h1>
           <p className="text-xs text-gray-500 mt-0.5">
-            Dealers that require your follow-up visit
+            {isSalesExecutive
+              ? 'Dealers that require your follow-up visit'
+              : 'Dealers that require follow-up visits from your sales team'}
           </p>
         </div>
 
@@ -399,6 +414,7 @@ const FollowupDealers = () => {
             <table className="w-full border-collapse">
               <thead className="bg-gray-50">
                 <tr className="border-y border-gray-200">
+                  <th className="px-2 py-2 text-left text-[10px] font-semibold text-gray-600 uppercase tracking-wider border-r border-gray-200 w-8">#</th>
                   <th className="px-2 py-2 text-left text-[10px] font-semibold text-gray-600 uppercase tracking-wider border-r border-gray-200">Dealer Name</th>
                   <th className="px-2 py-2 text-left text-[10px] font-semibold text-gray-600 uppercase tracking-wider border-r border-gray-200">Contact Info</th>
                   <th className="px-2 py-2 text-left text-[10px] font-semibold text-gray-600 uppercase tracking-wider border-r border-gray-200">Location</th>
@@ -406,13 +422,16 @@ const FollowupDealers = () => {
                   <th className="px-2 py-2 text-left text-[10px] font-semibold text-gray-600 uppercase tracking-wider border-r border-gray-200">Next Visit Date</th>
                   <th className="px-2 py-2 text-center text-[10px] font-semibold text-gray-600 uppercase tracking-wider border-r border-gray-200">Status</th>
                   <th className="px-2 py-2 text-left text-[10px] font-semibold text-gray-600 uppercase tracking-wider border-r border-gray-200">Last Outcome</th>
+                  {showExecutiveColumn && (
+                    <th className="px-2 py-2 text-left text-[10px] font-semibold text-gray-600 uppercase tracking-wider border-r border-gray-200">Executive</th>
+                  )}
                   <th className="px-2 py-2 text-center text-[10px] font-semibold text-gray-600 uppercase tracking-wider">Actions</th>
                 </tr>
               </thead>
               <tbody>
                 {loading ? (
                   <tr>
-                    <td colSpan="8" className="px-2 py-8 text-center">
+                    <td colSpan={tableColumnCount} className="px-2 py-8 text-center">
                       <div className="flex justify-center items-center gap-2 text-[11px] text-gray-500">
                         <div className="spinner w-4 h-4" /> Loading data...
                       </div>
@@ -420,15 +439,21 @@ const FollowupDealers = () => {
                   </tr>
                 ) : filteredDealers.length === 0 ? (
                   <tr>
-                    <td colSpan="8" className="px-2 py-8 text-center text-[11px] text-gray-500">
+                    <td colSpan={tableColumnCount} className="px-2 py-8 text-center text-[11px] text-gray-500">
                       {searchTerm ? 'No matches found.' : 'No follow-ups scheduled at this time.'}
                     </td>
                   </tr>
                 ) : (
-                  filteredDealers.map((dealer) => (
+                  filteredDealers.map((dealer, idx) => {
+                    const dealerName = getTruncatedText(dealer.name, 18);
+                    const contactPerson = getTruncatedText(dealer.contact_person || '–', 15);
+                    const cityName = getTruncatedText(dealer.city || '', 14);
+
+                    return (
                     <tr key={dealer.id} className={`border-b border-gray-100 hover:bg-gray-50 transition-colors ${dealer.followup_status === 'overdue' ? 'bg-red-50' : ''}`}>
+                      <td className="px-2 py-1.5 border-r border-gray-100 text-xs font-medium text-gray-600 w-8">{idx + 1}</td>
                       <td className="px-2 py-1.5 border-r border-gray-100">
-                        <div className="font-medium text-xs text-gray-800">{dealer.name}</div>
+                        <div className="font-medium text-xs text-gray-800" title={dealerName.full}>{dealerName.display}</div>
                         <div className="text-[10px] text-gray-400 mt-0.5">
                           {dealer.dealer_type} • Priority {dealer.priority_level}
                         </div>
@@ -437,7 +462,7 @@ const FollowupDealers = () => {
                         {dealer.contact_person && (
                           <div className="flex items-center gap-1.5 text-[11px] text-gray-600">
                             <User size={12} className="text-gray-400" />
-                            <span>{dealer.contact_person}</span>
+                            <span title={contactPerson.full}>{contactPerson.display}</span>
                           </div>
                         )}
                         {dealer.phone && (
@@ -452,8 +477,8 @@ const FollowupDealers = () => {
                       </td>
                       <td className="px-2 py-1.5 max-w-xs border-r border-gray-100">
                         {dealer.city && (
-                          <div className="text-[11px] font-medium text-gray-700 mb-1">
-                            {dealer.city}
+                          <div className="text-[11px] font-medium text-gray-700 mb-1" title={cityName.full}>
+                            {cityName.display}
                           </div>
                         )}
                         <div className="flex items-start gap-1.5 text-[11px] text-gray-600">
@@ -468,11 +493,13 @@ const FollowupDealers = () => {
                           <div>
                             <div className="flex items-center gap-1.5 text-xs text-gray-600">
                               <Calendar size={12} className="text-gray-400" />
-                              <span>{formatDate(dealer.last_visit_date)}</span>
+                              <span>{formatDateDDMmmYYYY(dealer.last_visit_date)}</span>
                             </div>
                             {dealer.last_visited_by && (
                               <div className="text-[10px] text-gray-400 pl-5 mt-0.5">
-                                By: You
+                                By: {dealer.last_visited_by === user?.id || dealer.last_visited_by === user?.name
+                                  ? 'You'
+                                  : dealer.last_visited_by_name || dealer.last_visited_by}
                               </div>
                             )}
                           </div>
@@ -483,7 +510,7 @@ const FollowupDealers = () => {
                       <td>
                         <div className="flex items-center gap-1.5 text-xs font-medium text-gray-700">
                           <Calendar size={12} className="text-gray-400" />
-                          <span>{formatDate(dealer.next_visit_date)}</span>
+                          <span>{formatDateDDMmmYYYY(dealer.next_visit_date)}</span>
                         </div>
                         <div className={`text-[10px] pl-5 mt-0.5 font-medium ${
                           dealer.followup_status === 'overdue' ? 'text-red-600' :
@@ -512,17 +539,26 @@ const FollowupDealers = () => {
                           <span className="text-xs text-gray-400">No previous outcome</span>
                         )}
                       </td>
+                      {showExecutiveColumn && (
+                        <td className="px-2 py-1.5 border-r border-gray-100">
+                          <span className="text-[11px] text-gray-600">
+                            {dealer.last_visited_by_name || dealer.last_visited_by || '—'}
+                          </span>
+                        </td>
+                      )}
                       <td>
                         <div className="flex items-center justify-center gap-2">
-                          <Button
-                            size="sm"
-                            variant="outline"
-                            onClick={() => handleOpenFollowup(dealer)}
-                            className="h-8 px-2"
-                            title="Update Follow-up"
-                          >
-                            <PencilSimple size={14} />
-                          </Button>
+                          {isSalesExecutive && (
+                            <Button
+                              size="sm"
+                              variant="outline"
+                              onClick={() => handleOpenFollowup(dealer)}
+                              className="h-8 px-2"
+                              title="Update Follow-up"
+                            >
+                              <PencilSimple size={14} />
+                            </Button>
+                          )}
                           <Button
                             size="sm"
                             variant="outline"
@@ -535,7 +571,8 @@ const FollowupDealers = () => {
                         </div>
                       </td>
                     </tr>
-                  ))
+                    );
+                  })
                 )}
               </tbody>
             </table>
@@ -543,7 +580,7 @@ const FollowupDealers = () => {
         </Card>
 
         {/* Action Button */}
-        {dealers.length > 0 && (
+        {isSalesExecutive && dealers.length > 0 && (
           <div className="flex justify-center pt-2">
             <Button
               onClick={handleNavigateToField}
@@ -832,7 +869,7 @@ const FollowupDealers = () => {
           </div>
         </DialogContent>
       </Dialog>
-    </SalesExecutiveLayout>
+    </Layout>
   );
 };
 

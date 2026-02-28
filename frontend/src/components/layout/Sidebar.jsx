@@ -16,7 +16,8 @@ import {
   Target,
   CaretLeft,
   CaretRight,
-  Package
+  Package,
+  CalendarCheck
 } from '@phosphor-icons/react';
 import { useAuth } from '../../context/AuthContext';
 
@@ -28,6 +29,7 @@ const Sidebar = ({ isOpen, onClose, isCollapsed, setIsCollapsed }) => {
     { to: '/executives', icon: Users, label: 'Sales Team', roles: ['organization', 'admin', 'hod'] },
     { to: '/hod-management', icon: UserCircleGear, label: 'HOD Management', roles: ['organization', 'admin'] },
     { to: '/dealers', icon: Storefront, label: 'Dealers', roles: ['organization', 'admin', 'hod'] },
+    { to: '/followup-dealers', icon: CalendarCheck, label: 'Follow-up Dealers', roles: ['organization', 'admin', 'hod'] },
     { to: '/potentials', icon: Buildings, label: 'Potential Dealers', roles: ['organization', 'admin', 'hod'] },
     { to: '/item-master', icon: Package, label: 'Item Master', roles: ['organization', 'admin', 'hod'] },
     // { to: '/territories', icon: MapPin, label: 'Territories', roles: ['organization', 'admin', 'hod'] },

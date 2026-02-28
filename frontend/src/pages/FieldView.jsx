@@ -29,6 +29,7 @@ import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import SalesExecutiveLayout from '../components/layout/SalesExecutiveLayout';
+import { formatDateDDMmmYYYY, getTruncatedText } from '../utils/tableHelpers';
 
 // Fix Leaflet default markers
 delete L.Icon.Default.prototype._getIconUrl;
@@ -337,24 +338,36 @@ const FieldView = () => {
         <table className="w-full text-left border-collapse">
           <thead className="bg-gray-50">
             <tr className="border-y border-gray-200">
-              {['Date','Dealer','Contact','Check-in','Duration','Outcome','Value','Items'].map(h => (
-                <th key={h} className="text-[10px] text-gray-600 uppercase tracking-wider font-semibold px-2 py-2 border-r border-gray-200">{h}</th>
-              ))}
+              <th className="text-[10px] text-gray-600 uppercase tracking-wider font-semibold px-2 py-2 border-r border-gray-200 w-8">#</th>
+              <th className="text-[10px] text-gray-600 uppercase tracking-wider font-semibold px-2 py-2 border-r border-gray-200">Date</th>
+              <th className="text-[10px] text-gray-600 uppercase tracking-wider font-semibold px-2 py-2 border-r border-gray-200">Dealer</th>
+              <th className="text-[10px] text-gray-600 uppercase tracking-wider font-semibold px-2 py-2 border-r border-gray-200">Contact</th>
+              <th className="text-[10px] text-gray-600 uppercase tracking-wider font-semibold px-2 py-2 border-r border-gray-200">Check-in</th>
+              <th className="text-[10px] text-gray-600 uppercase tracking-wider font-semibold px-2 py-2 border-r border-gray-200">Duration</th>
+              <th className="text-[10px] text-gray-600 uppercase tracking-wider font-semibold px-2 py-2 border-r border-gray-200">Outcome</th>
+              <th className="text-[10px] text-gray-600 uppercase tracking-wider font-semibold px-2 py-2 border-r border-gray-200">Value</th>
+              <th className="text-[10px] text-gray-600 uppercase tracking-wider font-semibold px-2 py-2 border-r border-gray-200">Items</th>
             </tr>
           </thead>
           <tbody>
-            {visits.map(visit => (
-              <tr key={visit.id} className="border-b border-gray-100 hover:bg-gray-50 transition-colors">
-                <td className="px-2 py-1.5 font-mono text-[11px] text-gray-600 whitespace-nowrap border-r border-gray-100">{new Date(visit.check_in_time).toLocaleDateString()}</td>
-                <td className="px-2 py-1.5 text-xs font-medium text-gray-800 max-w-[120px] truncate border-r border-gray-100">{visit.dealer_name}</td>
-                <td className="px-2 py-1.5 text-[11px] text-gray-500 max-w-[80px] truncate border-r border-gray-100">{visit.contact_name || '–'}</td>
-                <td className="px-2 py-1.5 font-mono text-[11px] text-gray-500 whitespace-nowrap border-r border-gray-100">{new Date(visit.check_in_time).toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'})}</td>
-                <td className="px-2 py-1.5 font-mono text-[11px] text-gray-500 text-center border-r border-gray-100">{visit.time_spent_minutes ? `${Math.round(visit.time_spent_minutes)}m` : '–'}</td>
-                <td className="px-2 py-1.5 border-r border-gray-100">{outcomeBadge(visit.outcome)}</td>
-                <td className="px-2 py-1.5 font-mono text-[11px] font-semibold text-orange-600 text-right whitespace-nowrap border-r border-gray-100">{visit.order_value ? `₹${visit.order_value.toLocaleString()}` : '–'}</td>
-                <td className="px-2 py-1.5 text-center"><OrderItemsView visit={visit} /></td>
-              </tr>
-            ))}
+            {visits.map((visit, idx) => {
+              const dealerName = getTruncatedText(visit.dealer_name, 16);
+              const contactName = getTruncatedText(visit.contact_name || '–', 12);
+
+              return (
+                <tr key={visit.id} className="border-b border-gray-100 hover:bg-gray-50 transition-colors">
+                  <td className="px-2 py-1.5 text-xs font-medium text-gray-600 border-r border-gray-100 w-8">{idx + 1}</td>
+                  <td className="px-2 py-1.5 font-mono text-[11px] text-gray-600 whitespace-nowrap border-r border-gray-100">{formatDateDDMmmYYYY(visit.check_in_time)}</td>
+                  <td className="px-2 py-1.5 text-xs font-medium text-gray-800 border-r border-gray-100" title={dealerName.full}>{dealerName.display}</td>
+                  <td className="px-2 py-1.5 text-[11px] text-gray-500 border-r border-gray-100" title={contactName.full}>{contactName.display}</td>
+                  <td className="px-2 py-1.5 font-mono text-[11px] text-gray-500 whitespace-nowrap border-r border-gray-100">{new Date(visit.check_in_time).toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'})}</td>
+                  <td className="px-2 py-1.5 font-mono text-[11px] text-gray-500 text-center border-r border-gray-100">{visit.time_spent_minutes ? `${Math.round(visit.time_spent_minutes)}m` : '–'}</td>
+                  <td className="px-2 py-1.5 border-r border-gray-100">{outcomeBadge(visit.outcome)}</td>
+                  <td className="px-2 py-1.5 font-mono text-[11px] font-semibold text-orange-600 text-right whitespace-nowrap border-r border-gray-100">{visit.order_value ? `₹${visit.order_value.toLocaleString()}` : '–'}</td>
+                  <td className="px-2 py-1.5 text-center"><OrderItemsView visit={visit} /></td>
+                </tr>
+              );
+            })}
           </tbody>
         </table>
       </div>

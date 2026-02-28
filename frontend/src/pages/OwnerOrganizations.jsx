@@ -19,6 +19,7 @@ import {
 } from '@phosphor-icons/react';
 import { useAuth } from '../context/AuthContext';
 import { useSearch } from '../context/SearchContext';
+import { getTruncatedText } from '../utils/tableHelpers';
 import { 
   Collapsible,
   CollapsibleContent,
@@ -245,6 +246,7 @@ const OwnerOrganizations = () => {
                                 <table className="w-full border-collapse">
                                   <thead>
                                     <tr className="border-y border-gray-200 bg-gray-50">
+                                      <th className="text-left px-2 py-1.5 text-[10px] font-semibold text-gray-600 uppercase tracking-wider border-r border-gray-200 w-8">#</th>
                                       <th className="text-left px-2 py-1.5 text-[10px] font-semibold text-gray-600 uppercase tracking-wider border-r border-gray-200">Dealer</th>
                                       <th className="text-left px-2 py-1.5 text-[10px] font-semibold text-gray-600 uppercase tracking-wider border-r border-gray-200">Time</th>
                                       <th className="text-center px-2 py-1.5 text-[10px] font-semibold text-gray-600 uppercase tracking-wider border-r border-gray-200">Outcome</th>
@@ -252,9 +254,13 @@ const OwnerOrganizations = () => {
                                     </tr>
                                   </thead>
                                   <tbody>
-                                    {orgDetails[org.id].today_visits.slice(0, 5).map((visit) => (
-                                      <tr key={visit.id} className="border-b border-gray-100 hover:bg-gray-50 transition-colors">
-                                        <td className="px-2 py-1.5 text-[11px] text-gray-800 border-r border-gray-100">{visit.dealer_name}</td>
+                                    {orgDetails[org.id].today_visits.slice(0, 5).map((visit, idx) => {
+                                      const dealerName = getTruncatedText(visit.dealer_name, 16);
+
+                                      return (
+                                        <tr key={visit.id} className="border-b border-gray-100 hover:bg-gray-50 transition-colors">
+                                          <td className="px-2 py-1.5 text-[11px] text-gray-600 border-r border-gray-100 w-8">{idx + 1}</td>
+                                          <td className="px-2 py-1.5 text-[11px] text-gray-800 border-r border-gray-100" title={dealerName.full}>{dealerName.display}</td>
                                         <td className="px-2 py-1.5 font-mono text-[11px] text-gray-600 border-r border-gray-100">
                                           {new Date(visit.check_in_time).toLocaleTimeString()}
                                         </td>
@@ -270,8 +276,9 @@ const OwnerOrganizations = () => {
                                         <td className="px-2 py-1.5 font-mono text-[11px] text-gray-700 text-right">
                                           {visit.order_value ? `₹${visit.order_value.toLocaleString()}` : '–'}
                                         </td>
-                                      </tr>
-                                    ))}
+                                        </tr>
+                                      );
+                                    })}
                                   </tbody>
                                 </table>
                               </div>

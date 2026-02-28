@@ -20,6 +20,7 @@ import {
   ChartPieSlice
 } from '@phosphor-icons/react';
 import { useAuth } from '../context/AuthContext';
+import { formatDateDDMmmYYYY, getTruncatedText } from '../utils/tableHelpers';
 
 const API = `${process.env.REACT_APP_BACKEND_URL}/api`;
 
@@ -531,6 +532,7 @@ const AdminDashboard = () => {
               <table className="w-full border-collapse">
                 <thead className="bg-gray-50">
                   <tr className="border-y border-gray-200">
+                    <th className="text-left text-[10px] font-semibold text-gray-600 px-2 py-2 border-r border-gray-200 w-8">#</th>
                     <th className="text-left text-[10px] font-semibold text-gray-600 px-2 py-2 border-r border-gray-200">Next Visit</th>
                     <th className="text-left text-[10px] font-semibold text-gray-600 px-2 py-2 border-r border-gray-200">Dealer</th>
                     <th className="text-left text-[10px] font-semibold text-gray-600 px-2 py-2 border-r border-gray-200">Territory</th>
@@ -544,16 +546,20 @@ const AdminDashboard = () => {
                 <tbody>
                   {dealerVisitsData.visits.slice(0, 10).map((visit, idx) => {
                     const outcomeStyle = getOutcomeStyle(visit.outcome);
+                    const dealerName = getTruncatedText(visit.dealer_name, 18);
+                    const repName = getTruncatedText(visit.rep_name, 12);
+                    
                     return (
                       <tr key={visit.id} className="border-b border-gray-100 hover:bg-gray-50 transition-colors">
+                        <td className="px-2 py-1.5 border-r border-gray-100 text-xs font-medium text-gray-600 w-8">{idx + 1}</td>
                         <td className="px-2 py-1.5 border-r border-gray-100">
                           <span className="text-[11px] text-gray-600">
-                            {visit.next_visit_date ? formatDate(visit.next_visit_date) : formatDate(visit.check_in_time)}
+                            {visit.next_visit_date ? formatDateDDMmmYYYY(visit.next_visit_date) : formatDateDDMmmYYYY(visit.check_in_time)}
                           </span>
                         </td>
                         <td className="px-2 py-1.5 border-r border-gray-100">
                           <div>
-                            <p className="text-xs font-semibold text-gray-900 max-w-[130px] truncate">{visit.dealer_name}</p>
+                            <p className="text-xs font-semibold text-gray-900" title={dealerName.full}>{dealerName.display}</p>
                           </div>
                         </td>
                         <td className="px-2 py-1.5 border-r border-gray-100">
@@ -579,9 +585,9 @@ const AdminDashboard = () => {
                         <td className="px-2 py-1.5 border-r border-gray-100">
                           <div className="flex items-center gap-1.5">
                             <div className="w-5 h-5 rounded-full bg-orange-400 flex items-center justify-center text-white text-[10px] font-bold flex-shrink-0">
-                              {(visit.rep_name || 'U').charAt(0).toUpperCase()}
+                              {(repName.full || 'U').charAt(0).toUpperCase()}
                             </div>
-                            <span className="text-[11px] text-gray-700">{visit.rep_name}</span>
+                            <span className="text-[11px] text-gray-700" title={repName.full}>{repName.display}</span>
                           </div>
                         </td>
                         <td className="px-2 py-1.5">

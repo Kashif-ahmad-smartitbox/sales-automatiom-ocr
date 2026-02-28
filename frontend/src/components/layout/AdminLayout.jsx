@@ -8,7 +8,8 @@ import {
   Storefront,
   ChartBar,
   Clipboard,
-  DotsThree
+  DotsThree,
+  CalendarCheck
 } from '@phosphor-icons/react';
 import Sidebar from './Sidebar';
 import { useAuth } from '../../context/AuthContext';
@@ -25,6 +26,7 @@ const AdminLayout = ({ children, title }) => {
   const navItems = [
     { label: 'Dashboard', icon: House,     path: '/dashboard' },
     { label: 'Dealers',   icon: Storefront, path: '/dealers'   },
+    { label: 'Follow-ups', icon: CalendarCheck, path: '/followup-dealers' },
     { label: 'Reports',   icon: ChartBar,   path: '/reports'   },
     { label: 'Reports+',  icon: Clipboard,  path: '/hod-reports' },
     { label: 'More',      icon: DotsThree,  path: null         },

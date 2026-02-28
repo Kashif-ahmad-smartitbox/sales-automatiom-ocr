@@ -33,6 +33,7 @@ import {
 import { useAuth } from '../context/AuthContext';
 import { useSearch } from '../context/SearchContext';
 import { Button } from '../components/ui/button';
+import { formatDateDDMmmYYYY, getTruncatedText } from '../utils/tableHelpers';
 
 const API = `${process.env.REACT_APP_BACKEND_URL}/api`;
 const ROWS_PER_PAGE = 15;
@@ -180,6 +181,7 @@ const OwnerSessions = () => {
                   <table className="w-full border-collapse text-left">
                     <thead>
                       <tr className="border-y border-gray-200 bg-gray-50">
+                        <th className="text-[10px] text-gray-600 uppercase tracking-wider font-semibold px-2 py-1.5 border-r border-gray-200 w-8">#</th>
                         <th className="text-[10px] text-gray-600 uppercase tracking-wider font-semibold px-2 py-1.5 border-r border-gray-200">User</th>
                         <th className="text-[10px] text-gray-600 uppercase tracking-wider font-semibold px-2 py-1.5 border-r border-gray-200">Company</th>
                         <th className="text-[10px] text-gray-600 uppercase tracking-wider font-semibold px-2 py-1.5 border-r border-gray-200">Date</th>
@@ -196,11 +198,17 @@ const OwnerSessions = () => {
                     <tbody>
                       {filteredSessions
                         .slice((currentPage - 1) * ROWS_PER_PAGE, currentPage * ROWS_PER_PAGE)
-                        .map((session) => (
-                        <tr key={session.id} className="border-b border-gray-100 hover:bg-gray-50 transition-colors">
-                          <td className="px-2 py-1.5 text-xs font-medium text-gray-800 truncate max-w-[120px] border-r border-gray-100">{session.user_name}</td>
-                          <td className="px-2 py-1.5 text-[11px] text-gray-600 truncate max-w-[120px] border-r border-gray-100">{session.company_name}</td>
-                          <td className="px-2 py-1.5 font-mono text-[11px] text-gray-600 whitespace-nowrap border-r border-gray-100">{new Date(session.start_time).toLocaleDateString()}</td>
+                        .map((session, idx) => {
+                          const userName = getTruncatedText(session.user_name, 15);
+                          const companyName = getTruncatedText(session.company_name, 15);
+                          const serialNumber = (currentPage - 1) * ROWS_PER_PAGE + idx + 1;
+
+                          return (
+                          <tr key={session.id} className="border-b border-gray-100 hover:bg-gray-50 transition-colors">
+                          <td className="px-2 py-1.5 text-xs font-medium text-gray-600 border-r border-gray-100 w-8">{serialNumber}</td>
+                          <td className="px-2 py-1.5 text-xs font-medium text-gray-800 border-r border-gray-100" title={userName.full}>{userName.display}</td>
+                          <td className="px-2 py-1.5 text-[11px] text-gray-600 border-r border-gray-100" title={companyName.full}>{companyName.display}</td>
+                          <td className="px-2 py-1.5 font-mono text-[11px] text-gray-600 whitespace-nowrap border-r border-gray-100">{formatDateDDMmmYYYY(session.start_time)}</td>
                           <td className="px-2 py-1.5 font-mono text-[11px] text-gray-600 whitespace-nowrap border-r border-gray-100">{new Date(session.start_time).toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'})}</td>
                           <td className="px-2 py-1.5 border-r border-gray-100">
                             <Badge className={`text-[10px] px-1.5 py-0 ${session.end_time ? 'bg-slate-100 text-slate-600' : 'bg-emerald-100 text-emerald-700'}`}>
@@ -223,7 +231,8 @@ const OwnerSessions = () => {
                             </Button>
                           </td>
                         </tr>
-                      ))}
+                          );
+                        })}
                     </tbody>
                   </table>
                 </div>
@@ -305,6 +314,7 @@ const OwnerSessions = () => {
                  <table className="w-full text-sm text-left min-w-[400px]">
                      <thead className="text-xs text-slate-400 uppercase bg-slate-50 sticky top-0">
                          <tr>
+                       <th className="px-2 sm:px-4 py-2 w-8">#</th>
                              <th className="px-2 sm:px-4 py-2">Place/Dealer</th>
                              <th className="px-2 sm:px-4 py-2 hidden sm:table-cell">Address</th>
                              <th className="px-2 sm:px-4 py-2 text-center">Status</th>
@@ -312,17 +322,21 @@ const OwnerSessions = () => {
                          </tr>
                      </thead>
                      <tbody className="divide-y divide-slate-100">
-                         {sessionPotentials.map((item) => (
-                             <tr key={item.id} className={item.is_visited ? 'bg-emerald-50 hover:bg-emerald-100' : 'hover:bg-slate-50'}>
-                                 <td className="px-2 sm:px-4 py-3 font-medium text-slate-700">
-                                     <div className="flex items-center gap-2">
-                                         <Buildings className={`w-4 h-4 flex-shrink-0 ${item.is_visited ? 'text-emerald-500' : 'text-slate-400'}`} />
-                                         <div>
-                                           <span>{item.place_name}</span>
-                                           <p className="text-[10px] text-slate-400 sm:hidden truncate max-w-[200px]">{item.address}</p>
-                                         </div>
-                                     </div>
-                                 </td>
+                     {sessionPotentials.map((item, idx) => {
+                       const placeName = getTruncatedText(item.place_name, 18);
+
+                       return (
+                         <tr key={item.id} className={item.is_visited ? 'bg-emerald-50 hover:bg-emerald-100' : 'hover:bg-slate-50'}>
+                         <td className="px-2 sm:px-4 py-3 text-slate-500 w-8">{idx + 1}</td>
+                         <td className="px-2 sm:px-4 py-3 font-medium text-slate-700" title={placeName.full}>
+                           <div className="flex items-center gap-2">
+                             <Buildings className={`w-4 h-4 flex-shrink-0 ${item.is_visited ? 'text-emerald-500' : 'text-slate-400'}`} />
+                             <div>
+                               <span>{placeName.display}</span>
+                               <p className="text-[10px] text-slate-400 sm:hidden truncate max-w-[200px]">{item.address}</p>
+                             </div>
+                           </div>
+                         </td>
                                  <td className="px-2 sm:px-4 py-3 text-slate-500 max-w-xs truncate hidden sm:table-cell" title={item.address}>
                                      {item.address}
                                  </td>
@@ -336,8 +350,9 @@ const OwnerSessions = () => {
                                  <td className="px-2 sm:px-4 py-3 text-right text-slate-500 whitespace-nowrap">
                                      {new Date(item.created_at).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}
                                  </td>
-                             </tr>
-                         ))}
+                         </tr>
+                       );
+                     })}
                      </tbody>
                  </table>
              )}

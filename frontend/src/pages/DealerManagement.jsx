@@ -14,6 +14,7 @@ import { useSearch } from '../context/SearchContext';
 import DealerOrderItemsView from '../components/DealerOrderItemsView';
 import { toast } from 'sonner';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '../components/ui/tooltip';
+import { formatDateDDMmmYYYY, getTruncatedText } from '../utils/tableHelpers';
 
 const API = `${process.env.REACT_APP_BACKEND_URL}/api`;
 
@@ -398,6 +399,7 @@ const filteredDealers = dealers.filter(d => {
                 <table className="w-full text-left border-collapse">
                   <thead className="bg-gray-50">
                     <tr className="border-y border-gray-200">
+                      <th className="text-[10px] text-gray-600 uppercase tracking-wider font-semibold px-2 py-2 border-r border-gray-200 w-8">#</th>
                       <th className="text-[10px] text-gray-600 uppercase tracking-wider font-semibold px-2 py-2 border-r border-gray-200">Dealer</th>
                       <th className="text-[10px] text-gray-600 uppercase tracking-wider font-semibold px-2 py-2 border-r border-gray-200 text-center">Address</th>
                       <th className="text-[10px] text-gray-600 uppercase tracking-wider font-semibold px-2 py-2 border-r border-gray-200">Type</th>
@@ -414,10 +416,16 @@ const filteredDealers = dealers.filter(d => {
                     </tr>
                   </thead>
                   <tbody className="bg-white divide-y divide-gray-100">
-                    {filteredDealers.map((dealer) => (
+                    {filteredDealers.map((dealer, idx) => {
+                      const dealerName = getTruncatedText(dealer.name, 18);
+                      const contactPerson = getTruncatedText(dealer.contact_person || '–', 15);
+                      const visitedBy = getTruncatedText(dealer.last_visited_by || '–', 15);
+
+                      return (
                       <tr key={dealer.id} className="hover:bg-gray-50 transition-colors">
+                        <td className="px-2 py-1.5 border-r border-gray-100 text-xs font-medium text-gray-600 w-8">{idx + 1}</td>
                         <td className="px-2 py-1.5 border-r border-gray-100">
-                          <p className="text-xs font-medium text-gray-900">{dealer.name}</p>
+                          <p className="text-xs font-medium text-gray-900" title={dealerName.full}>{dealerName.display}</p>
                         </td>
                         <td className="px-2 py-1.5 border-r border-gray-100">
                           <TooltipProvider>
@@ -435,7 +443,7 @@ const filteredDealers = dealers.filter(d => {
                         </td>
                         <td className="px-2 py-1.5 border-r border-gray-100 text-[11px] text-gray-600">{dealer.dealer_type}</td>
                         <td className="px-2 py-1.5 border-r border-gray-100 text-[11px] text-gray-600">{getTerritoryName(dealer.territory_id)}</td>
-                        <td className="px-2 py-1.5 border-r border-gray-100 text-[11px] text-gray-600 truncate max-w-[100px]">{dealer.contact_person || '–'}</td>
+                        <td className="px-2 py-1.5 border-r border-gray-100 text-[11px] text-gray-600" title={contactPerson.full}>{contactPerson.display}</td>
                         <td className="px-2 py-1.5 border-r border-gray-100 font-mono text-[11px] text-gray-600 whitespace-nowrap">{dealer.phone || '–'}</td>
                         <td className="px-2 py-1.5 border-r border-gray-100">
                           <Badge className={`text-[10px] px-1.5 py-0 ${
@@ -455,10 +463,10 @@ const filteredDealers = dealers.filter(d => {
                           )}
                         </td>
                         <td className="px-2 py-1.5 border-r border-gray-100 font-mono text-[11px] text-gray-600 whitespace-nowrap">
-                          {dealer.last_visit_date ? new Date(dealer.last_visit_date).toLocaleDateString() : 'Never'}
+                          {dealer.last_visit_date ? formatDateDDMmmYYYY(dealer.last_visit_date) : 'Never'}
                         </td>
-                        <td className="px-2 py-1.5 border-r border-gray-100 text-[11px] text-gray-600 truncate max-w-[100px]">
-                          {dealer.last_visited_by || '–'}
+                        <td className="px-2 py-1.5 border-r border-gray-100 text-[11px] text-gray-600" title={visitedBy.full}>
+                          {visitedBy.display}
                         </td>
                         <td className="px-2 py-1.5 border-r border-gray-100">
                           <div className="flex items-center gap-1.5">
@@ -485,7 +493,7 @@ const filteredDealers = dealers.filter(d => {
                           </div>
                         </td>
                         <td className="px-2 py-1.5 border-r border-gray-100 font-mono text-[11px] text-gray-600 whitespace-nowrap">
-                          {dealer.next_visit_date ? new Date(dealer.next_visit_date).toLocaleDateString() : '–'}
+                          {dealer.next_visit_date ? formatDateDDMmmYYYY(dealer.next_visit_date) : '–'}
                         </td>
                         <td className="px-2 py-1.5">
                           <div className="flex items-center justify-center gap-1">
@@ -520,7 +528,8 @@ const filteredDealers = dealers.filter(d => {
                           </div>
                         </td>
                       </tr>
-                    ))}
+                      );
+                    })}
                   </tbody>
                 </table>
               </div>

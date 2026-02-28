@@ -10,6 +10,7 @@ import { useSearch } from '../context/SearchContext';
 import { toast } from 'sonner';
 import { Badge } from '../components/ui/badge';
 import { useNavigate } from 'react-router-dom';
+import { formatDateDDMmmYYYY, getTruncatedText } from '../utils/tableHelpers';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '../components/ui/dialog';
 import { Label } from '../components/ui/label';
 import { Textarea } from '../components/ui/textarea';
@@ -281,6 +282,7 @@ const AssignedPotentials = () => {
                 <table className="w-full border-collapse">
                     <thead className="bg-gray-50">
                         <tr className="border-y border-gray-200">
+                      <th className="px-2 py-2 text-left text-[10px] font-semibold text-gray-600 uppercase tracking-wider border-r border-gray-200 w-8">#</th>
                             <th className="px-2 py-2 text-left text-[10px] font-semibold text-gray-600 uppercase tracking-wider border-r border-gray-200">Dealer Name</th>
                             <th className="px-2 py-2 text-left text-[10px] font-semibold text-gray-600 uppercase tracking-wider border-r border-gray-200">Location / Address</th>
                             <th className="px-2 py-2 text-left text-[10px] font-semibold text-gray-600 uppercase tracking-wider border-r border-gray-200">Originally Found By</th>
@@ -292,7 +294,7 @@ const AssignedPotentials = () => {
                     <tbody>
                         {loading ? (
                             <tr>
-                                <td colSpan="6" className="px-2 py-8 text-center">
+                            <td colSpan="7" className="px-2 py-8 text-center">
                                     <div className="flex justify-center items-center gap-2 text-[11px] text-gray-500">
                                         <div className="spinner w-4 h-4" /> Loading data...
                                     </div>
@@ -300,15 +302,20 @@ const AssignedPotentials = () => {
                             </tr>
                         ) : filteredPotentials.length === 0 ? (
                             <tr>
-                                <td colSpan="6" className="px-2 py-8 text-center text-[11px] text-gray-500">
+                            <td colSpan="7" className="px-2 py-8 text-center text-[11px] text-gray-500">
                                     {searchTerm ? 'No matches found.' : 'No dealers assigned to you yet.'}
                                 </td>
                             </tr>
                         ) : (
-                            filteredPotentials.map((item) => (
-                                <tr key={item._id || item.id} className="border-b border-gray-100 hover:bg-gray-50 transition-colors">
-                                    <td className="px-2 py-1.5 border-r border-gray-100">
-                                        <div className="font-medium text-xs text-gray-800">{item.place_name}</div>
+                          filteredPotentials.map((item, idx) => {
+                            const placeName = getTruncatedText(item.place_name, 18);
+                            const foundByName = getTruncatedText(item.found_by_name, 16);
+
+                            return (
+                            <tr key={item._id || item.id} className="border-b border-gray-100 hover:bg-gray-50 transition-colors">
+                              <td className="px-2 py-1.5 border-r border-gray-100 text-xs font-medium text-gray-600 w-8">{idx + 1}</td>
+                              <td className="px-2 py-1.5 border-r border-gray-100">
+                                <div className="font-medium text-xs text-gray-800" title={placeName.full}>{placeName.display}</div>
                                         <div className="text-[10px] text-gray-400 mt-0.5 font-mono">ID: {item.place_id.substring(0, 10)}...</div>
                                     </td>
                                     <td className="px-2 py-1.5 max-w-xs border-r border-gray-100">
@@ -322,13 +329,13 @@ const AssignedPotentials = () => {
                                             <div className="w-6 h-6 rounded-full bg-indigo-100 text-indigo-600 flex items-center justify-center text-[10px] font-bold">
                                                 {item.found_by_name.charAt(0)}
                                             </div>
-                                            <span className="text-xs font-medium text-gray-700">{item.found_by_name}</span>
+                                            <span className="text-xs font-medium text-gray-700" title={foundByName.full}>{foundByName.display}</span>
                                         </div>
                                     </td>
                                     <td className="px-2 py-1.5 border-r border-gray-100">
                                         <div className="flex items-center gap-1.5 text-[11px] text-gray-600">
                                             <Calendar size={12} className="text-gray-400" />
-                                            <span>{new Date(item.assigned_at).toLocaleDateString()}</span>
+                                            <span>{formatDateDDMmmYYYY(item.assigned_at)}</span>
                                         </div>
                                         <div className="text-[10px] text-gray-400 pl-5">
                                             {new Date(item.assigned_at).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}
@@ -350,7 +357,8 @@ const AssignedPotentials = () => {
                                         </Button>
                                     </td>
                                 </tr>
-                            ))
+                                );
+                              })
                         )}
                     </tbody>
                 </table>
