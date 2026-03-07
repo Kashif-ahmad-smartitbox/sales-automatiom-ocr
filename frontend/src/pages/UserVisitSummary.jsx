@@ -410,55 +410,55 @@ const UserVisitSummary = () => {
                                             {dealer.dealer_type || '–'}
                                           </span>
                                         </TableCell>
-                                        <TableCell className="px-2 py-1.5 text-[11px] text-gray-600 dark:text-gray-400">
+                                        <TableCell className="px-2 py-2 text-xs text-gray-700 dark:text-gray-400">
                                           {getTerritoryName(dealer.territory_id)}
                                         </TableCell>
-                                        <TableCell className="px-2 py-1.5 text-[11px] text-gray-600 dark:text-gray-400" title={contactPerson.full}>
+                                        <TableCell className="px-2 py-2 text-xs text-gray-700 dark:text-gray-400" title={contactPerson.full}>
                                           <span>{contactPerson.display}</span>
                                         </TableCell>
-                                        <TableCell className="px-2 py-1.5 font-mono text-[11px] text-gray-600 dark:text-gray-400 whitespace-nowrap">
+                                        <TableCell className="px-2 py-2 font-mono text-xs text-gray-700 dark:text-gray-400 whitespace-nowrap">
                                           {dealer.phone || '–'}
                                         </TableCell>
-                                        <TableCell className="px-2 py-1.5 text-[11px] text-gray-600 dark:text-gray-400" title={foundBy.full}>
+                                        <TableCell className="px-2 py-2 text-xs text-gray-700 dark:text-gray-400" title={foundBy.full}>
                                           <span>{foundBy.display}</span>
                                         </TableCell>
-                                        <TableCell className="px-2 py-1.5">
-                                          <Badge className={`text-[10px] px-1.5 py-0 ${
-                                            dealer.priority_level === 1 ? 'priority-high' :
-                                            dealer.priority_level === 2 ? 'priority-medium' : 'priority-low'
+                                        <TableCell className="px-2 py-2">
+                                          <span className={`text-xs font-semibold ${
+                                            dealer.priority_level === 1 ? 'text-red-600' :
+                                            dealer.priority_level === 2 ? 'text-amber-600' : 'text-slate-500'
                                           }`}>
                                             {dealer.priority_level === 1 ? 'High' : dealer.priority_level === 2 ? 'Medium' : 'Low'}
-                                          </Badge>
+                                          </span>
                                         </TableCell>
-                                        <TableCell className="px-2 py-1.5">
-                                          <Badge className={`text-[10px] px-1.5 py-0 ${dealer.is_visited ? 'bg-emerald-100 text-emerald-700' : 'bg-gray-100 text-gray-500'}`}>
+                                        <TableCell className="px-2 py-2">
+                                          <span className={`text-xs font-semibold ${dealer.is_visited ? 'text-emerald-600' : 'text-slate-400'}`}>
                                             {dealer.is_visited ? 'Visited' : 'Not Visited'}
-                                          </Badge>
+                                          </span>
                                         </TableCell>
-                                        <TableCell className="px-2 py-1.5 font-mono text-[11px] text-gray-600 dark:text-gray-400 whitespace-nowrap">
+                                        <TableCell className="px-2 py-2 font-mono text-xs text-gray-700 dark:text-gray-400 whitespace-nowrap">
                                           {dealer.last_visit_date ? formatDateDDMmmYYYY(dealer.last_visit_date) : '–'}
                                         </TableCell>
-                                        <TableCell className="px-2 py-1.5 text-[11px] text-gray-600 dark:text-gray-400" title={visitedBy.full}>
+                                        <TableCell className="px-2 py-2 text-xs text-gray-700 dark:text-gray-400" title={visitedBy.full}>
                                           <span>{visitedBy.display}</span>
                                         </TableCell>
-                                        <TableCell className="px-2 py-1.5">
+                                        <TableCell className="px-2 py-2">
                                           {dealer.last_outcome ? (
-                                            <Badge className={`text-[10px] px-1.5 py-0 ${
-                                              dealer.last_outcome === 'Order Booked' ? 'bg-emerald-100 text-emerald-700' :
-                                              dealer.last_outcome === 'Follow-up Required' ? 'bg-amber-100 text-amber-700' :
-                                              dealer.last_outcome === 'Lost Visit' ? 'bg-red-100 text-red-700' :
-                                              'bg-slate-100 text-slate-600'
+                                            <span className={`text-xs font-semibold ${
+                                              dealer.last_outcome === 'Order Booked' ? 'text-emerald-600' :
+                                              dealer.last_outcome === 'Follow-up Required' ? 'text-amber-600' :
+                                              dealer.last_outcome === 'Lost Visit' ? 'text-red-600' :
+                                              'text-slate-500'
                                             }`}>
                                               {dealer.last_outcome}
-                                            </Badge>
+                                            </span>
                                           ) : (
-                                            <span className="text-[11px] text-gray-400">–</span>
+                                            <span className="text-xs text-gray-400">–</span>
                                           )}
                                         </TableCell>
-                                        <TableCell className="px-2 py-1.5 font-mono text-[11px] text-gray-600 dark:text-gray-400 whitespace-nowrap">
+                                        <TableCell className="px-2 py-2 font-mono text-xs text-gray-700 dark:text-gray-400 whitespace-nowrap">
                                           {dealer.next_visit_date ? formatDateDDMmmYYYY(dealer.next_visit_date) : '–'}
                                         </TableCell>
-                                        <TableCell className="px-2 py-1.5 text-center">
+                                        <TableCell className="px-2 py-2 text-center">
                                           <DealerOrderItemsView dealer={dealer} />
                                         </TableCell>
                                       </TableRow>

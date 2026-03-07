@@ -391,20 +391,20 @@ const filteredDealers = dealers.filter(d => {
                 <Table className="table-auto border-collapse">
                   <TableHeader className="bg-gray-50 sticky top-0 z-10">
                     <TableRow className="border-y border-gray-200">
-                      <TableHead className="px-2 py-1.5 text-[10px] font-semibold text-gray-600 uppercase tracking-wider border-r border-gray-200 w-8">#</TableHead>
-                      <TableHead className="px-2 py-1.5 text-[10px] font-semibold text-gray-600 uppercase tracking-wider border-r border-gray-200">Dealer</TableHead>
-                      <TableHead className="px-2 py-1.5 text-[10px] font-semibold text-gray-600 uppercase tracking-wider border-r border-gray-200 w-10 text-center">Addr</TableHead>
-                      <TableHead className="px-2 py-1.5 text-[10px] font-semibold text-gray-600 uppercase tracking-wider border-r border-gray-200">Type</TableHead>
-                      <TableHead className="px-2 py-1.5 text-[10px] font-semibold text-gray-600 uppercase tracking-wider border-r border-gray-200">Territory</TableHead>
-                      <TableHead className="px-2 py-1.5 text-[10px] font-semibold text-gray-600 uppercase tracking-wider border-r border-gray-200">Contact</TableHead>
-                      <TableHead className="px-2 py-1.5 text-[10px] font-semibold text-gray-600 uppercase tracking-wider border-r border-gray-200">Phone</TableHead>
-                      <TableHead className="px-2 py-1.5 text-[10px] font-semibold text-gray-600 uppercase tracking-wider border-r border-gray-200">Priority</TableHead>
-                      <TableHead className="px-2 py-1.5 text-[10px] font-semibold text-gray-600 uppercase tracking-wider border-r border-gray-200">Booked Amt</TableHead>
-                      <TableHead className="px-2 py-1.5 text-[10px] font-semibold text-gray-600 uppercase tracking-wider border-r border-gray-200">Last Visit</TableHead>
-                      <TableHead className="px-2 py-1.5 text-[10px] font-semibold text-gray-600 uppercase tracking-wider border-r border-gray-200">Visited By</TableHead>
-                      <TableHead className="px-2 py-1.5 text-[10px] font-semibold text-gray-600 uppercase tracking-wider border-r border-gray-200">Outcome</TableHead>
-                      <TableHead className="px-2 py-1.5 text-[10px] font-semibold text-gray-600 uppercase tracking-wider border-r border-gray-200">Next Visit</TableHead>
-                      <TableHead className="px-2 py-1.5 text-[10px] font-semibold text-gray-600 uppercase tracking-wider text-center">Actions</TableHead>
+                      <TableHead className="px-2 py-2 text-xs font-semibold text-gray-500 uppercase tracking-wider border-r border-gray-200 w-8">#</TableHead>
+                      <TableHead className="px-3 py-2 text-xs font-semibold text-gray-500 uppercase tracking-wider border-r border-gray-200">Dealer</TableHead>
+                      <TableHead className="px-2 py-2 text-xs font-semibold text-gray-500 uppercase tracking-wider border-r border-gray-200 w-10 text-center">Addr</TableHead>
+                      <TableHead className="px-3 py-2 text-xs font-semibold text-gray-500 uppercase tracking-wider border-r border-gray-200">Type</TableHead>
+                      <TableHead className="px-3 py-2 text-xs font-semibold text-gray-500 uppercase tracking-wider border-r border-gray-200">Territory</TableHead>
+                      <TableHead className="px-3 py-2 text-xs font-semibold text-gray-500 uppercase tracking-wider border-r border-gray-200">Contact</TableHead>
+                      <TableHead className="px-3 py-2 text-xs font-semibold text-gray-500 uppercase tracking-wider border-r border-gray-200">Phone</TableHead>
+                      <TableHead className="px-3 py-2 text-xs font-semibold text-gray-500 uppercase tracking-wider border-r border-gray-200">Priority</TableHead>
+                      <TableHead className="px-3 py-2 text-xs font-semibold text-gray-500 uppercase tracking-wider border-r border-gray-200">Booked Amt</TableHead>
+                      <TableHead className="px-3 py-2 text-xs font-semibold text-gray-500 uppercase tracking-wider border-r border-gray-200">Last Visit</TableHead>
+                      <TableHead className="px-3 py-2 text-xs font-semibold text-gray-500 uppercase tracking-wider border-r border-gray-200">Visited By</TableHead>
+                      <TableHead className="px-3 py-2 text-xs font-semibold text-gray-500 uppercase tracking-wider border-r border-gray-200">Outcome</TableHead>
+                      <TableHead className="px-3 py-2 text-xs font-semibold text-gray-500 uppercase tracking-wider border-r border-gray-200">Next Visit</TableHead>
+                      <TableHead className="px-2 py-2 text-xs font-semibold text-gray-500 uppercase tracking-wider text-center">Actions</TableHead>
                     </TableRow>
                   </TableHeader>
                   <TableBody className="divide-y divide-gray-100 dark:divide-gray-800">
@@ -415,67 +415,65 @@ const filteredDealers = dealers.filter(d => {
 
                       return (
                       <TableRow key={dealer.id} className="border-b border-gray-100 hover:bg-gray-50 transition-colors">
-                        <TableCell className="px-2 py-1.5 border-r border-gray-100 text-xs font-semibold text-gray-900 w-8 text-center">{idx + 1}</TableCell>
-                        <TableCell className="px-2 py-1.5 border-r border-gray-100">
-                          <p className="text-[11px] font-medium text-gray-800" title={dealerName.full}>{dealerName.display}</p>
+                        <TableCell className="px-2 py-2 border-r border-gray-100 text-xs font-semibold text-gray-600 w-8 text-center">{idx + 1}</TableCell>
+                        <TableCell className="px-3 py-2 border-r border-gray-100">
+                          <p className="text-xs font-semibold text-gray-900" title={dealerName.full}>{dealerName.display}</p>
                         </TableCell>
-                        <TableCell className="px-2 py-1.5 border-r border-gray-100 w-10 text-center">
+                        <TableCell className="px-2 py-2 border-r border-gray-100 w-10 text-center">
                           <button title={dealer.address || 'No address'} className="text-gray-400 hover:text-primary-600 transition-colors cursor-help inline-flex">
                             <MapPin size={14} weight="fill" />
                           </button>
                         </TableCell>
-                        <TableCell className="px-2 py-1.5 text-[11px] font-medium text-gray-900 border-r border-gray-100">{dealer.dealer_type}</TableCell>
-                        <TableCell className="px-2 py-1.5 text-[11px] font-medium text-gray-900 border-r border-gray-100">{getTerritoryName(dealer.territory_id)}</TableCell>
-                        <TableCell className="px-2 py-1.5 text-[11px] font-medium text-gray-900 border-r border-gray-100" title={contactPerson.full}>{contactPerson.display}</TableCell>
-                        <TableCell className="px-2 py-1.5 font-mono text-[11px] font-medium text-gray-900 border-r border-gray-100 whitespace-nowrap">{dealer.phone || '–'}</TableCell>
-                        <TableCell className="px-2 py-1.5">
-                          <Badge className={`text-[10px] px-1.5 py-0 ${
-                            dealer.priority_level === 1 ? 'priority-high' :
-                            dealer.priority_level === 2 ? 'priority-medium' : 'priority-low'
+                        <TableCell className="px-3 py-2 text-xs text-gray-700 border-r border-gray-100">{dealer.dealer_type}</TableCell>
+                        <TableCell className="px-3 py-2 text-xs text-gray-700 border-r border-gray-100">{getTerritoryName(dealer.territory_id)}</TableCell>
+                        <TableCell className="px-3 py-2 text-xs text-gray-700 border-r border-gray-100" title={contactPerson.full}>{contactPerson.display}</TableCell>
+                        <TableCell className="px-3 py-2 font-mono text-xs text-gray-700 border-r border-gray-100 whitespace-nowrap">{dealer.phone || '–'}</TableCell>
+                        <TableCell className="px-3 py-2 border-r border-gray-100">
+                          <span className={`text-xs font-semibold ${
+                            dealer.priority_level === 1 ? 'text-red-600' :
+                            dealer.priority_level === 2 ? 'text-amber-600' : 'text-slate-500'
                           }`}>
                             {dealer.priority_level === 1 ? 'High' : dealer.priority_level === 2 ? 'Medium' : 'Low'}
-                          </Badge>
+                          </span>
                         </TableCell>
-                        <TableCell className="px-2 py-1.5">
+                        <TableCell className="px-3 py-2 border-r border-gray-100">
                           {dealer.total_booked_amount > 0 ? (
-                            <span className="text-[11px] font-bold text-emerald-600">
+                            <span className="text-xs font-bold text-emerald-600">
                               ₹{dealer.total_booked_amount.toLocaleString('en-IN')}
                             </span>
                           ) : (
-                            <span className="text-[11px] text-gray-400">₹0</span>
+                            <span className="text-xs text-gray-400">₹0</span>
                           )}
                         </TableCell>
-                        <TableCell className="px-2 py-1.5 font-mono text-[11px] font-medium text-gray-900 border-r border-gray-100 whitespace-nowrap">
+                        <TableCell className="px-3 py-2 font-mono text-xs text-gray-700 border-r border-gray-100 whitespace-nowrap">
                           {dealer.last_visit_date ? formatDateDDMmmYYYY(dealer.last_visit_date) : 'Never'}
                         </TableCell>
-                        <TableCell className="px-2 py-1.5 text-[11px] font-medium text-gray-900 border-r border-gray-100" title={visitedBy.full}>
+                        <TableCell className="px-3 py-2 text-xs text-gray-700 border-r border-gray-100" title={visitedBy.full}>
                           {visitedBy.display}
                         </TableCell>
-                        <TableCell className="px-2 py-1.5">
-                          <div className="flex items-center gap-1.5">
-                            {dealer.last_outcome ? (
-                              dealer.last_outcome === 'Order Booked' ? (
-                                <Badge 
-                                  className="text-[10px] px-1.5 py-0 bg-emerald-100 text-emerald-700 cursor-pointer hover:bg-emerald-200 transition-colors"
-                                  onClick={() => setOrderDialogDealer(dealer)}
-                                >
-                                  {dealer.last_outcome}
-                                </Badge>
-                              ) : (
-                                <Badge className={`text-[10px] px-1.5 py-0 ${
-                                  dealer.last_outcome === 'Follow-up Required' ? 'bg-amber-100 text-amber-700' :
-                                  dealer.last_outcome === 'Lost Visit' ? 'bg-red-100 text-red-700' :
-                                  'bg-slate-100 text-slate-600'
-                                }`}>
-                                  {dealer.last_outcome}
-                                </Badge>
-                              )
+                        <TableCell className="px-3 py-2 border-r border-gray-100">
+                          {dealer.last_outcome ? (
+                            dealer.last_outcome === 'Order Booked' ? (
+                              <span
+                                className="text-xs font-semibold text-emerald-600 cursor-pointer hover:text-emerald-700 underline underline-offset-2"
+                                onClick={() => setOrderDialogDealer(dealer)}
+                              >
+                                {dealer.last_outcome}
+                              </span>
                             ) : (
-                              <span className="text-[11px] text-gray-400">–</span>
-                            )}
-                          </div>
+                              <span className={`text-xs font-semibold ${
+                                dealer.last_outcome === 'Follow-up Required' ? 'text-amber-600' :
+                                dealer.last_outcome === 'Lost Visit' ? 'text-red-600' :
+                                'text-slate-500'
+                              }`}>
+                                {dealer.last_outcome}
+                              </span>
+                            )
+                          ) : (
+                            <span className="text-xs text-gray-400">–</span>
+                          )}
                         </TableCell>
-                        <TableCell className="px-2 py-1.5 font-mono text-[11px] font-medium text-gray-900 whitespace-nowrap">
+                        <TableCell className="px-3 py-2 font-mono text-xs text-gray-700 border-r border-gray-100 whitespace-nowrap">
                           {dealer.next_visit_date ? formatDateDDMmmYYYY(dealer.next_visit_date) : '–'}
                         </TableCell>
                         <TableCell className="px-2 py-1.5">

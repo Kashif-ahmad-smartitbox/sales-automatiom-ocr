@@ -374,18 +374,18 @@ const FollowupDealers = () => {
             <table className="w-full border-collapse">
               <thead className="bg-gray-50">
                 <tr className="border-y border-gray-200">
-                  <th className="px-2 py-1.5 text-left text-[10px] font-semibold text-gray-600 uppercase tracking-wider border-r border-gray-200 w-8">#</th>
-                  <th className="px-2 py-1.5 text-left text-[10px] font-semibold text-gray-600 uppercase tracking-wider border-r border-gray-200">Dealer Name</th>
-                  <th className="px-2 py-1.5 text-left text-[10px] font-semibold text-gray-600 uppercase tracking-wider border-r border-gray-200">Contact Info</th>
-                  <th className="px-2 py-1.5 text-left text-[10px] font-semibold text-gray-600 uppercase tracking-wider border-r border-gray-200">Location</th>
-                  <th className="px-2 py-1.5 text-left text-[10px] font-semibold text-gray-600 uppercase tracking-wider border-r border-gray-200">Last Visit</th>
-                  <th className="px-2 py-1.5 text-left text-[10px] font-semibold text-gray-600 uppercase tracking-wider border-r border-gray-200">Next Visit Date</th>
-                  <th className="px-2 py-1.5 text-center text-[10px] font-semibold text-gray-600 uppercase tracking-wider border-r border-gray-200">Status</th>
-                  <th className="px-2 py-1.5 text-left text-[10px] font-semibold text-gray-600 uppercase tracking-wider border-r border-gray-200">Last Outcome</th>
+                  <th className="px-2 py-2 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider border-r border-gray-200 w-8">#</th>
+                  <th className="px-3 py-2 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider border-r border-gray-200">Dealer Name</th>
+                  <th className="px-3 py-2 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider border-r border-gray-200">Contact Info</th>
+                  <th className="px-3 py-2 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider border-r border-gray-200">Location</th>
+                  <th className="px-3 py-2 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider border-r border-gray-200">Last Visit</th>
+                  <th className="px-3 py-2 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider border-r border-gray-200">Next Visit Date</th>
+                  <th className="px-2 py-2 text-center text-xs font-semibold text-gray-500 uppercase tracking-wider border-r border-gray-200">Status</th>
+                  <th className="px-3 py-2 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider border-r border-gray-200">Last Outcome</th>
                   {showExecutiveColumn && (
-                    <th className="px-2 py-1.5 text-left text-[10px] font-semibold text-gray-600 uppercase tracking-wider border-r border-gray-200">Executive</th>
+                    <th className="px-3 py-2 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider border-r border-gray-200">Executive</th>
                   )}
-                  <th className="px-2 py-1.5 text-center text-[10px] font-semibold text-gray-600 uppercase tracking-wider">Actions</th>
+                  <th className="px-2 py-2 text-center text-xs font-semibold text-gray-500 uppercase tracking-wider">Actions</th>
                 </tr>
               </thead>
               <tbody>
@@ -410,15 +410,15 @@ const FollowupDealers = () => {
                     const cityName = getTruncatedText(dealer.city || '', 14);
 
                     return (
-                    <tr key={dealer.id} className={`border-b border-gray-100 hover:bg-gray-50 transition-colors ${dealer.followup_status === 'overdue' ? 'bg-red-50/40' : ''}`}>
-                      <td className="px-2 py-1.5 border-r border-gray-100 text-xs font-semibold text-gray-900 w-8">{idx + 1}</td>
-                      <td className="px-2 py-1.5 border-r border-gray-100">
+                    <tr key={dealer.id} className={`border-b border-gray-100 hover:bg-gray-50 transition-colors ${dealer.followup_status === 'overdue' ? 'bg-red-50/30' : ''}`}>
+                      <td className="px-2 py-2 border-r border-gray-100 text-xs font-semibold text-gray-600 w-8">{idx + 1}</td>
+                      <td className="px-3 py-2 border-r border-gray-100">
                           <div className="font-semibold text-xs text-gray-900" title={dealerName.full}>{dealerName.display}</div>
                         <div className="text-[10px] text-gray-400 mt-0.5">
                           {dealer.dealer_type} • Priority {dealer.priority_level}
                         </div>
                       </td>
-                      <td className="px-2 py-1.5 border-r border-gray-100">
+                      <td className="px-3 py-2 border-r border-gray-100">
                         {dealer.contact_person && (
                           <div className="flex items-center gap-1.5 text-[11px] font-medium text-gray-900">
                             <User size={12} className="text-gray-400" />
@@ -477,21 +477,24 @@ const FollowupDealers = () => {
                           {getDaysUntilText(dealer.days_until_visit, dealer.followup_status)}
                         </div>
                       </td>
-                      <td className="text-center">
-                        {getStatusBadge(dealer.followup_status)}
+                      <td className="px-2 py-2 text-center">
+                        <span className={`text-xs font-semibold ${
+                          dealer.followup_status === 'overdue' ? 'text-red-600' :
+                          dealer.followup_status === 'today' ? 'text-orange-600' :
+                          'text-blue-600'
+                        }`}>
+                          {dealer.followup_status ? dealer.followup_status.charAt(0).toUpperCase() + dealer.followup_status.slice(1) : ''}
+                        </span>
                       </td>
-                      <td>
+                      <td className="px-3 py-2 border-r border-gray-100">
                         {dealer.last_outcome ? (
-                          <Badge 
-                            variant="outline" 
-                            className={`text-[10px] px-1.5 py-0 ${
-                              dealer.last_outcome === 'Order Booked' ? 'bg-green-50 text-green-700 border-green-200' :
-                              dealer.last_outcome === 'Follow-up Required' ? 'bg-yellow-50 text-yellow-700 border-yellow-200' :
-                              'bg-gray-50 text-gray-700 border-gray-200'
-                            }`}
-                          >
+                          <span className={`text-xs font-semibold ${
+                            dealer.last_outcome === 'Order Booked' ? 'text-emerald-600' :
+                            dealer.last_outcome === 'Follow-up Required' ? 'text-amber-600' :
+                            'text-slate-500'
+                          }`}>
                             {dealer.last_outcome}
-                          </Badge>
+                          </span>
                         ) : (
                           <span className="text-xs text-gray-400">No previous outcome</span>
                         )}

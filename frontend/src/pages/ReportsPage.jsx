@@ -363,13 +363,13 @@ const ReportsPage = () => {
                     <table className="w-full border-collapse">
                       <thead>
                         <tr className="border-y border-gray-200 bg-gray-50">
-                          <th className="text-left px-2 py-1.5 text-[10px] font-semibold text-gray-600 uppercase tracking-wider border-r border-gray-200 w-8">#</th>
-                          <th className="text-left px-2 py-1.5 text-[10px] font-semibold text-gray-600 uppercase tracking-wider border-r border-gray-200">Executive</th>
-                          <th className="text-center px-2 py-1.5 text-[10px] font-semibold text-gray-600 uppercase tracking-wider border-r border-gray-200">Total Visits</th>
-                          <th className="text-center px-2 py-1.5 text-[10px] font-semibold text-gray-600 uppercase tracking-wider border-r border-gray-200">Completed</th>
-                          <th className="text-right px-2 py-1.5 text-[10px] font-semibold text-gray-600 uppercase tracking-wider border-r border-gray-200">Orders Value</th>
-                          <th className="text-center px-2 py-1.5 text-[10px] font-semibold text-gray-600 uppercase tracking-wider border-r border-gray-200">Avg Time/Visit</th>
-                          <th className="text-center px-2 py-1.5 text-[10px] font-semibold text-gray-600 uppercase tracking-wider">Status</th>
+                          <th className="text-left px-2 py-2 text-xs font-semibold text-gray-500 uppercase tracking-wider border-r border-gray-200 w-8">#</th>
+                          <th className="text-left px-2 py-2 text-xs font-semibold text-gray-500 uppercase tracking-wider border-r border-gray-200">Executive</th>
+                          <th className="text-center px-2 py-2 text-xs font-semibold text-gray-500 uppercase tracking-wider border-r border-gray-200">Total Visits</th>
+                          <th className="text-center px-2 py-2 text-xs font-semibold text-gray-500 uppercase tracking-wider border-r border-gray-200">Completed</th>
+                          <th className="text-right px-2 py-2 text-xs font-semibold text-gray-500 uppercase tracking-wider border-r border-gray-200">Orders Value</th>
+                          <th className="text-center px-2 py-2 text-xs font-semibold text-gray-500 uppercase tracking-wider border-r border-gray-200">Avg Time/Visit</th>
+                          <th className="text-center px-2 py-2 text-xs font-semibold text-gray-500 uppercase tracking-wider">Status</th>
                         </tr>
                       </thead>
                       <tbody>
@@ -379,21 +379,23 @@ const ReportsPage = () => {
                           
                           return (
                             <tr key={exec.id} className="border-b border-gray-100 hover:bg-gray-50 transition-colors">
-                              <td className="px-2 py-1.5 border-r border-gray-100 text-xs font-medium text-gray-600 w-8">{idx + 1}</td>
-                              <td className="px-2 py-1.5 border-r border-gray-100">
+                              <td className="px-2 py-2 border-r border-gray-100 text-xs font-medium text-gray-600 w-8">{idx + 1}</td>
+                              <td className="px-3 py-2 border-r border-gray-100">
                                 <div>
-                                  <p className="font-medium text-[11px] text-gray-800" title={execName.full}>{execName.display}</p>
+                                  <p className="font-semibold text-xs text-gray-900" title={execName.full}>{execName.display}</p>
                                   <p className="text-[10px] text-gray-500 font-mono" title={execCode.full}>{execCode.display}</p>
                                 </div>
                               </td>
-                              <td className="font-mono text-[11px] text-center border-r border-gray-100">{exec.total_visits}</td>
-                              <td className="font-mono text-[11px] text-center border-r border-gray-100">{exec.completed_visits}</td>
-                              <td className="font-mono text-[11px] font-medium text-primary-600 text-right border-r border-gray-100">₹{exec.total_orders.toLocaleString()}</td>
-                              <td className="font-mono text-[11px] text-center border-r border-gray-100">{exec.avg_time_per_visit} min</td>
-                              <td className="px-2 py-1.5 text-center">
-                                <Badge className={exec.is_in_market ? 'status-active' : 'status-offline'}>
+                              <td className="font-mono text-xs font-semibold text-center border-r border-gray-100">{exec.total_visits}</td>
+                              <td className="font-mono text-xs text-center border-r border-gray-100">{exec.completed_visits}</td>
+                              <td className="font-mono text-xs font-bold text-primary-600 text-right border-r border-gray-100">₹{exec.total_orders.toLocaleString()}</td>
+                              <td className="font-mono text-xs text-center border-r border-gray-100">{exec.avg_time_per_visit} min</td>
+                              <td className="px-2 py-2 text-center">
+                                <span className={`text-xs font-semibold ${
+                                  exec.is_in_market ? 'text-emerald-600' : 'text-slate-400'
+                                }`}>
                                   {exec.is_in_market ? 'In Field' : 'Offline'}
-                                </Badge>
+                                </span>
                               </td>
                             </tr>
                           );
@@ -421,17 +423,17 @@ const ReportsPage = () => {
                       <table className="w-full border-collapse text-left">
                         <thead>
                           <tr className="border-y border-gray-200 bg-gray-50">
-                            <th className="text-[10px] text-gray-600 uppercase tracking-wider font-semibold px-2 py-1.5 border-r border-gray-200 w-8">#</th>
-                            <th className="text-[10px] text-gray-600 uppercase tracking-wider font-semibold px-2 py-1.5 border-r border-gray-200">Date</th>
-                            <th className="text-[10px] text-gray-600 uppercase tracking-wider font-semibold px-2 py-1.5 border-r border-gray-200">User</th>
-                            <th className="text-[10px] text-gray-600 uppercase tracking-wider font-semibold px-2 py-1.5 border-r border-gray-200">Dealer</th>
-                            <th className="text-[10px] text-gray-600 uppercase tracking-wider font-semibold px-2 py-1.5 border-r border-gray-200">Contact</th>
-                            <th className="text-[10px] text-gray-600 uppercase tracking-wider font-semibold px-2 py-1.5 border-r border-gray-200">Phone</th>
-                            <th className="text-[10px] text-gray-600 uppercase tracking-wider font-semibold px-2 py-1.5 border-r border-gray-200">Check-in</th>
-                            <th className="text-[10px] text-gray-600 uppercase tracking-wider font-semibold px-2 py-1.5 text-center border-r border-gray-200">Duration</th>
-                            <th className="text-[10px] text-gray-600 uppercase tracking-wider font-semibold px-2 py-1.5 border-r border-gray-200">Outcome</th>
-                            <th className="text-[10px] text-gray-600 uppercase tracking-wider font-semibold px-2 py-1.5 text-right border-r border-gray-200">Order Value</th>
-                            <th className="text-[10px] text-gray-600 uppercase tracking-wider font-semibold px-2 py-1.5 text-center">Items</th>
+                            <th className="text-[10px] text-gray-500 uppercase tracking-wider font-semibold px-2 py-2 border-r border-gray-200 w-8">#</th>
+                            <th className="text-xs text-gray-500 uppercase tracking-wider font-semibold px-3 py-2 border-r border-gray-200">Date</th>
+                            <th className="text-xs text-gray-500 uppercase tracking-wider font-semibold px-3 py-2 border-r border-gray-200">User</th>
+                            <th className="text-xs text-gray-500 uppercase tracking-wider font-semibold px-3 py-2 border-r border-gray-200">Dealer</th>
+                            <th className="text-xs text-gray-500 uppercase tracking-wider font-semibold px-3 py-2 border-r border-gray-200">Contact</th>
+                            <th className="text-xs text-gray-500 uppercase tracking-wider font-semibold px-3 py-2 border-r border-gray-200">Phone</th>
+                            <th className="text-xs text-gray-500 uppercase tracking-wider font-semibold px-3 py-2 border-r border-gray-200">Check-in</th>
+                            <th className="text-xs text-gray-500 uppercase tracking-wider font-semibold px-2 py-2 text-center border-r border-gray-200">Duration</th>
+                            <th className="text-xs text-gray-500 uppercase tracking-wider font-semibold px-3 py-2 border-r border-gray-200">Outcome</th>
+                            <th className="text-xs text-gray-500 uppercase tracking-wider font-semibold px-3 py-2 text-right border-r border-gray-200">Order Value</th>
+                            <th className="text-xs text-gray-500 uppercase tracking-wider font-semibold px-2 py-2 text-center">Items</th>
                           </tr>
                         </thead>
                         <tbody>
@@ -442,26 +444,26 @@ const ReportsPage = () => {
                             
                             return (
                               <tr key={visit.id} className="border-b border-gray-100 hover:bg-gray-50 transition-colors">
-                                <td className="px-2 py-1.5 border-r border-gray-100 text-xs font-medium text-gray-600 w-8">{((visitsPage - 1) * 15) + idx + 1}</td>
-                                <td className="px-2 py-1.5 font-mono text-[11px] text-gray-600 whitespace-nowrap border-r border-gray-100">{formatDateDDMmmYYYY(visit.check_in_time)}</td>
-                                <td className="px-2 py-1.5 text-xs text-gray-700 border-r border-gray-100" title={userName.full}>{userName.display}</td>
-                                <td className="px-2 py-1.5 text-xs font-medium text-gray-800 border-r border-gray-100" title={dealerName.full}>{dealerName.display}</td>
-                                <td className="px-2 py-1.5 text-[11px] text-gray-600 border-r border-gray-100" title={contactName.full}>{contactName.display}</td>
-                                <td className="px-2 py-1.5 font-mono text-[11px] text-gray-600 whitespace-nowrap border-r border-gray-100">{visit.contact_phone || '–'}</td>
-                                <td className="px-2 py-1.5 font-mono text-[11px] text-gray-600 whitespace-nowrap border-r border-gray-100">{new Date(visit.check_in_time).toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'})}</td>
-                                <td className="px-2 py-1.5 font-mono text-[11px] text-gray-600 text-center border-r border-gray-100">{visit.time_spent_minutes ? `${Math.round(visit.time_spent_minutes)}m` : '–'}</td>
-                                <td className="px-2 py-1.5 border-r border-gray-100">
-                                  <Badge className={`text-[10px] px-1.5 py-0 ${
-                                    visit.outcome === 'Order Booked' ? 'bg-emerald-100 text-emerald-700' :
-                                    visit.outcome === 'Follow-up Required' ? 'bg-amber-100 text-amber-700' :
-                                    visit.outcome === 'Lost Visit' ? 'bg-red-100 text-red-700' :
-                                    'bg-slate-100 text-slate-700'
+                                <td className="px-2 py-2 border-r border-gray-100 text-xs font-medium text-gray-600 w-8">{((visitsPage - 1) * 15) + idx + 1}</td>
+                                <td className="px-3 py-2 font-mono text-xs text-gray-700 whitespace-nowrap border-r border-gray-100">{formatDateDDMmmYYYY(visit.check_in_time)}</td>
+                                <td className="px-3 py-2 text-xs text-gray-800 border-r border-gray-100" title={userName.full}>{userName.display}</td>
+                                <td className="px-3 py-2 text-xs font-semibold text-gray-900 border-r border-gray-100" title={dealerName.full}>{dealerName.display}</td>
+                                <td className="px-3 py-2 text-xs text-gray-700 border-r border-gray-100" title={contactName.full}>{contactName.display}</td>
+                                <td className="px-3 py-2 font-mono text-xs text-gray-700 whitespace-nowrap border-r border-gray-100">{visit.contact_phone || '–'}</td>
+                                <td className="px-3 py-2 font-mono text-xs text-gray-700 whitespace-nowrap border-r border-gray-100">{new Date(visit.check_in_time).toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'})}</td>
+                                <td className="px-2 py-2 font-mono text-xs text-gray-600 text-center border-r border-gray-100">{visit.time_spent_minutes ? `${Math.round(visit.time_spent_minutes)}m` : '–'}</td>
+                                <td className="px-3 py-2 border-r border-gray-100">
+                                  <span className={`text-xs font-semibold ${
+                                    visit.outcome === 'Order Booked' ? 'text-emerald-600' :
+                                    visit.outcome === 'Follow-up Required' ? 'text-amber-600' :
+                                    visit.outcome === 'Lost Visit' ? 'text-red-600' :
+                                    'text-slate-500'
                                   }`}>
                                     {visit.outcome || 'In Progress'}
-                                  </Badge>
+                                  </span>
                                 </td>
-                                <td className="px-2 py-1.5 font-mono text-[11px] font-medium text-primary-600 text-right border-r border-gray-100">{visit.order_value ? `₹${visit.order_value.toLocaleString()}` : '–'}</td>
-                                <td className="px-2 py-1.5 text-center">
+                                <td className="px-3 py-2 font-mono text-xs font-bold text-primary-600 text-right border-r border-gray-100">{visit.order_value ? `₹${visit.order_value.toLocaleString()}` : '–'}</td>
+                                <td className="px-2 py-2 text-center">
                                   <OrderItemsView visit={visit} />
                                 </td>
                               </tr>
@@ -500,7 +502,7 @@ const ReportsPage = () => {
                       <table className="w-full border-collapse text-left">
                         <thead>
                           <tr className="border-y border-gray-200 bg-gray-50">
-                            <th className="text-[10px] text-gray-600 uppercase tracking-wider font-semibold px-2 py-1.5 border-r border-gray-200 w-8">#</th>
+                            <th className="text-xs text-gray-500 uppercase tracking-wider font-semibold px-2 py-2 border-r border-gray-200 w-8">#</th>
                             <th className="text-[10px] text-gray-600 uppercase tracking-wider font-semibold px-2 py-1.5 border-r border-gray-200">Date</th>
                             <th className="text-[10px] text-gray-600 uppercase tracking-wider font-semibold px-2 py-1.5 border-r border-gray-200">Dealer</th>
                             <th className="text-[10px] text-gray-600 uppercase tracking-wider font-semibold px-2 py-1.5">Notes</th>
@@ -513,10 +515,10 @@ const ReportsPage = () => {
                             
                             return (
                               <tr key={visit.id} className="border-b border-gray-100 hover:bg-gray-50 transition-colors">
-                                <td className="px-2 py-1.5 border-r border-gray-100 text-xs font-medium text-gray-600 w-8">{((lostPage - 1) * 15) + idx + 1}</td>
-                                <td className="px-2 py-1.5 font-mono text-[11px] text-gray-600 whitespace-nowrap border-r border-gray-100">{formatDateDDMmmYYYY(visit.check_in_time)}</td>
-                                <td className="px-2 py-1.5 text-xs font-medium text-gray-800 border-r border-gray-100" title={dealerName.full}>{dealerName.display}</td>
-                                <td className="px-2 py-1.5 text-xs text-gray-500" title={notes.full}>{notes.display}</td>
+                                <td className="px-2 py-2 border-r border-gray-100 text-xs font-medium text-gray-600 w-8">{((lostPage - 1) * 15) + idx + 1}</td>
+                                <td className="px-3 py-2 font-mono text-xs text-gray-700 whitespace-nowrap border-r border-gray-100">{formatDateDDMmmYYYY(visit.check_in_time)}</td>
+                                <td className="px-3 py-2 text-xs font-semibold text-gray-900 border-r border-gray-100" title={dealerName.full}>{dealerName.display}</td>
+                                <td className="px-3 py-2 text-xs text-gray-600" title={notes.full}>{notes.display}</td>
                               </tr>
                             );
                           })}
@@ -563,20 +565,20 @@ const ReportsPage = () => {
                             
                             return (
                               <tr key={session.id} className="border-b border-gray-100 hover:bg-gray-50 transition-colors">
-                                <td className="px-2 py-1.5 border-r border-gray-100 text-xs font-medium text-gray-600 w-8">{((sessionsPage - 1) * 15) + idx + 1}</td>
-                                <td className="px-2 py-1.5 text-xs font-medium text-gray-800 border-r border-gray-100" title={userName.full}>{userName.display}</td>
-                                <td className="px-2 py-1.5 font-mono text-[11px] text-gray-600 whitespace-nowrap border-r border-gray-100">{formatDateDDMmmYYYY(session.start_time)}</td>
-                                <td className="px-2 py-1.5 font-mono text-[11px] text-gray-600 whitespace-nowrap border-r border-gray-100">{new Date(session.start_time).toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'})}</td>
-                                <td className="px-2 py-1.5 border-r border-gray-100">
-                                  <Badge className={`text-[10px] px-1.5 py-0 ${session.end_time ? 'bg-slate-100 text-slate-600' : 'bg-emerald-100 text-emerald-700'}`}>
+                                <td className="px-2 py-2 border-r border-gray-100 text-xs font-medium text-gray-600 w-8">{((sessionsPage - 1) * 15) + idx + 1}</td>
+                                <td className="px-3 py-2 text-xs font-semibold text-gray-900 border-r border-gray-100" title={userName.full}>{userName.display}</td>
+                                <td className="px-3 py-2 font-mono text-xs text-gray-700 whitespace-nowrap border-r border-gray-100">{formatDateDDMmmYYYY(session.start_time)}</td>
+                                <td className="px-3 py-2 font-mono text-xs text-gray-700 whitespace-nowrap border-r border-gray-100">{new Date(session.start_time).toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'})}</td>
+                                <td className="px-3 py-2 border-r border-gray-100">
+                                  <span className={`text-xs font-semibold ${session.end_time ? 'text-slate-500' : 'text-emerald-600'}`}>
                                     {session.end_time ? 'Done' : 'Active'}
-                                  </Badge>
+                                  </span>
                                 </td>
-                                <td className="px-2 py-1.5 font-mono text-[11px] text-gray-600 text-center border-r border-gray-100">{formatDuration(session.start_time, session.end_time)}</td>
-                                <td className="px-2 py-1.5 font-mono text-[11px] text-gray-600 text-center border-r border-gray-100">{session.total_distance ? `${(session.total_distance / 1000).toFixed(1)} km` : '–'}</td>
-                                <td className="px-2 py-1.5 font-mono text-[11px] font-bold text-slate-700 text-center border-r border-gray-100">{session.potential_visits_count || 0}</td>
-                                <td className="px-2 py-1.5 font-mono text-[11px] font-bold text-emerald-700 text-center border-r border-gray-100">{session.visits_completed || 0}</td>
-                                <td className="px-2 py-1.5 font-mono text-[11px] font-bold text-red-600 text-center border-r border-gray-100">{session.calculated_lost_visits || 0}</td>
+                                <td className="px-2 py-2 font-mono text-xs text-gray-700 text-center border-r border-gray-100">{formatDuration(session.start_time, session.end_time)}</td>
+                                <td className="px-2 py-2 font-mono text-xs text-gray-700 text-center border-r border-gray-100">{session.total_distance ? `${(session.total_distance / 1000).toFixed(1)} km` : '–'}</td>
+                                <td className="px-2 py-2 font-mono text-xs font-bold text-slate-700 text-center border-r border-gray-100">{session.potential_visits_count || 0}</td>
+                                <td className="px-2 py-2 font-mono text-xs font-bold text-emerald-600 text-center border-r border-gray-100">{session.visits_completed || 0}</td>
+                                <td className="px-2 py-2 font-mono text-xs font-bold text-red-600 text-center border-r border-gray-100">{session.calculated_lost_visits || 0}</td>
                                 <td className="px-2 py-1.5 text-right">
                                   <Button 
                                     variant="ghost" 
@@ -622,10 +624,10 @@ const ReportsPage = () => {
                  <table className="w-full border-collapse text-left min-w-[400px]">
                      <thead className="sticky top-0">
                          <tr className="border-y border-gray-200 bg-gray-50">
-                             <th className="px-2 sm:px-4 py-1.5 text-[10px] font-semibold text-gray-600 uppercase tracking-wider border-r border-gray-200">Place/Dealer</th>
-                             <th className="px-2 sm:px-4 py-1.5 text-[10px] font-semibold text-gray-600 uppercase tracking-wider hidden sm:table-cell border-r border-gray-200">Address</th>
-                             <th className="px-2 sm:px-4 py-1.5 text-[10px] font-semibold text-gray-600 uppercase tracking-wider text-center border-r border-gray-200">Status</th>
-                             <th className="px-2 sm:px-4 py-1.5 text-[10px] font-semibold text-gray-600 uppercase tracking-wider text-right">Time Shown</th>
+                             <th className="px-2 sm:px-4 py-2 text-xs font-semibold text-gray-500 uppercase tracking-wider border-r border-gray-200">Place/Dealer</th>
+                             <th className="px-2 sm:px-4 py-2 text-xs font-semibold text-gray-500 uppercase tracking-wider hidden sm:table-cell border-r border-gray-200">Address</th>
+                             <th className="px-2 sm:px-4 py-2 text-xs font-semibold text-gray-500 uppercase tracking-wider text-center border-r border-gray-200">Status</th>
+                             <th className="px-2 sm:px-4 py-2 text-xs font-semibold text-gray-500 uppercase tracking-wider text-right">Time Shown</th>
                          </tr>
                      </thead>
                      <tbody>

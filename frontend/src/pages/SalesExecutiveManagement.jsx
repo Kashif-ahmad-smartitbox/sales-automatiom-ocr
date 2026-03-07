@@ -438,14 +438,14 @@ const SalesExecutiveManagement = () => {
                 <table className="w-full border-collapse">
                   <thead>
                     <tr className="border-y border-gray-200 bg-gray-50">
-                      <th className="text-left px-2 py-1.5 text-[10px] font-semibold text-gray-600 uppercase tracking-wider border-r border-gray-200 w-8">#</th>
-                      <th className="text-left px-2 py-1.5 text-[10px] font-semibold text-gray-600 uppercase tracking-wider border-r border-gray-200">Executive Name</th>
-                      <th className="text-left px-2 py-1.5 text-[10px] font-semibold text-gray-600 uppercase tracking-wider border-r border-gray-200">Employee Code</th>
-                      <th className="text-left px-2 py-1.5 text-[10px] font-semibold text-gray-600 uppercase tracking-wider border-r border-gray-200">Email</th>
-                      <th className="text-left px-2 py-1.5 text-[10px] font-semibold text-gray-600 uppercase tracking-wider border-r border-gray-200">Mobile</th>
-                      <th className="text-left px-2 py-1.5 text-[10px] font-semibold text-gray-600 uppercase tracking-wider border-r border-gray-200">Location/Tracking</th>
-                      <th className="text-center px-2 py-1.5 text-[10px] font-semibold text-gray-600 uppercase tracking-wider border-r border-gray-200">Status</th>
-                      <th className="text-center px-2 py-1.5 text-[10px] font-semibold text-gray-600 uppercase tracking-wider">Actions</th>
+                      <th className="text-left px-2 py-2 text-xs font-semibold text-gray-500 uppercase tracking-wider border-r border-gray-200 w-8">#</th>
+                      <th className="text-left px-3 py-2 text-xs font-semibold text-gray-500 uppercase tracking-wider border-r border-gray-200">Executive Name</th>
+                      <th className="text-left px-3 py-2 text-xs font-semibold text-gray-500 uppercase tracking-wider border-r border-gray-200">Employee Code</th>
+                      <th className="text-left px-3 py-2 text-xs font-semibold text-gray-500 uppercase tracking-wider border-r border-gray-200">Email</th>
+                      <th className="text-left px-3 py-2 text-xs font-semibold text-gray-500 uppercase tracking-wider border-r border-gray-200">Mobile</th>
+                      <th className="text-left px-3 py-2 text-xs font-semibold text-gray-500 uppercase tracking-wider border-r border-gray-200">Location/Tracking</th>
+                      <th className="text-center px-2 py-2 text-xs font-semibold text-gray-500 uppercase tracking-wider border-r border-gray-200">Status</th>
+                      <th className="text-center px-2 py-2 text-xs font-semibold text-gray-500 uppercase tracking-wider">Actions</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -455,30 +455,30 @@ const SalesExecutiveManagement = () => {
                       const emailText = getTruncatedText(exec.email, 20);
                       return (
                         <tr key={exec.id} className="border-b border-gray-100 hover:bg-gray-50 transition-colors" data-testid={`executive-row-${exec.id}`}>
-                          <td className="px-2 py-1.5 border-r border-gray-100 text-xs font-semibold text-gray-900 w-8">{idx + 1}</td>
-                          <td className="px-2 py-1.5 border-r border-gray-100">
+                          <td className="px-2 py-2 border-r border-gray-100 text-xs font-medium text-gray-600 w-8">{idx + 1}</td>
+                          <td className="px-3 py-2 border-r border-gray-100">
                             <div className="flex items-center gap-2">
-                              <div className={`w-8 h-8 rounded-full flex items-center justify-center text-white text-xs font-bold flex-shrink-0 ${
+                              <div className={`w-7 h-7 rounded-full flex items-center justify-center text-white text-xs font-bold flex-shrink-0 ${
                                 status === 'active' ? 'bg-emerald-500' : status === 'idle' ? 'bg-amber-500' : 'bg-slate-400'
                               }`}>
                                 {exec.name.charAt(0)}
                               </div>
-                              <span className="text-[11px] font-semibold text-gray-800" title={nameText.full}>{nameText.display}</span>
+                              <span className="text-xs font-semibold text-gray-900" title={nameText.full}>{nameText.display}</span>
                             </div>
                           </td>
-                          <td className="px-2 py-1.5 text-[11px] font-semibold text-gray-900 font-mono border-r border-gray-100">
+                          <td className="px-3 py-2 text-xs font-semibold text-gray-900 font-mono border-r border-gray-100">
                             {exec.employee_code}
                           </td>
-                          <td className="px-2 py-1.5 text-[11px] font-medium text-gray-900 border-r border-gray-100" title={emailText.full}>
+                          <td className="px-3 py-2 text-xs text-gray-700 border-r border-gray-100" title={emailText.full}>
                             {emailText.display}
                           </td>
-                          <td className="px-2 py-1.5 text-[11px] font-medium text-gray-900 border-r border-gray-100">
+                          <td className="px-3 py-2 text-xs text-gray-700 border-r border-gray-100">
                             <div className="flex items-center gap-1.5">
                               <Phone size={12} className="text-gray-400" />
                               <span>{exec.mobile}</span>
                             </div>
                           </td>
-                          <td className="px-2 py-1.5 text-[11px] font-medium text-gray-900 border-r border-gray-100">
+                          <td className="px-3 py-2 text-xs text-gray-700 border-r border-gray-100">
                             <div className="flex items-center gap-1.5">
                               {exec.is_live_tracking ? (
                                 <>
@@ -493,12 +493,12 @@ const SalesExecutiveManagement = () => {
                               )}
                             </div>
                           </td>
-                          <td className="px-2 py-1.5 text-center border-r border-gray-100">
-                            <Badge className={
-                              status === 'active' ? 'status-active' : status === 'idle' ? 'status-idle' : 'status-offline'
-                            }>
-                              {status}
-                            </Badge>
+                          <td className="px-2 py-2 text-center border-r border-gray-100">
+                            <span className={`text-xs font-semibold ${
+                              status === 'active' ? 'text-emerald-600' : status === 'idle' ? 'text-amber-600' : 'text-slate-400'
+                            }`}>
+                              {status.charAt(0).toUpperCase() + status.slice(1)}
+                            </span>
                           </td>
                           <td className="px-2 py-1.5 text-center">
                             <div className="flex items-center justify-center gap-1">
@@ -565,9 +565,9 @@ const SalesExecutiveManagement = () => {
                                 <span>{execReport.mobile}</span>
                             </p>
                           </div>
-                          <Badge className={execReport.is_in_market ? 'bg-emerald-100 text-emerald-700' : 'bg-slate-100 text-slate-600'}>
+                          <span className={execReport.is_in_market ? 'text-xs font-semibold text-emerald-600' : 'text-xs font-semibold text-slate-500'}>
                              {execReport.is_in_market ? 'Currently In Market' : 'Currently Offline'}
-                         </Badge>
+                         </span>
                       </div>
                       
                       {/* Key Stats */}
@@ -597,13 +597,13 @@ const SalesExecutiveManagement = () => {
                               <table className="w-full border-collapse text-left min-w-[500px]">
                                   <thead>
                                       <tr className="border-y border-gray-200 bg-gray-50">
-                                          <th className="px-2 py-1.5 text-[10px] font-semibold text-gray-600 uppercase tracking-wider border-r border-gray-200 w-8">#</th>
-                                          <th className="px-2 py-1.5 text-[10px] font-semibold text-gray-600 uppercase tracking-wider border-r border-gray-200">Date & Time</th>
-                                          <th className="px-2 py-1.5 text-[10px] font-semibold text-gray-600 uppercase tracking-wider border-r border-gray-200">Dealer / Location</th>
-                                          <th className="px-2 py-1.5 text-[10px] font-semibold text-gray-600 uppercase tracking-wider border-r border-gray-200">Duration</th>
-                                          <th className="px-2 py-1.5 text-[10px] font-semibold text-gray-600 uppercase tracking-wider border-r border-gray-200">Outcome</th>
-                                          <th className="px-2 py-1.5 text-[10px] font-semibold text-gray-600 uppercase tracking-wider border-r border-gray-200 text-right">Order Value</th>
-                                          <th className="px-2 py-1.5 text-[10px] font-semibold text-gray-600 uppercase tracking-wider text-center">Items</th>
+                                          <th className="px-2 py-2 text-xs font-semibold text-gray-500 uppercase tracking-wider border-r border-gray-200 w-8">#</th>
+                                          <th className="px-2 py-2 text-xs font-semibold text-gray-500 uppercase tracking-wider border-r border-gray-200">Date & Time</th>
+                                          <th className="px-2 py-2 text-xs font-semibold text-gray-500 uppercase tracking-wider border-r border-gray-200">Dealer / Location</th>
+                                          <th className="px-2 py-2 text-xs font-semibold text-gray-500 uppercase tracking-wider border-r border-gray-200">Duration</th>
+                                          <th className="px-2 py-2 text-xs font-semibold text-gray-500 uppercase tracking-wider border-r border-gray-200">Outcome</th>
+                                          <th className="px-2 py-2 text-xs font-semibold text-gray-500 uppercase tracking-wider border-r border-gray-200 text-right">Order Value</th>
+                                          <th className="px-2 py-2 text-xs font-semibold text-gray-500 uppercase tracking-wider text-center">Items</th>
                                       </tr>
                                   </thead>
                                   <tbody>
@@ -620,37 +620,37 @@ const SalesExecutiveManagement = () => {
                                             
                                             return (
                                               <tr key={visit.id} className="border-b border-gray-100 hover:bg-gray-50 transition-colors">
-                                                  <td className="px-2 py-1.5 border-r border-gray-100 text-xs font-medium text-gray-600 w-8">{idx + 1}</td>
-                                                  <td className="px-2 py-1.5 whitespace-nowrap border-r border-gray-100">
-                                                      <div className="text-[11px] font-medium text-gray-700">
+                                                  <td className="px-2 py-2 border-r border-gray-100 text-xs font-medium text-gray-600 w-8">{idx + 1}</td>
+                                                  <td className="px-2 py-2 whitespace-nowrap border-r border-gray-100">
+                                                      <div className="text-xs font-medium text-gray-800">
                                                           {formatDateDDMmmYYYY(visit.check_in_time)}
                                                       </div>
                                                       <div className="text-[10px] text-gray-400">
                                                           {new Date(visit.check_in_time).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}
                                                       </div>
                                                   </td>
-                                                  <td className="px-2 py-1.5 border-r border-gray-100">
-                                                      <div className="text-[11px] font-medium text-gray-800" title={dealerName.full}>{dealerName.display}</div>
+                                                  <td className="px-2 py-2 border-r border-gray-100">
+                                                      <div className="text-xs font-medium text-gray-900" title={dealerName.full}>{dealerName.display}</div>
                                                       <div className="text-[10px] text-gray-500" title={locationAddress.full}>
                                                           {locationAddress.display}
                                                       </div>
                                                   </td>
-                                                  <td className="px-2 py-1.5 text-[11px] text-gray-600 border-r border-gray-100">
+                                                  <td className="px-2 py-2 text-xs text-gray-600 border-r border-gray-100">
                                                       {visit.duration_minutes ? `${visit.duration_minutes}m` : '-'}
                                                   </td>
-                                                  <td className="px-2 py-1.5 border-r border-gray-100">
-                                                      <Badge variant="outline" className={
-                                                          visit.outcome === 'Order Booked' ? 'bg-primary-50 text-primary-700 border-primary-200' :
-                                                          visit.outcome === 'No Meeting' ? 'bg-red-50 text-red-700 border-red-200' :
-                                                          'text-slate-600'
-                                                      }>
+                                                  <td className="px-2 py-2 border-r border-gray-100">
+                                                      <span className={`text-xs font-semibold ${
+                                                          visit.outcome === 'Order Booked' ? 'text-primary-600' :
+                                                          visit.outcome === 'No Meeting' ? 'text-red-600' :
+                                                          'text-slate-500'
+                                                      }`}>
                                                           {visit.outcome || 'Pending'}
-                                                      </Badge>
+                                                      </span>
                                                   </td>
-                                                  <td className="px-2 py-1.5 text-right font-mono text-[11px] font-medium text-primary-600 border-r border-gray-100">
+                                                  <td className="px-2 py-2 text-right font-mono text-xs font-medium text-primary-600 border-r border-gray-100">
                                                       {visit.order_value > 0 ? `₹${visit.order_value.toLocaleString()}` : '-'}
                                                   </td>
-                                                  <td className="px-2 py-1.5 text-center">
+                                                  <td className="px-2 py-2 text-center">
                                                       <OrderItemsView visit={visit} />
                                                   </td>
                                               </tr>

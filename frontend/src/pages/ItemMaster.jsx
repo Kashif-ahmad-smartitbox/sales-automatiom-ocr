@@ -198,25 +198,25 @@ const ItemMaster = () => {
                 <table className="w-full border-collapse">
                   <thead className="bg-gray-50">
                     <tr className="border-y border-gray-200">
-                        <th className="px-2 py-1.5 text-left text-[10px] font-semibold text-gray-600 uppercase tracking-wider border-r border-gray-200 w-8">
+                        <th className="px-2 py-2 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider border-r border-gray-200 w-8">
                           #
                         </th>
-                      <th className="px-2 py-1.5 text-left text-[10px] font-semibold text-gray-600 uppercase tracking-wider border-r border-gray-200">
+                      <th className="px-3 py-2 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider border-r border-gray-200">
                         Item Name
                       </th>
-                      <th className="px-2 py-1.5 text-left text-[10px] font-semibold text-gray-600 uppercase tracking-wider border-r border-gray-200">
+                      <th className="px-3 py-2 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider border-r border-gray-200">
                         Category
                       </th>
-                      <th className="px-2 py-1.5 text-left text-[10px] font-semibold text-gray-600 uppercase tracking-wider border-r border-gray-200">
+                      <th className="px-3 py-2 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider border-r border-gray-200">
                         Price
                       </th>
-                      <th className="px-2 py-1.5 text-left text-[10px] font-semibold text-gray-600 uppercase tracking-wider border-r border-gray-200">
+                      <th className="px-3 py-2 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider border-r border-gray-200">
                         Description
                       </th>
-                      <th className="px-2 py-1.5 text-left text-[10px] font-semibold text-gray-600 uppercase tracking-wider border-r border-gray-200">
+                      <th className="px-3 py-2 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider border-r border-gray-200">
                         Added Date
                       </th>
-                      <th className="px-2 py-1.5 text-center text-[10px] font-semibold text-gray-600 uppercase tracking-wider">
+                      <th className="px-2 py-2 text-center text-xs font-semibold text-gray-500 uppercase tracking-wider">
                         Actions
                       </th>
                     </tr>
@@ -228,35 +228,34 @@ const ItemMaster = () => {
 
                       return (
                         <tr key={item.id} className="hover:bg-gray-50 transition-colors">
-                          <td className="px-2 py-1.5 border-r border-gray-100 text-xs font-medium text-gray-600 w-8">{idx + 1}</td>
-                          <td className="px-2 py-1.5 border-r border-gray-100">
+                          <td className="px-2 py-2 border-r border-gray-100 text-xs font-medium text-gray-600 w-8">{idx + 1}</td>
+                          <td className="px-3 py-2 border-r border-gray-100">
                             <div className="flex items-center gap-2">
                               <Package className="w-4 h-4 text-primary-500" weight="duotone" />
-                              <span className="text-xs font-medium text-gray-900" title={itemName.full}>{itemName.display}</span>
+                              <span className="text-xs font-semibold text-gray-900" title={itemName.full}>{itemName.display}</span>
                             </div>
                           </td>
-                        <td className="px-2 py-1.5 border-r border-gray-100">
-                          <Badge variant="outline" className="text-[10px] text-primary-600 border-primary-300">
-                            <Tag className="w-3 h-3 mr-1" />
+                        <td className="px-3 py-2 border-r border-gray-100">
+                          <span className="text-xs font-semibold text-primary-600">
                             {item.product_category}
-                          </Badge>
+                          </span>
                         </td>
-                        <td className="px-2 py-1.5 border-r border-gray-100">
-                          <span className="text-[11px] font-bold text-emerald-600">
+                        <td className="px-3 py-2 border-r border-gray-100">
+                          <span className="text-xs font-bold text-emerald-600">
                             ₹{item.default_price.toLocaleString()}
                           </span>
                         </td>
-                          <td className="px-2 py-1.5 border-r border-gray-100">
-                            <span className="text-[11px] text-gray-600" title={description.full}>
+                          <td className="px-3 py-2 border-r border-gray-100">
+                            <span className="text-xs text-gray-600" title={description.full}>
                               {description.display}
                             </span>
                           </td>
-                          <td className="px-2 py-1.5 border-r border-gray-100">
-                            <span className="text-[11px] text-gray-500">
+                          <td className="px-3 py-2 border-r border-gray-100">
+                            <span className="text-xs text-gray-500">
                               {formatDateDDMmmYYYY(item.created_at)}
                             </span>
                           </td>
-                        <td className="px-2 py-1.5">
+                        <td className="px-2 py-2">
                           <div className="flex items-center justify-center gap-1">
                             <button
                               onClick={() => openEditModal(item)}

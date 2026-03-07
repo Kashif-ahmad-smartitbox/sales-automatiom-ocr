@@ -91,7 +91,7 @@
 }
 
 .data-table td {
-  @apply px-3 py-2.5 text-sm border-b border-gray-50;
+  @apply px-3 py-2 text-sm border-b border-gray-100 text-gray-800;
 }
 
 .data-table tr {
@@ -113,6 +113,16 @@
     @apply px-2 py-2 text-xs;
   }
 }
+
+/* Text-highlight utilities - colored text without badge block backgrounds */
+.highlight-emerald { @apply text-emerald-600 font-semibold; }
+.highlight-amber   { @apply text-amber-600 font-semibold; }
+.highlight-red     { @apply text-red-600 font-semibold; }
+.highlight-blue    { @apply text-blue-600 font-semibold; }
+.highlight-primary { @apply text-primary-600 font-semibold; }
+.highlight-slate   { @apply text-slate-500 font-medium; }
+.highlight-purple  { @apply text-purple-600 font-semibold; }
+.highlight-orange  { @apply text-orange-600 font-semibold; }
 
 /* Form Styles */
 .form-group {
