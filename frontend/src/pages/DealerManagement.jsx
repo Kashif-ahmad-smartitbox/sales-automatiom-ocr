@@ -200,14 +200,26 @@ const filteredDealers = dealers.filter(d => {
           </div>
         </div>
 
-        {/* Search & Actions */}
-        <div className="flex flex-col sm:flex-row gap-3 items-start sm:items-center justify-between">
-          <div className="flex-1">
-            {searchTerm && (
-              <p className="text-xs text-gray-500">
-                Showing results for: <span className="font-semibold text-gray-700">"{searchTerm}"</span>
-              </p>
-            )}
+        {/* Actions + Stats */}
+        <div className="flex flex-wrap items-center justify-between gap-2">
+          <div className="flex flex-wrap items-center gap-2">
+            <div className="flex items-center gap-2 bg-primary-50 border border-primary-100 rounded-md px-3 py-1.5">
+              <span className="text-[11px] font-medium text-primary-700">Total Dealers</span>
+              <span className="text-sm font-bold font-mono text-primary-800">{dealers.length}</span>
+            </div>
+            <div className="flex items-center gap-2 bg-emerald-50 border border-emerald-100 rounded-md px-3 py-1.5">
+              <span className="text-[11px] font-medium text-emerald-700">Retailers</span>
+              <span className="text-sm font-bold font-mono text-emerald-800">{dealers.filter(d => d.dealer_type === 'Retailer').length}</span>
+            </div>
+            <div className="flex items-center gap-2 bg-amber-50 border border-amber-100 rounded-md px-3 py-1.5">
+              <span className="text-[11px] font-medium text-amber-700">Distributors</span>
+              <span className="text-sm font-bold font-mono text-amber-800">{dealers.filter(d => d.dealer_type === 'Distributor').length}</span>
+            </div>
+            <div className="flex items-center gap-2 bg-red-50 border border-red-100 rounded-md px-3 py-1.5">
+              <span className="text-[11px] font-medium text-red-700">High Priority</span>
+              <span className="text-sm font-bold font-mono text-red-800">{dealers.filter(d => d.priority_level === 1).length}</span>
+            </div>
+            {searchTerm && <span className="text-xs text-gray-400 ml-1">&middot; "{searchTerm}"</span>}
           </div>
           
           <Dialog open={dialogOpen} onOpenChange={(open) => { if (!open) closeDialog(); else setDialogOpen(true); }}>
@@ -363,34 +375,6 @@ const filteredDealers = dealers.filter(d => {
           </Dialog>
         </div>
 
-        {/* Stats - gradient cards */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-          <Card className="border-0 bg-gradient-to-br from-primary-400 to-primary-500 text-white shadow-md hover:shadow-lg transition-all duration-300">
-            <CardContent className="p-3">
-              <span className="text-xs font-medium text-white/90">Total Dealers</span>
-              <div className="text-lg font-bold font-mono mt-1">{dealers.length}</div>
-            </CardContent>
-          </Card>
-          <Card className="border-0 bg-gradient-to-br from-emerald-400 to-emerald-500 text-white shadow-md hover:shadow-lg transition-all duration-300">
-            <CardContent className="p-3">
-              <span className="text-xs font-medium text-white/90">Retailers</span>
-              <div className="text-lg font-bold font-mono mt-1">{dealers.filter(d => d.dealer_type === 'Retailer').length}</div>
-            </CardContent>
-          </Card>
-          <Card className="border-0 bg-gradient-to-br from-amber-400 to-amber-500 text-white shadow-md hover:shadow-lg transition-all duration-300">
-            <CardContent className="p-3">
-              <span className="text-xs font-medium text-white/90">Distributors</span>
-              <div className="text-lg font-bold font-mono mt-1">{dealers.filter(d => d.dealer_type === 'Distributor').length}</div>
-            </CardContent>
-          </Card>
-          <Card className="border-0 bg-gradient-to-br from-red-400 to-red-500 text-white shadow-md hover:shadow-lg transition-all duration-300">
-            <CardContent className="p-3">
-              <span className="text-xs font-medium text-white/90">High Priority</span>
-              <div className="text-lg font-bold font-mono mt-1">{dealers.filter(d => d.priority_level === 1).length}</div>
-            </CardContent>
-          </Card>
-        </div>
-
         {/* Dealers Table */}
         <Card className="border-0 shadow-sm" data-testid="dealers-table-card">
           <CardContent className="p-0">
@@ -405,21 +389,23 @@ const filteredDealers = dealers.filter(d => {
             ) : (
               <div className="overflow-auto rounded-lg border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 shadow-sm w-full max-h-[40rem]">
                 <Table className="table-auto border-collapse">
-                  <TableHeader className="bg-gradient-to-r from-primary-50 to-indigo-50 dark:from-gray-800 dark:to-gray-900 text-nowrap sticky top-0 text-xs z-10 border-b border-primary-100 dark:border-gray-700">
-                    <TableHead className="p-2 text-gray-700 dark:text-gray-300 font-medium text-center w-8">#</TableHead>
-                    <TableHead className="p-2 text-gray-700 dark:text-gray-300 font-medium">Dealer</TableHead>
-                    <TableHead className="p-2 text-gray-700 dark:text-gray-300 font-medium text-center">Address</TableHead>
-                    <TableHead className="p-2 text-gray-700 dark:text-gray-300 font-medium">Type</TableHead>
-                    <TableHead className="p-2 text-gray-700 dark:text-gray-300 font-medium">Territory</TableHead>
-                    <TableHead className="p-2 text-gray-700 dark:text-gray-300 font-medium">Contact</TableHead>
-                    <TableHead className="p-2 text-gray-700 dark:text-gray-300 font-medium">Phone</TableHead>
-                    <TableHead className="p-2 text-gray-700 dark:text-gray-300 font-medium">Priority</TableHead>
-                    <TableHead className="p-2 text-gray-700 dark:text-gray-300 font-medium">Booked Amount</TableHead>
-                    <TableHead className="p-2 text-gray-700 dark:text-gray-300 font-medium">Last Visit</TableHead>
-                    <TableHead className="p-2 text-gray-700 dark:text-gray-300 font-medium">Visited By</TableHead>
-                    <TableHead className="p-2 text-gray-700 dark:text-gray-300 font-medium">Outcome</TableHead>
-                    <TableHead className="p-2 text-gray-700 dark:text-gray-300 font-medium">Next Visit</TableHead>
-                    <TableHead className="p-2 text-gray-700 dark:text-gray-300 font-medium text-center">Actions</TableHead>
+                  <TableHeader className="bg-gray-50 sticky top-0 z-10">
+                    <TableRow className="border-y border-gray-200">
+                      <TableHead className="px-2 py-1.5 text-[10px] font-semibold text-gray-600 uppercase tracking-wider border-r border-gray-200 w-8">#</TableHead>
+                      <TableHead className="px-2 py-1.5 text-[10px] font-semibold text-gray-600 uppercase tracking-wider border-r border-gray-200">Dealer</TableHead>
+                      <TableHead className="px-2 py-1.5 text-[10px] font-semibold text-gray-600 uppercase tracking-wider border-r border-gray-200 w-10 text-center">Addr</TableHead>
+                      <TableHead className="px-2 py-1.5 text-[10px] font-semibold text-gray-600 uppercase tracking-wider border-r border-gray-200">Type</TableHead>
+                      <TableHead className="px-2 py-1.5 text-[10px] font-semibold text-gray-600 uppercase tracking-wider border-r border-gray-200">Territory</TableHead>
+                      <TableHead className="px-2 py-1.5 text-[10px] font-semibold text-gray-600 uppercase tracking-wider border-r border-gray-200">Contact</TableHead>
+                      <TableHead className="px-2 py-1.5 text-[10px] font-semibold text-gray-600 uppercase tracking-wider border-r border-gray-200">Phone</TableHead>
+                      <TableHead className="px-2 py-1.5 text-[10px] font-semibold text-gray-600 uppercase tracking-wider border-r border-gray-200">Priority</TableHead>
+                      <TableHead className="px-2 py-1.5 text-[10px] font-semibold text-gray-600 uppercase tracking-wider border-r border-gray-200">Booked Amt</TableHead>
+                      <TableHead className="px-2 py-1.5 text-[10px] font-semibold text-gray-600 uppercase tracking-wider border-r border-gray-200">Last Visit</TableHead>
+                      <TableHead className="px-2 py-1.5 text-[10px] font-semibold text-gray-600 uppercase tracking-wider border-r border-gray-200">Visited By</TableHead>
+                      <TableHead className="px-2 py-1.5 text-[10px] font-semibold text-gray-600 uppercase tracking-wider border-r border-gray-200">Outcome</TableHead>
+                      <TableHead className="px-2 py-1.5 text-[10px] font-semibold text-gray-600 uppercase tracking-wider border-r border-gray-200">Next Visit</TableHead>
+                      <TableHead className="px-2 py-1.5 text-[10px] font-semibold text-gray-600 uppercase tracking-wider text-center">Actions</TableHead>
+                    </TableRow>
                   </TableHeader>
                   <TableBody className="divide-y divide-gray-100 dark:divide-gray-800">
                     {filteredDealers.map((dealer, idx) => {
@@ -428,31 +414,20 @@ const filteredDealers = dealers.filter(d => {
                       const visitedBy = getTruncatedText(dealer.last_visited_by || '–', 15);
 
                       return (
-                      <TableRow key={dealer.id} className="group cursor-pointer transition-all text-xs text-gray-700 duration-200 hover:bg-gray-50 dark:hover:bg-gray-800 border-b border-gray-200 dark:border-gray-700">
-                        <TableCell className="px-2 py-1.5 text-center">
-                          <span className="p-1 bg-gray-200 dark:bg-gray-700 font-medium rounded-full text-gray-600 dark:text-gray-300">{idx + 1}</span>
+                      <TableRow key={dealer.id} className="border-b border-gray-100 hover:bg-gray-50 transition-colors">
+                        <TableCell className="px-2 py-1.5 border-r border-gray-100 text-xs font-semibold text-gray-900 w-8 text-center">{idx + 1}</TableCell>
+                        <TableCell className="px-2 py-1.5 border-r border-gray-100">
+                          <p className="text-[11px] font-medium text-gray-800" title={dealerName.full}>{dealerName.display}</p>
                         </TableCell>
-                        <TableCell className="px-2 py-1.5">
-                          <p className="text-xs font-medium text-gray-800 dark:text-gray-200" title={dealerName.full}>{dealerName.display}</p>
+                        <TableCell className="px-2 py-1.5 border-r border-gray-100 w-10 text-center">
+                          <button title={dealer.address || 'No address'} className="text-gray-400 hover:text-primary-600 transition-colors cursor-help inline-flex">
+                            <MapPin size={14} weight="fill" />
+                          </button>
                         </TableCell>
-                        <TableCell className="px-2 py-1.5">
-                          <TooltipProvider>
-                            <Tooltip>
-                              <TooltipTrigger asChild>
-                                <div className="flex items-center justify-center cursor-help">
-                                  <MapPin size={16} className="text-blue-500" weight="fill" />
-                                </div>
-                              </TooltipTrigger>
-                              <TooltipContent side="top" className="max-w-xs bg-gray-900 text-white">
-                                <p className="text-xs">{dealer.address || 'No address available'}</p>
-                              </TooltipContent>
-                            </Tooltip>
-                          </TooltipProvider>
-                        </TableCell>
-                        <TableCell className="px-2 py-1.5 text-[11px] text-gray-600 dark:text-gray-400">{dealer.dealer_type}</TableCell>
-                        <TableCell className="px-2 py-1.5 text-[11px] text-gray-600 dark:text-gray-400">{getTerritoryName(dealer.territory_id)}</TableCell>
-                        <TableCell className="px-2 py-1.5 text-[11px] text-gray-600 dark:text-gray-400" title={contactPerson.full}>{contactPerson.display}</TableCell>
-                        <TableCell className="px-2 py-1.5 font-mono text-[11px] text-gray-600 dark:text-gray-400 whitespace-nowrap">{dealer.phone || '–'}</TableCell>
+                        <TableCell className="px-2 py-1.5 text-[11px] font-medium text-gray-900 border-r border-gray-100">{dealer.dealer_type}</TableCell>
+                        <TableCell className="px-2 py-1.5 text-[11px] font-medium text-gray-900 border-r border-gray-100">{getTerritoryName(dealer.territory_id)}</TableCell>
+                        <TableCell className="px-2 py-1.5 text-[11px] font-medium text-gray-900 border-r border-gray-100" title={contactPerson.full}>{contactPerson.display}</TableCell>
+                        <TableCell className="px-2 py-1.5 font-mono text-[11px] font-medium text-gray-900 border-r border-gray-100 whitespace-nowrap">{dealer.phone || '–'}</TableCell>
                         <TableCell className="px-2 py-1.5">
                           <Badge className={`text-[10px] px-1.5 py-0 ${
                             dealer.priority_level === 1 ? 'priority-high' :
@@ -470,10 +445,10 @@ const filteredDealers = dealers.filter(d => {
                             <span className="text-[11px] text-gray-400">₹0</span>
                           )}
                         </TableCell>
-                        <TableCell className="px-2 py-1.5 font-mono text-[11px] text-gray-600 dark:text-gray-400 whitespace-nowrap">
+                        <TableCell className="px-2 py-1.5 font-mono text-[11px] font-medium text-gray-900 border-r border-gray-100 whitespace-nowrap">
                           {dealer.last_visit_date ? formatDateDDMmmYYYY(dealer.last_visit_date) : 'Never'}
                         </TableCell>
-                        <TableCell className="px-2 py-1.5 text-[11px] text-gray-600 dark:text-gray-400" title={visitedBy.full}>
+                        <TableCell className="px-2 py-1.5 text-[11px] font-medium text-gray-900 border-r border-gray-100" title={visitedBy.full}>
                           {visitedBy.display}
                         </TableCell>
                         <TableCell className="px-2 py-1.5">
@@ -500,7 +475,7 @@ const filteredDealers = dealers.filter(d => {
                             )}
                           </div>
                         </TableCell>
-                        <TableCell className="px-2 py-1.5 font-mono text-[11px] text-gray-600 dark:text-gray-400 whitespace-nowrap">
+                        <TableCell className="px-2 py-1.5 font-mono text-[11px] font-medium text-gray-900 whitespace-nowrap">
                           {dealer.next_visit_date ? formatDateDDMmmYYYY(dealer.next_visit_date) : '–'}
                         </TableCell>
                         <TableCell className="px-2 py-1.5">

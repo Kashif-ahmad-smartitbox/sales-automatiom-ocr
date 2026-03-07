@@ -60,103 +60,99 @@ const HODExecutives = () => {
           </div>
         </div>
 
-        {/* Search */}
-        <div className="max-w-sm">
-          {searchTerm && (
-            <p className="text-xs text-gray-500">
-              Showing results for: <span className="font-semibold text-gray-700">"{searchTerm}"</span>
-            </p>
-          )}
-        </div>
-
         {/* Stats */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-          <Card className="border-0 bg-gradient-to-br from-purple-400 to-purple-500 text-white shadow-md">
-            <CardContent className="p-3">
-              <span className="text-xs font-medium text-white/90">Total Team</span>
-              <div className="text-lg font-bold font-mono mt-1">{executives.length}</div>
-            </CardContent>
-          </Card>
-          <Card className="border-0 bg-gradient-to-br from-emerald-400 to-emerald-500 text-white shadow-md">
-            <CardContent className="p-3">
-              <span className="text-xs font-medium text-white/90">Active Now</span>
-              <div className="text-lg font-bold font-mono mt-1">{executives.filter(e => e.is_in_market).length}</div>
-            </CardContent>
-          </Card>
-          <Card className="border-0 bg-gradient-to-br from-amber-400 to-amber-500 text-white shadow-md">
-            <CardContent className="p-3">
-              <span className="text-xs font-medium text-white/90">Idle</span>
-              <div className="text-lg font-bold font-mono mt-1">{executives.filter(e => getStatus(e) === 'idle').length}</div>
-            </CardContent>
-          </Card>
-          <Card className="border-0 bg-gradient-to-br from-gray-400 to-gray-500 text-white shadow-md">
-            <CardContent className="p-3">
-              <span className="text-xs font-medium text-white/90">Offline</span>
-              <div className="text-lg font-bold font-mono mt-1">{executives.filter(e => getStatus(e) === 'offline').length}</div>
-            </CardContent>
-          </Card>
+        <div className="flex flex-wrap items-center gap-2">
+          <div className="flex items-center gap-2 bg-purple-50 border border-purple-100 rounded-md px-3 py-1.5">
+            <span className="text-[11px] font-medium text-purple-700">Total Team</span>
+            <span className="text-sm font-bold font-mono text-purple-800">{executives.length}</span>
+          </div>
+          <div className="flex items-center gap-2 bg-emerald-50 border border-emerald-100 rounded-md px-3 py-1.5">
+            <span className="text-[11px] font-medium text-emerald-700">Active Now</span>
+            <span className="text-sm font-bold font-mono text-emerald-800">{executives.filter(e => e.is_in_market).length}</span>
+          </div>
+          <div className="flex items-center gap-2 bg-amber-50 border border-amber-100 rounded-md px-3 py-1.5">
+            <span className="text-[11px] font-medium text-amber-700">Idle</span>
+            <span className="text-sm font-bold font-mono text-amber-800">{executives.filter(e => getStatus(e) === 'idle').length}</span>
+          </div>
+          <div className="flex items-center gap-2 bg-gray-100 border border-gray-200 rounded-md px-3 py-1.5">
+            <span className="text-[11px] font-medium text-gray-600">Offline</span>
+            <span className="text-sm font-bold font-mono text-gray-700">{executives.filter(e => getStatus(e) === 'offline').length}</span>
+          </div>
         </div>
 
-        {/* Executives Grid */}
+        {/* Executives Table */}
         {loading ? (
           <div className="flex items-center justify-center py-12">
             <div className="spinner" />
           </div>
         ) : filteredExecutives.length === 0 ? (
           <Card>
-            <CardContent className="text-center py-12 text-slate-500">
+            <CardContent className="text-center py-8 text-slate-500 text-xs">
               {searchTerm ? 'No executives match your search' : 'No sales executives assigned to you yet.'}
             </CardContent>
           </Card>
         ) : (
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-3">
-            {filteredExecutives.map((exec) => {
-              const status = getStatus(exec);
-              return (
-                <Card key={exec.id} className="border-0 shadow-sm hover:shadow-md hover:border-primary-200 transition-all duration-300">
-                  <CardContent className="p-3">
-                    <div className="flex items-start justify-between mb-3">
-                      <div className="flex items-center gap-2.5">
-                        <div className={`w-9 h-9 rounded-full flex items-center justify-center text-white text-sm font-bold ${
-                          status === 'active' ? 'bg-emerald-500' : status === 'idle' ? 'bg-amber-500' : 'bg-slate-400'
-                        }`}>
-                          {exec.name.charAt(0)}
-                        </div>
-                        <div>
-                          <p className="text-sm font-semibold text-gray-800">{exec.name}</p>
-                          <p className="text-[10px] text-gray-500 font-mono">{exec.employee_code}</p>
-                        </div>
-                      </div>
-                      <Badge className={
-                        status === 'active' ? 'status-active' : status === 'idle' ? 'status-idle' : 'status-offline'
-                      }>
-                        {status}
-                      </Badge>
-                    </div>
-
-                    <div className="space-y-1.5 text-xs">
-                      <div className="flex items-center gap-2 text-gray-500">
-                        <Phone size={12} />
-                        <span>{exec.mobile}</span>
-                      </div>
-                      <div className="flex items-center gap-2 text-gray-500">
-                        {exec.is_live_tracking ? (
-                          <><Globe size={12} className="text-emerald-500" /> <span>Live Tracking (All Cities)</span></>
-                        ) : (
-                          <><MapPin size={12} className="text-amber-500" /> <span>{exec.assigned_city || 'No City'}, {exec.assigned_state}</span></>
-                        )}
-                      </div>
-                      {exec.daily_sales_target && (
-                        <div className="text-gray-500">
-                          Target: {exec.daily_sales_target} visits/day
-                        </div>
-                      )}
-                    </div>
-                  </CardContent>
-                </Card>
-              );
-            })}
-          </div>
+          <Card className="border-0 shadow-sm">
+            <CardContent className="p-0">
+              <div className="overflow-x-auto">
+                <table className="w-full border-collapse">
+                  <thead>
+                    <tr className="border-y border-gray-200 bg-gray-50">
+                      <th className="text-left px-2 py-1.5 text-[10px] font-semibold text-gray-600 uppercase tracking-wider border-r border-gray-200 w-8">#</th>
+                      <th className="text-left px-2 py-1.5 text-[10px] font-semibold text-gray-600 uppercase tracking-wider border-r border-gray-200">Name</th>
+                      <th className="text-left px-2 py-1.5 text-[10px] font-semibold text-gray-600 uppercase tracking-wider border-r border-gray-200">Code</th>
+                      <th className="text-left px-2 py-1.5 text-[10px] font-semibold text-gray-600 uppercase tracking-wider border-r border-gray-200">Mobile</th>
+                      <th className="text-left px-2 py-1.5 text-[10px] font-semibold text-gray-600 uppercase tracking-wider border-r border-gray-200">Location</th>
+                      <th className="text-left px-2 py-1.5 text-[10px] font-semibold text-gray-600 uppercase tracking-wider border-r border-gray-200">Target</th>
+                      <th className="text-center px-2 py-1.5 text-[10px] font-semibold text-gray-600 uppercase tracking-wider">Status</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {filteredExecutives.map((exec, idx) => {
+                      const status = getStatus(exec);
+                      return (
+                        <tr key={exec.id} className="border-b border-gray-100 hover:bg-gray-50 transition-colors">
+                          <td className="px-2 py-1.5 border-r border-gray-100 text-xs font-semibold text-gray-900 w-8">{idx + 1}</td>
+                          <td className="px-2 py-1.5 border-r border-gray-100">
+                            <div className="flex items-center gap-2">
+                              <div className={`w-7 h-7 rounded-full flex items-center justify-center text-white text-xs font-bold flex-shrink-0 ${
+                                status === 'active' ? 'bg-emerald-500' : status === 'idle' ? 'bg-amber-500' : 'bg-slate-400'
+                              }`}>
+                                {exec.name.charAt(0)}
+                              </div>
+                              <span className="text-[11px] font-semibold text-gray-800">{exec.name}</span>
+                            </div>
+                          </td>
+                          <td className="px-2 py-1.5 text-[11px] font-semibold text-gray-900 font-mono border-r border-gray-100">{exec.employee_code}</td>
+                          <td className="px-2 py-1.5 border-r border-gray-100">
+                            <div className="flex items-center gap-1.5 text-[11px] font-medium text-gray-900">
+                              <Phone size={11} className="text-gray-400" />
+                              <span>{exec.mobile}</span>
+                            </div>
+                          </td>
+                          <td className="px-2 py-1.5 text-[11px] font-medium text-gray-900 border-r border-gray-100">
+                            {exec.is_live_tracking ? (
+                              <span className="flex items-center gap-1"><Globe size={11} className="text-emerald-500" /> Any City</span>
+                            ) : (
+                              <span className="flex items-center gap-1"><MapPin size={11} className="text-amber-500" /> {exec.assigned_city || '–'}{exec.assigned_state ? `, ${exec.assigned_state}` : ''}</span>
+                            )}
+                          </td>
+                          <td className="px-2 py-1.5 text-[11px] font-medium text-gray-900 border-r border-gray-100">
+                            {exec.daily_sales_target ? `${exec.daily_sales_target}/day` : '–'}
+                          </td>
+                          <td className="px-2 py-1.5 text-center">
+                            <Badge className={status === 'active' ? 'status-active' : status === 'idle' ? 'status-idle' : 'status-offline'}>
+                              {status}
+                            </Badge>
+                          </td>
+                        </tr>
+                      );
+                    })}
+                  </tbody>
+                </table>
+              </div>
+            </CardContent>
+          </Card>
         )}
       </div>
     </HODLayout>

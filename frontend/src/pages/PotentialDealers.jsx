@@ -101,34 +101,26 @@ const PotentialDealers = () => {
           <p className="text-xs text-gray-500 mt-0.5">Leads discovered by field team</p>
         </div>
 
-        {/* Controls */}
-        <div className="flex flex-col sm:flex-row gap-3 items-start sm:items-center justify-between">
-          <div className="flex-1">
-            {searchTerm && (
-              <p className="text-xs text-gray-500">
-                Showing results for: <span className="font-semibold text-gray-700">"{searchTerm}"</span>
-              </p>
-            )}
+        {/* Actions + Stats */}
+        <div className="flex flex-wrap items-center justify-between gap-2">
+          <div className="flex flex-wrap items-center gap-2">
+            <div className="flex items-center gap-2 bg-primary-50 border border-primary-100 rounded-md px-3 py-1.5">
+              <span className="text-[11px] font-medium text-primary-700">Total Potentials</span>
+              <span className="text-sm font-bold font-mono text-primary-800">{potentials.length}</span>
+            </div>
+            <div className="flex items-center gap-2 bg-emerald-50 border border-emerald-100 rounded-md px-3 py-1.5">
+              <span className="text-[11px] font-medium text-emerald-700">Assigned</span>
+              <span className="text-sm font-bold font-mono text-emerald-800">{potentials.filter(p => p.is_assigned).length}</span>
+            </div>
+            <div className="flex items-center gap-2 bg-gray-50 border border-gray-200 rounded-md px-3 py-1.5">
+              <span className="text-[11px] font-medium text-gray-600">Unassigned</span>
+              <span className="text-sm font-bold font-mono text-gray-800">{potentials.filter(p => !p.is_assigned).length}</span>
+            </div>
+            {searchTerm && <span className="text-xs text-gray-400">&middot; "{searchTerm}"</span>}
           </div>
-          <Button variant="outline" onClick={fetchData}>
+          <Button variant="outline" size="sm" onClick={fetchData} className="h-8 text-xs">
              Refresh
           </Button>
-        </div>
-
-        {/* Stats */}
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
-            <Card className="border-0 bg-gradient-to-br from-primary-400 to-primary-500 text-white shadow-md hover:shadow-lg transition-all duration-300">
-                <CardContent className="p-3">
-                    <div className="flex items-center justify-between mb-1">
-                        <span className="text-xs font-medium text-white/90">Total Potentials</span>
-                        <div className="p-1.5 rounded-md bg-white/20 backdrop-blur-sm">
-                            <Buildings size={14} weight="fill" />
-                        </div>
-                    </div>
-                    <div className="text-lg font-bold font-mono">{potentials.length}</div>
-                    <p className="text-[10px] text-white/80 mt-0.5">Discovered leads</p>
-                </CardContent>
-            </Card>
         </div>
 
         {/* Content */}
@@ -137,13 +129,13 @@ const PotentialDealers = () => {
                 <table className="w-full border-collapse">
                     <thead className="bg-gray-50">
                         <tr className="border-y border-gray-200">
-                      <th className="px-2 py-2 text-left text-[10px] font-semibold text-gray-600 uppercase tracking-wider border-r border-gray-200 w-8">#</th>
-                            <th className="px-2 py-2 text-left text-[10px] font-semibold text-gray-600 uppercase tracking-wider border-r border-gray-200">Potential Dealer</th>
-                            <th className="px-2 py-2 text-left text-[10px] font-semibold text-gray-600 uppercase tracking-wider border-r border-gray-200">Location / Address</th>
-                            <th className="px-2 py-2 text-left text-[10px] font-semibold text-gray-600 uppercase tracking-wider border-r border-gray-200">Found By</th>
-                            <th className="px-2 py-2 text-left text-[10px] font-semibold text-gray-600 uppercase tracking-wider border-r border-gray-200">Date Found</th>
-                            <th className="px-2 py-2 text-left text-[10px] font-semibold text-gray-600 uppercase tracking-wider border-r border-gray-200">Assigned To</th>
-                            <th className="px-2 py-2 text-center text-[10px] font-semibold text-gray-600 uppercase tracking-wider">Assign</th>
+                      <th className="px-2 py-1.5 text-left text-[10px] font-semibold text-gray-600 uppercase tracking-wider border-r border-gray-200 w-8">#</th>
+                            <th className="px-2 py-1.5 text-left text-[10px] font-semibold text-gray-600 uppercase tracking-wider border-r border-gray-200">Potential Dealer</th>
+                            <th className="px-2 py-1.5 text-[10px] font-semibold text-gray-600 uppercase tracking-wider border-r border-gray-200 w-10 text-center">Addr</th>
+                            <th className="px-2 py-1.5 text-left text-[10px] font-semibold text-gray-600 uppercase tracking-wider border-r border-gray-200">Found By</th>
+                            <th className="px-2 py-1.5 text-left text-[10px] font-semibold text-gray-600 uppercase tracking-wider border-r border-gray-200">Date Found</th>
+                            <th className="px-2 py-1.5 text-left text-[10px] font-semibold text-gray-600 uppercase tracking-wider border-r border-gray-200">Assigned To</th>
+                            <th className="px-2 py-1.5 text-center text-[10px] font-semibold text-gray-600 uppercase tracking-wider">Assign</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -169,23 +161,22 @@ const PotentialDealers = () => {
 
                         return (
                         <tr key={item._id || item.id} className="border-b border-gray-100 hover:bg-gray-50 transition-colors">
-                          <td className="px-2 py-1.5 border-r border-gray-100 text-xs font-medium text-gray-600 w-8">{idx + 1}</td>
+                          <td className="px-2 py-1.5 border-r border-gray-100 text-xs font-semibold text-gray-900 w-8">{idx + 1}</td>
                           <td className="px-2 py-1.5 border-r border-gray-100">
                             <div className="font-medium text-xs text-gray-800" title={placeName.full}>{placeName.display}</div>
                             <div className="text-[10px] text-gray-400 mt-0.5 font-mono">ID: {item.place_id.substring(0, 10)}...</div>
                           </td>
-                                    <td className="px-2 py-1.5 max-w-xs border-r border-gray-100">
-                                        <div className="flex items-start gap-1.5 text-[11px] text-gray-600">
-                                            <MapPin size={12} className="mt-0.5 shrink-0 text-gray-400" />
-                                            <span className="line-clamp-2" title={item.address}>{item.address || 'Address not available'}</span>
-                                        </div>
+                                    <td className="px-2 py-1.5 border-r border-gray-100 w-10 text-center">
+                                        <button title={item.address || 'No address'} className="text-gray-400 hover:text-primary-600 transition-colors cursor-help inline-flex">
+                                            <MapPin size={13} weight="fill" />
+                                        </button>
                                     </td>
                                     <td className="px-2 py-1.5 border-r border-gray-100">
                                         <div className="flex items-center gap-2">
                                             <div className="w-6 h-6 rounded-full bg-indigo-100 text-indigo-600 flex items-center justify-center text-[10px] font-bold">
                                                 {item.found_by_name.charAt(0)}
                                             </div>
-                              <span className="text-xs font-medium text-gray-700" title={foundByName.full}>{foundByName.display}</span>
+                              <span className="text-xs font-semibold text-gray-900" title={foundByName.full}>{foundByName.display}</span>
                                         </div>
                                     </td>
                                     <td className="px-2 py-1.5 border-r border-gray-100">
@@ -203,7 +194,7 @@ const PotentialDealers = () => {
                                                 <Badge variant="outline" className="bg-green-50 text-green-700 border-green-200 text-[10px] px-1.5 py-0">
                                                     Assigned
                                                 </Badge>
-                                <span className="text-[11px] text-gray-600" title={assignedToName.full}>{assignedToName.display}</span>
+                                <span className="text-[11px] font-medium text-gray-900" title={assignedToName.full}>{assignedToName.display}</span>
                                             </div>
                                         ) : (
                                             <Badge variant="outline" className="bg-gray-50 text-gray-600 border-gray-200 text-[10px] px-1.5 py-0">

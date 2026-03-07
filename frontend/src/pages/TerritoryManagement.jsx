@@ -240,46 +240,46 @@ const TerritoryManagement = () => {
             </CardContent>
           </Card>
         ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
             {['State', 'City', 'Area', 'Beat'].map((type) => (
               <Card key={type} className="border-0 shadow-sm" data-testid={`territory-${type.toLowerCase()}-card`}>
-                <CardContent className="p-4">
-                  <div className="flex items-center gap-2 mb-3">
-                    <TreeStructure className="text-gray-400" size={16} />
-                    <h3 className="text-sm font-bold text-gray-800">{type}s</h3>
+                <CardContent className="p-3">
+                  <div className="flex items-center gap-2 mb-2">
+                    <TreeStructure className="text-gray-400" size={14} />
+                    <h3 className="text-xs font-bold text-gray-800">{type}s</h3>
                     <Badge className={typeColors[type] + ' text-[10px] px-1.5 py-0'}>{groupedTerritories[type].length}</Badge>
                   </div>
                   
                   {groupedTerritories[type].length === 0 ? (
                     <p className="text-xs text-gray-400">No {type.toLowerCase()}s added</p>
                   ) : (
-                    <div className="space-y-2">
+                    <div className="space-y-1">
                       {groupedTerritories[type].map((territory) => (
-                        <div key={territory.id} className="flex items-center justify-between p-2.5 bg-gray-50 rounded-lg border border-gray-100 hover:border-primary-200 transition-colors">
+                        <div key={territory.id} className="flex items-center justify-between px-2 py-1 bg-gray-50 rounded border border-gray-100 hover:border-primary-200 transition-colors">
                           <div>
-                            <p className="font-medium text-sm text-gray-800">{territory.name}</p>
+                            <p className="font-medium text-[11px] text-gray-800">{territory.name}</p>
                             {territory.parent_id && (
-                              <p className="text-[10px] text-gray-500 mt-0.5">Parent: {getParentName(territory.parent_id)}</p>
+                              <p className="text-[10px] text-gray-500">Parent: {getParentName(territory.parent_id)}</p>
                             )}
                           </div>
                           <div className="flex items-center gap-1">
                             <Button 
                               variant="ghost" 
                               size="sm" 
-                              className="text-primary-600 hover:text-primary-700 hover:bg-gradient-to-r hover:from-primary-50 hover:to-orange-50 h-7 w-7 p-0"
+                              className="text-primary-600 hover:text-primary-700 hover:bg-gradient-to-r hover:from-primary-50 hover:to-orange-50 h-6 w-6 p-0"
                               onClick={() => handleEdit(territory)}
                               data-testid={`edit-territory-${territory.id}`}
                             >
-                              <Pencil size={14} />
+                              <Pencil size={12} />
                             </Button>
                             <Button 
                               variant="ghost" 
                               size="sm" 
-                              className="text-red-600 hover:text-red-700 hover:bg-red-50 h-7 w-7 p-0"
+                              className="text-red-600 hover:text-red-700 hover:bg-red-50 h-6 w-6 p-0"
                               onClick={() => handleDelete(territory.id)}
                               data-testid={`delete-territory-${territory.id}`}
                             >
-                              <Trash size={14} />
+                              <Trash size={12} />
                             </Button>
                           </div>
                         </div>

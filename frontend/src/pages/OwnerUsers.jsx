@@ -155,7 +155,7 @@ const OwnerUsers = () => {
           </Badge>
         </div>
 
-        {/* Users Grid */}
+        {/* Users Table */}
         {filteredUsers.length === 0 ? (
           <Card className="border-0 shadow-sm">
             <CardContent className="p-6 text-center">
@@ -164,63 +164,67 @@ const OwnerUsers = () => {
             </CardContent>
           </Card>
         ) : (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
-            {filteredUsers.map((user) => (
-              <Card key={user.id} className="border-0 shadow-sm hover:shadow-md transition-all duration-300">
-                <CardContent className="p-3">
-                  <div className="flex items-start gap-3">
-                    <div className={`w-9 h-9 rounded-lg bg-gradient-to-br ${getRoleColor(user.role)} flex items-center justify-center text-white font-bold text-xs flex-shrink-0`}>
-                      {user.name.charAt(0)}
-                    </div>
-                    <div className="flex-1 min-w-0">
-                      <div className="flex items-center justify-between gap-2 mb-0.5">
-                        <p className="text-sm font-medium text-gray-800 truncate">{user.name}</p>
-                        {user.is_in_market && (
-                          <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse flex-shrink-0" title="Active in Market"></span>
-                        )}
-                      </div>
-                      <Badge variant="outline" className={`${getRoleBadgeClass(user.role)} text-[10px] px-1.5 py-0 mb-1.5`}>
-                        <span className="capitalize">{user.role.replace('_', ' ')}</span>
-                      </Badge>
-                      <div className="space-y-0.5 text-[10px] text-gray-500">
-                        <p className="flex items-center gap-1 truncate">
-                          <Envelope className="w-2.5 h-2.5 flex-shrink-0 text-gray-400" /> 
-                          <span className="truncate">{user.email}</span>
-                        </p>
-                        <p className="flex items-center gap-1">
-                          <Phone className="w-2.5 h-2.5 flex-shrink-0 text-gray-400" /> {user.mobile}
-                        </p>
-                        {user.company_name && (
-                          <p className="flex items-center gap-1 text-purple-600 font-medium">
-                            <MapPin className="w-2.5 h-2.5 flex-shrink-0" /> 
-                            <span className="truncate">{user.company_name}</span>
-                          </p>
-                        )}
-                        {user.role === 'sales_executive' && (
-                           <p className="flex items-center gap-1 text-gray-600">
-                             {user.is_live_tracking ? (
-                               <>
-                                 <Globe className="w-3 h-3 text-emerald-500" />
-                                 <span>Live Tracking</span>
-                               </>
-                             ) : (
-                               <>
-                                 <MapPin className="w-3 h-3 text-amber-500" />
-                                 <span>{user.assigned_city || 'No City'}, {user.assigned_state}</span>
-                               </>
-                             )}
-                           </p>
-                        )}
-                        {user.employee_code && (
-                          <p className="font-mono text-gray-400">ID: {user.employee_code}</p>
-                        )}
-                      </div>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
+          <Card className="border-0 shadow-sm">
+            <CardContent className="p-0">
+              <div className="overflow-x-auto">
+                <table className="w-full border-collapse">
+                  <thead>
+                    <tr className="border-y border-gray-200 bg-gray-50">
+                      <th className="text-left px-2 py-1.5 text-[10px] font-semibold text-gray-600 uppercase tracking-wider border-r border-gray-200 w-8">#</th>
+                      <th className="text-left px-2 py-1.5 text-[10px] font-semibold text-gray-600 uppercase tracking-wider border-r border-gray-200">Name</th>
+                      <th className="text-left px-2 py-1.5 text-[10px] font-semibold text-gray-600 uppercase tracking-wider border-r border-gray-200">Role</th>
+                      <th className="text-left px-2 py-1.5 text-[10px] font-semibold text-gray-600 uppercase tracking-wider border-r border-gray-200">Email</th>
+                      <th className="text-left px-2 py-1.5 text-[10px] font-semibold text-gray-600 uppercase tracking-wider border-r border-gray-200">Mobile</th>
+                      <th className="text-left px-2 py-1.5 text-[10px] font-semibold text-gray-600 uppercase tracking-wider border-r border-gray-200">Company</th>
+                      <th className="text-left px-2 py-1.5 text-[10px] font-semibold text-gray-600 uppercase tracking-wider border-r border-gray-200">Location / Code</th>
+                      <th className="text-center px-2 py-1.5 text-[10px] font-semibold text-gray-600 uppercase tracking-wider">Active</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {filteredUsers.map((user, idx) => (
+                      <tr key={user.id} className="border-b border-gray-100 hover:bg-gray-50 transition-colors">
+                        <td className="px-2 py-1.5 border-r border-gray-100 text-xs font-medium text-gray-600 w-8">{idx + 1}</td>
+                        <td className="px-2 py-1.5 border-r border-gray-100">
+                          <div className="flex items-center gap-2">
+                            <div className={`w-7 h-7 rounded-lg bg-gradient-to-br ${getRoleColor(user.role)} flex items-center justify-center text-white font-bold text-xs flex-shrink-0`}>
+                              {user.name.charAt(0)}
+                            </div>
+                            <span className="text-[11px] font-medium text-gray-800 truncate">{user.name}</span>
+                          </div>
+                        </td>
+                        <td className="px-2 py-1.5 border-r border-gray-100">
+                          <Badge variant="outline" className={`${getRoleBadgeClass(user.role)} text-[10px] px-1.5 py-0`}>
+                            <span className="capitalize">{user.role.replace('_', ' ')}</span>
+                          </Badge>
+                        </td>
+                        <td className="px-2 py-1.5 text-[11px] text-gray-600 border-r border-gray-100 max-w-[160px] truncate">{user.email}</td>
+                        <td className="px-2 py-1.5 text-[11px] text-gray-600 font-mono border-r border-gray-100 whitespace-nowrap">{user.mobile}</td>
+                        <td className="px-2 py-1.5 text-[11px] text-purple-600 font-medium border-r border-gray-100 truncate">{user.company_name || '–'}</td>
+                        <td className="px-2 py-1.5 text-[11px] text-gray-600 border-r border-gray-100">
+                          {user.role === 'sales_executive' ? (
+                            user.is_live_tracking ? (
+                              <span className="flex items-center gap-1"><Globe className="w-3 h-3 text-emerald-500" /> Live</span>
+                            ) : (
+                              <span className="flex items-center gap-1 truncate"><MapPin className="w-3 h-3 text-amber-500 flex-shrink-0" /> {user.assigned_city || '–'}</span>
+                            )
+                          ) : user.employee_code ? (
+                            <span className="font-mono text-gray-400">{user.employee_code}</span>
+                          ) : '–'}
+                        </td>
+                        <td className="px-2 py-1.5 text-center">
+                          {user.is_in_market ? (
+                            <span className="w-2 h-2 rounded-full bg-emerald-500 inline-block" title="Active in Market"></span>
+                          ) : (
+                            <span className="w-2 h-2 rounded-full bg-gray-300 inline-block"></span>
+                          )}
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </CardContent>
+          </Card>
         )}
       </div>
     </OwnerLayout>

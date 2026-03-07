@@ -135,14 +135,22 @@ const HODManagement = () => {
           </div>
         </div>
 
-        {/* Search & Actions */}
-        <div className="flex flex-col sm:flex-row gap-3 items-start sm:items-center justify-between">
-          <div className="flex-1">
-            {searchTerm && (
-              <p className="text-xs text-gray-500">
-                Showing results for: <span className="font-semibold text-gray-700">"{searchTerm}"</span>
-              </p>
-            )}
+        {/* Actions + Stats */}
+        <div className="flex flex-wrap items-center justify-between gap-2">
+          <div className="flex flex-wrap items-center gap-2">
+            <div className="flex items-center gap-2 bg-primary-50 border border-primary-100 rounded-md px-3 py-1.5">
+              <span className="text-[11px] font-medium text-primary-700">Total HODs</span>
+              <span className="text-sm font-bold font-mono text-primary-800">{hods.length}</span>
+            </div>
+            <div className="flex items-center gap-2 bg-emerald-50 border border-emerald-100 rounded-md px-3 py-1.5">
+              <span className="text-[11px] font-medium text-emerald-700">Sales Executives</span>
+              <span className="text-sm font-bold font-mono text-emerald-800">{salesExecutives.length}</span>
+            </div>
+            <div className="flex items-center gap-2 bg-amber-50 border border-amber-100 rounded-md px-3 py-1.5">
+              <span className="text-[11px] font-medium text-amber-700">Assigned</span>
+              <span className="text-sm font-bold font-mono text-amber-800">{hods.reduce((sum, hod) => sum + (hod.assigned_sales_executive_ids?.length || 0), 0)}</span>
+            </div>
+            {searchTerm && <span className="text-xs text-gray-400 ml-1">&middot; "{searchTerm}"</span>}
           </div>
           
           <Dialog open={dialogOpen} onOpenChange={(open) => { if (!open) closeDialog(); else setDialogOpen(true); }}>
@@ -252,30 +260,6 @@ const HODManagement = () => {
           </Dialog>
         </div>
 
-        {/* Stats */}
-        <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
-          <Card className="border-0 bg-gradient-to-br from-primary-400 to-primary-500 text-white shadow-md">
-            <CardContent className="p-3">
-              <span className="text-xs font-medium text-white/90">Total HODs</span>
-              <div className="text-lg font-bold font-mono mt-1">{hods.length}</div>
-            </CardContent>
-          </Card>
-          <Card className="border-0 bg-gradient-to-br from-emerald-400 to-emerald-500 text-white shadow-md">
-            <CardContent className="p-3">
-              <span className="text-xs font-medium text-white/90">Sales Executives</span>
-              <div className="text-lg font-bold font-mono mt-1">{salesExecutives.length}</div>
-            </CardContent>
-          </Card>
-          <Card className="border-0 bg-gradient-to-br from-amber-400 to-amber-500 text-white shadow-md">
-            <CardContent className="p-3">
-              <span className="text-xs font-medium text-white/90">Assigned</span>
-              <div className="text-lg font-bold font-mono mt-1">
-                {hods.reduce((sum, hod) => sum + (hod.assigned_sales_executive_ids?.length || 0), 0)}
-              </div>
-            </CardContent>
-          </Card>
-        </div>
-
         {/* HODs Table */}
         {loading ? (
           <div className="flex items-center justify-center py-12">
@@ -312,7 +296,7 @@ const HODManagement = () => {
 
                       return (
                         <tr key={hod.id} className="border-b border-gray-100 hover:bg-gray-50 transition-colors">
-                          <td className="px-2 py-1.5 border-r border-gray-100 text-xs font-medium text-gray-600 w-8">{idx + 1}</td>
+                          <td className="px-2 py-1.5 border-r border-gray-100 text-xs font-semibold text-gray-900 w-8">{idx + 1}</td>
                           <td className="px-2 py-1.5 border-r border-gray-100">
                             <div className="flex items-center gap-2">
                               <div className="w-8 h-8 rounded-full flex items-center justify-center text-white text-xs font-bold bg-gradient-to-br from-purple-500 to-indigo-600 flex-shrink-0">
@@ -321,13 +305,13 @@ const HODManagement = () => {
                               <span className="text-[11px] font-semibold text-gray-800" title={hodName.full}>{hodName.display}</span>
                             </div>
                           </td>
-                        <td className="px-2 py-1.5 text-[11px] text-gray-600 font-mono border-r border-gray-100">
+                        <td className="px-2 py-1.5 text-[11px] font-semibold text-gray-900 font-mono border-r border-gray-100">
                           {hod.employee_code}
                         </td>
-                        <td className="px-2 py-1.5 text-[11px] text-gray-600 border-r border-gray-100" title={hodEmail.full}>
+                        <td className="px-2 py-1.5 text-[11px] font-medium text-gray-900 border-r border-gray-100" title={hodEmail.full}>
                           {hodEmail.display}
                         </td>
-                        <td className="px-2 py-1.5 text-[11px] text-gray-600 border-r border-gray-100">
+                        <td className="px-2 py-1.5 text-[11px] font-medium text-gray-900 border-r border-gray-100">
                           <div className="flex items-center gap-1.5">
                             <Phone size={12} className="text-gray-400" />
                             <span>{hod.mobile}</span>

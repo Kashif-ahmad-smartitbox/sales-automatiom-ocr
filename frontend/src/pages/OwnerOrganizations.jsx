@@ -176,30 +176,30 @@ const OwnerOrganizations = () => {
                   <CollapsibleContent>
                     <CardContent className="border-t border-slate-100 bg-slate-50/50">
                       {orgDetails[org.id] ? (
-                        <div className="space-y-6 pt-4">
+                        <div className="space-y-3 pt-3">
                           {/* Company Info */}
-                          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
-                            <div className="bg-white border border-slate-200 rounded-lg p-4">
-                              <p className="text-xs text-slate-500 mb-2">Contact Info</p>
-                              <p className="text-slate-900 text-sm font-medium">{orgDetails[org.id].admin_email}</p>
-                              <p className="text-slate-500 text-sm">{orgDetails[org.id].admin_mobile}</p>
-                              <p className="text-xs text-slate-400 mt-2">GST: {orgDetails[org.id].gst || 'N/A'}</p>
+                          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2">
+                            <div className="bg-white border border-slate-200 rounded-lg p-2.5">
+                              <p className="text-[10px] text-slate-500 mb-1">Contact Info</p>
+                              <p className="text-slate-900 text-xs font-medium">{orgDetails[org.id].admin_email}</p>
+                              <p className="text-slate-500 text-xs">{orgDetails[org.id].admin_mobile}</p>
+                              <p className="text-[10px] text-slate-400 mt-1">GST: {orgDetails[org.id].gst || 'N/A'}</p>
                             </div>
-                            <div className="bg-white border border-slate-200 rounded-lg p-4">
-                              <p className="text-xs text-slate-500 mb-2">Configuration</p>
-                              <p className="text-slate-900 text-sm">
+                            <div className="bg-white border border-slate-200 rounded-lg p-2.5">
+                              <p className="text-[10px] text-slate-500 mb-1">Configuration</p>
+                              <p className="text-slate-900 text-xs">
                                 Working: {orgDetails[org.id].config?.working_hours?.start || '09:00'} - {orgDetails[org.id].config?.working_hours?.end || '18:00'}
                               </p>
-                              <p className="text-slate-500 text-sm">
+                              <p className="text-slate-500 text-xs">
                                 Visit Radius: {orgDetails[org.id].config?.visit_radius || 500}m
                               </p>
-                              <p className="text-slate-500 text-sm">
+                              <p className="text-slate-500 text-xs">
                                 Daily Target: {orgDetails[org.id].config?.visits_per_day_target || 10} visits
                               </p>
                             </div>
-                            <div className="bg-white border border-slate-200 rounded-lg p-4">
-                              <p className="text-xs text-slate-500 mb-2">Created</p>
-                              <p className="text-slate-900 text-sm">
+                            <div className="bg-white border border-slate-200 rounded-lg p-2.5">
+                              <p className="text-[10px] text-slate-500 mb-1">Created</p>
+                              <p className="text-slate-900 text-xs">
                                 {new Date(orgDetails[org.id].created_at).toLocaleDateString()}
                               </p>
                             </div>
@@ -207,24 +207,24 @@ const OwnerOrganizations = () => {
 
                           {/* Users */}
                           <div>
-                            <p className="text-sm text-slate-500 mb-3 flex items-center gap-2">
-                              <Users className="w-4 h-4" /> Team Members ({orgDetails[org.id].users?.length || 0})
+                            <p className="text-xs text-slate-500 mb-2 flex items-center gap-1.5">
+                              <Users className="w-3.5 h-3.5" /> Team Members ({orgDetails[org.id].users?.length || 0})
                             </p>
-                            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+                            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2">
                               {orgDetails[org.id].users?.slice(0, 6).map((user) => (
-                                <div key={user.id} className="bg-white border border-slate-200 rounded-lg p-3 flex items-center gap-3">
-                                  <div className={`w-8 h-8 rounded-full flex items-center justify-center text-white text-sm font-semibold ${
+                                <div key={user.id} className="bg-white border border-slate-200 rounded-lg p-2 flex items-center gap-2">
+                                  <div className={`w-6 h-6 rounded-full flex items-center justify-center text-white text-xs font-semibold flex-shrink-0 ${
                                     user.role === 'organization' ? 'bg-amber-500' : 
                                     user.role === 'admin' ? 'bg-purple-500' : 'bg-emerald-500'
                                   }`}>
                                     {user.name.charAt(0)}
                                   </div>
                                   <div className="flex-1 min-w-0">
-                                    <p className="text-slate-900 text-sm truncate font-medium">{user.name}</p>
-                                    <p className="text-xs text-slate-500 capitalize">{user.role.replace('_', ' ')}</p>
+                                    <p className="text-slate-900 text-xs truncate font-medium">{user.name}</p>
+                                    <p className="text-[10px] text-slate-500 capitalize">{user.role.replace('_', ' ')}</p>
                                   </div>
                                   {user.is_in_market && (
-                                    <Badge className="bg-emerald-100 text-emerald-700 text-xs hover:bg-emerald-200">Active</Badge>
+                                    <Badge className="bg-emerald-100 text-emerald-700 text-[10px] px-1 py-0 hover:bg-emerald-200">Active</Badge>
                                   )}
                                 </div>
                               ))}

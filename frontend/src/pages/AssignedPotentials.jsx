@@ -228,8 +228,8 @@ const AssignedPotentials = () => {
         {/* Info Banner */}
         {potentials.length > 0 && (
           <Card className="border-0 bg-gradient-to-r from-blue-50 to-indigo-50 shadow-sm">
-            <CardContent className="p-4">
-              <div className="flex items-start justify-between gap-4">
+            <CardContent className="p-3">
+              <div className="flex items-start justify-between gap-3">
                 <div>
                   <p className="text-sm font-semibold text-gray-800">Ready to Visit These Dealers?</p>
                   <p className="text-xs text-gray-600 mt-1">These assigned dealers will automatically appear in your Field View when you start a market visit.</p>
@@ -349,7 +349,7 @@ const AssignedPotentials = () => {
                                         <Button
                                             size="sm"
                                             onClick={() => handleRecordVisit(item)}
-                                            className="bg-gradient-to-r from-primary-500 to-orange-500 hover:from-primary-600 hover:to-orange-600 text-white h-8 px-3"
+                                            className="bg-gradient-to-r from-primary-500 to-orange-500 hover:from-primary-600 hover:to-orange-600 text-white h-7 px-2"
                                         >
                                             <CheckCircle size={14} className="mr-1" />
                                             Record Visit

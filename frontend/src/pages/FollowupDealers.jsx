@@ -321,10 +321,10 @@ const FollowupDealers = () => {
         {/* Info Banner */}
         {dealers.length > 0 && stats.overdue > 0 && (
           <Card className="border-0 bg-gradient-to-r from-red-50 to-orange-50 shadow-sm">
-            <CardContent className="p-4">
+            <CardContent className="p-3">
               <div className="flex items-start gap-3">
-                <div className="p-2 rounded-lg bg-red-100">
-                  <WarningCircle size={20} className="text-red-600" />
+                <div className="p-1.5 rounded-lg bg-red-100">
+                  <WarningCircle size={16} className="text-red-600" />
                 </div>
                 <div className="flex-1">
                   <p className="text-sm font-semibold text-gray-800">
@@ -339,73 +339,33 @@ const FollowupDealers = () => {
           </Card>
         )}
 
-        {/* Controls */}
-        <div className="flex flex-col sm:flex-row gap-3 items-start sm:items-center justify-between">
-          <div className="flex-1">
-            {searchTerm && (
-              <p className="text-xs text-gray-500">
-                Showing results for: <span className="font-semibold text-gray-700">"{searchTerm}"</span>
-              </p>
-            )}
+        {/* Actions + Stats */}
+        <div className="flex flex-wrap items-center justify-between gap-2">
+          <div className="flex flex-wrap items-center gap-2">
+            <div className="flex items-center gap-2 bg-red-50 border border-red-100 rounded-md px-3 py-1.5">
+              <WarningCircle size={13} className="text-red-600" weight="fill" />
+              <span className="text-[11px] font-medium text-red-700">Overdue</span>
+              <span className="text-sm font-bold font-mono text-red-800">{stats.overdue}</span>
+            </div>
+            <div className="flex items-center gap-2 bg-orange-50 border border-orange-100 rounded-md px-3 py-1.5">
+              <Clock size={13} className="text-orange-600" weight="fill" />
+              <span className="text-[11px] font-medium text-orange-700">Today</span>
+              <span className="text-sm font-bold font-mono text-orange-800">{stats.today}</span>
+            </div>
+            <div className="flex items-center gap-2 bg-blue-50 border border-blue-100 rounded-md px-3 py-1.5">
+              <Calendar size={13} className="text-blue-600" weight="fill" />
+              <span className="text-[11px] font-medium text-blue-700">Upcoming</span>
+              <span className="text-sm font-bold font-mono text-blue-800">{stats.upcoming}</span>
+            </div>
+            <div className="flex items-center gap-2 bg-primary-50 border border-primary-100 rounded-md px-3 py-1.5">
+              <span className="text-[11px] font-medium text-primary-700">Total</span>
+              <span className="text-sm font-bold font-mono text-primary-800">{dealers.length}</span>
+            </div>
+            {searchTerm && <span className="text-xs text-gray-400">&middot; "{searchTerm}"</span>}
           </div>
-          <Button variant="outline" onClick={fetchData}>
+          <Button variant="outline" size="sm" onClick={fetchData} className="h-8 text-xs">
             Refresh
           </Button>
-        </div>
-
-        {/* Stats */}
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
-          <Card className="border-0 bg-gradient-to-br from-red-400 to-red-500 text-white shadow-md hover:shadow-lg transition-all duration-300">
-            <CardContent className="p-3">
-              <div className="flex items-center justify-between mb-1">
-                <span className="text-xs font-medium text-white/90">Overdue</span>
-                <div className="p-1.5 rounded-md bg-white/20 backdrop-blur-sm">
-                  <WarningCircle size={14} weight="fill" />
-                </div>
-              </div>
-              <div className="text-lg font-bold font-mono">{stats.overdue}</div>
-              <p className="text-[10px] text-white/80 mt-0.5">Past due date</p>
-            </CardContent>
-          </Card>
-
-          <Card className="border-0 bg-gradient-to-br from-orange-400 to-orange-500 text-white shadow-md hover:shadow-lg transition-all duration-300">
-            <CardContent className="p-3">
-              <div className="flex items-center justify-between mb-1">
-                <span className="text-xs font-medium text-white/90">Today</span>
-                <div className="p-1.5 rounded-md bg-white/20 backdrop-blur-sm">
-                  <Clock size={14} weight="fill" />
-                </div>
-              </div>
-              <div className="text-lg font-bold font-mono">{stats.today}</div>
-              <p className="text-[10px] text-white/80 mt-0.5">Due today</p>
-            </CardContent>
-          </Card>
-
-          <Card className="border-0 bg-gradient-to-br from-blue-400 to-blue-500 text-white shadow-md hover:shadow-lg transition-all duration-300">
-            <CardContent className="p-3">
-              <div className="flex items-center justify-between mb-1">
-                <span className="text-xs font-medium text-white/90">Upcoming</span>
-                <div className="p-1.5 rounded-md bg-white/20 backdrop-blur-sm">
-                  <Calendar size={14} weight="fill" />
-                </div>
-              </div>
-              <div className="text-lg font-bold font-mono">{stats.upcoming}</div>
-              <p className="text-[10px] text-white/80 mt-0.5">Next 7 days</p>
-            </CardContent>
-          </Card>
-
-          <Card className="border-0 bg-gradient-to-br from-primary-400 to-primary-500 text-white shadow-md hover:shadow-lg transition-all duration-300">
-            <CardContent className="p-3">
-              <div className="flex items-center justify-between mb-1">
-                <span className="text-xs font-medium text-white/90">Total</span>
-                <div className="p-1.5 rounded-md bg-white/20 backdrop-blur-sm">
-                  <Buildings size={14} weight="fill" />
-                </div>
-              </div>
-              <div className="text-lg font-bold font-mono">{dealers.length}</div>
-              <p className="text-[10px] text-white/80 mt-0.5">Follow-ups needed</p>
-            </CardContent>
-          </Card>
         </div>
 
         {/* Content */}
@@ -414,18 +374,18 @@ const FollowupDealers = () => {
             <table className="w-full border-collapse">
               <thead className="bg-gray-50">
                 <tr className="border-y border-gray-200">
-                  <th className="px-2 py-2 text-left text-[10px] font-semibold text-gray-600 uppercase tracking-wider border-r border-gray-200 w-8">#</th>
-                  <th className="px-2 py-2 text-left text-[10px] font-semibold text-gray-600 uppercase tracking-wider border-r border-gray-200">Dealer Name</th>
-                  <th className="px-2 py-2 text-left text-[10px] font-semibold text-gray-600 uppercase tracking-wider border-r border-gray-200">Contact Info</th>
-                  <th className="px-2 py-2 text-left text-[10px] font-semibold text-gray-600 uppercase tracking-wider border-r border-gray-200">Location</th>
-                  <th className="px-2 py-2 text-left text-[10px] font-semibold text-gray-600 uppercase tracking-wider border-r border-gray-200">Last Visit</th>
-                  <th className="px-2 py-2 text-left text-[10px] font-semibold text-gray-600 uppercase tracking-wider border-r border-gray-200">Next Visit Date</th>
-                  <th className="px-2 py-2 text-center text-[10px] font-semibold text-gray-600 uppercase tracking-wider border-r border-gray-200">Status</th>
-                  <th className="px-2 py-2 text-left text-[10px] font-semibold text-gray-600 uppercase tracking-wider border-r border-gray-200">Last Outcome</th>
+                  <th className="px-2 py-1.5 text-left text-[10px] font-semibold text-gray-600 uppercase tracking-wider border-r border-gray-200 w-8">#</th>
+                  <th className="px-2 py-1.5 text-left text-[10px] font-semibold text-gray-600 uppercase tracking-wider border-r border-gray-200">Dealer Name</th>
+                  <th className="px-2 py-1.5 text-left text-[10px] font-semibold text-gray-600 uppercase tracking-wider border-r border-gray-200">Contact Info</th>
+                  <th className="px-2 py-1.5 text-left text-[10px] font-semibold text-gray-600 uppercase tracking-wider border-r border-gray-200">Location</th>
+                  <th className="px-2 py-1.5 text-left text-[10px] font-semibold text-gray-600 uppercase tracking-wider border-r border-gray-200">Last Visit</th>
+                  <th className="px-2 py-1.5 text-left text-[10px] font-semibold text-gray-600 uppercase tracking-wider border-r border-gray-200">Next Visit Date</th>
+                  <th className="px-2 py-1.5 text-center text-[10px] font-semibold text-gray-600 uppercase tracking-wider border-r border-gray-200">Status</th>
+                  <th className="px-2 py-1.5 text-left text-[10px] font-semibold text-gray-600 uppercase tracking-wider border-r border-gray-200">Last Outcome</th>
                   {showExecutiveColumn && (
-                    <th className="px-2 py-2 text-left text-[10px] font-semibold text-gray-600 uppercase tracking-wider border-r border-gray-200">Executive</th>
+                    <th className="px-2 py-1.5 text-left text-[10px] font-semibold text-gray-600 uppercase tracking-wider border-r border-gray-200">Executive</th>
                   )}
-                  <th className="px-2 py-2 text-center text-[10px] font-semibold text-gray-600 uppercase tracking-wider">Actions</th>
+                  <th className="px-2 py-1.5 text-center text-[10px] font-semibold text-gray-600 uppercase tracking-wider">Actions</th>
                 </tr>
               </thead>
               <tbody>
@@ -450,23 +410,23 @@ const FollowupDealers = () => {
                     const cityName = getTruncatedText(dealer.city || '', 14);
 
                     return (
-                    <tr key={dealer.id} className={`border-b border-gray-100 hover:bg-gray-50 transition-colors ${dealer.followup_status === 'overdue' ? 'bg-red-50' : ''}`}>
-                      <td className="px-2 py-1.5 border-r border-gray-100 text-xs font-medium text-gray-600 w-8">{idx + 1}</td>
+                    <tr key={dealer.id} className={`border-b border-gray-100 hover:bg-gray-50 transition-colors ${dealer.followup_status === 'overdue' ? 'bg-red-50/40' : ''}`}>
+                      <td className="px-2 py-1.5 border-r border-gray-100 text-xs font-semibold text-gray-900 w-8">{idx + 1}</td>
                       <td className="px-2 py-1.5 border-r border-gray-100">
-                        <div className="font-medium text-xs text-gray-800" title={dealerName.full}>{dealerName.display}</div>
+                          <div className="font-semibold text-xs text-gray-900" title={dealerName.full}>{dealerName.display}</div>
                         <div className="text-[10px] text-gray-400 mt-0.5">
                           {dealer.dealer_type} • Priority {dealer.priority_level}
                         </div>
                       </td>
                       <td className="px-2 py-1.5 border-r border-gray-100">
                         {dealer.contact_person && (
-                          <div className="flex items-center gap-1.5 text-[11px] text-gray-600">
+                          <div className="flex items-center gap-1.5 text-[11px] font-medium text-gray-900">
                             <User size={12} className="text-gray-400" />
                             <span title={contactPerson.full}>{contactPerson.display}</span>
                           </div>
                         )}
                         {dealer.phone && (
-                          <div className="flex items-center gap-1.5 text-[11px] text-gray-600 mt-1">
+                          <div className="flex items-center gap-1.5 text-[11px] font-medium text-gray-900 mt-1">
                             <Phone size={12} className="text-gray-400" />
                             <span>{dealer.phone}</span>
                           </div>
@@ -475,23 +435,20 @@ const FollowupDealers = () => {
                           <span className="text-[11px] text-gray-400">Not available</span>
                         )}
                       </td>
-                      <td className="px-2 py-1.5 max-w-xs border-r border-gray-100">
+                      <td className="px-2 py-1.5 border-r border-gray-100">
                         {dealer.city && (
-                          <div className="text-[11px] font-medium text-gray-700 mb-1" title={cityName.full}>
-                            {cityName.display}
-                          </div>
+                          <div className="text-[11px] font-semibold text-gray-900" title={cityName.full}>{cityName.display}</div>
                         )}
-                        <div className="flex items-start gap-1.5 text-[11px] text-gray-600">
-                          <MapPin size={12} className="mt-0.5 shrink-0 text-gray-400" />
-                          <span className="line-clamp-2" title={dealer.address}>
-                            {dealer.address || 'Address not available'}
-                          </span>
-                        </div>
+                        {dealer.address && (
+                          <button title={dealer.address} className="text-gray-400 hover:text-primary-600 transition-colors cursor-help inline-flex mt-0.5">
+                            <MapPin size={12} weight="fill" />
+                          </button>
+                        )}
                       </td>
                       <td>
                         {dealer.last_visit_date ? (
                           <div>
-                            <div className="flex items-center gap-1.5 text-xs text-gray-600">
+                            <div className="flex items-center gap-1.5 text-xs font-medium text-gray-900">
                               <Calendar size={12} className="text-gray-400" />
                               <span>{formatDateDDMmmYYYY(dealer.last_visit_date)}</span>
                             </div>
@@ -541,7 +498,7 @@ const FollowupDealers = () => {
                       </td>
                       {showExecutiveColumn && (
                         <td className="px-2 py-1.5 border-r border-gray-100">
-                          <span className="text-[11px] text-gray-600">
+                          <span className="text-[11px] font-medium text-gray-900">
                             {dealer.last_visited_by_name || dealer.last_visited_by || '—'}
                           </span>
                         </td>

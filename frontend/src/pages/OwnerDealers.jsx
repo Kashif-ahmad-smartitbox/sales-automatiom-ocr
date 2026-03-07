@@ -146,7 +146,7 @@ const OwnerDealers = () => {
           </Badge>
         </div>
 
-        {/* Dealers Grid */}
+        {/* Dealers Table */}
         {filteredDealers.length === 0 ? (
           <Card className="border-0 shadow-sm">
             <CardContent className="p-6 text-center">
@@ -155,57 +155,50 @@ const OwnerDealers = () => {
             </CardContent>
           </Card>
         ) : (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
-            {filteredDealers.map((dealer) => (
-              <Card key={dealer.id} className="border-0 shadow-sm hover:shadow-md transition-all duration-300">
-                <CardContent className="p-3">
-                  <div className="flex items-start gap-3">
-                    <div className="w-9 h-9 rounded-lg bg-primary-100 flex items-center justify-center text-primary-600 flex-shrink-0">
-                      <Storefront className="w-4 h-4" />
-                    </div>
-                    <div className="flex-1 min-w-0">
-                      <div className="flex items-center justify-between gap-2 mb-0.5">
-                        <p className="text-sm font-medium text-gray-800 truncate">{dealer.name}</p>
-                        <div className="flex">{getPriorityStars(dealer.priority_level)}</div>
-                      </div>
-                      <Badge className="bg-primary-100 text-primary-700 border-primary-200 text-[10px] px-1.5 py-0 mb-1.5">
-                        {dealer.dealer_type}
-                      </Badge>
-                      <div className="space-y-0.5 text-[10px] text-gray-500">
-                        <p className="flex items-center gap-1 truncate">
-                          <MapPin className="w-2.5 h-2.5 flex-shrink-0 text-gray-400" /> 
-                          <span className="truncate">{dealer.address}</span>
-                        </p>
-                        {dealer.phone && (
-                          <p className="flex items-center gap-1">
-                            <Phone className="w-2.5 h-2.5 flex-shrink-0 text-gray-400" /> {dealer.phone}
-                          </p>
-                        )}
-                        {dealer.contact_person && (
-                          <p className="text-gray-500">Contact: <span className="text-gray-700 font-medium">{dealer.contact_person}</span></p>
-                        )}
-                        <p className="flex items-center gap-1 text-purple-600 font-medium">
-                          <Buildings className="w-2.5 h-2.5 flex-shrink-0" /> 
-                          <span className="truncate">{dealer.company_name}</span>
-                        </p>
-                        <div className="flex gap-3 pt-0.5">
-                          <span className="flex items-center gap-1 text-gray-500">
-                            <Calendar className="w-2.5 h-2.5" />
-                            {dealer.visit_frequency}
-                          </span>
-                          {dealer.last_visit_date && (
-                            <span className="text-gray-500">
-                              Last: {new Date(dealer.last_visit_date).toLocaleDateString()}
-                            </span>
-                          )}
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
+          <Card className="border-0 shadow-sm">
+            <CardContent className="p-0">
+              <div className="overflow-x-auto">
+                <table className="w-full border-collapse">
+                  <thead>
+                    <tr className="border-y border-gray-200 bg-gray-50">
+                      <th className="text-left px-2 py-1.5 text-[10px] font-semibold text-gray-600 uppercase tracking-wider border-r border-gray-200 w-8">#</th>
+                      <th className="text-left px-2 py-1.5 text-[10px] font-semibold text-gray-600 uppercase tracking-wider border-r border-gray-200">Dealer Name</th>
+                      <th className="text-left px-2 py-1.5 text-[10px] font-semibold text-gray-600 uppercase tracking-wider border-r border-gray-200">Type</th>
+                      <th className="text-left px-2 py-1.5 text-[10px] font-semibold text-gray-600 uppercase tracking-wider border-r border-gray-200">Address</th>
+                      <th className="text-left px-2 py-1.5 text-[10px] font-semibold text-gray-600 uppercase tracking-wider border-r border-gray-200">Contact</th>
+                      <th className="text-left px-2 py-1.5 text-[10px] font-semibold text-gray-600 uppercase tracking-wider border-r border-gray-200">Phone</th>
+                      <th className="text-left px-2 py-1.5 text-[10px] font-semibold text-gray-600 uppercase tracking-wider border-r border-gray-200">Company</th>
+                      <th className="text-left px-2 py-1.5 text-[10px] font-semibold text-gray-600 uppercase tracking-wider border-r border-gray-200">Frequency</th>
+                      <th className="text-left px-2 py-1.5 text-[10px] font-semibold text-gray-600 uppercase tracking-wider">Priority</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {filteredDealers.map((dealer, idx) => (
+                      <tr key={dealer.id} className="border-b border-gray-100 hover:bg-gray-50 transition-colors">
+                        <td className="px-2 py-1.5 border-r border-gray-100 text-xs font-medium text-gray-600 w-8">{idx + 1}</td>
+                        <td className="px-2 py-1.5 border-r border-gray-100">
+                          <p className="text-[11px] font-medium text-gray-800 truncate max-w-[140px]">{dealer.name}</p>
+                        </td>
+                        <td className="px-2 py-1.5 border-r border-gray-100">
+                          <Badge className="bg-primary-100 text-primary-700 border-primary-200 text-[10px] px-1.5 py-0">{dealer.dealer_type}</Badge>
+                        </td>
+                        <td className="px-2 py-1.5 border-r border-gray-100 max-w-[160px]">
+                          <p className="text-[11px] text-gray-500 truncate" title={dealer.address}>{dealer.address}</p>
+                        </td>
+                        <td className="px-2 py-1.5 border-r border-gray-100 text-[11px] text-gray-600">{dealer.contact_person || '–'}</td>
+                        <td className="px-2 py-1.5 border-r border-gray-100 text-[11px] font-mono text-gray-600 whitespace-nowrap">{dealer.phone || '–'}</td>
+                        <td className="px-2 py-1.5 border-r border-gray-100 text-[11px] text-purple-600 font-medium truncate max-w-[120px]">{dealer.company_name}</td>
+                        <td className="px-2 py-1.5 border-r border-gray-100 text-[11px] text-gray-600">{dealer.visit_frequency}</td>
+                        <td className="px-2 py-1.5">
+                          <div className="flex">{getPriorityStars(dealer.priority_level)}</div>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </CardContent>
+          </Card>
         )}
       </div>
     </OwnerLayout>

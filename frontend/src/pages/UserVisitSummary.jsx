@@ -218,7 +218,7 @@ const UserVisitSummary = () => {
               <Card key={user.user_id} className="border-0 shadow-sm overflow-hidden">
                 <CardContent className="p-0">
                   <div
-                    className="py-3 px-4 cursor-pointer hover:bg-gray-50/50 transition-colors flex items-center justify-between"
+                    className="py-2 px-3 cursor-pointer hover:bg-gray-50/50 transition-colors flex items-center justify-between"
                     onClick={() => toggleExpand(user.user_id)}
                   >
                     <div className="flex items-center gap-3">
@@ -237,7 +237,7 @@ const UserVisitSummary = () => {
                         <p className="text-[10px] text-gray-500 font-mono">{user.employee_code || user.user_id}</p>
                       </div>
                     </div>
-                    <div className="flex items-center gap-6">
+                    <div className="flex items-center gap-4">
                       <div className="text-right">
                         <p className="text-[10px] text-gray-500">Dealers Shown</p>
                         <p className="text-sm font-bold text-primary-600">{user.total_dealers_shown ?? 0}</p>

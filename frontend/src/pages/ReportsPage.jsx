@@ -26,6 +26,7 @@ import { formatDateDDMmmYYYY, getTruncatedText } from '../utils/tableHelpers';
 const API = `${process.env.REACT_APP_BACKEND_URL}/api`;
 
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '../components/ui/dialog';
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, PieChart, Pie, Cell, Legend } from 'recharts';
 
 const ROWS_PER_PAGE = 15;
 
@@ -36,6 +37,7 @@ const ReportsPage = () => {
   const [lostVisits, setLostVisits] = useState([]);
   const [visitHistory, setVisitHistory] = useState([]);
   const [marketSessions, setMarketSessions] = useState([]);
+  const [weeklySales, setWeeklySales] = useState({ daily: [], summary: {} });
   const [loading, setLoading] = useState(true);
 
   // Pagination
@@ -51,18 +53,20 @@ const ReportsPage = () => {
 
   const fetchReportData = useCallback(async () => {
     try {
-      const [dashRes, perfRes, lostRes, histRes, sessRes] = await Promise.all([
+      const [dashRes, perfRes, lostRes, histRes, sessRes, weeklyRes] = await Promise.all([
         axios.get(`${API}/reports/dashboard`, { headers: getAuthHeader() }),
         axios.get(`${API}/reports/executive-performance`, { headers: getAuthHeader() }),
         axios.get(`${API}/reports/lost-visits`, { headers: getAuthHeader() }),
         axios.get(`${API}/visits/history`, { headers: getAuthHeader() }),
-        axios.get(`${API}/reports/market-sessions`, { headers: getAuthHeader() })
+        axios.get(`${API}/reports/market-sessions`, { headers: getAuthHeader() }),
+        axios.get(`${API}/reports/weekly-sales`, { headers: getAuthHeader() })
       ]);
       setDashboardStats(dashRes.data);
       setExecutivePerformance(perfRes.data);
       setLostVisits(lostRes.data);
       setVisitHistory(histRes.data);
       setMarketSessions(sessRes.data);
+      setWeeklySales(weeklyRes.data);
     } catch (error) {
       toast.error('Failed to fetch reports');
     } finally {
@@ -243,22 +247,106 @@ const ReportsPage = () => {
               </Card>
             </div>
 
-            {/* Outcome Breakdown */}
-            <Card className="border-0 shadow-sm">
-              <CardHeader className="pb-3">
-                <CardTitle className="text-sm font-bold text-gray-800">Visit Outcomes Breakdown</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-                  {Object.entries(outcomeStats).map(([outcome, count]) => (
-                    <div key={outcome} className="text-center p-3 bg-gray-50 rounded-lg border border-gray-100">
-                      <p className="text-lg font-bold font-mono text-gray-800">{count}</p>
-                      <p className="text-xs text-gray-500">{outcome}</p>
-                    </div>
-                  ))}
-                </div>
-              </CardContent>
-            </Card>
+            {/* Charts Row 1: 7-Day Trend + Outcome Pie */}
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+              {/* 7-Day Visit & Order Trend */}
+              <Card className="border-0 shadow-sm">
+                <CardHeader className="pb-2">
+                  <CardTitle className="text-sm font-bold text-gray-800">7-Day Visit & Order Trend</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  {weeklySales.daily.length === 0 ? (
+                    <div className="flex items-center justify-center h-44 text-xs text-gray-400">No trend data available</div>
+                  ) : (
+                    <ResponsiveContainer width="100%" height={190}>
+                      <BarChart data={weeklySales.daily} margin={{ top: 5, right: 10, left: -20, bottom: 5 }}>
+                        <CartesianGrid strokeDasharray="3 3" stroke="#f0f0f0" vertical={false} />
+                        <XAxis dataKey="day" tick={{ fontSize: 10, fill: '#6b7280' }} axisLine={false} tickLine={false} />
+                        <YAxis tick={{ fontSize: 10, fill: '#6b7280' }} axisLine={false} tickLine={false} />
+                        <Tooltip
+                          contentStyle={{ fontSize: 11, borderRadius: 8, border: '1px solid #e5e7eb', boxShadow: '0 2px 8px rgba(0,0,0,0.08)' }}
+                          formatter={(value, name) => [value, name === 'visits' ? 'Visits' : 'Orders']}
+                        />
+                        <Legend wrapperStyle={{ fontSize: 11, paddingTop: 4 }} />
+                        <Bar dataKey="visits" name="Visits" fill="#6366f1" radius={[3, 3, 0, 0]} maxBarSize={24} />
+                        <Bar dataKey="orders" name="Orders" fill="#10b981" radius={[3, 3, 0, 0]} maxBarSize={24} />
+                      </BarChart>
+                    </ResponsiveContainer>
+                  )}
+                </CardContent>
+              </Card>
+
+              {/* Outcome Distribution Donut */}
+              <Card className="border-0 shadow-sm">
+                <CardHeader className="pb-2">
+                  <CardTitle className="text-sm font-bold text-gray-800">Visit Outcome Distribution</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  {visitHistory.length === 0 ? (
+                    <div className="flex items-center justify-center h-44 text-xs text-gray-400">No visit data available</div>
+                  ) : (
+                    <ResponsiveContainer width="100%" height={190}>
+                      <PieChart>
+                        <Pie
+                          data={[
+                            { name: 'Order Booked', value: outcomeStats['Order Booked'] },
+                            { name: 'Follow-up', value: outcomeStats['Follow-up Required'] },
+                            { name: 'No Meeting', value: outcomeStats['No Meeting'] },
+                            { name: 'Lost Visit', value: outcomeStats['Lost Visit'] },
+                          ].filter(d => d.value > 0)}
+                          cx="50%"
+                          cy="50%"
+                          innerRadius={50}
+                          outerRadius={75}
+                          paddingAngle={3}
+                          dataKey="value"
+                        >
+                          <Cell fill="#10b981" />
+                          <Cell fill="#f59e0b" />
+                          <Cell fill="#94a3b8" />
+                          <Cell fill="#ef4444" />
+                        </Pie>
+                        <Tooltip contentStyle={{ fontSize: 11, borderRadius: 8, border: '1px solid #e5e7eb' }} />
+                        <Legend wrapperStyle={{ fontSize: 10 }} />
+                      </PieChart>
+                    </ResponsiveContainer>
+                  )}
+                </CardContent>
+              </Card>
+            </div>
+
+            {/* Executive Performance Chart */}
+            {executivePerformance.length > 0 && (
+              <Card className="border-0 shadow-sm">
+                <CardHeader className="pb-2">
+                  <CardTitle className="text-sm font-bold text-gray-800">Top Executives — Visits vs Completed</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <ResponsiveContainer width="100%" height={Math.max(180, Math.min(executivePerformance.length, 5) * 44)}>
+                    <BarChart
+                      layout="vertical"
+                      data={[...executivePerformance]
+                        .sort((a, b) => b.total_visits - a.total_visits)
+                        .slice(0, 5)
+                        .map(e => ({
+                          name: e.name.length > 12 ? e.name.split(' ')[0] : e.name,
+                          'Total Visits': e.total_visits,
+                          'Completed': e.completed_visits,
+                        }))}
+                      margin={{ top: 5, right: 30, left: 10, bottom: 5 }}
+                    >
+                      <CartesianGrid strokeDasharray="3 3" stroke="#f0f0f0" horizontal={false} />
+                      <XAxis type="number" tick={{ fontSize: 10, fill: '#6b7280' }} axisLine={false} tickLine={false} />
+                      <YAxis dataKey="name" type="category" tick={{ fontSize: 11, fill: '#374151', fontWeight: 500 }} width={72} axisLine={false} tickLine={false} />
+                      <Tooltip contentStyle={{ fontSize: 11, borderRadius: 8, border: '1px solid #e5e7eb', boxShadow: '0 2px 8px rgba(0,0,0,0.08)' }} />
+                      <Legend wrapperStyle={{ fontSize: 11, paddingTop: 4 }} />
+                      <Bar dataKey="Total Visits" fill="#6366f1" radius={[0, 3, 3, 0]} maxBarSize={16} />
+                      <Bar dataKey="Completed" fill="#10b981" radius={[0, 3, 3, 0]} maxBarSize={16} />
+                    </BarChart>
+                  </ResponsiveContainer>
+                </CardContent>
+              </Card>
+            )}
           </TabsContent>
 
           {/* Team Performance Tab */}

@@ -198,25 +198,25 @@ const ItemMaster = () => {
                 <table className="w-full border-collapse">
                   <thead className="bg-gray-50">
                     <tr className="border-y border-gray-200">
-                        <th className="px-2 py-2 text-left text-[10px] font-semibold text-gray-600 uppercase tracking-wider border-r border-gray-200 w-8">
+                        <th className="px-2 py-1.5 text-left text-[10px] font-semibold text-gray-600 uppercase tracking-wider border-r border-gray-200 w-8">
                           #
                         </th>
-                      <th className="px-2 py-2 text-left text-[10px] font-semibold text-gray-600 uppercase tracking-wider border-r border-gray-200">
+                      <th className="px-2 py-1.5 text-left text-[10px] font-semibold text-gray-600 uppercase tracking-wider border-r border-gray-200">
                         Item Name
                       </th>
-                      <th className="px-2 py-2 text-left text-[10px] font-semibold text-gray-600 uppercase tracking-wider border-r border-gray-200">
+                      <th className="px-2 py-1.5 text-left text-[10px] font-semibold text-gray-600 uppercase tracking-wider border-r border-gray-200">
                         Category
                       </th>
-                      <th className="px-2 py-2 text-left text-[10px] font-semibold text-gray-600 uppercase tracking-wider border-r border-gray-200">
+                      <th className="px-2 py-1.5 text-left text-[10px] font-semibold text-gray-600 uppercase tracking-wider border-r border-gray-200">
                         Price
                       </th>
-                      <th className="px-2 py-2 text-left text-[10px] font-semibold text-gray-600 uppercase tracking-wider border-r border-gray-200">
+                      <th className="px-2 py-1.5 text-left text-[10px] font-semibold text-gray-600 uppercase tracking-wider border-r border-gray-200">
                         Description
                       </th>
-                      <th className="px-2 py-2 text-left text-[10px] font-semibold text-gray-600 uppercase tracking-wider border-r border-gray-200">
+                      <th className="px-2 py-1.5 text-left text-[10px] font-semibold text-gray-600 uppercase tracking-wider border-r border-gray-200">
                         Added Date
                       </th>
-                      <th className="px-2 py-2 text-center text-[10px] font-semibold text-gray-600 uppercase tracking-wider">
+                      <th className="px-2 py-1.5 text-center text-[10px] font-semibold text-gray-600 uppercase tracking-wider">
                         Actions
                       </th>
                     </tr>
