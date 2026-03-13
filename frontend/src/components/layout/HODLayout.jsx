@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
-import { List, MagnifyingGlass } from '@phosphor-icons/react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { List, MagnifyingGlass, CaretLeft, CaretRight } from '@phosphor-icons/react';
 import HODSidebar from './HODSidebar';
 import { useAuth } from '../../context/AuthContext';
 import { useSearch } from '../../context/SearchContext';
@@ -31,8 +32,21 @@ const HODLayout = ({ children, title }) => {
               onClick={() => setSidebarOpen(!sidebarOpen)}
               className="lg:hidden p-2 rounded-lg hover:bg-slate-100 transition-colors"
             >
-              <List size={24} className="text-slate-600" />
+                <List size={24} className="text-slate-600" />
             </button>
+            
+            {/* Desktop Collapse Toggle */}
+            <button
+              onClick={() => setIsCollapsed(!isCollapsed)}
+              className="hidden lg:flex p-1.5 rounded-lg bg-slate-50 border border-slate-200 text-slate-600 hover:bg-slate-100 hover:text-slate-900 shadow-sm transition-all"
+              title={isCollapsed ? "Expand sidebar" : "Collapse sidebar"}
+            >
+              {isCollapsed ? <CaretRight size={20} weight="bold" /> : <CaretLeft size={20} weight="bold" />}
+            </button>
+            
+            {title && (
+              <span className="hidden lg:block text-base font-bold text-slate-800 ml-2">{title}</span>
+            )}
             
             {/* Search Bar */}
             <div className="flex-1 max-w-md hidden md:block">
@@ -61,9 +75,14 @@ const HODLayout = ({ children, title }) => {
         </header>
 
         {/* Main Content */}
-        <main className="p-4 md:p-6">
+        <motion.main 
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.4 }}
+          className="p-4 md:p-6"
+        >
           {children}
-        </main>
+        </motion.main>
       </div>
     </div>
   );
