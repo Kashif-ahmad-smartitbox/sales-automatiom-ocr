@@ -16,7 +16,7 @@ const HODLayout = ({ children, title }) => {
   }, [title]);
 
   return (
-    <div className="min-h-screen bg-slate-50">
+    <div className="min-h-screen bg-gray-50">
       <HODSidebar 
         isOpen={sidebarOpen} 
         onClose={() => setSidebarOpen(false)}

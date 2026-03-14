@@ -163,7 +163,7 @@ const HODReports = () => {
             <h2 className="text-sm font-bold text-gray-900 mb-3">HOD Overview</h2>
             <div className="overflow-auto rounded-lg border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 shadow-sm w-full max-h-[40rem]">
               <Table className="table-auto border-collapse">
-                <TableHeader className="bg-gradient-to-r from-primary-50 to-indigo-50 dark:from-gray-800 dark:to-gray-900 text-nowrap sticky top-0 text-xs z-10 border-b border-primary-100 dark:border-gray-700">
+                <TableHeader className="text-nowrap sticky top-0 text-xs z-10">
                   <TableHead className="p-2 text-gray-700 dark:text-gray-300 font-medium">HOD Name</TableHead>
                   <TableHead className="p-2 text-gray-700 dark:text-gray-300 font-medium text-center">Team Size</TableHead>
                   <TableHead className="p-2 text-gray-700 dark:text-gray-300 font-medium text-center">Total Visit</TableHead>
@@ -178,7 +178,7 @@ const HODReports = () => {
                     </TableRow>
                   ) : (
                     hodData.map((hod) => (
-                      <TableRow key={hod.id} className="group cursor-pointer transition-all text-xs text-gray-700 duration-200 hover:bg-gray-50 dark:hover:bg-gray-800 border-b border-gray-200 dark:border-gray-700">
+                      <TableRow key={hod.id} className="group cursor-pointer transition-all text-xs text-gray-700 duration-200">
                         <TableCell className="py-1.5 px-2 text-xs font-medium text-gray-900 dark:text-gray-200">{hod.name}</TableCell>
                         <TableCell className="py-1.5 px-2 text-center">
                           <button
@@ -216,7 +216,7 @@ const HODReports = () => {
               
               <div className="overflow-auto rounded-lg border border-green-200 bg-white shadow-sm w-full max-h-[40rem]">
                 <Table className="table-auto border-collapse">
-                  <TableHeader className="bg-gradient-to-r from-green-100 to-emerald-100 text-nowrap sticky top-0 text-xs z-10 border-b border-green-200">
+                  <TableHeader className="text-nowrap sticky top-0 text-xs z-10">
                     <TableHead className="p-2 text-green-800 font-medium">HOD Name</TableHead>
                     <TableHead className="p-2 text-green-800 font-medium">Executive</TableHead>
                     <TableHead className="p-2 text-green-800 font-medium text-center">Visit</TableHead>
@@ -232,7 +232,7 @@ const HODReports = () => {
                       </TableRow>
                     ) : (
                       topPerformers.map((performer, index) => (
-                        <TableRow key={`${performer.executive_id}-${index}`} className="transition-all text-xs duration-200 hover:bg-gray-50 border-b border-green-100">
+                        <TableRow key={`${performer.executive_id}-${index}`} className="transition-all text-xs duration-200">
                           <TableCell className="py-1.5 px-2 text-[11px] text-gray-900">{performer.hod_name}</TableCell>
                           <TableCell className="py-1.5 px-2 text-[11px] text-gray-900">{performer.executive_name}</TableCell>
                           <TableCell className="py-1.5 px-2 text-center text-[11px] font-mono text-gray-700">{performer.visits}</TableCell>
@@ -268,7 +268,7 @@ const HODReports = () => {
               
               <div className="overflow-auto rounded-lg border border-amber-200 bg-white shadow-sm w-full max-h-[40rem]">
                 <Table className="table-auto border-collapse">
-                  <TableHeader className="bg-gradient-to-r from-amber-100 to-yellow-100 text-nowrap sticky top-0 text-xs z-10 border-b border-amber-200">
+                  <TableHeader className="text-nowrap sticky top-0 text-xs z-10">
                     <TableHead className="p-2 text-amber-800 font-medium">HOD Name</TableHead>
                     <TableHead className="p-2 text-amber-800 font-medium">Executive</TableHead>
                     <TableHead className="p-2 text-amber-800 font-medium text-center">Visit</TableHead>
@@ -284,7 +284,7 @@ const HODReports = () => {
                       </TableRow>
                     ) : (
                       underperformers.map((performer, index) => (
-                        <TableRow key={`${performer.executive_id}-${index}`} className="transition-all text-xs duration-200 hover:bg-gray-50 border-b border-amber-100">
+                        <TableRow key={`${performer.executive_id}-${index}`} className="transition-all text-xs duration-200">
                           <TableCell className="py-1.5 px-2 text-[11px] text-gray-900">{performer.hod_name}</TableCell>
                           <TableCell className="py-1.5 px-2 text-[11px] text-gray-900">{performer.executive_name}</TableCell>
                           <TableCell className="py-1.5 px-2 text-center text-[11px] font-mono text-gray-700">{performer.visits}</TableCell>
@@ -350,7 +350,7 @@ const HODReports = () => {
               <div className="flex-1 overflow-y-auto p-4">
                 <div className="overflow-auto rounded-lg border border-gray-200 bg-white shadow-sm w-full max-h-[40rem]">
                   <Table className="table-auto border-collapse">
-                    <TableHeader className="bg-gradient-to-r from-gray-100 to-gray-200 text-nowrap sticky top-0 text-xs z-10 border-b border-gray-200">
+                    <TableHeader className="text-nowrap sticky top-0 text-xs z-10">
                       <TableHead className="p-2 text-gray-700 font-medium">Executive Name</TableHead>
                       <TableHead className="p-2 text-gray-700 font-medium">Employee Code</TableHead>
                       <TableHead className="p-2 text-gray-700 font-medium text-center">Total Visits</TableHead>
@@ -368,7 +368,7 @@ const HODReports = () => {
                         </TableRow>
                       ) : (
                         teamDetails.map((member) => (
-                          <TableRow key={member.executive_id} className="transition-all text-xs duration-200 hover:bg-gray-50 border-b border-gray-100">
+                          <TableRow key={member.executive_id} className="transition-all text-xs duration-200">
                             <TableCell className="py-2 px-3 text-xs font-medium text-gray-900">{member.executive_name}</TableCell>
                             <TableCell className="py-2 px-3 text-xs text-gray-700">{member.employee_code}</TableCell>
                             <TableCell className="py-2 px-3 text-center text-xs font-mono text-gray-700">{member.total_visits}</TableCell>

@@ -140,8 +140,43 @@ code {
 }
 
 /* Mobile touch targets */
+
+/* Mobile touch targets */
 @media (max-width: 768px) {
   button, .btn, a[role="button"] {
     min-height: 44px;
   }
+}
+
+/* Global Table Styling */
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+thead {
+  background-color: #e5e7eb !important; /* bg-gray-200 */
+}
+
+thead th {
+  color: #374151 !important; /* text-gray-700 */
+  font-weight: 600 !important;
+  font-size: 0.75rem;
+  padding: 0.5rem 1rem;
+}
+
+tbody tr {
+  background-color: #ffffff !important; /* bg-white */
+  border-bottom: 1px solid #f3f4f6; /* border-gray-100 */
+  transition: background-color 0.2s ease;
+}
+
+tbody tr:hover {
+  background-color: #f9fafb !important; /* bg-gray-50 */
+}
+
+tbody td {
+  padding: 0.5rem 1rem;
+  color: #4b5563; /* text-gray-600 */
+  font-size: 0.8125rem;
 }

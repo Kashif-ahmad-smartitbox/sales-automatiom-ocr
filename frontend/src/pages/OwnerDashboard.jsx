@@ -384,7 +384,7 @@ const OwnerDashboard = () => {
             ) : (
               <div className="overflow-auto rounded-lg border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 shadow-sm w-full max-h-[40rem]">
                 <Table className="table-auto border-collapse">
-                  <TableHeader className="bg-gradient-to-r from-primary-50 to-indigo-50 dark:from-gray-800 dark:to-gray-900 text-nowrap sticky top-0 text-xs z-10 border-b border-primary-100 dark:border-gray-700">
+                  <TableHeader className="text-nowrap sticky top-0 text-xs z-10">
                     <TableHead className="p-2 text-gray-700 dark:text-gray-300 font-medium text-center w-8">#</TableHead>
                     <TableHead className="p-2 text-gray-700 dark:text-gray-300 font-medium">Company</TableHead>
                     <TableHead className="p-2 text-gray-700 dark:text-gray-300 font-medium">User</TableHead>
@@ -400,7 +400,7 @@ const OwnerDashboard = () => {
                       const dealerName = getTruncatedText(visit.dealer_name, 15);
 
                       return (
-                        <TableRow key={visit.id} className="group cursor-pointer transition-all text-xs text-gray-700 duration-200 hover:bg-gray-50 dark:hover:bg-gray-800 border-b border-gray-200 dark:border-gray-700">
+                        <TableRow key={visit.id} className="group cursor-pointer transition-all text-xs text-gray-700 duration-200">
                           <TableCell className="px-2 py-1.5 text-center">
                             <span className="p-1 bg-gray-200 dark:bg-gray-700 font-medium rounded-full text-gray-600 dark:text-gray-300">{idx + 1}</span>
                           </TableCell>

@@ -83,7 +83,7 @@ const DealerOrderItemsView = ({ dealer, externalOpen = false, onExternalClose = 
             <div className="space-y-2">
               <div className="overflow-auto rounded-lg border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 shadow-sm max-h-[400px]">
                 <Table className="table-auto border-collapse">
-                  <TableHeader className="bg-gradient-to-r from-primary-50 to-indigo-50 dark:from-gray-800 dark:to-gray-900 sticky top-0 z-10 border-b border-primary-100 dark:border-gray-700">
+                  <TableHeader className="sticky top-0 z-10">
                     <TableHead className="py-1.5 px-2 text-gray-700 dark:text-gray-300 font-medium text-[10px]">#</TableHead>
                     <TableHead className="py-1.5 px-2 text-gray-700 dark:text-gray-300 font-medium text-[10px]">Item</TableHead>
                     <TableHead className="py-1.5 px-2 text-gray-700 dark:text-gray-300 font-medium text-[10px] text-center">Qty</TableHead>
@@ -92,7 +92,7 @@ const DealerOrderItemsView = ({ dealer, externalOpen = false, onExternalClose = 
                   </TableHeader>
                   <TableBody className="divide-y divide-gray-100 dark:divide-gray-800">
                     {items.map((item, idx) => (
-                      <TableRow key={idx} className="group transition-all duration-200 hover:bg-gray-50 dark:hover:bg-gray-800 border-b border-gray-200 dark:border-gray-700">
+                      <TableRow key={idx} className="group transition-all duration-200">
                         <TableCell className="py-1.5 px-2">
                           <span className="w-5 h-5 rounded-full bg-primary-100 dark:bg-primary-900/30 text-primary-700 dark:text-primary-400 flex items-center justify-center text-[10px] font-medium">
                             {idx + 1}
@@ -106,7 +106,7 @@ const DealerOrderItemsView = ({ dealer, externalOpen = false, onExternalClose = 
                         </TableCell>
                       </TableRow>
                     ))}
-                    <TableRow className="bg-gray-50 dark:bg-gray-800 font-bold border-t-2 border-gray-200 dark:border-gray-700">
+                    <TableRow className="font-bold border-t-2 border-gray-200 dark:border-gray-700">
                       <TableCell colSpan={4} className="py-1.5 px-2 text-right text-[11px] text-gray-700 dark:text-gray-300">Total:</TableCell>
                       <TableCell className="py-1.5 px-2 text-right text-[11px] text-primary-600 dark:text-primary-400 font-bold">
                         ₹{items.reduce((sum, item) => sum + (item.quantity * item.rate), 0).toFixed(2)}

@@ -281,7 +281,7 @@ const AssignedPotentials = () => {
         <Card className="border-0 shadow-sm overflow-hidden">
             <div className="overflow-auto rounded-lg border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 shadow-sm w-full max-h-[40rem]">
                 <Table className="table-auto border-collapse">
-                    <TableHeader className="bg-gradient-to-r from-primary-50 to-indigo-50 dark:from-gray-800 dark:to-gray-900 text-nowrap sticky top-0 text-xs z-10 border-b border-primary-100 dark:border-gray-700">
+                    <TableHeader className="text-nowrap sticky top-0 text-xs z-10">
                       <TableHead className="p-2 text-gray-700 dark:text-gray-300 font-medium w-8">#</TableHead>
                       <TableHead className="p-2 text-gray-700 dark:text-gray-300 font-medium">Dealer Name</TableHead>
                       <TableHead className="p-2 text-gray-700 dark:text-gray-300 font-medium">Location / Address</TableHead>
@@ -311,7 +311,7 @@ const AssignedPotentials = () => {
                             const foundByName = getTruncatedText(item.found_by_name, 16);
 
                             return (
-                            <TableRow key={item._id || item.id} className="group cursor-pointer transition-all text-xs text-gray-700 duration-200 hover:bg-gray-50 dark:hover:bg-gray-800 border-b border-gray-200 dark:border-gray-700">
+                            <TableRow key={item._id || item.id} className="group cursor-pointer transition-all text-xs text-gray-700 duration-200">
                               <TableCell className="px-2 py-1.5 text-xs font-medium text-gray-600 dark:text-gray-400 w-8">{idx + 1}</TableCell>
                               <TableCell className="px-2 py-1.5">
                                 <div className="font-medium text-xs text-gray-800 dark:text-gray-200" title={placeName.full}>{placeName.display}</div>
@@ -499,7 +499,7 @@ const AssignedPotentials = () => {
             </div>
 
             <div className="border-t border-gray-100 pt-3 space-y-3">
-              <p className="text-xs font-semibold text-gray-600 uppercase tracking-wider">Contact Details</p>
+              <p className="text-xs font-semibold text-gray-600">Contact Details</p>
               <div className="grid grid-cols-2 gap-3">
                 <div className="space-y-1">
                   <Label className="text-xs">Name</Label>

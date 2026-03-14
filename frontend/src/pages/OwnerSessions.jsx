@@ -187,7 +187,7 @@ const OwnerSessions = () => {
               <div className="p-4">
                 <div className="overflow-auto rounded-lg border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 shadow-sm w-full max-h-[40rem]">
                   <Table className="table-auto border-collapse">
-                    <TableHeader className="bg-gradient-to-r from-primary-50 to-indigo-50 dark:from-gray-800 dark:to-gray-900 text-nowrap sticky top-0 text-xs z-10 border-b border-primary-100 dark:border-gray-700">
+                    <TableHeader className="text-nowrap sticky top-0 text-xs z-10">
                       <TableHead className="p-2 text-gray-700 dark:text-gray-300 font-medium text-center w-8">#</TableHead>
                       <TableHead className="p-2 text-gray-700 dark:text-gray-300 font-medium">User</TableHead>
                       <TableHead className="p-2 text-gray-700 dark:text-gray-300 font-medium">Company</TableHead>
@@ -210,7 +210,7 @@ const OwnerSessions = () => {
                           const serialNumber = (currentPage - 1) * ROWS_PER_PAGE + idx + 1;
 
                           return (
-                          <TableRow key={session.id} className="group cursor-pointer transition-all text-xs text-gray-700 duration-200 hover:bg-gray-50 dark:hover:bg-gray-800 border-b border-gray-200 dark:border-gray-700">
+                          <TableRow key={session.id} className="group cursor-pointer transition-all text-xs text-gray-700 duration-200">
                           <TableCell className="px-2 py-1.5 text-center">
                             <span className="p-1 bg-gray-200 dark:bg-gray-700 font-medium rounded-full text-gray-600 dark:text-gray-300">{serialNumber}</span>
                           </TableCell>
@@ -333,7 +333,7 @@ const OwnerSessions = () => {
                        const placeName = getTruncatedText(item.place_name, 18);
 
                        return (
-                         <TableRow key={item.id} className={`group transition-all duration-200 border-b border-gray-200 dark:border-gray-700 ${item.is_visited ? 'bg-emerald-50 dark:bg-emerald-900/20 hover:bg-emerald-100 dark:hover:bg-emerald-900/30' : 'hover:bg-gray-50 dark:hover:bg-gray-800'}`}>
+                         <TableRow key={item.id} className={`group transition-all duration-200 ${item.is_visited ? 'bg-emerald-50 dark:bg-emerald-900/20' : ''}`}>
                          <TableCell className="px-2 sm:px-4 py-3 text-gray-500 dark:text-gray-400 w-8">{idx + 1}</TableCell>
                          <TableCell className="px-2 sm:px-4 py-3 font-medium text-gray-700 dark:text-gray-200" title={placeName.full}>
                            <div className="flex items-center gap-2">
