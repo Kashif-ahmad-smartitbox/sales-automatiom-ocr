@@ -1,6 +1,7 @@
 import { useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { List, Bell, MapPin, Buildings, DotsThree } from '@phosphor-icons/react';
+import { List, Bell, MapPin, Buildings, DotsThree, CaretLeft, CaretRight } from '@phosphor-icons/react';
 import SalesExecutiveSidebar from './SalesExecutiveSidebar';
 import { useAuth } from '../../context/AuthContext';
 
@@ -43,8 +44,21 @@ const SalesExecutiveLayout = ({ children, title }) => {
               >
                 <List size={20} />
               </button>
+
+              {/* Desktop Collapse Toggle */}
+              <button
+                onClick={() => setIsCollapsed(!isCollapsed)}
+                className="hidden md:flex p-1.5 rounded-lg bg-gray-50 border border-gray-200 text-gray-600 hover:bg-gray-100 hover:text-gray-900 shadow-sm transition-all"
+                title={isCollapsed ? "Expand sidebar" : "Collapse sidebar"}
+              >
+                {isCollapsed ? <CaretRight size={18} weight="bold" /> : <CaretLeft size={18} weight="bold" />}
+              </button>
+
               {title && (
                 <span className="md:hidden text-base font-bold text-gray-900">{title}</span>
+              )}
+              {title && (
+                <span className="hidden md:block text-xl font-bold text-gray-900 ml-2">{title}</span>
               )}
             </div>
 
@@ -62,9 +76,14 @@ const SalesExecutiveLayout = ({ children, title }) => {
         </header>
 
         {/* ── PAGE CONTENT ── */}
-        <main className="p-4 md:p-6 flex-1 pb-20 md:pb-6">
+        <motion.main 
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.4 }}
+          className="p-4 md:p-6 flex-1 pb-20 md:pb-6"
+        >
           {children}
-        </main>
+        </motion.main>
 
         {/* ── BOTTOM NAV (mobile only) ── */}
         <nav className="md:hidden fixed bottom-0 left-0 right-0 z-30 bg-white border-t border-gray-200 shadow-lg">

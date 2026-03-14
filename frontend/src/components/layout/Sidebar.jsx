@@ -1,5 +1,6 @@
 import { NavLink } from 'react-router-dom';
 import { useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import { 
   House, 
   Users, 
@@ -14,8 +15,6 @@ import {
   ChartPieSlice,
   UserCircleGear,
   Target,
-  CaretLeft,
-  CaretRight,
   Package,
   CalendarCheck
 } from '@phosphor-icons/react';
@@ -76,36 +75,46 @@ const Sidebar = ({ isOpen, onClose, isCollapsed, setIsCollapsed }) => {
           </button>
         </div>
 
-        {/* Collapse Toggle Button - Desktop only */}
-        <div className={`hidden md:flex py-2 bg-white ${isCollapsed ? 'justify-center px-1' : 'justify-end px-2'}`}>
-          <button
-            onClick={() => setIsCollapsed(!isCollapsed)}
-            className="p-1.5 rounded-lg bg-gradient-to-r from-primary-500 to-orange-500 text-white hover:from-primary-600 hover:to-orange-600 shadow-sm transition-colors"
-            title={isCollapsed ? "Expand sidebar" : "Collapse sidebar"}
-          >
-            {isCollapsed ? <CaretRight size={16} weight="bold" /> : <CaretLeft size={16} weight="bold" />}
-          </button>
-        </div>
 
-        {/* Navigation */}
-        <nav className={`flex-1 py-3 space-y-1 overflow-y-auto bg-white ${isCollapsed ? 'px-1' : 'px-3'}`}>
-          {navItems.map((item) => (
-            <NavLink
+
+        <nav className={`flex-1 py-4 space-y-1 overflow-y-auto bg-white ${isCollapsed ? 'px-1' : 'px-3'}`}>
+          {navItems.map((item, index) => (
+            <motion.div
               key={item.to}
-              to={item.to}
-              className={({ isActive }) => `
-                flex items-center ${isCollapsed ? 'justify-center px-0 py-3' : 'gap-3 px-4 py-3'} rounded-lg text-sm font-medium transition-all
-                ${isActive 
-                  ? 'bg-gradient-to-r from-primary-500 to-orange-500 text-white shadow-sm' 
-                  : 'text-gray-600 hover:text-gray-900 hover:bg-gray-50'
-                }
-              `}
-              onClick={onClose}
-              title={isCollapsed ? item.label : ''}
+              initial={{ opacity: 0, x: -20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: index * 0.05 }}
             >
-              <item.icon size={isCollapsed ? 22 : 20} weight={item.to === '/dashboard' ? 'fill' : 'regular'} />
-              {!isCollapsed && <span>{item.label}</span>}
-            </NavLink>
+              <NavLink
+                to={item.to}
+                className={({ isActive }) => `
+                  relative group flex items-center ${isCollapsed ? 'justify-center px-0 py-2' : 'gap-3 px-4 py-2'} rounded-xl text-sm font-medium transition-all duration-300
+                  ${isActive 
+                    ? 'bg-gradient-to-r from-gray-300 to-gray-400 text-gray-700 shadow-sm border border-gray-200/50' 
+                    : 'text-gray-600 hover:text-primary-600 hover:bg-gradient-to-r hover:from-primary-50 hover:to-orange-50'
+                  }
+                `}
+                onClick={onClose}
+                title={isCollapsed ? item.label : ''}
+              >
+                <motion.div
+                  whileHover={{ scale: 1.1 }}
+                  whileTap={{ scale: 0.95 }}
+                  className="flex items-center justify-center"
+                >
+                  <item.icon size={isCollapsed ? 22 : 20} weight={item.to === '/dashboard' ? 'fill' : 'regular'} />
+                </motion.div>
+                {!isCollapsed && (
+                  <motion.span
+                    initial={{ opacity: 0, x: -10 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: 0.1 + index * 0.05 }}
+                  >
+                    {item.label}
+                  </motion.span>
+                )}
+              </NavLink>
+            </motion.div>
           ))}
         </nav>
 

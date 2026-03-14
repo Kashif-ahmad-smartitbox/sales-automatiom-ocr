@@ -1,5 +1,6 @@
 import { useState } from 'react';
-import { List } from '@phosphor-icons/react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { List, CaretLeft, CaretRight } from '@phosphor-icons/react';
 import OwnerSidebar from './OwnerSidebar';
 
 const OwnerLayout = ({ children, title }) => {
@@ -7,7 +8,7 @@ const OwnerLayout = ({ children, title }) => {
   const [isCollapsed, setIsCollapsed] = useState(false);
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-gray-50 to-gray-100">
+    <div className="min-h-screen bg-gray-50">
       <OwnerSidebar 
         isOpen={sidebarOpen} 
         onClose={() => setSidebarOpen(false)}
@@ -28,15 +29,30 @@ const OwnerLayout = ({ children, title }) => {
               >
                 <List size={20} />
               </button>
-              <h1 className="text-sm font-bold text-gray-800">{title}</h1>
+              
+              {/* Desktop Collapse Toggle */}
+              <button
+                onClick={() => setIsCollapsed(!isCollapsed)}
+                className="hidden md:flex p-1.5 rounded-lg bg-gray-50 border border-gray-100 text-gray-600 hover:bg-gray-100 hover:text-gray-900 shadow-sm transition-all"
+                title={isCollapsed ? "Expand sidebar" : "Collapse sidebar"}
+              >
+                {isCollapsed ? <CaretRight size={18} weight="bold" /> : <CaretLeft size={18} weight="bold" />}
+              </button>
+
+              <h1 className="text-sm font-bold text-gray-800 ml-2">{title}</h1>
             </div>
           </div>
         </header>
 
         {/* Page Content */}
-        <main className="p-4 md:p-6 flex-1">
+        <motion.main 
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.4 }}
+          className="p-4 md:p-6 flex-1"
+        >
           {children}
-        </main>
+        </motion.main>
 
         {/* Footer */}
         <footer className="w-full border-t border-gray-100 bg-gradient-to-r from-gray-50 to-white px-4 py-3 mt-auto">

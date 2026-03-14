@@ -1,4 +1,5 @@
-import { useState } from 'react';
+import { useState } from 'react'; 
+import { motion, AnimatePresence } from 'framer-motion';
 import { useNavigate, useLocation } from 'react-router-dom';
 import {
   List,
@@ -9,7 +10,9 @@ import {
   ChartBar,
   Clipboard,
   DotsThree,
-  CalendarCheck
+  CalendarCheck,
+  CaretLeft,
+  CaretRight
 } from '@phosphor-icons/react';
 import Sidebar from './Sidebar';
 import { useAuth } from '../../context/AuthContext';
@@ -59,9 +62,23 @@ const AdminLayout = ({ children, title }) => {
               >
                 <List size={20} />
               </button>
+              
+              {/* Desktop Collapse Toggle */}
+              <button
+                onClick={() => setIsCollapsed(!isCollapsed)}
+                className="hidden md:flex p-1.5 rounded-lg bg-gray-50 border border-gray-200 text-gray-600 hover:bg-gray-100 hover:text-gray-900 shadow-sm transition-all"
+                title={isCollapsed ? "Expand sidebar" : "Collapse sidebar"}
+              >
+                {isCollapsed ? <CaretRight size={18} weight="bold" /> : <CaretLeft size={18} weight="bold" />}
+              </button>
+
               {/* Title — visible on mobile only */}
               {title && (
                 <span className="md:hidden text-base font-bold text-gray-900">{title}</span>
+              )}
+              {/* Title — visible on desktop */}
+              {title && (
+                <span className="hidden md:block text-xl font-bold text-gray-900 ml-2">{title}</span>
               )}
             </div>
 
@@ -97,10 +114,14 @@ const AdminLayout = ({ children, title }) => {
         </header>
 
         {/* ── PAGE CONTENT ── */}
-        {/* Bottom padding on mobile to clear the bottom nav */}
-        <main className="p-4 md:p-6 flex-1 pb-20 md:pb-6">
+        <motion.main 
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.4 }}
+          className="p-4 md:p-6 flex-1 pb-20 md:pb-6"
+        >
           {children}
-        </main>
+        </motion.main>
 
         {/* ── FOOTER (desktop only) ── */}
         <footer className="hidden md:block w-full border-t border-gray-200 bg-white px-6 py-3 mt-auto">

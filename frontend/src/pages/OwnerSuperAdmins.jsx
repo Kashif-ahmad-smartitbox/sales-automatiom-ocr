@@ -182,22 +182,22 @@ const OwnerSuperAdmins = () => {
                             </p>
                             <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
                               <div>
-                                <p className="text-[10px] text-gray-500 uppercase tracking-wider">Company</p>
+                                <p className="text-[10px] text-gray-500">Company</p>
                                 <p className="text-sm text-gray-800 font-medium">{admin.company.company_name}</p>
                               </div>
                               <div>
-                                <p className="text-[10px] text-gray-500 uppercase tracking-wider">Industry</p>
+                                <p className="text-[10px] text-gray-500">Industry</p>
                                 <p className="text-sm text-gray-800 font-medium">{admin.company.industry_type}</p>
                               </div>
                               <div>
-                                <p className="text-[10px] text-gray-500 uppercase tracking-wider">Location</p>
+                                <p className="text-[10px] text-gray-500">Location</p>
                                 <p className="text-sm text-gray-800 font-medium flex items-center gap-1">
                                   <MapPin className="w-2.5 h-2.5 text-gray-400" />
                                   {admin.company.head_office_location}
                                 </p>
                               </div>
                               <div>
-                                <p className="text-[10px] text-gray-500 uppercase tracking-wider">GST</p>
+                                <p className="text-[10px] text-gray-500">GST</p>
                                 <p className="text-sm text-gray-800 font-mono font-medium">{admin.company.gst || 'N/A'}</p>
                               </div>
                             </div>

@@ -532,7 +532,7 @@ const AdminDashboard = () => {
             ) : (
               <div className="overflow-auto rounded-lg border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 shadow-sm">
                 <Table className="table-auto border-collapse">
-                  <TableHeader className="bg-gradient-to-r from-primary-50 to-indigo-50 dark:from-gray-800 dark:to-gray-900 text-nowrap sticky top-0 text-xs z-10 border-b border-primary-100 dark:border-gray-700">
+                  <TableHeader className="text-nowrap sticky top-0 text-xs z-10">
                     <TableHead className="p-2 text-gray-700 dark:text-gray-300 font-medium w-8">#</TableHead>
                     <TableHead className="p-2 text-gray-700 dark:text-gray-300 font-medium">Next Visit</TableHead>
                     <TableHead className="p-2 text-gray-700 dark:text-gray-300 font-medium">Dealer</TableHead>
@@ -550,7 +550,7 @@ const AdminDashboard = () => {
                     const repName = getTruncatedText(visit.rep_name, 12);
                     
                     return (
-                      <TableRow key={visit.id} className="group cursor-pointer transition-all text-xs text-gray-700 duration-200 hover:bg-gray-50 dark:hover:bg-gray-800 border-b border-gray-200 dark:border-gray-700">
+                      <TableRow key={visit.id} className="group cursor-pointer transition-all text-xs text-gray-700 duration-200">
                         <TableCell className="px-2 py-1.5 text-xs font-medium text-gray-600 dark:text-gray-400 w-8">{idx + 1}</TableCell>
                         <TableCell className="px-2 py-1.5">
                           <span className="text-[11px] text-gray-600 dark:text-gray-400">

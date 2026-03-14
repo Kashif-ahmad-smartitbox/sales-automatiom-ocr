@@ -1,13 +1,25 @@
-import { useState, useEffect, useCallback } from 'react';
-import axios from 'axios';
-import AdminLayout from '../components/layout/AdminLayout';
-import { Card, CardContent } from '../components/ui/card';
-import { Button } from '../components/ui/button';
-import { Input } from '../components/ui/input';
-import { Label } from '../components/ui/label';
-import { Badge } from '../components/ui/badge';
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '../components/ui/dialog';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../components/ui/select';
+import { useState, useEffect, useCallback } from "react";
+import axios from "axios";
+import AdminLayout from "../components/layout/AdminLayout";
+import { Card, CardContent } from "../components/ui/card";
+import { Button } from "../components/ui/button";
+import { Input } from "../components/ui/input";
+import { Label } from "../components/ui/label";
+import { Badge } from "../components/ui/badge";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "../components/ui/dialog";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "../components/ui/select";
 import {
   Table,
   TableBody,
@@ -15,30 +27,43 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from '../components/ui/table';
-import { Plus, MapPin, Trash, Pencil, ClockClockwise, Calendar, User } from '@phosphor-icons/react';
-import { useAuth } from '../context/AuthContext';
-import { useSearch } from '../context/SearchContext';
-import DealerOrderItemsView from '../components/DealerOrderItemsView';
-import { toast } from 'sonner';
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '../components/ui/tooltip';
-import { formatDateDDMmmYYYY, getTruncatedText } from '../utils/tableHelpers';
+} from "../components/ui/table";
+import {
+  Plus,
+  MapPin,
+  Trash,
+  Pencil,
+  ClockClockwise,
+  Calendar,
+  User,
+} from "@phosphor-icons/react";
+import { useAuth } from "../context/AuthContext";
+import { useSearch } from "../context/SearchContext";
+import DealerOrderItemsView from "../components/DealerOrderItemsView";
+import { toast } from "sonner";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "../components/ui/tooltip";
+import { formatDateDDMmmYYYY, getTruncatedText } from "../utils/tableHelpers";
 
 const API = `${process.env.REACT_APP_BACKEND_URL}/api`;
 
 const emptyForm = {
-  name: '',
-  dealer_type: 'Retailer',
+  name: "",
+  dealer_type: "Retailer",
   category_mapping: [],
-  lat: '',
-  lng: '',
-  address: '',
-  territory_id: '',
-  visit_frequency: 'Weekly',
+  lat: "",
+  lng: "",
+  address: "",
+  territory_id: "",
+  visit_frequency: "Weekly",
   priority_level: 1,
-  contact_person: '',
-  phone: '',
-  found_by: ''
+  contact_person: "",
+  phone: "",
+  found_by: "",
 };
 
 const DealerManagement = () => {
@@ -60,12 +85,12 @@ const DealerManagement = () => {
     try {
       const [dealersRes, territoriesRes] = await Promise.all([
         axios.get(`${API}/dealers`, { headers: getAuthHeader() }),
-        axios.get(`${API}/territories`, { headers: getAuthHeader() })
+        axios.get(`${API}/territories`, { headers: getAuthHeader() }),
       ]);
       setDealers(dealersRes.data);
       setTerritories(territoriesRes.data);
     } catch (error) {
-      toast.error('Failed to fetch data');
+      toast.error("Failed to fetch data");
     } finally {
       setLoading(false);
     }
@@ -82,20 +107,24 @@ const DealerManagement = () => {
         ...formData,
         lat: parseFloat(formData.lat),
         lng: parseFloat(formData.lng),
-        priority_level: parseInt(formData.priority_level)
+        priority_level: parseInt(formData.priority_level),
       };
 
       if (editingId) {
-        await axios.put(`${API}/dealers/${editingId}`, payload, { headers: getAuthHeader() });
-        toast.success('Dealer updated successfully');
+        await axios.put(`${API}/dealers/${editingId}`, payload, {
+          headers: getAuthHeader(),
+        });
+        toast.success("Dealer updated successfully");
       } else {
-        await axios.post(`${API}/dealers`, payload, { headers: getAuthHeader() });
-        toast.success('Dealer added successfully');
+        await axios.post(`${API}/dealers`, payload, {
+          headers: getAuthHeader(),
+        });
+        toast.success("Dealer added successfully");
       }
       closeDialog();
       fetchData();
     } catch (error) {
-      toast.error(error.response?.data?.detail || 'Operation failed');
+      toast.error(error.response?.data?.detail || "Operation failed");
     }
   };
 
@@ -111,9 +140,9 @@ const DealerManagement = () => {
       territory_id: dealer.territory_id,
       visit_frequency: dealer.visit_frequency,
       priority_level: dealer.priority_level,
-      contact_person: dealer.contact_person || '',
-      phone: dealer.phone || '',
-      found_by: dealer.found_by || ''
+      contact_person: dealer.contact_person || "",
+      phone: dealer.phone || "",
+      found_by: dealer.found_by || "",
     });
     setDialogOpen(true);
   };
@@ -125,13 +154,13 @@ const DealerManagement = () => {
   };
 
   const handleDelete = async (id) => {
-    if (!window.confirm('Are you sure you want to delete this dealer?')) return;
+    if (!window.confirm("Are you sure you want to delete this dealer?")) return;
     try {
       await axios.delete(`${API}/dealers/${id}`, { headers: getAuthHeader() });
-      toast.success('Dealer deleted');
+      toast.success("Dealer deleted");
       fetchData();
     } catch (error) {
-      toast.error('Failed to delete dealer');
+      toast.error("Failed to delete dealer");
     }
   };
 
@@ -143,24 +172,28 @@ const DealerManagement = () => {
     try {
       const response = await axios.get(
         `${API}/visit/dealer/${dealer.id}/followup-history`,
-        { headers: getAuthHeader() }
+        { headers: getAuthHeader() },
       );
       setFollowupHistory(response.data);
     } catch (error) {
-      console.error('Fetch history error:', error);
-      toast.error('Failed to load follow-up history');
+      console.error("Fetch history error:", error);
+      toast.error("Failed to load follow-up history");
     } finally {
       setLoadingHistory(false);
     }
   };
 
   const formatDate = (dateStr) => {
-    if (!dateStr) return 'N/A';
+    if (!dateStr) return "N/A";
     const date = new Date(dateStr);
-    return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+    return date.toLocaleDateString("en-US", {
+      month: "short",
+      day: "numeric",
+      year: "numeric",
+    });
   };
 
-const filteredDealers = dealers.filter(d => {
+  const filteredDealers = dealers.filter((d) => {
     const search = searchTerm.toLowerCase();
     return (
       d.name?.toLowerCase().includes(search) ||
@@ -175,18 +208,20 @@ const filteredDealers = dealers.filter(d => {
   });
 
   const getTerritoryName = (id) => {
-      if (!id) return 'Unknown';
-      const t = territories.find(t => t.id === id);
-      if (t) return t.name;
-      // Fallback: If ID is not found, it might be the Name itself (legacy data)
-      // Check if any territory matches this Name
-      const tByName = territories.find(t => t.name.toLowerCase() === id.toLowerCase());
-      if (tByName) return tByName.name;
-      
-      // Look like a name? Return it.
-      if (id.length < 30 && !id.includes('-')) return id;
-      
-      return 'Unknown';
+    if (!id) return "Unknown";
+    const t = territories.find((t) => t.id === id);
+    if (t) return t.name;
+    // Fallback: If ID is not found, it might be the Name itself (legacy data)
+    // Check if any territory matches this Name
+    const tByName = territories.find(
+      (t) => t.name.toLowerCase() === id.toLowerCase(),
+    );
+    if (tByName) return tByName.name;
+
+    // Look like a name? Return it.
+    if (id.length < 30 && !id.includes("-")) return id;
+
+    return "Unknown";
   };
 
   return (
@@ -195,8 +230,12 @@ const filteredDealers = dealers.filter(d => {
         {/* Header */}
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
           <div>
-            <h1 className="text-lg font-bold bg-gradient-to-r from-primary-600 to-orange-600 bg-clip-text text-transparent">Dealer Management</h1>
-            <p className="text-xs text-gray-500 mt-0.5">Manage your dealer network</p>
+            <h1 className="text-lg font-bold bg-gradient-to-r from-primary-600 to-orange-600 bg-clip-text text-transparent">
+              Dealer Management
+            </h1>
+            <p className="text-xs text-gray-500 mt-0.5">
+              Manage your dealer network
+            </p>
           </div>
         </div>
 
@@ -204,34 +243,65 @@ const filteredDealers = dealers.filter(d => {
         <div className="flex flex-wrap items-center justify-between gap-2">
           <div className="flex flex-wrap items-center gap-2">
             <div className="flex items-center gap-2 bg-primary-50 border border-primary-100 rounded-md px-3 py-1.5">
-              <span className="text-[11px] font-medium text-primary-700">Total Dealers</span>
-              <span className="text-sm font-bold font-mono text-primary-800">{dealers.length}</span>
+              <span className="text-[11px] font-medium text-primary-700">
+                Total Dealers
+              </span>
+              <span className="text-sm font-bold font-mono text-primary-800">
+                {dealers.length}
+              </span>
             </div>
             <div className="flex items-center gap-2 bg-emerald-50 border border-emerald-100 rounded-md px-3 py-1.5">
-              <span className="text-[11px] font-medium text-emerald-700">Retailers</span>
-              <span className="text-sm font-bold font-mono text-emerald-800">{dealers.filter(d => d.dealer_type === 'Retailer').length}</span>
+              <span className="text-[11px] font-medium text-emerald-700">
+                Retailers
+              </span>
+              <span className="text-sm font-bold font-mono text-emerald-800">
+                {dealers.filter((d) => d.dealer_type === "Retailer").length}
+              </span>
             </div>
             <div className="flex items-center gap-2 bg-amber-50 border border-amber-100 rounded-md px-3 py-1.5">
-              <span className="text-[11px] font-medium text-amber-700">Distributors</span>
-              <span className="text-sm font-bold font-mono text-amber-800">{dealers.filter(d => d.dealer_type === 'Distributor').length}</span>
+              <span className="text-[11px] font-medium text-amber-700">
+                Distributors
+              </span>
+              <span className="text-sm font-bold font-mono text-amber-800">
+                {dealers.filter((d) => d.dealer_type === "Distributor").length}
+              </span>
             </div>
             <div className="flex items-center gap-2 bg-red-50 border border-red-100 rounded-md px-3 py-1.5">
-              <span className="text-[11px] font-medium text-red-700">High Priority</span>
-              <span className="text-sm font-bold font-mono text-red-800">{dealers.filter(d => d.priority_level === 1).length}</span>
+              <span className="text-[11px] font-medium text-red-700">
+                High Priority
+              </span>
+              <span className="text-sm font-bold font-mono text-red-800">
+                {dealers.filter((d) => d.priority_level === 1).length}
+              </span>
             </div>
-            {searchTerm && <span className="text-xs text-gray-400 ml-1">&middot; "{searchTerm}"</span>}
+            {searchTerm && (
+              <span className="text-xs text-gray-400 ml-1">
+                &middot; "{searchTerm}"
+              </span>
+            )}
           </div>
-          
-          <Dialog open={dialogOpen} onOpenChange={(open) => { if (!open) closeDialog(); else setDialogOpen(true); }}>
+
+          <Dialog
+            open={dialogOpen}
+            onOpenChange={(open) => {
+              if (!open) closeDialog();
+              else setDialogOpen(true);
+            }}
+          >
             <DialogTrigger asChild>
-              <Button className="bg-gradient-to-r from-primary-500 to-orange-500 hover:from-primary-600 hover:to-orange-600 text-white shadow-sm text-xs h-8" data-testid="add-dealer-btn">
+              <Button
+                className="bg-gradient-to-r from-primary-500 to-orange-500 hover:from-primary-600 hover:to-orange-600 text-white shadow-sm text-xs h-8"
+                data-testid="add-dealer-btn"
+              >
                 <Plus className="mr-1" size={14} />
                 Add Dealer
               </Button>
             </DialogTrigger>
             <DialogContent className="max-w-lg max-h-[85vh] overflow-y-auto">
               <DialogHeader>
-                <DialogTitle>{editingId ? 'Edit Dealer' : 'Add New Dealer'}</DialogTitle>
+                <DialogTitle>
+                  {editingId ? "Edit Dealer" : "Add New Dealer"}
+                </DialogTitle>
               </DialogHeader>
               <form onSubmit={handleSubmit} className="space-y-4">
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -239,7 +309,9 @@ const filteredDealers = dealers.filter(d => {
                     <Label>Dealer Name *</Label>
                     <Input
                       value={formData.name}
-                      onChange={(e) => setFormData({...formData, name: e.target.value})}
+                      onChange={(e) =>
+                        setFormData({ ...formData, name: e.target.value })
+                      }
                       required
                       data-testid="dealer-name-input"
                     />
@@ -247,7 +319,12 @@ const filteredDealers = dealers.filter(d => {
 
                   <div className="space-y-2">
                     <Label>Dealer Type *</Label>
-                    <Select value={formData.dealer_type} onValueChange={(val) => setFormData({...formData, dealer_type: val})}>
+                    <Select
+                      value={formData.dealer_type}
+                      onValueChange={(val) =>
+                        setFormData({ ...formData, dealer_type: val })
+                      }
+                    >
                       <SelectTrigger>
                         <SelectValue />
                       </SelectTrigger>
@@ -261,13 +338,20 @@ const filteredDealers = dealers.filter(d => {
 
                   <div className="space-y-2">
                     <Label>Territory *</Label>
-                    <Select value={formData.territory_id} onValueChange={(val) => setFormData({...formData, territory_id: val})}>
+                    <Select
+                      value={formData.territory_id}
+                      onValueChange={(val) =>
+                        setFormData({ ...formData, territory_id: val })
+                      }
+                    >
                       <SelectTrigger data-testid="dealer-territory-select">
                         <SelectValue placeholder="Select Territory" />
                       </SelectTrigger>
                       <SelectContent>
                         {territories.map((t) => (
-                          <SelectItem key={t.id} value={t.id}>{t.name} ({t.type})</SelectItem>
+                          <SelectItem key={t.id} value={t.id}>
+                            {t.name} ({t.type})
+                          </SelectItem>
                         ))}
                       </SelectContent>
                     </Select>
@@ -277,7 +361,9 @@ const filteredDealers = dealers.filter(d => {
                     <Label>Address *</Label>
                     <Input
                       value={formData.address}
-                      onChange={(e) => setFormData({...formData, address: e.target.value})}
+                      onChange={(e) =>
+                        setFormData({ ...formData, address: e.target.value })
+                      }
                       required
                       data-testid="dealer-address-input"
                     />
@@ -289,7 +375,9 @@ const filteredDealers = dealers.filter(d => {
                       type="number"
                       step="any"
                       value={formData.lat}
-                      onChange={(e) => setFormData({...formData, lat: e.target.value})}
+                      onChange={(e) =>
+                        setFormData({ ...formData, lat: e.target.value })
+                      }
                       placeholder="19.0760"
                       required
                       data-testid="dealer-lat-input"
@@ -302,7 +390,9 @@ const filteredDealers = dealers.filter(d => {
                       type="number"
                       step="any"
                       value={formData.lng}
-                      onChange={(e) => setFormData({...formData, lng: e.target.value})}
+                      onChange={(e) =>
+                        setFormData({ ...formData, lng: e.target.value })
+                      }
                       placeholder="72.8777"
                       required
                       data-testid="dealer-lng-input"
@@ -311,7 +401,12 @@ const filteredDealers = dealers.filter(d => {
 
                   <div className="space-y-2">
                     <Label>Visit Frequency</Label>
-                    <Select value={formData.visit_frequency} onValueChange={(val) => setFormData({...formData, visit_frequency: val})}>
+                    <Select
+                      value={formData.visit_frequency}
+                      onValueChange={(val) =>
+                        setFormData({ ...formData, visit_frequency: val })
+                      }
+                    >
                       <SelectTrigger>
                         <SelectValue />
                       </SelectTrigger>
@@ -326,7 +421,15 @@ const filteredDealers = dealers.filter(d => {
 
                   <div className="space-y-2">
                     <Label>Priority Level</Label>
-                    <Select value={formData.priority_level.toString()} onValueChange={(val) => setFormData({...formData, priority_level: parseInt(val)})}>
+                    <Select
+                      value={formData.priority_level.toString()}
+                      onValueChange={(val) =>
+                        setFormData({
+                          ...formData,
+                          priority_level: parseInt(val),
+                        })
+                      }
+                    >
                       <SelectTrigger>
                         <SelectValue />
                       </SelectTrigger>
@@ -342,7 +445,12 @@ const filteredDealers = dealers.filter(d => {
                     <Label>Contact Person</Label>
                     <Input
                       value={formData.contact_person}
-                      onChange={(e) => setFormData({...formData, contact_person: e.target.value})}
+                      onChange={(e) =>
+                        setFormData({
+                          ...formData,
+                          contact_person: e.target.value,
+                        })
+                      }
                     />
                   </div>
 
@@ -350,7 +458,9 @@ const filteredDealers = dealers.filter(d => {
                     <Label>Phone</Label>
                     <Input
                       value={formData.phone}
-                      onChange={(e) => setFormData({...formData, phone: e.target.value})}
+                      onChange={(e) =>
+                        setFormData({ ...formData, phone: e.target.value })
+                      }
                     />
                   </div>
 
@@ -358,16 +468,24 @@ const filteredDealers = dealers.filter(d => {
                     <Label>Found By</Label>
                     <Input
                       value={formData.found_by}
-                      onChange={(e) => setFormData({...formData, found_by: e.target.value})}
+                      onChange={(e) =>
+                        setFormData({ ...formData, found_by: e.target.value })
+                      }
                       placeholder="Name of person who found this dealer"
                     />
                   </div>
                 </div>
 
                 <div className="flex justify-end gap-2 pt-4">
-                  <Button type="button" variant="outline" onClick={closeDialog}>Cancel</Button>
-                  <Button type="submit" className="bg-gradient-to-r from-primary-500 to-orange-500 hover:from-primary-600 hover:to-orange-600 text-white shadow-md" data-testid="dealer-submit-btn">
-                    {editingId ? 'Update Dealer' : 'Add Dealer'}
+                  <Button type="button" variant="outline" onClick={closeDialog}>
+                    Cancel
+                  </Button>
+                  <Button
+                    type="submit"
+                    className="bg-gradient-to-r from-primary-500 to-orange-500 hover:from-primary-600 hover:to-orange-600 text-white shadow-md"
+                    data-testid="dealer-submit-btn"
+                  >
+                    {editingId ? "Update Dealer" : "Add Dealer"}
                   </Button>
                 </div>
               </form>
@@ -384,131 +502,214 @@ const filteredDealers = dealers.filter(d => {
               </div>
             ) : filteredDealers.length === 0 ? (
               <div className="text-center py-8 text-xs text-gray-500">
-                {searchTerm ? 'No dealers match your search' : 'No dealers added yet. Click "Add Dealer" to get started.'}
+                {searchTerm
+                  ? "No dealers match your search"
+                  : 'No dealers added yet. Click "Add Dealer" to get started.'}
               </div>
             ) : (
               <div className="overflow-auto rounded-lg border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 shadow-sm w-full max-h-[40rem]">
                 <Table className="table-auto border-collapse">
-                  <TableHeader className="bg-gray-50 sticky top-0 z-10">
+                  <TableHeader className="sticky top-0 z-10">
                     <TableRow className="border-y border-gray-200">
-                      <TableHead className="px-2 py-2 text-xs font-semibold text-gray-500 uppercase tracking-wider border-r border-gray-200 w-8">#</TableHead>
-                      <TableHead className="px-3 py-2 text-xs font-semibold text-gray-500 uppercase tracking-wider border-r border-gray-200">Dealer</TableHead>
-                      <TableHead className="px-2 py-2 text-xs font-semibold text-gray-500 uppercase tracking-wider border-r border-gray-200 w-10 text-center">Addr</TableHead>
-                      <TableHead className="px-3 py-2 text-xs font-semibold text-gray-500 uppercase tracking-wider border-r border-gray-200">Type</TableHead>
-                      <TableHead className="px-3 py-2 text-xs font-semibold text-gray-500 uppercase tracking-wider border-r border-gray-200">Territory</TableHead>
-                      <TableHead className="px-3 py-2 text-xs font-semibold text-gray-500 uppercase tracking-wider border-r border-gray-200">Contact</TableHead>
-                      <TableHead className="px-3 py-2 text-xs font-semibold text-gray-500 uppercase tracking-wider border-r border-gray-200">Phone</TableHead>
-                      <TableHead className="px-3 py-2 text-xs font-semibold text-gray-500 uppercase tracking-wider border-r border-gray-200">Priority</TableHead>
-                      <TableHead className="px-3 py-2 text-xs font-semibold text-gray-500 uppercase tracking-wider border-r border-gray-200">Booked Amt</TableHead>
-                      <TableHead className="px-3 py-2 text-xs font-semibold text-gray-500 uppercase tracking-wider border-r border-gray-200">Last Visit</TableHead>
-                      <TableHead className="px-3 py-2 text-xs font-semibold text-gray-500 uppercase tracking-wider border-r border-gray-200">Visited By</TableHead>
-                      <TableHead className="px-3 py-2 text-xs font-semibold text-gray-500 uppercase tracking-wider border-r border-gray-200">Outcome</TableHead>
-                      <TableHead className="px-3 py-2 text-xs font-semibold text-gray-500 uppercase tracking-wider border-r border-gray-200">Next Visit</TableHead>
-                      <TableHead className="px-2 py-2 text-xs font-semibold text-gray-500 uppercase tracking-wider text-center">Actions</TableHead>
+                      <TableHead className="px-2 py-2 text-xs font-semibold text-gray-500 border-r border-gray-200 w-8">
+                        #
+                      </TableHead>
+                      <TableHead className="px-3 py-2 text-xs font-semibold text-gray-500 border-r border-gray-200">
+                        Dealer
+                      </TableHead>
+                      <TableHead className="px-2 py-2 text-xs font-semibold text-gray-500 border-r border-gray-200 w-10 text-center">
+                        Addr
+                      </TableHead>
+                      <TableHead className="px-3 py-2 text-xs font-semibold text-gray-500 border-r border-gray-200">
+                        Type
+                      </TableHead>
+                      <TableHead className="px-3 py-2 text-xs font-semibold text-gray-500 border-r border-gray-200">
+                        Territory
+                      </TableHead>
+                      <TableHead className="px-3 py-2 text-xs font-semibold text-gray-500 border-r border-gray-200">
+                        Contact
+                      </TableHead>
+                      <TableHead className="px-3 py-2 text-xs font-semibold text-gray-500 border-r border-gray-200">
+                        Phone
+                      </TableHead>
+                      <TableHead className="px-3 py-2 text-xs font-semibold text-gray-500 border-r border-gray-200">
+                        Priority
+                      </TableHead>
+                      <TableHead className="px-3 py-2 text-xs font-semibold text-gray-500 border-r border-gray-200">
+                        Booked Amt
+                      </TableHead>
+                      <TableHead className="px-3 py-2 text-xs font-semibold text-gray-500 border-r border-gray-200">
+                        Last Visit
+                      </TableHead>
+                      <TableHead className="px-3 py-2 text-xs font-semibold text-gray-500 border-r border-gray-200">
+                        Visited By
+                      </TableHead>
+                      <TableHead className="px-3 py-2 text-xs font-semibold text-gray-500 border-r border-gray-200">
+                        Outcome
+                      </TableHead>
+                      <TableHead className="px-3 py-2 text-xs font-semibold text-gray-500 border-r border-gray-200">
+                        Next Visit
+                      </TableHead>
+                      <TableHead className="px-2 py-2 text-xs font-semibold text-gray-500 text-center">
+                        Actions
+                      </TableHead>
                     </TableRow>
                   </TableHeader>
                   <TableBody className="divide-y divide-gray-100 dark:divide-gray-800">
                     {filteredDealers.map((dealer, idx) => {
                       const dealerName = getTruncatedText(dealer.name, 18);
-                      const contactPerson = getTruncatedText(dealer.contact_person || '–', 15);
-                      const visitedBy = getTruncatedText(dealer.last_visited_by || '–', 15);
+                      const contactPerson = getTruncatedText(
+                        dealer.contact_person || "–",
+                        15,
+                      );
+                      const visitedBy = getTruncatedText(
+                        dealer.last_visited_by || "–",
+                        15,
+                      );
 
                       return (
-                      <TableRow key={dealer.id} className="border-b border-gray-100 hover:bg-gray-50 transition-colors">
-                        <TableCell className="px-2 py-2 border-r border-gray-100 text-xs font-semibold text-gray-600 w-8 text-center">{idx + 1}</TableCell>
-                        <TableCell className="px-3 py-2 border-r border-gray-100">
-                          <p className="text-xs font-semibold text-gray-900" title={dealerName.full}>{dealerName.display}</p>
-                        </TableCell>
-                        <TableCell className="px-2 py-2 border-r border-gray-100 w-10 text-center">
-                          <button title={dealer.address || 'No address'} className="text-gray-400 hover:text-primary-600 transition-colors cursor-help inline-flex">
-                            <MapPin size={14} weight="fill" />
-                          </button>
-                        </TableCell>
-                        <TableCell className="px-3 py-2 text-xs text-gray-700 border-r border-gray-100">{dealer.dealer_type}</TableCell>
-                        <TableCell className="px-3 py-2 text-xs text-gray-700 border-r border-gray-100">{getTerritoryName(dealer.territory_id)}</TableCell>
-                        <TableCell className="px-3 py-2 text-xs text-gray-700 border-r border-gray-100" title={contactPerson.full}>{contactPerson.display}</TableCell>
-                        <TableCell className="px-3 py-2 font-mono text-xs text-gray-700 border-r border-gray-100 whitespace-nowrap">{dealer.phone || '–'}</TableCell>
-                        <TableCell className="px-3 py-2 border-r border-gray-100">
-                          <span className={`text-xs font-semibold ${
-                            dealer.priority_level === 1 ? 'text-red-600' :
-                            dealer.priority_level === 2 ? 'text-amber-600' : 'text-slate-500'
-                          }`}>
-                            {dealer.priority_level === 1 ? 'High' : dealer.priority_level === 2 ? 'Medium' : 'Low'}
-                          </span>
-                        </TableCell>
-                        <TableCell className="px-3 py-2 border-r border-gray-100">
-                          {dealer.total_booked_amount > 0 ? (
-                            <span className="text-xs font-bold text-emerald-600">
-                              ₹{dealer.total_booked_amount.toLocaleString('en-IN')}
+                        <TableRow
+                          key={dealer.id}
+                          className="border-b border-gray-100 transition-colors"
+                        >
+                          <TableCell className="px-2 py-2 border-r border-gray-100 text-xs font-semibold text-gray-600 w-8 text-center">
+                            {idx + 1}
+                          </TableCell>
+                          <TableCell className="px-3 py-2 border-r border-gray-100">
+                            <p
+                              className="text-xs font-semibold text-gray-900"
+                              title={dealerName.full}
+                            >
+                              {dealerName.display}
+                            </p>
+                          </TableCell>
+                          <TableCell className="px-2 py-2 border-r border-gray-100 w-10 text-center">
+                            <button
+                              title={dealer.address || "No address"}
+                              className="text-gray-400 hover:text-primary-600 transition-colors cursor-help inline-flex"
+                            >
+                              <MapPin size={14} weight="fill" />
+                            </button>
+                          </TableCell>
+                          <TableCell className="px-3 py-2 text-xs text-gray-700 border-r border-gray-100">
+                            {dealer.dealer_type}
+                          </TableCell>
+                          <TableCell className="px-3 py-2 text-xs text-gray-700 border-r border-gray-100">
+                            {getTerritoryName(dealer.territory_id)}
+                          </TableCell>
+                          <TableCell
+                            className="px-3 py-2 text-xs text-gray-700 border-r border-gray-100"
+                            title={contactPerson.full}
+                          >
+                            {contactPerson.display}
+                          </TableCell>
+                          <TableCell className="px-3 py-2 font-mono text-xs text-gray-700 border-r border-gray-100 whitespace-nowrap">
+                            {dealer.phone || "–"}
+                          </TableCell>
+                          <TableCell className="px-3 py-2 border-r border-gray-100">
+                            <span
+                              className={`text-xs font-semibold ${
+                                dealer.priority_level === 1
+                                  ? "text-red-600"
+                                  : dealer.priority_level === 2
+                                    ? "text-amber-600"
+                                    : "text-slate-500"
+                              }`}
+                            >
+                              {dealer.priority_level === 1
+                                ? "High"
+                                : dealer.priority_level === 2
+                                  ? "Medium"
+                                  : "Low"}
                             </span>
-                          ) : (
-                            <span className="text-xs text-gray-400">₹0</span>
-                          )}
-                        </TableCell>
-                        <TableCell className="px-3 py-2 font-mono text-xs text-gray-700 border-r border-gray-100 whitespace-nowrap">
-                          {dealer.last_visit_date ? formatDateDDMmmYYYY(dealer.last_visit_date) : 'Never'}
-                        </TableCell>
-                        <TableCell className="px-3 py-2 text-xs text-gray-700 border-r border-gray-100" title={visitedBy.full}>
-                          {visitedBy.display}
-                        </TableCell>
-                        <TableCell className="px-3 py-2 border-r border-gray-100">
-                          {dealer.last_outcome ? (
-                            dealer.last_outcome === 'Order Booked' ? (
-                              <span
-                                className="text-xs font-semibold text-emerald-600 cursor-pointer hover:text-emerald-700 underline underline-offset-2"
-                                onClick={() => setOrderDialogDealer(dealer)}
-                              >
-                                {dealer.last_outcome}
+                          </TableCell>
+                          <TableCell className="px-3 py-2 border-r border-gray-100">
+                            {dealer.total_booked_amount > 0 ? (
+                              <span className="text-xs font-bold text-emerald-600">
+                                ₹
+                                {dealer.total_booked_amount.toLocaleString(
+                                  "en-IN",
+                                )}
                               </span>
                             ) : (
-                              <span className={`text-xs font-semibold ${
-                                dealer.last_outcome === 'Follow-up Required' ? 'text-amber-600' :
-                                dealer.last_outcome === 'Lost Visit' ? 'text-red-600' :
-                                'text-slate-500'
-                              }`}>
-                                {dealer.last_outcome}
-                              </span>
-                            )
-                          ) : (
-                            <span className="text-xs text-gray-400">–</span>
-                          )}
-                        </TableCell>
-                        <TableCell className="px-3 py-2 font-mono text-xs text-gray-700 border-r border-gray-100 whitespace-nowrap">
-                          {dealer.next_visit_date ? formatDateDDMmmYYYY(dealer.next_visit_date) : '–'}
-                        </TableCell>
-                        <TableCell className="px-2 py-1.5">
-                          <div className="flex items-center justify-center gap-1">
-                            <Button 
-                              variant="ghost" 
-                              size="sm" 
-                              className="text-blue-600 hover:text-blue-700 hover:bg-blue-50 h-7 w-7 p-0"
-                              onClick={() => handleViewHistory(dealer)}
-                              title="View History"
-                              data-testid={`history-dealer-${dealer.id}`}
-                            >
-                              <ClockClockwise size={14} />
-                            </Button>
-                            <Button 
-                              variant="ghost" 
-                              size="sm" 
-                              className="text-primary-600 hover:text-primary-700 hover:bg-gradient-to-r hover:from-primary-50 hover:to-orange-50 h-7 w-7 p-0"
-                              onClick={() => handleEdit(dealer)}
-                              data-testid={`edit-dealer-${dealer.id}`}
-                            >
-                              <Pencil size={14} />
-                            </Button>
-                            <Button 
-                              variant="ghost" 
-                              size="sm" 
-                              className="text-red-600 hover:text-red-700 hover:bg-red-50 h-7 w-7 p-0" 
-                              onClick={() => handleDelete(dealer.id)}
-                              data-testid={`delete-dealer-${dealer.id}`}
-                            >
-                              <Trash size={14} />
-                            </Button>
-                          </div>
-                        </TableCell>
-                      </TableRow>
+                              <span className="text-xs text-gray-400">₹0</span>
+                            )}
+                          </TableCell>
+                          <TableCell className="px-3 py-2 font-mono text-xs text-gray-700 border-r border-gray-100 whitespace-nowrap">
+                            {dealer.last_visit_date
+                              ? formatDateDDMmmYYYY(dealer.last_visit_date)
+                              : "Never"}
+                          </TableCell>
+                          <TableCell
+                            className="px-3 py-2 text-xs text-gray-700 border-r border-gray-100"
+                            title={visitedBy.full}
+                          >
+                            {visitedBy.display}
+                          </TableCell>
+                          <TableCell className="px-3 py-2 border-r border-gray-100">
+                            {dealer.last_outcome ? (
+                              dealer.last_outcome === "Order Booked" ? (
+                                <span
+                                  className="text-xs font-semibold text-emerald-600 cursor-pointer hover:text-emerald-700 underline underline-offset-2"
+                                  onClick={() => setOrderDialogDealer(dealer)}
+                                >
+                                  {dealer.last_outcome}
+                                </span>
+                              ) : (
+                                <span
+                                  className={`text-xs font-semibold ${
+                                    dealer.last_outcome === "Follow-up Required"
+                                      ? "text-amber-600"
+                                      : dealer.last_outcome === "Lost Visit"
+                                        ? "text-red-600"
+                                        : "text-slate-500"
+                                  }`}
+                                >
+                                  {dealer.last_outcome}
+                                </span>
+                              )
+                            ) : (
+                              <span className="text-xs text-gray-400">–</span>
+                            )}
+                          </TableCell>
+                          <TableCell className="px-3 py-2 font-mono text-xs text-gray-700 border-r border-gray-100 whitespace-nowrap">
+                            {dealer.next_visit_date
+                              ? formatDateDDMmmYYYY(dealer.next_visit_date)
+                              : "–"}
+                          </TableCell>
+                          <TableCell className="px-2 py-1.5">
+                            <div className="flex items-center justify-center gap-1">
+                              <Button
+                                variant="ghost"
+                                size="sm"
+                                className="text-blue-600 hover:text-blue-700 hover:bg-blue-50 h-7 w-7 p-0"
+                                onClick={() => handleViewHistory(dealer)}
+                                title="View History"
+                                data-testid={`history-dealer-${dealer.id}`}
+                              >
+                                <ClockClockwise size={14} />
+                              </Button>
+                              <Button
+                                variant="ghost"
+                                size="sm"
+                                className="text-primary-600 hover:text-primary-700 hover:bg-gradient-to-r hover:from-primary-50 hover:to-orange-50 h-7 w-7 p-0"
+                                onClick={() => handleEdit(dealer)}
+                                data-testid={`edit-dealer-${dealer.id}`}
+                              >
+                                <Pencil size={14} />
+                              </Button>
+                              <Button
+                                variant="ghost"
+                                size="sm"
+                                className="text-red-600 hover:text-red-700 hover:bg-red-50 h-7 w-7 p-0"
+                                onClick={() => handleDelete(dealer.id)}
+                                data-testid={`delete-dealer-${dealer.id}`}
+                              >
+                                <Trash size={14} />
+                              </Button>
+                            </div>
+                          </TableCell>
+                        </TableRow>
                       );
                     })}
                   </TableBody>
@@ -523,14 +724,22 @@ const filteredDealers = dealers.filter(d => {
       <Dialog open={historyDialogOpen} onOpenChange={setHistoryDialogOpen}>
         <DialogContent className="max-w-3xl max-h-[90vh] overflow-y-auto">
           <DialogHeader>
-            <DialogTitle className="text-lg font-bold">Follow-up History</DialogTitle>
-            <p className="text-xs text-gray-500 mt-1">View all visits and follow-ups for this dealer</p>
+            <DialogTitle className="text-lg font-bold">
+              Follow-up History
+            </DialogTitle>
+            <p className="text-xs text-gray-500 mt-1">
+              View all visits and follow-ups for this dealer
+            </p>
           </DialogHeader>
           <div className="space-y-3">
             {selectedDealer && (
               <div className="bg-slate-50 rounded-lg p-3 border border-slate-200">
-                <p className="text-sm font-semibold text-slate-800">{selectedDealer.name}</p>
-                <p className="text-xs text-slate-500 mt-0.5">{selectedDealer.address}</p>
+                <p className="text-sm font-semibold text-slate-800">
+                  {selectedDealer.name}
+                </p>
+                <p className="text-xs text-slate-500 mt-0.5">
+                  {selectedDealer.address}
+                </p>
               </div>
             )}
 
@@ -554,17 +763,23 @@ const filteredDealers = dealers.filter(d => {
                         <div className="flex items-center gap-2 mb-1">
                           <Calendar size={14} className="text-gray-400" />
                           <span className="text-xs font-medium text-gray-700">
-                            {new Date(visit.check_in_time).toLocaleDateString('en-US', {
-                              month: 'short',
-                              day: 'numeric',
-                              year: 'numeric'
-                            })}
+                            {new Date(visit.check_in_time).toLocaleDateString(
+                              "en-US",
+                              {
+                                month: "short",
+                                day: "numeric",
+                                year: "numeric",
+                              },
+                            )}
                           </span>
                           <span className="text-xs text-gray-400">
-                            {new Date(visit.check_in_time).toLocaleTimeString([], {
-                              hour: '2-digit',
-                              minute: '2-digit'
-                            })}
+                            {new Date(visit.check_in_time).toLocaleTimeString(
+                              [],
+                              {
+                                hour: "2-digit",
+                                minute: "2-digit",
+                              },
+                            )}
                           </span>
                         </div>
                         <div className="flex items-center gap-2 text-xs text-gray-600">
@@ -576,11 +791,12 @@ const filteredDealers = dealers.filter(d => {
                         <Badge
                           variant="outline"
                           className={`text-[10px] px-1.5 py-0 ${
-                            visit.outcome === 'Order Booked'
-                              ? 'bg-green-50 text-green-700 border-green-200'
-                              : visit.outcome === 'Follow-up Required' || visit.outcome === 'Follow-up Scheduled'
-                              ? 'bg-yellow-50 text-yellow-700 border-yellow-200'
-                              : 'bg-gray-50 text-gray-700 border-gray-200'
+                            visit.outcome === "Order Booked"
+                              ? "bg-green-50 text-green-700 border-green-200"
+                              : visit.outcome === "Follow-up Required" ||
+                                  visit.outcome === "Follow-up Scheduled"
+                                ? "bg-yellow-50 text-yellow-700 border-yellow-200"
+                                : "bg-gray-50 text-gray-700 border-gray-200"
                           }`}
                         >
                           {visit.outcome}
@@ -588,7 +804,9 @@ const filteredDealers = dealers.filter(d => {
                       )}
                     </div>
                     {visit.notes && (
-                      <p className="text-xs text-gray-600 mt-2 pl-5">{visit.notes}</p>
+                      <p className="text-xs text-gray-600 mt-2 pl-5">
+                        {visit.notes}
+                      </p>
                     )}
                     {visit.order_value && visit.order_value > 0 && (
                       <div className="flex items-center gap-1.5 text-xs text-green-600 mt-2 pl-5">
@@ -613,8 +831,8 @@ const filteredDealers = dealers.filter(d => {
 
       {/* Order Items Dialog */}
       {orderDialogDealer && (
-        <DealerOrderItemsView 
-          dealer={orderDialogDealer} 
+        <DealerOrderItemsView
+          dealer={orderDialogDealer}
           externalOpen={!!orderDialogDealer}
           onExternalClose={() => setOrderDialogDealer(null)}
         />

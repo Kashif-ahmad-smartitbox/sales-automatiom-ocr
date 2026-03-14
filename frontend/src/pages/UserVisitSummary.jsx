@@ -257,7 +257,7 @@ const UserVisitSummary = () => {
                     <div className="border-t border-gray-100">
                       {false && user.market_sessions?.length > 0 && (
                         <div className="px-4 py-3 bg-gray-50/50 border-b border-gray-100">
-                          <p className="text-[10px] font-semibold text-gray-600 uppercase tracking-wider mb-2 flex items-center gap-2">
+                          <p className="text-[10px] font-semibold text-gray-600 mb-2 flex items-center gap-2">
                             <Funnel size={12} /> Market Sessions (click to filter table)
                           </p>
                           <div className="flex flex-wrap gap-2">
@@ -322,7 +322,7 @@ const UserVisitSummary = () => {
                         return (
                           <div className="overflow-auto rounded-lg border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 shadow-sm w-full max-h-[40rem]">
                             <Table className="table-auto border-collapse">
-                              <TableHeader className="bg-gradient-to-r from-primary-50 to-indigo-50 dark:from-gray-800 dark:to-gray-900 text-nowrap sticky top-0 text-xs z-10 border-b border-primary-100 dark:border-gray-700">
+                              <TableHeader className="text-nowrap sticky top-0 text-xs z-10">
                                 <TableHead className="p-2 text-gray-700 dark:text-gray-300 font-medium text-center w-8">
                                   #
                                 </TableHead>
@@ -387,7 +387,7 @@ const UserVisitSummary = () => {
                                     return (
                                       <TableRow 
                                         key={dealer.id || dealer.place_id} 
-                                        className="group cursor-pointer transition-all text-xs text-gray-700 duration-200 hover:bg-gray-50 dark:hover:bg-gray-800 border-b border-gray-200 dark:border-gray-700"
+                                        className="group cursor-pointer transition-all text-xs text-gray-700 duration-200"
                                       >
                                         <TableCell className="px-2 py-1.5 text-center">
                                           <span className="p-1 bg-gray-200 dark:bg-gray-700 font-medium rounded-full text-gray-600 dark:text-gray-300">
