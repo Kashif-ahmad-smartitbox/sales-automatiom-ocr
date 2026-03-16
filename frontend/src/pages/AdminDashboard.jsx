@@ -157,96 +157,96 @@ const AdminDashboard = () => {
         </div>
 
         {/* ─── STAT CARDS ─── */}
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-2 md:gap-4">
-          {/* Active Field Reps */}
-          <div className="rounded-2xl p-3 md:p-5 text-white flex flex-col justify-between min-h-[110px] md:min-h-[130px] relative overflow-hidden"
-            style={{ background: 'linear-gradient(135deg, #22c55e 0%, #16a34a 100%)' }}>
-            <div className="flex items-center justify-between">
-              <p className="text-[11px] md:text-sm font-semibold opacity-90 leading-tight">Active Field Reps</p>
-              <div className="w-7 h-7 md:w-9 md:h-9 rounded-lg md:rounded-xl bg-white/20 flex items-center justify-center">
-                <Users size={14} weight="bold" className="md:hidden" />
-                <Users size={18} weight="bold" className="hidden md:block" />
-              </div>
-            </div>
-            <div>
-              <div className="text-2xl md:text-4xl font-black leading-none">{stats?.active_executives || 0}
-                <span className="text-base md:text-xl font-semibold opacity-80"> /{stats?.total_executives || 0}</span>
-              </div>
-              <div className="flex items-center gap-1 mt-1 md:mt-2 text-[10px] md:text-sm opacity-80">
-                <Users size={11} weight="bold" />
-                <span>active reps</span>
-              </div>
-            </div>
-            <div className="absolute -bottom-4 -right-4 w-16 h-16 md:w-24 md:h-24 rounded-full bg-white/10"></div>
-          </div>
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-2 md:gap-3">
+        {/* Active Field Reps */}
+        <div className="rounded-xl p-2.5 md:p-4 text-white flex flex-col justify-between min-h-[95px] md:min-h-[115px] relative overflow-hidden"
+        style={{ background: 'linear-gradient(135deg, #22c55e 0%, #16a34a 100%)' }}>
+        <div className="flex items-center justify-between">
+        <p className="text-[10px] md:text-xs font-semibold opacity-90 leading-tight">Active Field Reps</p>
+        <div className="w-6 h-6 md:w-8 md:h-8 rounded-md md:rounded-lg bg-white/20 flex items-center justify-center">
+        <Users size={12} weight="bold" className="md:hidden" />
+        <Users size={16} weight="bold" className="hidden md:block" />
+        </div>
+        </div>
+        <div>
+        <div className="text-xl md:text-3xl font-black leading-none">{stats?.active_executives || 0}
+        <span className="text-sm md:text-lg font-semibold opacity-80"> /{stats?.total_executives || 0}</span>
+        </div>
+        <div className="flex items-center gap-1 mt-1 text-[9px] md:text-xs opacity-80">
+        <Users size={10} weight="bold" />
+        <span>active reps</span>
+        </div>
+        </div>
+        <div className="absolute -bottom-4 -right-4 w-14 h-14 md:w-20 md:h-20 rounded-full bg-white/10"></div>
+        </div>
 
-          {/* Visits Today */}
-          <div className="rounded-2xl p-3 md:p-5 text-white flex flex-col justify-between min-h-[110px] md:min-h-[130px] relative overflow-hidden"
-            style={{ background: 'linear-gradient(135deg, #f97316 0%, #ea580c 100%)' }}>
-            <div className="flex items-center justify-between">
-              <p className="text-[11px] md:text-sm font-semibold opacity-90 leading-tight">Visits Today</p>
-              <div className="w-7 h-7 md:w-9 md:h-9 rounded-lg md:rounded-xl bg-white/20 flex items-center justify-center">
-                <Clock size={14} weight="bold" className="md:hidden" />
-                <Clock size={18} weight="bold" className="hidden md:block" />
-              </div>
-            </div>
-            <div>
-              <div className="text-2xl md:text-4xl font-black leading-none">{stats?.visits_today || 0}
-                <span className="text-base md:text-xl font-semibold opacity-80"> /{stats?.target_visits || 0}</span>
-              </div>
-              <div className="flex items-center justify-between mt-1 md:mt-2">
-                <div className="flex items-center gap-1 text-[10px] md:text-sm opacity-80">
-                  <Check size={11} weight="bold" />
-                  <span>Target</span>
-                </div>
-                <span className="text-[10px] md:text-sm font-bold bg-white/20 rounded-full px-1.5 md:px-2 py-0.5">
-                  {stats?.visit_completion_rate || 0}%
-                </span>
-              </div>
-            </div>
-            <div className="absolute -bottom-4 -right-4 w-16 h-16 md:w-24 md:h-24 rounded-full bg-white/10"></div>
-          </div>
+        {/* Visits Today */}
+        <div className="rounded-xl p-2.5 md:p-4 text-white flex flex-col justify-between min-h-[95px] md:min-h-[115px] relative overflow-hidden"
+        style={{ background: 'linear-gradient(135deg, #f97316 0%, #ea580c 100%)' }}>
+        <div className="flex items-center justify-between">
+        <p className="text-[10px] md:text-xs font-semibold opacity-90 leading-tight">Visits Today</p>
+        <div className="w-6 h-6 md:w-8 md:h-8 rounded-md md:rounded-lg bg-white/20 flex items-center justify-center">
+        <Clock size={12} weight="bold" className="md:hidden" />
+        <Clock size={16} weight="bold" className="hidden md:block" />
+        </div>
+        </div>
+        <div>
+        <div className="text-xl md:text-3xl font-black leading-none">{stats?.visits_today || 0}
+        <span className="text-sm md:text-lg font-semibold opacity-80"> /{stats?.target_visits || 0}</span>
+        </div>
+        <div className="flex items-center justify-between mt-1">
+        <div className="flex items-center gap-1 text-[9px] md:text-xs opacity-80">
+        <Check size={10} weight="bold" />
+        <span>Target</span>
+        </div>
+        <span className="text-[9px] md:text-xs font-bold bg-white/20 rounded-full px-1.5 py-0.5">
+        {stats?.visit_completion_rate || 0}%
+        </span>
+        </div>
+        </div>
+        <div className="absolute -bottom-4 -right-4 w-14 h-14 md:w-20 md:h-20 rounded-full bg-white/10"></div>
+        </div>
 
-          {/* Completion Rate */}
-          <div className="rounded-2xl p-3 md:p-5 text-white flex flex-col justify-between min-h-[110px] md:min-h-[130px] relative overflow-hidden"
-            style={{ background: 'linear-gradient(135deg, #eab308 0%, #ca8a04 100%)' }}>
-            <div className="flex items-center justify-between">
-              <p className="text-[11px] md:text-sm font-semibold opacity-90 leading-tight">Completion Rate</p>
-              <div className="w-7 h-7 md:w-9 md:h-9 rounded-lg md:rounded-xl bg-white/20 flex items-center justify-center">
-                <ChartBar size={14} weight="bold" className="md:hidden" />
-                <ChartBar size={18} weight="bold" className="hidden md:block" />
-              </div>
-            </div>
-            <div>
-              <div className="text-2xl md:text-4xl font-black leading-none">{stats?.visit_completion_rate || 0}%</div>
-              <div className="text-[10px] md:text-sm opacity-80 mt-1 md:mt-2">of daily target</div>
-            </div>
-            <div className="absolute -bottom-4 -right-4 w-16 h-16 md:w-24 md:h-24 rounded-full bg-white/10"></div>
-          </div>
+        {/* Completion Rate */}
+        <div className="rounded-xl p-2.5 md:p-4 text-white flex flex-col justify-between min-h-[95px] md:min-h-[115px] relative overflow-hidden"
+        style={{ background: 'linear-gradient(135deg, #eab308 0%, #ca8a04 100%)' }}>
+        <div className="flex items-center justify-between">
+        <p className="text-[10px] md:text-xs font-semibold opacity-90 leading-tight">Completion Rate</p>
+        <div className="w-6 h-6 md:w-8 md:h-8 rounded-md md:rounded-lg bg-white/20 flex items-center justify-center">
+        <ChartBar size={12} weight="bold" className="md:hidden" />
+        <ChartBar size={16} weight="bold" className="hidden md:block" />
+        </div>
+        </div>
+        <div>
+        <div className="text-xl md:text-3xl font-black leading-none">{stats?.visit_completion_rate || 0}%</div>
+        <div className="text-[9px] md:text-xs opacity-80 mt-1">of daily target</div>
+        </div>
+        <div className="absolute -bottom-4 -right-4 w-14 h-14 md:w-20 md:h-20 rounded-full bg-white/10"></div>
+        </div>
 
-          {/* Orders Today */}
-          <div className="rounded-2xl p-3 md:p-5 text-white flex flex-col justify-between min-h-[110px] md:min-h-[130px] relative overflow-hidden"
-            style={{ background: 'linear-gradient(135deg, #a855f7 0%, #7c3aed 100%)' }}>
-            <div className="flex items-center justify-between">
-              <p className="text-[11px] md:text-sm font-semibold opacity-90 leading-tight">Orders Today</p>
-              <div className="w-7 h-7 md:w-9 md:h-9 rounded-lg md:rounded-xl bg-white/20 flex items-center justify-center">
-                <CurrencyInr size={14} weight="bold" className="md:hidden" />
-                <CurrencyInr size={18} weight="bold" className="hidden md:block" />
-              </div>
-            </div>
-            <div>
-              <div className="text-lg md:text-3xl font-black leading-none">
-                ₹{(stats?.total_order_value || 0).toLocaleString('en-IN')}
-              </div>
-              <div className="flex items-center justify-between mt-1 md:mt-2">
-                <span className="text-[10px] md:text-sm opacity-80">{stats?.orders_today || 0} Orders</span>
-                <span className="text-[10px] md:text-sm font-bold bg-white/20 rounded-full w-5 h-5 md:w-7 md:h-7 flex items-center justify-center">
-                  {stats?.orders_today || 0}
-                </span>
-              </div>
-            </div>
-            <div className="absolute -bottom-4 -right-4 w-16 h-16 md:w-24 md:h-24 rounded-full bg-white/10"></div>
-          </div>
+        {/* Orders Today */}
+        <div className="rounded-xl p-2.5 md:p-4 text-white flex flex-col justify-between min-h-[95px] md:min-h-[115px] relative overflow-hidden"
+        style={{ background: 'linear-gradient(135deg, #a855f7 0%, #7c3aed 100%)' }}>
+        <div className="flex items-center justify-between">
+        <p className="text-[10px] md:text-xs font-semibold opacity-90 leading-tight">Orders Today</p>
+        <div className="w-6 h-6 md:w-8 md:h-8 rounded-md md:rounded-lg bg-white/20 flex items-center justify-center">
+        <CurrencyInr size={12} weight="bold" className="md:hidden" />
+        <CurrencyInr size={16} weight="bold" className="hidden md:block" />
+        </div>
+        </div>
+        <div>
+        <div className="text-base md:text-2xl font-black leading-none">
+        ₹{(stats?.total_order_value || 0).toLocaleString('en-IN')}
+        </div>
+        <div className="flex items-center justify-between mt-1">
+        <span className="text-[9px] md:text-xs opacity-80">{stats?.orders_today || 0} Orders</span>
+        <span className="text-[9px] md:text-xs font-bold bg-white/20 rounded-full w-5 h-5 md:w-6 md:h-6 flex items-center justify-center">
+        {stats?.orders_today || 0}
+        </span>
+        </div>
+        </div>
+        <div className="absolute -bottom-4 -right-4 w-14 h-14 md:w-20 md:h-20 rounded-full bg-white/10"></div>
+        </div>
         </div>
 
         {/* ─── MIDDLE ROW: All-Time Progress | Field Team | Dealer Visits ─── */}
