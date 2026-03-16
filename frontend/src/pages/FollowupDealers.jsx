@@ -20,6 +20,7 @@ import {
 } from "@phosphor-icons/react";
 import { useAuth } from "../context/AuthContext";
 import { useSearch } from "../context/SearchContext";
+import SearchBar from "../components/SearchBar";
 import { toast } from "sonner";
 import { Badge } from "../components/ui/badge";
 import { useNavigate } from "react-router-dom";
@@ -357,15 +358,16 @@ const FollowupDealers = () => {
     <Layout title="Followup Dealers">
       <div className="space-y-4">
         {/* Header */}
-        <div>
-          <h1 className="text-lg font-bold bg-gradient-to-r from-primary-600 to-orange-600 bg-clip-text text-transparent">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+          <div>
+            <h1 className="text-lg font-bold bg-gradient-to-r from-primary-600 to-orange-600 bg-clip-text text-transparent">
             Followup Dealers
-          </h1>
-          <p className="text-xs text-gray-500 mt-0.5">
-            {isSalesExecutive
-              ? "Dealers that require your follow-up visit"
-              : "Dealers that require follow-up visits from your sales team"}
-          </p>
+            </h1>
+            <p className="text-xs text-gray-500 mt-0.5">
+              Track and manage dealer follow-ups
+            </p>
+          </div>
+          <SearchBar placeholder="Search follow-ups..." />
         </div>
 
         {/* Info Banner */}
@@ -439,7 +441,7 @@ const FollowupDealers = () => {
             variant="outline"
             size="sm"
             onClick={fetchData}
-            className="h-8 text-xs"
+            className="h-8 text-xs hover:bg-gray-200 hover:text-gray-800 rounded-xl"
           >
             Refresh
           </Button>
@@ -706,7 +708,7 @@ const FollowupDealers = () => {
           <div className="flex justify-center pt-2">
             <Button
               onClick={handleNavigateToField}
-              className="bg-gradient-to-r from-primary-500 to-orange-500 hover:from-primary-600 hover:to-orange-600 text-white shadow-md"
+              className="bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white shadow-md rounded-xl"
             >
               Start Field Visit
               <MapPin size={16} className="ml-2" />
@@ -957,13 +959,13 @@ const FollowupDealers = () => {
             <div className="flex gap-2 pt-2">
               <Button
                 variant="outline"
-                className="flex-1"
+                className="flex-1 rounded-xl hover:bg-gray-200"
                 onClick={() => setFollowupDialogOpen(false)}
               >
                 Cancel
               </Button>
               <Button
-                className="flex-1 bg-gradient-to-r from-primary-500 to-orange-500 hover:from-primary-600 hover:to-orange-600"
+                className="flex-1 bg-gradient-to-r text-white from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 hover:text-white rounded-xl"
                 onClick={handleUpdateFollowup}
               >
                 <CheckCircle className="mr-2" size={18} />

@@ -24,6 +24,7 @@ import {
 import { useAuth } from "../context/AuthContext";
 import { useSearch } from "../context/SearchContext";
 import { toast } from "sonner";
+import SearchBar from "../components/SearchBar";
 import { Checkbox } from "../components/ui/checkbox";
 import { getTruncatedText } from "../utils/tableHelpers";
 
@@ -158,6 +159,7 @@ const HODManagement = () => {
               Manage Head of Departments
             </p>
           </div>
+          <SearchBar placeholder="Search HODs..." />
         </div>
 
         {/* Actions + Stats */}
@@ -206,7 +208,7 @@ const HODManagement = () => {
             }}
           >
             <DialogTrigger asChild>
-              <Button className="bg-gradient-to-r from-primary-500 to-orange-500 hover:from-primary-600 hover:to-orange-600 text-white shadow-sm text-xs h-8">
+              <Button className="bg-gradient-to-r from-green-500 to-green-500 hover:from-green-600 hover:to-green-600 text-white shadow-sm text-xs h-8 rounded-xl">
                 <Plus className="mr-1" size={14} />
                 Add HOD
               </Button>
@@ -331,12 +333,12 @@ const HODManagement = () => {
                 </div>
 
                 <div className="flex justify-end gap-2 pt-4">
-                  <Button type="button" variant="outline" onClick={closeDialog}>
+                  <Button type="button" className="rounded-xl hover:bg-red-500 hover:text-white" variant="outline" onClick={closeDialog}>
                     Cancel
                   </Button>
                   <Button
                     type="submit"
-                    className="bg-gradient-to-r from-primary-500 to-orange-500 hover:from-primary-600 hover:to-orange-600 text-white shadow-md"
+                    className="bg-gradient-to-r from-green-500 to-green-500 hover:from-green-600 hover:to-green-600 text-white shadow-md rounded-xl"
                   >
                     {editingId ? "Update HOD" : "Add HOD"}
                   </Button>

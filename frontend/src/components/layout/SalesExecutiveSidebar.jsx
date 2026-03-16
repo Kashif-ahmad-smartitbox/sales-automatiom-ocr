@@ -120,7 +120,7 @@ const SalesExecutiveSidebar = ({ isOpen, onClose, isCollapsed, setIsCollapsed })
               </div>
               <button
                 onClick={logout}
-                className="w-full flex items-center justify-center gap-2 px-4 py-2.5 text-sm font-semibold text-white rounded-lg bg-gradient-to-r from-primary-500 to-orange-500 hover:from-primary-600 hover:to-orange-600 shadow-sm transition-colors"
+                className="w-full flex items-center justify-center gap-2 px-4 py-2.5 text-sm font-semibold text-white rounded-xl bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 hover:text-white shadow-sm transition-colors"
               >
                 <SignOut size={16} />
                 <span>Sign Out</span>
@@ -133,7 +133,7 @@ const SalesExecutiveSidebar = ({ isOpen, onClose, isCollapsed, setIsCollapsed })
               </div>
               <button
                 onClick={logout}
-                className="p-2 rounded-lg bg-gradient-to-r from-primary-500 to-orange-500 text-white hover:from-primary-600 hover:to-orange-600 shadow-sm transition-colors"
+                className="p-2 rounded-xl bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 hover:text-white shadow-sm transition-colors"
                 title="Sign Out"
               >
                 <SignOut size={20} />

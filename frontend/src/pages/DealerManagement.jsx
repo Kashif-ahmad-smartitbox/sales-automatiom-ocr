@@ -40,6 +40,7 @@ import {
 import { useAuth } from "../context/AuthContext";
 import { useSearch } from "../context/SearchContext";
 import DealerOrderItemsView from "../components/DealerOrderItemsView";
+import SearchBar from "../components/SearchBar";
 import { toast } from "sonner";
 import {
   Tooltip,
@@ -237,6 +238,7 @@ const DealerManagement = () => {
               Manage your dealer network
             </p>
           </div>
+          <SearchBar placeholder="Search dealers..." />
         </div>
 
         {/* Actions + Stats */}
@@ -290,7 +292,7 @@ const DealerManagement = () => {
           >
             <DialogTrigger asChild>
               <Button
-                className="bg-gradient-to-r from-primary-500 to-orange-500 hover:from-primary-600 hover:to-orange-600 text-white shadow-sm text-xs h-8"
+                className="bg-gradient-to-r from-green-500 to-green-500 hover:from-green-600 hover:to-green-600 text-white shadow-sm text-xs h-8 rounded-xl"
                 data-testid="add-dealer-btn"
               >
                 <Plus className="mr-1" size={14} />
@@ -477,12 +479,12 @@ const DealerManagement = () => {
                 </div>
 
                 <div className="flex justify-end gap-2 pt-4">
-                  <Button type="button" variant="outline" onClick={closeDialog}>
+                  <Button type="button" className="rounded-xl hover:bg-red-500 hover:text-white" variant="outline" onClick={closeDialog}>
                     Cancel
                   </Button>
                   <Button
                     type="submit"
-                    className="bg-gradient-to-r from-primary-500 to-orange-500 hover:from-primary-600 hover:to-orange-600 text-white shadow-md"
+                    className="bg-gradient-to-r from-green-500 to-green-500 hover:from-green-600 hover:to-green-600 text-white shadow-md rounded-xl"
                     data-testid="dealer-submit-btn"
                   >
                     {editingId ? "Update Dealer" : "Add Dealer"}

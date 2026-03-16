@@ -7,6 +7,7 @@ import { Input } from "../components/ui/input";
 import { Phone, MapPin, Globe } from "@phosphor-icons/react";
 import { useAuth } from "../context/AuthContext";
 import { useSearch } from "../context/SearchContext";
+import SearchBar from "../components/SearchBar";
 
 const API = `${process.env.REACT_APP_BACKEND_URL}/api`;
 
@@ -63,6 +64,7 @@ const HODExecutives = () => {
               Sales executives assigned to you
             </p>
           </div>
+          <SearchBar placeholder="Search team..." />
         </div>
 
         {/* Stats */}
