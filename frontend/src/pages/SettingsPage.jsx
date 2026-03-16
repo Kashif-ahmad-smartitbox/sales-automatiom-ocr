@@ -191,10 +191,10 @@ const SettingsPage = () => {
                     onChange={(e) => setNewCategory(e.target.value)}
                     placeholder="Add a category..."
                     onKeyPress={(e) => e.key === 'Enter' && addCategory()}
-                    className="border-gray-200 focus:border-primary-400 focus:ring-primary-400"
+                    className="border-gray-200 focus:border-primary-400 focus:ring-primary-400 rounded-xl"
                     data-testid="new-category-input"
                   />
-                  <Button onClick={addCategory} className="bg-gradient-to-r from-primary-500 to-orange-500 hover:from-primary-600 hover:to-orange-600 text-white text-xs px-4 shadow-sm" data-testid="add-category-btn">Add</Button>
+                  <Button onClick={addCategory} className="bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white text-xs px-4 shadow-sm rounded-xl" data-testid="add-category-btn">Add</Button>
                 </div>
 
                 <div className="flex flex-wrap gap-2 min-h-[60px] p-3 border-2 border-dashed border-gray-200 rounded-lg bg-gray-50/50">
@@ -236,9 +236,9 @@ const SettingsPage = () => {
                     onChange={(e) => setNewItem(e.target.value)}
                     placeholder="Add item (e.g. Paracetamol 500mg)..."
                     onKeyPress={(e) => e.key === 'Enter' && addItem()}
-                    className="border-gray-200 focus:border-primary-400 focus:ring-primary-400"
+                    className="border-gray-200 focus:border-primary-400 focus:ring-primary-400 rounded-xl"
                   />
-                  <Button onClick={addItem} className="bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-600 hover:to-teal-600 text-white text-xs px-4 shadow-sm">Add</Button>
+                  <Button onClick={addItem} className="bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-600 hover:to-teal-600 text-white text-xs px-4 shadow-sm rounded-xl">Add</Button>
                 </div>
 
                 <div className="flex flex-wrap gap-2 min-h-[60px] p-3 border-2 border-dashed border-gray-200 rounded-lg bg-gray-50/50">
@@ -503,7 +503,7 @@ const SettingsPage = () => {
             <div className="flex flex-col sm:flex-row gap-3">
               <Button 
                 variant="outline" 
-                className="flex-1 border-gray-300 text-gray-700 hover:bg-gray-50 h-11"
+                className="flex-1 border-gray-300 text-gray-900 hover:bg-gray-100 h-11 rounded-xl"
                 onClick={() => navigate('/admin')}
               >
                 <ArrowLeft className="mr-2 w-4 h-4" />
@@ -512,7 +512,7 @@ const SettingsPage = () => {
               <Button 
                 onClick={handleSave} 
                 disabled={saving}
-                className="flex-1 bg-gradient-to-r from-primary-500 to-orange-500 hover:from-primary-600 hover:to-orange-600 text-white shadow-md h-11 font-semibold"
+                className="flex-1 bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white shadow-md h-11 font-semibold rounded-xl"
                 data-testid="save-settings-btn"
               >
                 {saving ? <span className="spinner mr-2" /> : <FloppyDisk className="mr-2" size={16} />}

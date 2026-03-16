@@ -19,6 +19,7 @@ import {
 } from '@phosphor-icons/react';
 import { useAuth } from '../context/AuthContext';
 import { useSearch } from '../context/SearchContext';
+import SearchBar from '../components/SearchBar';
 
 const API = `${process.env.REACT_APP_BACKEND_URL}/api`;
 
@@ -113,9 +114,12 @@ const OwnerTerritories = () => {
     <OwnerLayout title="All Territories">
       <div className="space-y-4">
         {/* Header */}
-        <div>
-          <h1 className="text-lg font-bold bg-gradient-to-r from-primary-600 to-orange-600 bg-clip-text text-transparent">All Territories</h1>
-          <p className="text-xs text-gray-500 mt-0.5">Territories across all organizations</p>
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+          <div>
+            <h1 className="text-lg font-bold bg-gradient-to-r from-primary-600 to-orange-600 bg-clip-text text-transparent">Territory Management</h1>
+            <p className="text-xs text-gray-500 mt-0.5">Territories across all organizations</p>
+          </div>
+          <SearchBar placeholder="Search territories..." />
         </div>
 
         {/* Controls */}

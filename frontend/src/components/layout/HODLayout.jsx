@@ -9,7 +9,6 @@ const HODLayout = ({ children, title }) => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [isCollapsed, setIsCollapsed] = useState(false);
   const { user } = useAuth();
-  const { searchTerm, setSearchTerm } = useSearch();
 
   useEffect(() => {
     document.title = title ? `${title} | FieldOps HOD` : 'FieldOps HOD';
@@ -48,19 +47,6 @@ const HODLayout = ({ children, title }) => {
               <span className="hidden lg:block text-base font-bold text-slate-800 ml-2">{title}</span>
             )}
             
-            {/* Search Bar */}
-            <div className="flex-1 max-w-md hidden md:block">
-              <div className="relative">
-                <MagnifyingGlass size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
-                <input
-                  type="text"
-                  placeholder="Search..."
-                  value={searchTerm}
-                  onChange={(e) => setSearchTerm(e.target.value)}
-                  className="w-full pl-9 pr-4 py-2 text-sm bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-300 focus:border-purple-300 transition-all"
-                />
-              </div>
-            </div>
             
             <div className="flex items-center gap-3">
               <div className="w-9 h-9 rounded-full bg-gradient-to-br from-purple-500 to-indigo-600 flex items-center justify-center text-white font-bold text-sm">

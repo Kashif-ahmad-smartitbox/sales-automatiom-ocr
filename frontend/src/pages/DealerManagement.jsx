@@ -40,6 +40,7 @@ import {
 import { useAuth } from "../context/AuthContext";
 import { useSearch } from "../context/SearchContext";
 import DealerOrderItemsView from "../components/DealerOrderItemsView";
+import SearchBar from "../components/SearchBar";
 import { toast } from "sonner";
 import {
   Tooltip,
@@ -193,20 +194,6 @@ const DealerManagement = () => {
     });
   };
 
-  const filteredDealers = dealers.filter((d) => {
-    const search = searchTerm.toLowerCase();
-    return (
-      d.name?.toLowerCase().includes(search) ||
-      d.address?.toLowerCase().includes(search) ||
-      d.dealer_type?.toLowerCase().includes(search) ||
-      getTerritoryName(d.territory_id)?.toLowerCase().includes(search) ||
-      d.contact_person?.toLowerCase().includes(search) ||
-      d.phone?.toLowerCase().includes(search) ||
-      d.found_by?.toLowerCase().includes(search) ||
-      d.last_visited_by?.toLowerCase().includes(search)
-    );
-  });
-
   const getTerritoryName = (id) => {
     if (!id) return "Unknown";
     const t = territories.find((t) => t.id === id);
@@ -224,6 +211,20 @@ const DealerManagement = () => {
     return "Unknown";
   };
 
+  const filteredDealers = dealers.filter((d) => {
+    const search = searchTerm.toLowerCase();
+    return (
+      d.name?.toLowerCase().includes(search) ||
+      d.address?.toLowerCase().includes(search) ||
+      d.dealer_type?.toLowerCase().includes(search) ||
+      getTerritoryName(d.territory_id)?.toLowerCase().includes(search) ||
+      d.contact_person?.toLowerCase().includes(search) ||
+      d.phone?.toLowerCase().includes(search) ||
+      d.found_by?.toLowerCase().includes(search) ||
+      d.last_visited_by?.toLowerCase().includes(search)
+    );
+  });
+
   return (
     <AdminLayout title="Dealer Management">
       <div className="space-y-4" data-testid="dealer-management">
@@ -237,6 +238,7 @@ const DealerManagement = () => {
               Manage your dealer network
             </p>
           </div>
+          <SearchBar placeholder="Search dealers..." />
         </div>
 
         {/* Actions + Stats */}
@@ -290,7 +292,7 @@ const DealerManagement = () => {
           >
             <DialogTrigger asChild>
               <Button
-                className="bg-gradient-to-r from-primary-500 to-orange-500 hover:from-primary-600 hover:to-orange-600 text-white shadow-sm text-xs h-8"
+                className="bg-gradient-to-r from-green-500 to-green-500 hover:from-green-600 hover:to-green-600 text-white shadow-sm text-xs h-8 rounded-xl"
                 data-testid="add-dealer-btn"
               >
                 <Plus className="mr-1" size={14} />
@@ -477,12 +479,12 @@ const DealerManagement = () => {
                 </div>
 
                 <div className="flex justify-end gap-2 pt-4">
-                  <Button type="button" variant="outline" onClick={closeDialog}>
+                  <Button type="button" className="rounded-xl hover:bg-red-500 hover:text-white" variant="outline" onClick={closeDialog}>
                     Cancel
                   </Button>
                   <Button
                     type="submit"
-                    className="bg-gradient-to-r from-primary-500 to-orange-500 hover:from-primary-600 hover:to-orange-600 text-white shadow-md"
+                    className="bg-gradient-to-r from-green-500 to-green-500 hover:from-green-600 hover:to-green-600 text-white shadow-md rounded-xl"
                     data-testid="dealer-submit-btn"
                   >
                     {editingId ? "Update Dealer" : "Add Dealer"}
@@ -509,48 +511,48 @@ const DealerManagement = () => {
             ) : (
               <div className="overflow-auto rounded-lg border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 shadow-sm w-full max-h-[40rem]">
                 <Table className="table-auto border-collapse">
-                  <TableHeader className="sticky top-0 z-10">
-                    <TableRow className="border-y border-gray-200">
-                      <TableHead className="px-2 py-2 text-xs font-semibold text-gray-500 border-r border-gray-200 w-8">
+                  <TableHeader className="sticky top-0 z-10 bg-gray-200">
+                    <TableRow className="border-y border-gray-200 bg-gray-200 hover:bg-gray-200">
+                      <TableHead className="px-2 py-2 text-xs font-semibold text-gray-700 border-r border-gray-200 w-8">
                         #
                       </TableHead>
-                      <TableHead className="px-3 py-2 text-xs font-semibold text-gray-500 border-r border-gray-200">
+                      <TableHead className="px-3 py-2 text-xs font-semibold text-gray-700 border-r border-gray-200">
                         Dealer
                       </TableHead>
-                      <TableHead className="px-2 py-2 text-xs font-semibold text-gray-500 border-r border-gray-200 w-10 text-center">
+                      <TableHead className="px-2 py-2 text-xs font-semibold text-gray-700 border-r border-gray-200 w-10 text-center">
                         Addr
                       </TableHead>
-                      <TableHead className="px-3 py-2 text-xs font-semibold text-gray-500 border-r border-gray-200">
+                      <TableHead className="px-3 py-2 text-xs font-semibold text-gray-700 border-r border-gray-200">
                         Type
                       </TableHead>
-                      <TableHead className="px-3 py-2 text-xs font-semibold text-gray-500 border-r border-gray-200">
+                      <TableHead className="px-3 py-2 text-xs font-semibold text-gray-700 border-r border-gray-200">
                         Territory
                       </TableHead>
-                      <TableHead className="px-3 py-2 text-xs font-semibold text-gray-500 border-r border-gray-200">
+                      <TableHead className="px-3 py-2 text-xs font-semibold text-gray-700 border-r border-gray-200">
                         Contact
                       </TableHead>
-                      <TableHead className="px-3 py-2 text-xs font-semibold text-gray-500 border-r border-gray-200">
+                      <TableHead className="px-3 py-2 text-xs font-semibold text-gray-700 border-r border-gray-200">
                         Phone
                       </TableHead>
-                      <TableHead className="px-3 py-2 text-xs font-semibold text-gray-500 border-r border-gray-200">
+                      <TableHead className="px-3 py-2 text-xs font-semibold text-gray-700 border-r border-gray-200">
                         Priority
                       </TableHead>
-                      <TableHead className="px-3 py-2 text-xs font-semibold text-gray-500 border-r border-gray-200">
+                      <TableHead className="px-3 py-2 text-xs font-semibold text-gray-700 border-r border-gray-200">
                         Booked Amt
                       </TableHead>
-                      <TableHead className="px-3 py-2 text-xs font-semibold text-gray-500 border-r border-gray-200">
+                      <TableHead className="px-3 py-2 text-xs font-semibold text-gray-700 border-r border-gray-200">
                         Last Visit
                       </TableHead>
-                      <TableHead className="px-3 py-2 text-xs font-semibold text-gray-500 border-r border-gray-200">
+                      <TableHead className="px-3 py-2 text-xs font-semibold text-gray-700 border-r border-gray-200">
                         Visited By
                       </TableHead>
-                      <TableHead className="px-3 py-2 text-xs font-semibold text-gray-500 border-r border-gray-200">
+                      <TableHead className="px-3 py-2 text-xs font-semibold text-gray-700 border-r border-gray-200">
                         Outcome
                       </TableHead>
-                      <TableHead className="px-3 py-2 text-xs font-semibold text-gray-500 border-r border-gray-200">
+                      <TableHead className="px-3 py-2 text-xs font-semibold text-gray-700 border-r border-gray-200">
                         Next Visit
                       </TableHead>
-                      <TableHead className="px-2 py-2 text-xs font-semibold text-gray-500 text-center">
+                      <TableHead className="px-2 py-2 text-xs font-semibold text-gray-700 text-center">
                         Actions
                       </TableHead>
                     </TableRow>
@@ -570,7 +572,7 @@ const DealerManagement = () => {
                       return (
                         <TableRow
                           key={dealer.id}
-                          className="border-b border-gray-100 transition-colors"
+                          className="border-b border-gray-100 transition-colors bg-white hover:bg-gray-50"
                         >
                           <TableCell className="px-2 py-2 border-r border-gray-100 text-xs font-semibold text-gray-600 w-8 text-center">
                             {idx + 1}

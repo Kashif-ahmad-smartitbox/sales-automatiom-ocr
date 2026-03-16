@@ -12,6 +12,7 @@ import { toast } from 'sonner';
 import { Badge } from '../components/ui/badge';
 import { useNavigate } from 'react-router-dom';
 import { formatDateDDMmmYYYY, getTruncatedText } from '../utils/tableHelpers';
+import SearchBar from '../components/SearchBar';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '../components/ui/dialog';
 import { Label } from '../components/ui/label';
 import { Textarea } from '../components/ui/textarea';
@@ -219,10 +220,12 @@ const AssignedPotentials = () => {
   return (
     <SalesExecutiveLayout title="My Assigned Dealers">
       <div className="space-y-4">
-        {/* Header */}
-        <div>
-          <h1 className="text-lg font-bold bg-gradient-to-r from-primary-600 to-orange-600 bg-clip-text text-transparent">My Assigned Dealers</h1>
-          <p className="text-xs text-gray-500 mt-0.5">Potential dealers assigned to you for follow-up</p>
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+          <div>
+            <h1 className="text-lg font-bold bg-gradient-to-r from-primary-600 to-orange-600 bg-clip-text text-transparent">My Assigned Dealers</h1>
+            <p className="text-xs text-gray-500 mt-0.5">Potential dealers assigned to you for follow-up</p>
+          </div>
+          <SearchBar placeholder="Search assigned dealers..." />
         </div>
 
         {/* Info Banner */}
@@ -236,7 +239,7 @@ const AssignedPotentials = () => {
                 </div>
                 <Button 
                   onClick={() => navigate('/field')}
-                  className="bg-gradient-to-r from-primary-500 to-orange-500 hover:from-primary-600 hover:to-orange-600 text-white shadow-md whitespace-nowrap"
+                  className="bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 rounded-xl text-white shadow-md whitespace-nowrap"
                   size="sm"
                 >
                   Go to Field View
@@ -256,14 +259,14 @@ const AssignedPotentials = () => {
               </p>
             )}
           </div>
-          <Button variant="outline" onClick={fetchData}>
+          <Button className='rounded-xl hover:bg-gray-200' variant="outline" onClick={fetchData}>
              Refresh
           </Button>
         </div>
 
         {/* Stats */}
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
-            <Card className="border-0 bg-gradient-to-br from-primary-400 to-primary-500 text-white shadow-md hover:shadow-lg transition-all duration-300">
+            <Card className="border-0 bg-gradient-to-br from-primary-400 to-primary-300 text-white shadow-md hover:shadow-lg transition-all duration-300">
                 <CardContent className="p-3">
                     <div className="flex items-center justify-between mb-1">
                         <span className="text-xs font-medium text-white/90">Assigned Dealers</span>
@@ -335,8 +338,8 @@ const AssignedPotentials = () => {
                                         <div className="flex items-center gap-1.5 text-[11px] text-gray-600 dark:text-gray-400">
                                             <Calendar size={12} className="text-gray-400 dark:text-gray-500" />
                                             <span>{formatDateDDMmmYYYY(item.assigned_at)}</span>
-                                        </div>
-                                        <div className="text-[10px] text-gray-400 dark:text-gray-500 pl-5">
+                                        {/* </div>
+                                        <div className="text-[10px] text-gray-400 dark:text-gray-500 pl-5"> */}
                                             {new Date(item.assigned_at).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}
                                         </div>
                                     </TableCell>
@@ -349,7 +352,7 @@ const AssignedPotentials = () => {
                                         <Button
                                             size="sm"
                                             onClick={() => handleRecordVisit(item)}
-                                            className="bg-gradient-to-r from-primary-500 to-orange-500 hover:from-primary-600 hover:to-orange-600 text-white h-7 px-2"
+                                            className="bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white rounded-xl h-7 px-2"
                                         >
                                             <CheckCircle size={14} className="mr-1" />
                                             Record Visit

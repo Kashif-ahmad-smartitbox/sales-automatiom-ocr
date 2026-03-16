@@ -38,6 +38,7 @@ import {
 } from "../components/ui/select";
 import { State, City } from "country-state-city";
 import { formatDateDDMmmYYYY, getTruncatedText } from "../utils/tableHelpers";
+import SearchBar from "../components/SearchBar";
 
 const API = `${process.env.REACT_APP_BACKEND_URL}/api`;
 
@@ -264,6 +265,7 @@ const SalesExecutiveManagement = () => {
               Manage your field sales executives
             </p>
           </div>
+          <SearchBar placeholder="Search team members..." />
         </div>
 
         {/* Actions + Stats */}
@@ -317,7 +319,7 @@ const SalesExecutiveManagement = () => {
           >
             <DialogTrigger asChild>
               <Button
-                className="bg-gradient-to-r from-primary-500 to-orange-500 hover:from-primary-600 hover:to-orange-600 text-white shadow-sm text-xs h-8"
+                className="bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 rounded-xl text-white shadow-sm text-xs h-8"
                 data-testid="add-executive-btn"
               >
                 <Plus className="mr-1" size={14} />
@@ -537,12 +539,12 @@ const SalesExecutiveManagement = () => {
                 </div>
 
                 <div className="flex justify-end gap-2 pt-4">
-                  <Button type="button" variant="outline" onClick={closeDialog}>
+                  <Button type="button" className="rounded-xl hover:bg-red-500 hover:text-white" variant="outline" onClick={closeDialog}>
                     Cancel
                   </Button>
                   <Button
                     type="submit"
-                    className="bg-gradient-to-r from-primary-500 to-orange-500 hover:from-primary-600 hover:to-orange-600 text-white shadow-md"
+                    className="bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white shadow-md rounded-xl"
                     data-testid="executive-submit-btn"
                   >
                     {editingId ? "Update Executive" : "Add Executive"}

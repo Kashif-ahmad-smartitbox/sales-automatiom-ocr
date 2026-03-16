@@ -1,4 +1,4 @@
-import { useState } from 'react'; 
+import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useNavigate, useLocation } from 'react-router-dom';
 import {
@@ -22,7 +22,6 @@ const AdminLayout = ({ children, title }) => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [isCollapsed, setIsCollapsed] = useState(false);
   const { user } = useAuth();
-  const { searchTerm, setSearchTerm } = useSearch();
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -82,19 +81,6 @@ const AdminLayout = ({ children, title }) => {
               )}
             </div>
 
-            {/* Center: Search (desktop only) */}
-            <div className="flex-1 max-w-sm mx-4 hidden md:block">
-              <div className="relative">
-                <MagnifyingGlass size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
-                <input
-                  type="text"
-                  placeholder="Search..."
-                  value={searchTerm}
-                  onChange={(e) => setSearchTerm(e.target.value)}
-                  className="w-full pl-9 pr-4 py-2 text-sm bg-gray-50 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-orange-300 focus:border-orange-300 transition-all"
-                />
-              </div>
-            </div>
 
             {/* Right: Notification + Avatar */}
             <div className="flex items-center gap-2 md:gap-3">

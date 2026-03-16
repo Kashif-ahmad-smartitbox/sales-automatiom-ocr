@@ -33,6 +33,7 @@ import {
 } from '@phosphor-icons/react';
 import { useAuth } from '../context/AuthContext';
 import { useSearch } from '../context/SearchContext';
+import SearchBar from '../components/SearchBar';
 import { formatDateDDMmmYYYY, getTruncatedText } from '../utils/tableHelpers';
 
 const API = `${process.env.REACT_APP_BACKEND_URL}/api`;
@@ -111,9 +112,12 @@ const OwnerVisits = () => {
     <OwnerLayout title="All Visits">
       <div className="space-y-4">
         {/* Header */}
-        <div>
-          <h1 className="text-lg font-bold bg-gradient-to-r from-primary-600 to-orange-600 bg-clip-text text-transparent">All Visits</h1>
-          <p className="text-xs text-gray-500 mt-0.5">Visit records across all organizations</p>
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+          <div>
+            <h1 className="text-lg font-bold bg-gradient-to-r from-primary-600 to-orange-600 bg-clip-text text-transparent">Visit Reports</h1>
+            <p className="text-xs text-gray-500 mt-0.5">Visit records across all organizations</p>
+          </div>
+          <SearchBar placeholder="Search visits..." />
         </div>
 
         {/* Controls */}

@@ -179,7 +179,7 @@ const UserVisitSummary = () => {
                     type="date"
                     value={fromDate}
                     onChange={(e) => setFromDate(e.target.value)}
-                    className="h-9 text-sm"
+                    className="h-9 text-sm rounded-xl"
                   />
                 </div>
                 <div className="space-y-1.5">
@@ -188,14 +188,14 @@ const UserVisitSummary = () => {
                     type="date"
                     value={toDate}
                     onChange={(e) => setToDate(e.target.value)}
-                    className="h-9 text-sm"
+                    className="h-9 text-sm rounded-xl"
                   />
                 </div>
                 <div className="space-y-1.5">
                   <Label className="text-xs text-gray-600">&nbsp;</Label>
                   <Button
                     onClick={handleApplyFilter}
-                    className="w-full h-9 bg-gradient-to-r from-primary-500 to-orange-500 hover:from-primary-600 hover:to-orange-600"
+                    className="w-full h-9 bg-gradient-to-r from-green-500 to-green-600 text-white hover:from-green-600 hover:to-green-700 hover:text-white rounded-xl"
                   >
                     Apply Filter
                   </Button>

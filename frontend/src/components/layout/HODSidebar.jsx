@@ -6,10 +6,13 @@ import {
   House, 
   Users, 
   ChartBar,
-  ListBullets,
   CalendarCheck,
   X,
-  Package
+  Package,
+  Storefront,
+  Buildings,
+  ChartPieSlice,
+  Gear
 } from '@phosphor-icons/react';
 import { useAuth } from '../../context/AuthContext';
 
@@ -23,12 +26,15 @@ const HODSidebar = ({ isOpen, onClose, isCollapsed, setIsCollapsed }) => {
   };
 
   const navItems = [
-    { to: '/hod', icon: House, label: 'Dashboard' },
-    { to: '/hod/executives', icon: Users, label: 'My Team' },
-    { to: '/hod/items', icon: Package, label: 'Item Master' },
+    { to: '/dashboard', icon: House, label: 'Dashboard' },
+    { to: '/executives', icon: Users, label: 'Sales Team' },
+    { to: '/dealers', icon: Storefront, label: 'Dealers' },
     { to: '/followup-dealers', icon: CalendarCheck, label: 'Follow-up Dealers' },
-    { to: '/hod/reports', icon: ChartBar, label: 'Reports' },
-    { to: '/hod/visits', icon: ListBullets, label: 'Visit History' },
+    { to: '/potentials', icon: Buildings, label: 'Potential Dealers' },
+    { to: '/item-master', icon: Package, label: 'Item Master' },
+    { to: '/reports', icon: ChartBar, label: 'Reports' },
+    { to: '/user-visit-summary', icon: ChartPieSlice, label: 'User Visit Summary' },
+    { to: '/settings', icon: Gear, label: 'Settings' },
   ];
 
   return (
@@ -93,7 +99,7 @@ const HODSidebar = ({ isOpen, onClose, isCollapsed, setIsCollapsed }) => {
                   whileTap={{ scale: 0.95 }}
                   className="flex items-center justify-center"
                 >
-                  <item.icon size={isCollapsed ? 22 : 20} weight={item.to === '/hod' ? 'fill' : 'regular'} />
+                  <item.icon size={isCollapsed ? 22 : 20} weight={item.to === '/dashboard' ? 'fill' : 'regular'} />
                 </motion.div>
                 {!isCollapsed && (
                   <motion.span
@@ -124,7 +130,7 @@ const HODSidebar = ({ isOpen, onClose, isCollapsed, setIsCollapsed }) => {
               </div>
               <button
                 onClick={handleLogout}
-                className="w-full flex items-center justify-center gap-2 px-4 py-2.5 text-sm font-semibold text-white rounded-lg bg-gradient-to-r from-primary-500 to-orange-500 hover:from-primary-600 hover:to-orange-600 shadow-sm transition-colors"
+                className="w-full flex items-center justify-center gap-2 px-4 py-2.5 text-sm font-semibold text-white rounded-xl bg-gradient-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 hover:text-white shadow-sm transition-colors"
               >
                 <SignOut size={16} />
                 <span>Sign Out</span>
@@ -137,7 +143,7 @@ const HODSidebar = ({ isOpen, onClose, isCollapsed, setIsCollapsed }) => {
               </div>
               <button
                 onClick={handleLogout}
-                className="p-2 rounded-lg bg-gradient-to-r from-primary-500 to-orange-500 text-white hover:from-primary-600 hover:to-orange-600 shadow-sm transition-colors"
+                className="p-2 rounded-xl bg-gradient-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 hover:text-white shadow-sm transition-colors"
                 title="Sign Out"
               >
                 <SignOut size={20} />

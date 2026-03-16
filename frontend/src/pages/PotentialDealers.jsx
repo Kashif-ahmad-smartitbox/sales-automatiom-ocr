@@ -8,6 +8,7 @@ import { MapPin, Calendar, Buildings, Check } from "@phosphor-icons/react";
 import { useAuth } from "../context/AuthContext";
 import { useSearch } from "../context/SearchContext";
 import { toast } from "sonner";
+import SearchBar from "../components/SearchBar";
 import { Badge } from "../components/ui/badge";
 import {
   Dialog,
@@ -110,13 +111,16 @@ const PotentialDealers = () => {
     <AdminLayout title="Potential Dealers">
       <div className="space-y-4">
         {/* Header */}
-        <div>
-          <h1 className="text-lg font-bold bg-gradient-to-r from-primary-600 to-orange-600 bg-clip-text text-transparent">
-            Potential Dealers
-          </h1>
-          <p className="text-xs text-gray-500 mt-0.5">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+          <div>
+            <h1 className="text-lg font-bold bg-gradient-to-r from-primary-600 to-orange-600 bg-clip-text text-transparent">
+              Potential Dealers
+            </h1>
+            <p className="text-xs text-gray-500 mt-0.5">
             Leads discovered by field team
-          </p>
+            </p>
+          </div>
+          <SearchBar placeholder="Search potentials..." />
         </div>
 
         {/* Actions + Stats */}

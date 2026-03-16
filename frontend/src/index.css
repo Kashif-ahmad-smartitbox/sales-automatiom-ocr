@@ -163,6 +163,7 @@ thead th {
   font-weight: 600 !important;
   font-size: 0.75rem;
   padding: 0.5rem 1rem;
+  white-space: nowrap !important;
 }
 
 tbody tr {
@@ -179,4 +180,5 @@ tbody td {
   padding: 0.5rem 1rem;
   color: #4b5563; /* text-gray-600 */
   font-size: 0.8125rem;
+  white-space: nowrap !important;
 }

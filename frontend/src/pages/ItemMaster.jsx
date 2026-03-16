@@ -21,6 +21,7 @@ import {
 import { useAuth } from "../context/AuthContext";
 import { useSearch } from "../context/SearchContext";
 import { toast } from "sonner";
+import SearchBar from "../components/SearchBar";
 import { formatDateDDMmmYYYY, getTruncatedText } from "../utils/tableHelpers";
 
 const API = `${process.env.REACT_APP_BACKEND_URL}/api`;
@@ -178,33 +179,44 @@ const ItemMaster = () => {
   return (
     <AdminLayout title="Item Master">
       <div className="space-y-4">
-        {/* Header */}
-        <div>
-          <h1 className="text-lg font-bold bg-gradient-to-r from-primary-600 to-orange-600 bg-clip-text text-transparent">
-            Item Master
-          </h1>
-          <p className="text-xs text-gray-500 mt-0.5">
-            Manage your product items and pricing
-          </p>
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+          <div className="flex items-center gap-3">
+            <div className="w-10 h-10 rounded-xl bg-orange-100 flex items-center justify-center text-orange-600">
+              <Package size={24} weight="duotone" />
+            </div>
+            <div>
+              <h1 className="text-lg font-bold bg-gradient-to-r from-primary-600 to-orange-600 bg-clip-text text-transparent">
+                Item Master
+              </h1>
+              <p className="text-xs text-gray-500">
+                Manage your product items and pricing
+              </p>
+            </div>
+          </div>
+          <SearchBar placeholder="Search items..." />
         </div>
 
         {/* Controls */}
         <div className="flex flex-col md:flex-row gap-3 items-center justify-between">
-          <div className="flex gap-2 w-full md:w-auto">
-            <div className="flex-1 md:w-72">
-              {searchTerm && (
-                <p className="text-xs text-slate-500">
-                  Showing results for:{" "}
-                  <span className="font-semibold text-slate-700">
-                    "{searchTerm}"
-                  </span>
-                </p>
-              )}
-            </div>
+          {/* Left side: search result text */}
+          <div className="w-full md:w-72">
+            {searchTerm && (
+              <p className="text-xs text-slate-500">
+                Showing results for:{" "}
+                <span className="font-semibold text-slate-700">
+                  "{searchTerm}"
+                </span>
+              </p>
+            )}
+          </div>
+
+          {/* Right side: dropdown + badge + button */}
+          <div className="flex gap-2 w-full md:w-auto items-center">
+            {/* Dropdown — full width on mobile, auto on desktop */}
             <select
               value={filterCategory}
               onChange={(e) => setFilterCategory(e.target.value)}
-              className="px-3 py-2 border border-slate-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary-500"
+              className="flex-1 md:flex-initial px-3 py-2 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-primary-500"
             >
               <option value="all">All Categories</option>
               {categories.map((cat) => (
@@ -213,14 +225,14 @@ const ItemMaster = () => {
                 </option>
               ))}
             </select>
-          </div>
-          <div className="flex gap-2 w-full md:w-auto">
-            <Badge className="bg-purple-100 text-purple-700 text-[10px] px-1.5 py-0">
+
+            <Badge className="bg-purple-100 text-purple-700 text-[10px] px-2 py-2 rounded-xl">
               {filteredItems.length} items
             </Badge>
+
             <Button
               onClick={() => setShowAddModal(true)}
-              className="flex-1 md:flex-initial"
+              className="flex-1 md:flex-initial bg-green-500 text-white hover:bg-green-600 rounded-xl"
             >
               <Plus className="w-4 h-4 mr-1" weight="bold" />
               Add Item
@@ -438,11 +450,11 @@ const ItemMaster = () => {
                       type="button"
                       variant="outline"
                       onClick={() => setShowAddModal(false)}
-                      className="flex-1"
+                      className="flex-1 bg-red-500 text-white hover:bg-red-600 hover:text-white rounded-xl"
                     >
                       Cancel
                     </Button>
-                    <Button type="submit" className="flex-1">
+                    <Button type="submit" className="flex-1 bg-green-500 text-white hover:bg-green-600 hover:text-white rounded-xl">
                       Add Item
                     </Button>
                   </div>
@@ -546,11 +558,11 @@ const ItemMaster = () => {
                       type="button"
                       variant="outline"
                       onClick={() => setShowEditModal(false)}
-                      className="flex-1"
+                      className="flex-1 bg-red-500 text-white hover:bg-red-600 hover:text-white rounded-xl"
                     >
                       Cancel
                     </Button>
-                    <Button type="submit" className="flex-1">
+                    <Button type="submit" className="flex-1 bg-green-500 text-white hover:bg-green-600 hover:text-white rounded-xl">
                       Update Item
                     </Button>
                   </div>
