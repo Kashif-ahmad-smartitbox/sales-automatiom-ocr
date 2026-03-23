@@ -44,7 +44,7 @@ const LandingPage = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen bg-gray-50">
       {/* Navbar */}
       <nav className="fixed top-0 left-0 right-0 z-50 bg-white/90 backdrop-blur-md border-b border-gray-200 shadow-sm">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -60,12 +60,12 @@ const LandingPage = () => {
             </div>
             <div className="flex items-center gap-2 sm:gap-4">
               <Link to="/login">
-                <Button variant="ghost" className="text-gray-700 hover:text-primary-700 hover:bg-gradient-to-r hover:from-primary-50 hover:to-orange-50 text-sm px-2 sm:px-4">
+                <Button variant="ghost" className="text-gray-700 hover:text-primary-700 hover:bg-gradient-to-r hover:from-primary-50 hover:to-orange-50 rounded-xl text-sm px-2 sm:px-4">
                   Sign In
                 </Button>
               </Link>
               <Link to="/register">
-                <Button className="bg-gradient-to-r from-primary-500 to-orange-500 hover:from-primary-600 hover:to-orange-600 text-white shadow-md text-sm px-3 sm:px-4" data-testid="get-started-btn">
+                <Button className="bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white shadow-md rounded-xl text-sm px-3 sm:px-4" data-testid="get-started-btn">
                   Get Started
                 </Button>
               </Link>
@@ -97,13 +97,13 @@ const LandingPage = () => {
             </p>
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
               <Link to="/register">
-                <Button size="lg" className="bg-gradient-to-r from-primary-500 to-orange-500 hover:from-primary-600 hover:to-orange-600 text-white px-8 py-6 text-lg shadow-lg" data-testid="hero-cta-btn">
+                <Button size="lg" className="bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white px-8 py-6 rounded-xl text-lg shadow-lg" data-testid="hero-cta-btn">
                   Start Free Trial
                   <ArrowRight className="ml-2 w-5 h-5" />
                 </Button>
               </Link>
               <Link to="/login">
-                <Button size="lg" variant="outline" className="border-gray-300 text-gray-700 hover:bg-gradient-to-r hover:from-primary-50 hover:to-orange-50 hover:border-primary-300 px-8 py-6 text-lg">
+                <Button size="lg" variant="outline" className="border-gray-300 text-gray-700 rounded-xl hover:bg-gradient-to-r hover:from-primary-50 hover:to-orange-50 hover:border-primary-300 px-8 py-6 text-lg">
                   Watch Demo
                 </Button>
               </Link>
@@ -118,7 +118,7 @@ const LandingPage = () => {
             className="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4 mt-10 sm:mt-16"
           >
             {stats.map((stat, index) => (
-              <div key={index} className="text-center p-4 sm:p-6 bg-white rounded-xl border border-gray-200 shadow-sm hover:border-primary-300 hover:shadow-md transition-all">
+              <div key={index} className="text-center p-4 sm:p-6 bg-white rounded-2xl border border-gray-100 shadow-sm hover:border-primary-300 hover:shadow-md transition-all">
                 <div className="text-2xl sm:text-4xl font-extrabold bg-gradient-to-r from-primary-600 to-orange-600 bg-clip-text text-transparent mb-1 font-mono">{stat.value}</div>
                 <div className="text-xs sm:text-sm text-gray-500">{stat.label}</div>
               </div>
@@ -128,7 +128,7 @@ const LandingPage = () => {
       </section>
 
       {/* Features Section */}
-      <section className="py-12 sm:py-20 px-4 bg-gradient-to-b from-gray-50 to-white">
+      <section className="py-12 sm:py-20 px-4 bg-gray-50">
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-10 sm:mb-16">
             <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-gray-900 mb-4">
@@ -147,7 +147,7 @@ const LandingPage = () => {
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.4, delay: index * 0.1 }}
                 viewport={{ once: true }}
-                className="p-6 bg-white rounded-xl border border-gray-200 hover:border-primary-300 hover:shadow-lg transition-all"
+                className="p-6 bg-white rounded-2xl border border-gray-100 shadow-sm hover:border-primary-300 hover:shadow-md transition-all"
               >
                 <div className="w-12 h-12 rounded-lg bg-gradient-to-r from-primary-100 to-orange-100 flex items-center justify-center mb-4">
                   <feature.icon weight="duotone" className="w-6 h-6 text-primary-600" />
@@ -161,7 +161,7 @@ const LandingPage = () => {
       </section>
 
       {/* Industries Section */}
-      <section className="py-12 sm:py-20 px-4 bg-white">
+      <section className="py-12 sm:py-20 px-4 bg-white border-y border-gray-100">
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-8 sm:mb-12">
             <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-4">Built for Field-Heavy Industries</h2>
@@ -187,7 +187,7 @@ const LandingPage = () => {
             Join 500+ companies already using Smart ITBox to maximize their sales team productivity.
           </p>
           <Link to="/register">
-            <Button size="lg" className="bg-white text-gray-800 hover:bg-gray-50 px-8 py-6 text-lg font-semibold shadow-lg">
+            <Button size="lg" className="bg-white text-gray-800 rounded-xl hover:bg-gray-50 px-8 py-6 text-lg font-semibold shadow-lg">
               Start Your Free Trial
               <ArrowRight className="ml-2 w-5 h-5" />
             </Button>
