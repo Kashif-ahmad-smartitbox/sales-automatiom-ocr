@@ -383,11 +383,12 @@ const PotentialDealers = () => {
             <div className="flex gap-2 justify-end pt-4">
               <Button
                 variant="outline"
+                className="rounded-xl hover:bg-gray-100"
                 onClick={() => setAssignDialogOpen(false)}
               >
                 Cancel
               </Button>
-              <Button onClick={handleAssign}>Assign</Button>
+              <Button className="rounded-xl bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white shadow-md transition-all" onClick={handleAssign}>Assign</Button>
             </div>
           </div>
         </DialogContent>

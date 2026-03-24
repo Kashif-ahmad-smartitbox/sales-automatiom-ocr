@@ -23,6 +23,7 @@ import {
   CurrencyInr,
   ArrowRight,
   Plus,
+  Pulse,
   ChartBar,
   Eye,
   ChartPieSlice,
@@ -459,7 +460,81 @@ const AdminDashboard = () => {
             </div>
           </div>
 
-          {/* Field Team */}
+          {/* Day Wise Report */}
+          <div
+            className="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden"
+            data-testid="day-wise-report-card"
+          >
+            <div className="flex items-center justify-between px-5 py-4 border-b border-gray-100">
+              <div className="flex items-center gap-2">
+                <div className="w-8 h-8 rounded-lg bg-orange-100 flex items-center justify-center">
+                  <ChartBar
+                    size={16}
+                    className="text-orange-500"
+                    weight="bold"
+                  />
+                </div>
+                <span className="font-bold text-gray-900 text-sm">
+                  Day Wise Report
+                </span>
+              </div>
+            </div>
+            <div className="px-5 py-4">
+              <div className="grid grid-cols-2 gap-3">
+                <div className="bg-white rounded-xl p-3 border border-gray-100">
+                  <div className="text-xl font-black text-gray-900">
+                    {stats?.visits_today || 0}
+                  </div>
+                  <div className="text-xs text-gray-400 mt-0.5">
+                    Today Visits
+                  </div>
+                </div>
+                <div className="bg-white rounded-xl p-3 border border-gray-100">
+                  <div className="text-xl font-black text-emerald-600">
+                    ₹{(stats?.total_order_value || 0).toLocaleString("en-IN")}
+                  </div>
+                  <div className="text-xs text-gray-400 mt-0.5">
+                    Today Revenue
+                  </div>
+                </div>
+                <div className="bg-white rounded-xl p-3 border border-gray-100">
+                  <div className="text-xl font-black text-gray-900">
+                    {stats?.active_executives || 0}
+                  </div>
+                  <div className="text-xs text-gray-400 mt-0.5">
+                    Active Reps
+                  </div>
+                </div>
+                <div className="bg-white rounded-xl p-3 border border-gray-100">
+                  <div className="text-xl font-black text-blue-600">
+                    {stats?.orders_today || 0}
+                  </div>
+                  <div className="text-xs text-gray-400 mt-0.5">
+                    Orders Today
+                  </div>
+                </div>
+                <div className="bg-white rounded-xl p-3 border border-gray-100">
+                  <div className="text-xl font-black text-amber-600">
+                    {stats?.target_visits || 0}
+                  </div>
+                  <div className="text-xs text-gray-400 mt-0.5">
+                    Target Visits
+                  </div>
+                </div>
+                <div className="bg-white rounded-xl p-3 border border-gray-100">
+                  <div className="text-xl font-black text-indigo-600">
+                    {stats?.visit_completion_rate || 0}%
+                  </div>
+                  <div className="text-xs text-gray-400 mt-0.5">
+                    Completion %
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Field Team (Commented out as per request) */}
+          {/*
           <div
             className="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden"
             data-testid="team-status-card"
@@ -475,7 +550,6 @@ const AdminDashboard = () => {
               </div>
             </div>
 
-            {/* Executives List */}
             <div className="divide-y divide-gray-50 max-h-[220px] overflow-y-auto">
               {executives.length === 0 ? (
                 <p className="text-sm text-gray-400 text-center py-8">
@@ -524,7 +598,6 @@ const AdminDashboard = () => {
                           {status}
                         </span>
                       </div>
-                      {/* Per-rep stats row */}
                       <div className="flex items-center gap-3 mt-2 ml-12">
                         <div className="flex items-center gap-1">
                           <CalendarCheck
@@ -559,23 +632,18 @@ const AdminDashboard = () => {
                 })
               )}
             </div>
-
-            {/* Progress Section (moved to All-Time Progress card) */}
           </div>
+          */}
 
-          {/* Dealer Visits */}
+          {/* Dealer Visits (Commented down) */}
+          {/*
           <div className="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
             <div className="flex items-center justify-between px-5 py-4 border-b border-gray-100">
               <span className="font-bold text-gray-900 text-sm">
                 Dealer Visits
               </span>
-              {/* <button className="text-xs font-bold bg-gray-100 hover:bg-gray-200 text-gray-600 px-3 py-1.5 rounded-lg transition-colors flex items-center gap-1">
-                <Plus size={12} weight="bold" />
-                Add Visit
-              </button> */}
             </div>
 
-            {/* Column Headers */}
             <div className="grid grid-cols-4 gap-1 px-4 py-2 border-b border-gray-50">
               <span className="text-xs font-semibold text-gray-400">
                 Dealer
@@ -646,6 +714,84 @@ const AdminDashboard = () => {
                           </span>
                         </div>
                       )}
+                    </div>
+                  );
+                })
+              )}
+            </div>
+          </div>
+          */}
+
+          {/* Recent Visits (Timeline Style) */}
+          <div className="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden" data-testid="recent-visits-card">
+            <div className="flex items-center justify-between px-5 py-4 border-b border-gray-100">
+              <div className="flex items-center gap-2">
+                <div className="w-8 h-8 rounded-lg bg-orange-100 flex items-center justify-center">
+                  <Pulse size={16} className="text-orange-500" weight="bold" />
+                </div>
+                <div className="flex items-center gap-2">
+                  <span className="font-bold text-gray-900 text-sm">Recent Visits</span>
+                  <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-red-50 border border-red-100 shadow-sm">
+                    <span className="relative flex h-2 w-2">
+                      <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
+                      <span className="relative inline-flex rounded-full h-2 w-2 bg-red-500"></span>
+                    </span>
+                    <span className="text-[10px] font-bold text-red-600 uppercase tracking-wider">Live</span>
+                  </div>
+                </div>
+              </div>
+              <span className="text-xs text-gray-400">Latest 10 activities</span>
+            </div>
+            
+            <div className="divide-y divide-gray-50 max-h-[380px] overflow-y-auto">
+              {activityLog.length === 0 ? (
+                <p className="text-sm text-gray-400 text-center py-10">No recent activities</p>
+              ) : (
+                activityLog.map((activity) => {
+                  const outcomeStyle = getOutcomeStyle(activity.outcome);
+                  const repInitials = (activity.rep_name || 'U').charAt(0).toUpperCase();
+
+                  return (
+                    <div key={activity.id} className="px-5 py-3.5 hover:bg-gray-50 transition-colors">
+                      <div className="flex items-start gap-3">
+                        <div className="mt-0.5 flex-shrink-0">
+                          {getOutcomeIcon(activity.outcome)}
+                        </div>
+                        <div className="flex-1 min-w-0">
+                          <div className="flex items-center justify-between gap-2">
+                            <p className="font-semibold text-xs text-gray-900 truncate">
+                              {activity.dealer_name || 'Unknown Dealer'}
+                            </p>
+                            <span className="text-xs text-gray-400 whitespace-nowrap flex-shrink-0">
+                              {formatTimeAgo(activity.check_in_time)}
+                            </span>
+                          </div>
+                          
+                          <div className="flex items-center justify-between mt-1">
+                            <div className="flex items-center gap-1.5">
+                              <div className="w-4 h-4 rounded-full bg-gradient-to-br from-orange-400 to-orange-500 flex items-center justify-center text-white text-[9px] font-bold flex-shrink-0">
+                                {repInitials}
+                              </div>
+                              <span className="text-[11px] text-gray-600 truncate">
+                                {activity.rep_name || 'Executive'}
+                              </span>
+                            </div>
+
+                            {activity.outcome && (
+                              <span className={`inline-block text-[10px] font-bold px-2 py-0.5 rounded-full ${outcomeStyle.bg} ${outcomeStyle.text}`}>
+                                {outcomeStyle.label}
+                              </span>
+                            )}
+                          </div>
+
+                          {activity.order_value > 0 && (
+                            <div className="text-xs font-bold text-emerald-600 mt-2 flex items-center gap-1">
+                              <CurrencyInr size={12} weight="bold" />
+                              {activity.order_value.toLocaleString('en-IN')}
+                            </div>
+                          )}
+                        </div>
+                      </div>
                     </div>
                   );
                 })
@@ -754,9 +900,9 @@ const AdminDashboard = () => {
                     <TableHead className="p-2 text-gray-700 dark:text-gray-300 font-medium">
                       Dealer
                     </TableHead>
-                    <TableHead className="p-2 text-gray-700 dark:text-gray-300 font-medium">
+                    {/* <TableHead className="p-2 text-gray-700 dark:text-gray-300 font-medium">
                       Territory
-                    </TableHead>
+                    </TableHead> */}
                     <TableHead className="p-2 text-gray-700 dark:text-gray-300 font-medium">
                       Status
                     </TableHead>
@@ -807,11 +953,11 @@ const AdminDashboard = () => {
                               </p>
                             </div>
                           </TableCell>
-                          <TableCell className="px-2 py-1.5">
+                          {/* <TableCell className="px-2 py-1.5">
                             <span className="text-[11px] text-gray-600 dark:text-gray-400">
                               {visit.territory || "N/A"}
                             </span>
-                          </TableCell>
+                          </TableCell> */}
                           <TableCell className="px-2 py-1.5">
                             <span
                               className={`inline-block text-[10px] font-semibold px-1.5 py-0.5 rounded-full ${outcomeStyle.bg} ${outcomeStyle.text}`}

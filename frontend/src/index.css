@@ -182,3 +182,12 @@ tbody td {
   font-size: 0.8125rem;
   white-space: nowrap !important;
 }
+
+@keyframes marquee {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+.animate-marquee {
+  animation: marquee 25s linear infinite;
+}

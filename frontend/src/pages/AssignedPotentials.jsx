@@ -394,6 +394,7 @@ const AssignedPotentials = () => {
                   <SelectItem value="Follow-up Required">Follow-up Required</SelectItem>
                   <SelectItem value="No Meeting">No Meeting</SelectItem>
                   <SelectItem value="Lost Visit">Lost Visit</SelectItem>
+                  <SelectItem value="Not Exist">Not Exist</SelectItem>
                 </SelectContent>
               </Select>
             </div>
@@ -482,67 +483,71 @@ const AssignedPotentials = () => {
               </>
             )}
 
-            <div className="space-y-2">
-              <Label>Notes</Label>
-              <Textarea
-                value={visitData.notes}
-                onChange={(e) => setVisitData({...visitData, notes: e.target.value})}
-                placeholder="Add any notes about this visit..."
-                rows={3}
-              />
-            </div>
-
-            <div className="space-y-2">
-              <Label>Next Visit Date</Label>
-              <Input
-                type="date"
-                value={visitData.next_visit_date}
-                onChange={(e) => setVisitData({...visitData, next_visit_date: e.target.value})}
-              />
-            </div>
-
-            <div className="border-t border-gray-100 pt-3 space-y-3">
-              <p className="text-xs font-semibold text-gray-600">Contact Details</p>
-              <div className="grid grid-cols-2 gap-3">
-                <div className="space-y-1">
-                  <Label className="text-xs">Name</Label>
-                  <Input
-                    value={visitData.contact_name}
-                    onChange={(e) => setVisitData({...visitData, contact_name: e.target.value})}
-                    placeholder="Contact name"
+            {visitData.outcome !== 'Not Exist' && (
+              <>
+                <div className="space-y-2">
+                  <Label>Notes</Label>
+                  <Textarea
+                    value={visitData.notes}
+                    onChange={(e) => setVisitData({...visitData, notes: e.target.value})}
+                    placeholder="Add any notes about this visit..."
+                    rows={3}
                   />
                 </div>
-                <div className="space-y-1">
-                  <Label className="text-xs">Phone</Label>
+
+                <div className="space-y-2">
+                  <Label>Next Visit Date</Label>
                   <Input
-                    type="tel"
-                    value={visitData.contact_phone}
-                    onChange={(e) => setVisitData({...visitData, contact_phone: e.target.value})}
-                    placeholder="Phone number"
+                    type="date"
+                    value={visitData.next_visit_date}
+                    onChange={(e) => setVisitData({...visitData, next_visit_date: e.target.value})}
                   />
                 </div>
-              </div>
-              <div className="space-y-1">
-                <Label className="text-xs">Email (Optional)</Label>
-                <Input
-                  type="email"
-                  value={visitData.contact_email}
-                  onChange={(e) => setVisitData({...visitData, contact_email: e.target.value})}
-                  placeholder="Email address"
-                />
-              </div>
-            </div>
+
+                <div className="border-t border-gray-100 pt-3 space-y-3">
+                  <p className="text-xs font-semibold text-gray-600">Contact Details</p>
+                  <div className="grid grid-cols-2 gap-3">
+                    <div className="space-y-1">
+                      <Label className="text-xs">Name</Label>
+                      <Input
+                        value={visitData.contact_name}
+                        onChange={(e) => setVisitData({...visitData, contact_name: e.target.value})}
+                        placeholder="Contact name"
+                      />
+                    </div>
+                    <div className="space-y-1">
+                      <Label className="text-xs">Phone</Label>
+                      <Input
+                        type="tel"
+                        value={visitData.contact_phone}
+                        onChange={(e) => setVisitData({...visitData, contact_phone: e.target.value})}
+                        placeholder="Phone number"
+                      />
+                    </div>
+                  </div>
+                  <div className="space-y-1">
+                    <Label className="text-xs">Email (Optional)</Label>
+                    <Input
+                      type="email"
+                      value={visitData.contact_email}
+                      onChange={(e) => setVisitData({...visitData, contact_email: e.target.value})}
+                      placeholder="Email address"
+                    />
+                  </div>
+                </div>
+              </>
+            )}
 
             <div className="flex gap-2 pt-2">
               <Button 
                 variant="outline" 
-                className="flex-1"
+                className="flex-1 rounded-xl hover:bg-gray-100"
                 onClick={() => setVisitDialogOpen(false)}
               >
                 Cancel
               </Button>
               <Button 
-                className="flex-1 bg-gradient-to-r from-primary-500 to-orange-500 hover:from-primary-600 hover:to-orange-600"
+                className="flex-1 rounded-xl bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white shadow-md transition-all"
                 onClick={handleSaveVisit}
               >
                 <CheckCircle className="mr-2" size={18} />

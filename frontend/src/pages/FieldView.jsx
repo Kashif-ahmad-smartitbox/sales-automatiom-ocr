@@ -1056,13 +1056,13 @@ const FieldView = () => {
               </div>
               <div className="flex gap-2">
                 <button
-                  className="flex-1 border border-gray-200 text-gray-600 hover:bg-gray-50 py-2.5 rounded-xl text-sm font-medium transition-colors"
+                  className="flex-1 border border-gray-200 text-gray-600 hover:bg-gray-100 py-2.5 rounded-xl text-sm font-medium transition-colors"
                   onClick={() => setCheckInDialogOpen(false)}
                 >
                   Cancel
                 </button>
                 <button
-                  className="flex-1 bg-orange-500 hover:bg-orange-600 text-white py-2.5 rounded-xl text-sm font-bold transition-colors flex items-center justify-center gap-2"
+                  className="flex-1 bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white py-2.5 rounded-xl text-sm font-bold transition-all shadow-md flex items-center justify-center gap-2"
                   onClick={handleCheckIn}
                   data-testid="confirm-checkin-btn"
                 >
@@ -1318,13 +1318,13 @@ const FieldView = () => {
 
             <div className="flex gap-2">
               <button
-                className="flex-1 border border-gray-200 text-gray-600 hover:bg-gray-50 py-2.5 rounded-xl text-sm font-medium transition-colors"
+                className="flex-1 border border-gray-200 text-gray-600 hover:bg-gray-100 py-2.5 rounded-xl text-sm font-medium transition-colors"
                 onClick={() => setCheckOutDialogOpen(false)}
               >
                 Cancel
               </button>
               <button
-                className="flex-1 bg-emerald-600 hover:bg-emerald-700 text-white py-2.5 rounded-xl text-sm font-bold flex items-center justify-center gap-2 transition-colors"
+                className="flex-1 bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white py-2.5 rounded-xl text-sm font-bold flex items-center justify-center gap-2 transition-all shadow-md"
                 onClick={handleCheckOut}
                 data-testid="confirm-checkout-btn"
               >

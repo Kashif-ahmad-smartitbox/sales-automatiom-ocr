@@ -479,12 +479,12 @@ const DealerManagement = () => {
                 </div>
 
                 <div className="flex justify-end gap-2 pt-4">
-                  <Button type="button" className="rounded-xl hover:bg-red-500 hover:text-white" variant="outline" onClick={closeDialog}>
+                  <Button type="button" className="rounded-xl hover:bg-gray-100" variant="outline" onClick={closeDialog}>
                     Cancel
                   </Button>
                   <Button
                     type="submit"
-                    className="bg-gradient-to-r from-green-500 to-green-500 hover:from-green-600 hover:to-green-600 text-white shadow-md rounded-xl"
+                    className="rounded-xl bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white shadow-md transition-all"
                     data-testid="dealer-submit-btn"
                   >
                     {editingId ? "Update Dealer" : "Add Dealer"}
