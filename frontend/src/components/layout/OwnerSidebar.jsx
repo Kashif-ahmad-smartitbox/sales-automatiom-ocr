@@ -1,4 +1,5 @@
 import { NavLink } from 'react-router-dom';
+import { useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
   House, 
@@ -16,7 +17,13 @@ import {
 } from '@phosphor-icons/react';
 import { useAuth } from '../../context/AuthContext';
 
+let hasMounted = false;
+
 const OwnerSidebar = ({ isOpen, onClose, isCollapsed, setIsCollapsed }) => {
+  useEffect(() => {
+    hasMounted = true;
+  }, []);
+
   const { logout, user } = useAuth();
 
   const navItems = [
@@ -72,7 +79,7 @@ const OwnerSidebar = ({ isOpen, onClose, isCollapsed, setIsCollapsed }) => {
           {navItems.map((item, index) => (
             <motion.div
               key={item.to}
-              initial={{ opacity: 0, x: -20 }}
+              initial={hasMounted ? false : { opacity: 0, x: -20 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ delay: index * 0.05 }}
             >
@@ -98,7 +105,7 @@ const OwnerSidebar = ({ isOpen, onClose, isCollapsed, setIsCollapsed }) => {
                 </motion.div>
                 {!isCollapsed && (
                   <motion.span
-                    initial={{ opacity: 0, x: -10 }}
+                    initial={hasMounted ? false : { opacity: 0, x: -10 }}
                     animate={{ opacity: 1, x: 0 }}
                     transition={{ delay: 0.1 + index * 0.05 }}
                   >
@@ -125,7 +132,7 @@ const OwnerSidebar = ({ isOpen, onClose, isCollapsed, setIsCollapsed }) => {
               </div>
               <button
                 onClick={logout}
-                className="w-full flex items-center justify-center gap-2 px-4 py-2.5 text-sm font-semibold text-white rounded-xl bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 hover:text-white shadow-sm transition-colors"
+                className="w-full flex items-center justify-center gap-2 px-4 py-2.5 text-sm font-semibold text-white rounded-xl bg-gradient-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 hover:text-white shadow-sm transition-colors"
               >
                 <SignOut size={16} />
                 <span>Sign Out</span>
@@ -138,7 +145,7 @@ const OwnerSidebar = ({ isOpen, onClose, isCollapsed, setIsCollapsed }) => {
               </div>
               <button
                 onClick={logout}
-                className="p-2 rounded-xl bg-gradient-to-r from-green-500 to-green-600 text-white hover:from-green-600 hover:to-green-700 hover:text-white shadow-sm transition-colors"
+                className="p-2 rounded-xl bg-gradient-to-r from-red-500 to-red-600 text-white hover:from-red-600 hover:to-red-700 hover:text-white shadow-sm transition-colors"
                 title="Sign Out"
               >
                 <SignOut size={20} />

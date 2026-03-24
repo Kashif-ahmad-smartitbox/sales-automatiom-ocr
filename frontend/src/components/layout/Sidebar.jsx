@@ -1,5 +1,5 @@
 import { NavLink } from 'react-router-dom';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
   House, 
@@ -20,7 +20,13 @@ import {
 } from '@phosphor-icons/react';
 import { useAuth } from '../../context/AuthContext';
 
+let hasMounted = false;
+
 const Sidebar = ({ isOpen, onClose, isCollapsed, setIsCollapsed }) => {
+  useEffect(() => {
+    hasMounted = true;
+  }, []);
+
   const { logout, user } = useAuth();
 
   const allNavItems = [
@@ -81,7 +87,7 @@ const Sidebar = ({ isOpen, onClose, isCollapsed, setIsCollapsed }) => {
           {navItems.map((item, index) => (
             <motion.div
               key={item.to}
-              initial={{ opacity: 0, x: -20 }}
+              initial={hasMounted ? false : { opacity: 0, x: -20 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ delay: index * 0.05 }}
             >
@@ -106,7 +112,7 @@ const Sidebar = ({ isOpen, onClose, isCollapsed, setIsCollapsed }) => {
                 </motion.div>
                 {!isCollapsed && (
                   <motion.span
-                    initial={{ opacity: 0, x: -10 }}
+                    initial={hasMounted ? false : { opacity: 0, x: -10 }}
                     animate={{ opacity: 1, x: 0 }}
                     transition={{ delay: 0.1 + index * 0.05 }}
                   >
