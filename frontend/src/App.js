@@ -23,6 +23,9 @@ import AssignedPotentials from "./pages/AssignedPotentials";
 import FollowupDealers from "./pages/FollowupDealers";
 import ItemMaster from "./pages/ItemMaster";
 import PerformanceDashboard from "./pages/PerformanceDashboard";
+import OrdersPage from "./pages/OrdersPage";
+import DispatchOrderPage from "./pages/DispatchOrderPage";
+import AccountUserManagement from "./pages/AccountUserManagement";
 
 // Owner Pages
 import OwnerDashboard from "./pages/OwnerDashboard";
@@ -59,6 +62,7 @@ const ProtectedRoute = ({ children, allowedRoles }) => {
     // Redirect to appropriate home based on role
     const redirectTo = user.role === 'sales_executive' ? '/field' :
       user.role === 'owner' ? '/owner' :
+      user.role === 'account_user' ? '/dispatch' :
       user.role === 'hod' ? '/hod' : '/dashboard';
     return <Navigate to={redirectTo} replace />;
   }
@@ -74,6 +78,7 @@ function AppRoutes() {
     if (!user) return null;
     if (user.role === 'owner') return '/owner';
     if (user.role === 'hod') return '/hod';
+    if (user.role === 'account_user') return '/dispatch';
     return user.role === 'sales_executive' ? '/field' : '/dashboard';
   };
 
@@ -142,6 +147,21 @@ function AppRoutes() {
       <Route path="/item-master" element={
         <ProtectedRoute allowedRoles={["organization", "admin", "hod"]}>
           <ItemMaster />
+        </ProtectedRoute>
+      } />
+      <Route path="/account-users" element={
+        <ProtectedRoute allowedRoles={["organization", "admin"]}>
+          <AccountUserManagement />
+        </ProtectedRoute>
+      } />
+      <Route path="/orders" element={
+        <ProtectedRoute allowedRoles={["organization", "admin", "hod"]}>
+          <OrdersPage />
+        </ProtectedRoute>
+      } />
+      <Route path="/dispatch" element={
+        <ProtectedRoute allowedRoles={["organization", "admin", "account_user"]}>
+          <DispatchOrderPage />
         </ProtectedRoute>
       } />
 
