@@ -16,7 +16,8 @@ import {
   UserCircleGear,
   Target,
   Package,
-  CalendarCheck
+  CalendarCheck,
+  ChartLineUp
 } from '@phosphor-icons/react';
 import { useAuth } from '../../context/AuthContext';
 
@@ -40,6 +41,7 @@ const Sidebar = ({ isOpen, onClose, isCollapsed, setIsCollapsed }) => {
     // { to: '/territories', icon: MapPin, label: 'Territories', roles: ['organization', 'admin', 'hod'] },
     { to: '/reports', icon: ChartBar, label: 'Reports', roles: ['organization', 'admin', 'hod'] },
     { to: '/hod-reports', icon: Target, label: 'HOD Reports', roles: ['organization', 'admin'] },
+    { to: '/performance-dashboard', icon: ChartLineUp, label: 'Performance', roles: ['organization', 'admin', 'hod'] },
     { to: '/user-visit-summary', icon: ChartPieSlice, label: 'User Visit Summary', roles: ['organization', 'admin', 'hod'] },
     { to: '/settings', icon: Gear, label: 'Settings', roles: ['organization', 'admin', 'hod'] },
   ];

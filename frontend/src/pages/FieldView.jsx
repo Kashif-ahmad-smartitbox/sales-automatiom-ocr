@@ -36,7 +36,7 @@ import {
 import { useAuth } from "../context/AuthContext";
 import { toast } from "sonner";
 import OrderItemsView from "../components/OrderItemsView";
-import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
+import { MapContainer, TileLayer, Marker, Popup, Polyline } from "react-leaflet";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
 import SalesExecutiveLayout from "../components/layout/SalesExecutiveLayout";
@@ -87,6 +87,7 @@ const FieldView = () => {
   const [checkInDialogOpen, setCheckInDialogOpen] = useState(false);
   const [checkOutDialogOpen, setCheckOutDialogOpen] = useState(false);
   const [selectedDealer, setSelectedDealer] = useState(null);
+  const [directionDealer, setDirectionDealer] = useState(null);
   const [outcomeData, setOutcomeData] = useState({
     outcome: "",
     order_value: "",
@@ -935,16 +936,28 @@ const FieldView = () => {
                         </p>
                       </div>
                     </div>
-                    <span
-                      className={`inline-flex items-center gap-1 text-xs font-semibold px-2.5 py-1 rounded-full flex-shrink-0 ${
-                        dealer.distance <= 100
-                          ? "bg-emerald-100 text-emerald-700"
-                          : "bg-gray-100 text-gray-600"
-                      }`}
-                    >
-                      <NavigationArrow size={10} />
-                      {dealer.distance}m
-                    </span>
+                    <div className="flex items-center gap-2">
+                      <span
+                        className={`inline-flex items-center gap-1 text-xs font-semibold px-2.5 py-1 rounded-full flex-shrink-0 ${
+                          dealer.distance <= 100
+                            ? "bg-emerald-100 text-emerald-700"
+                            : "bg-gray-100 text-gray-600"
+                        }`}
+                      >
+                        <NavigationArrow size={10} />
+                        {dealer.distance}m
+                      </span>
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          setDirectionDealer(dealer);
+                        }}
+                        className="p-1.5 flex items-center justify-center bg-blue-50 hover:bg-blue-100 text-blue-600 rounded-lg transition-colors shadow-sm flex-shrink-0"
+                        title="Get Directions"
+                      >
+                       <NavigationArrow size={14} weight="bold" /> 
+                      </button>
+                    </div>
                   </div>
                 ))
               )}
@@ -1332,6 +1345,68 @@ const FieldView = () => {
               </button>
             </div>
           </div>
+        </DialogContent>
+      </Dialog>
+
+      {/* ═══════ Direction Dialog ═══════ */}
+      <Dialog open={!!directionDealer} onOpenChange={(open) => !open && setDirectionDealer(null)}>
+        <DialogContent className="max-w-[95vw] sm:max-w-2xl w-full p-4 md:p-6">
+          <DialogHeader>
+            <DialogTitle className="text-xl font-bold flex items-center gap-2">
+              <NavigationArrow size={24} className="text-blue-500" /> 
+              Directions to {directionDealer?.name}
+            </DialogTitle>
+          </DialogHeader>
+          {directionDealer && currentLocation ? (
+            <div className="space-y-4 shadow-sm">
+              <div className="h-[60vh] sm:h-[450px] w-full bg-gray-50 rounded-2xl overflow-hidden border border-gray-200">
+                <MapContainer
+                  bounds={[
+                    [currentLocation.lat, currentLocation.lng],
+                    [directionDealer.lat, directionDealer.lng],
+                  ]}
+                  style={{ height: "100%", width: "100%" }}
+                  scrollWheelZoom={true}
+                >
+                  <TileLayer
+                    attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+                    url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                  />
+                  <Marker position={[currentLocation.lat, currentLocation.lng]} icon={currentIcon}>
+                    <Popup>Your Location</Popup>
+                  </Marker>
+                  <Marker position={[directionDealer.lat, directionDealer.lng]} icon={dealerIcon}>
+                    <Popup>{directionDealer.name}</Popup>
+                  </Marker>
+                  <Polyline 
+                    positions={[
+                      [currentLocation.lat, currentLocation.lng],
+                      [directionDealer.lat, directionDealer.lng]
+                    ]}
+                    color="#3b82f6"
+                    weight={4}
+                    dashArray="5, 8"
+                  />
+                </MapContainer>
+              </div>
+              <div className="flex gap-3 pt-2">
+                 <button
+                   className="flex-1 bg-white border border-gray-200 text-gray-700 hover:bg-gray-50 py-3 rounded-xl font-bold text-sm transition-colors shadow-sm"
+                   onClick={() => setDirectionDealer(null)}
+                 >
+                   Close Map
+                 </button>
+                 <button
+                   className="flex-1 bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white py-3 rounded-xl font-bold text-sm transition-all shadow-md flex items-center justify-center gap-1.5"
+                   onClick={() => window.open(`https://www.google.com/maps/dir/?api=1&destination=${directionDealer.lat},${directionDealer.lng}`, '_blank')}
+                 >
+                   Open in Google Maps
+                 </button>
+              </div>
+            </div>
+          ) : (
+             <div className="py-10 text-center text-gray-400">Location not available</div>
+          )}
         </DialogContent>
       </Dialog>
     </SalesExecutiveLayout>

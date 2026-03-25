@@ -22,6 +22,7 @@ import PotentialDealers from "./pages/PotentialDealers";
 import AssignedPotentials from "./pages/AssignedPotentials";
 import FollowupDealers from "./pages/FollowupDealers";
 import ItemMaster from "./pages/ItemMaster";
+import PerformanceDashboard from "./pages/PerformanceDashboard";
 
 // Owner Pages
 import OwnerDashboard from "./pages/OwnerDashboard";
@@ -86,6 +87,11 @@ function AppRoutes() {
       <Route path="/dashboard" element={
         <ProtectedRoute allowedRoles={["organization", "admin", "hod"]}>
           <AdminDashboard />
+        </ProtectedRoute>
+      } />
+      <Route path="/performance-dashboard" element={
+        <ProtectedRoute allowedRoles={["organization", "admin", "hod"]}>
+          <PerformanceDashboard />
         </ProtectedRoute>
       } />
       <Route path="/dealers" element={

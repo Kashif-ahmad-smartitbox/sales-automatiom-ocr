@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
 import axios from "axios";
 import AdminLayout from "../components/layout/AdminLayout";
 import { Card, CardContent } from "../components/ui/card";
@@ -82,6 +82,61 @@ const DealerManagement = () => {
   const [loadingHistory, setLoadingHistory] = useState(false);
   const [orderDialogDealer, setOrderDialogDealer] = useState(null);
 
+  const [addressSuggestions, setAddressSuggestions] = useState([]);
+  const [isSearchingAddress, setIsSearchingAddress] = useState(false);
+  const addressTimeoutRef = useRef(null);
+
+  const handleAddressChange = (e) => {
+    const value = e.target.value;
+    setFormData((prev) => ({ ...prev, address: value }));
+
+    if (value.length < 4) {
+      setAddressSuggestions([]);
+      return;
+    }
+
+    if (addressTimeoutRef.current) clearTimeout(addressTimeoutRef.current);
+    
+    addressTimeoutRef.current = setTimeout(async () => {
+      setIsSearchingAddress(true);
+      try {
+        const res = await axios.get(`https://photon.komoot.io/api/?q=${encodeURIComponent(value + " India")}&limit=15`);
+        const formattedSuggestions = res.data.features
+          .filter(f => {
+            const cStr = f.properties.country?.toLowerCase();
+            const ccStr = f.properties.countrycode?.toLowerCase();
+            return cStr === "india" || ccStr === "in";
+          })
+          .slice(0, 8)
+          .map((f) => {
+            const p = f.properties;
+            const nameParts = [p.name, p.street, p.city, p.state, p.country].filter(Boolean);
+            const uniqueParts = [...new Set(nameParts)];
+            return {
+              display_name: uniqueParts.join(", "),
+              lat: f.geometry.coordinates[1],
+              lon: f.geometry.coordinates[0],
+            };
+        });
+        setAddressSuggestions(formattedSuggestions);
+      } catch (err) {
+        console.error("Address search failed:", err);
+      } finally {
+        setIsSearchingAddress(false);
+      }
+    }, 600);
+  };
+
+  const handleSelectAddress = (suggestion) => {
+    setFormData((prev) => ({
+      ...prev,
+      address: suggestion.display_name,
+      lat: suggestion.lat,
+      lng: suggestion.lon
+    }));
+    setAddressSuggestions([]);
+  };
+
   const fetchData = useCallback(async () => {
     try {
       const [dealersRes, territoriesRes] = await Promise.all([
@@ -152,6 +207,7 @@ const DealerManagement = () => {
     setDialogOpen(false);
     setEditingId(null);
     setFormData(emptyForm);
+    setAddressSuggestions([]);
   };
 
   const handleDelete = async (id) => {
@@ -359,16 +415,35 @@ const DealerManagement = () => {
                     </Select>
                   </div>
 
-                  <div className="sm:col-span-2 space-y-2">
+                  <div className="sm:col-span-2 space-y-2 relative">
                     <Label>Address *</Label>
-                    <Input
-                      value={formData.address}
-                      onChange={(e) =>
-                        setFormData({ ...formData, address: e.target.value })
-                      }
-                      required
-                      data-testid="dealer-address-input"
-                    />
+                    <div className="relative">
+                      <Input
+                        value={formData.address}
+                        onChange={handleAddressChange}
+                        required
+                        data-testid="dealer-address-input"
+                        placeholder="Start typing an address to search..."
+                      />
+                      {isSearchingAddress && (
+                        <div className="absolute right-3 top-2.5">
+                          <div className="w-4 h-4 border-2 border-primary-500 border-t-transparent rounded-full animate-spin"></div>
+                        </div>
+                      )}
+                    </div>
+                    {addressSuggestions.length > 0 && (
+                      <ul className="absolute z-50 w-full mt-1 bg-white border border-gray-200 rounded-lg shadow-lg max-h-60 overflow-y-auto top-[68px]">
+                        {addressSuggestions.map((sug, idx) => (
+                          <li 
+                            key={idx}
+                            className="px-3 py-2 text-xs text-gray-700 hover:bg-orange-50 cursor-pointer border-b border-gray-100 last:border-b-0"
+                            onClick={() => handleSelectAddress(sug)}
+                          >
+                            {sug.display_name}
+                          </li>
+                        ))}
+                      </ul>
+                    )}
                   </div>
 
                   <div className="space-y-2">
