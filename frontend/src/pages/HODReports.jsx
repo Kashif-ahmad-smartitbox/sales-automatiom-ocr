@@ -161,7 +161,7 @@ const HODReports = () => {
         <Card className="border-0 shadow-sm">
           <CardContent className="p-3">
             <h2 className="text-sm font-bold text-gray-900 mb-3">HOD Overview</h2>
-            <div className="overflow-auto rounded-lg border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 shadow-sm w-full max-h-[40rem]">
+            <div className="overflow-auto rounded-lg border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 shadow-sm w-full max-h-[30rem]">
               <Table className="table-auto border-collapse">
                 <TableHeader className="text-nowrap sticky top-0 text-xs z-10 bg-gray-200">
                   <TableHead className="p-2 text-gray-500 font-semibold border-r border-gray-200">HOD Name</TableHead>
@@ -214,7 +214,7 @@ const HODReports = () => {
                 <h2 className="text-sm font-bold text-green-900">Top Performers of the Day</h2>
               </div>
               
-              <div className="overflow-auto rounded-lg border border-green-200 bg-white shadow-sm w-full max-h-[40rem]">
+              <div className="overflow-auto rounded-lg border border-green-200 bg-white shadow-sm w-full max-h-[30rem]">
                 <Table className="table-auto border-collapse">
                   <TableHeader className="text-nowrap sticky top-0 text-xs z-10 bg-gray-200">
                     <TableHead className="p-2 text-gray-500 font-semibold border-r border-gray-200">HOD Name</TableHead>
@@ -259,21 +259,21 @@ const HODReports = () => {
           </Card>
 
           {/* Top Underperformers */}
-          <Card className="border-0 shadow-sm bg-gradient-to-br from-yellow-50 to-amber-50">
+          <Card className="rounded-xl border shadow-sm overflow-hidden bg-gradient-to-br from-yellow-50 to-amber-50">
             <CardContent className="p-3">
               <div className="flex items-center gap-2 mb-3">
                 <TrendDown size={20} className="text-amber-600" weight="fill" />
                 <h2 className="text-sm font-bold text-amber-900">Top Underperformers of the Day</h2>
               </div>
               
-              <div className="overflow-auto rounded-lg border border-amber-200 bg-white shadow-sm w-full max-h-[40rem]">
-                <Table className="table-auto border-collapse">
-                  <TableHeader className="text-nowrap sticky top-0 text-xs z-10 bg-gray-200">
-                    <TableHead className="p-2 text-gray-500 font-semibold border-r border-gray-200">HOD Name</TableHead>
-                    <TableHead className="p-2 text-gray-500 font-semibold border-r border-gray-200">Executive</TableHead>
-                    <TableHead className="p-2 text-gray-500 font-semibold border-r border-gray-200 text-center">Visit</TableHead>
-                    <TableHead className="p-2 text-gray-500 font-semibold border-r border-gray-200 text-right">Order Value</TableHead>
-                    <TableHead className="p-2 text-gray-500 font-semibold text-center">Type</TableHead>
+              <div className="overflow-auto bg-white shadow-sm w-full max-h-[30rem]">
+                <Table className="table-auto border-separate border-spacing-0">
+                  <TableHeader className="text-nowrap sticky top-0 text-xs z-10">
+                    <TableHead className="p-2 text-gray-500 font-semibold border-r border-b border-gray-200 bg-gray-200">HOD Name</TableHead>
+                    <TableHead className="p-2 text-gray-500 font-semibold border-r border-b border-gray-200 bg-gray-200">Executive</TableHead>
+                    <TableHead className="p-2 text-gray-500 font-semibold border-r border-b border-gray-200 text-center bg-gray-200">Visit</TableHead>
+                    <TableHead className="p-2 text-gray-500 font-semibold border-r border-b border-gray-200 text-right bg-gray-200">Order Value</TableHead>
+                    <TableHead className="p-2 text-gray-500 font-semibold text-center bg-gray-200 border-b border-gray-200">Type</TableHead>
                   </TableHeader>
                   <TableBody className="divide-y divide-amber-100">
                     {underperformers.length === 0 ? (
@@ -348,7 +348,7 @@ const HODReports = () => {
 
               {/* Modal Content */}
               <div className="flex-1 overflow-y-auto p-4">
-                <div className="overflow-auto rounded-lg border border-gray-200 bg-white shadow-sm w-full max-h-[40rem]">
+                <div className="overflow-auto rounded-lg border border-gray-200 bg-white shadow-sm w-full max-h-[30rem]">
                   <Table className="table-auto border-collapse">
                     <TableHeader className="text-nowrap sticky top-0 text-xs z-10 bg-gray-200">
                       <TableHead className="p-2 text-gray-500 font-semibold border-r border-gray-200">Executive Name</TableHead>

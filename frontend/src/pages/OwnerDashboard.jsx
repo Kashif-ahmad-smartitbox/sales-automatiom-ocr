@@ -382,16 +382,16 @@ const OwnerDashboard = () => {
             {recentActivity.length === 0 ? (
               <p className="text-xs text-gray-500 text-center py-6">No recent activity</p>
             ) : (
-              <div className="overflow-auto rounded-lg border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 shadow-sm w-full max-h-[40rem]">
-                <Table className="table-auto border-collapse">
-                  <TableHeader className="text-nowrap sticky top-0 text-xs z-10 bg-gray-200">
-                    <TableHead className="p-2 text-gray-500 font-semibold border-r border-gray-200 text-center w-8">#</TableHead>
-                    <TableHead className="p-2 text-gray-500 font-semibold border-r border-gray-200">Company</TableHead>
-                    <TableHead className="p-2 text-gray-500 font-semibold border-r border-gray-200">User</TableHead>
-                    <TableHead className="p-2 text-gray-500 font-semibold border-r border-gray-200">Dealer</TableHead>
-                    <TableHead className="p-2 text-gray-500 font-semibold border-r border-gray-200">Check-in</TableHead>
-                    <TableHead className="p-2 text-gray-500 font-semibold border-r border-gray-200 text-center">Outcome</TableHead>
-                    <TableHead className="p-2 text-gray-500 font-semibold text-right">Order Value</TableHead>
+              <div className="overflow-auto bg-white dark:bg-gray-900 shadow-sm w-full max-h-[30rem]">
+                <Table className="table-auto border-separate border-spacing-0">
+                  <TableHeader className="text-nowrap sticky top-0 text-xs z-10">
+                    <TableHead className="p-2 text-gray-500 font-semibold border-r border-b border-gray-200 text-center w-8 bg-gray-200">#</TableHead>
+                    <TableHead className="p-2 text-gray-500 font-semibold border-r border-b border-gray-200 bg-gray-200">Company</TableHead>
+                    <TableHead className="p-2 text-gray-500 font-semibold border-r border-b border-gray-200 bg-gray-200">User</TableHead>
+                    <TableHead className="p-2 text-gray-500 font-semibold border-r border-b border-gray-200 bg-gray-200">Dealer</TableHead>
+                    <TableHead className="p-2 text-gray-500 font-semibold border-r border-b border-gray-200 bg-gray-200">Check-in</TableHead>
+                    <TableHead className="p-2 text-gray-500 font-semibold border-r border-b border-gray-200 text-center bg-gray-200">Outcome</TableHead>
+                    <TableHead className="p-2 text-gray-500 font-semibold text-right bg-gray-200 border-b border-gray-200">Order Value</TableHead>
                   </TableHeader>
                   <TableBody className="divide-y divide-gray-100 dark:divide-gray-800">
                     {recentActivity.slice(0, 10).map((visit, idx) => {

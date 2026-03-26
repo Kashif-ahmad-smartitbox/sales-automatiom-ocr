@@ -118,9 +118,9 @@ const AccountUserManagement = () => {
 
         <div className="flex flex-wrap items-center justify-between gap-2">
           <div className="flex flex-wrap items-center gap-2">
-            <div className="flex items-center gap-2 bg-primary-50 border border-primary-100 rounded-md px-3 py-1.5">
-              <span className="text-[11px] font-medium text-primary-700">Total Users</span>
-              <span className="text-sm font-bold text-primary-800">{users.length}</span>
+            <div className="flex items-center gap-2 bg-primary-400 border border-primary-100 rounded-full px-3 py-1.5">
+              <span className="text-[11px] font-medium text-white">Total Users</span>
+              <span className="text-sm font-bold text-white">{users.length}</span>
             </div>
             {searchTerm && (
               <span className="text-xs text-gray-400 ml-1">&middot; "{searchTerm}"</span>
@@ -178,18 +178,18 @@ const AccountUserManagement = () => {
         ) : filteredUsers.length === 0 ? (
           <Card><CardContent className="text-center py-12 text-slate-500">No Account Users Found.</CardContent></Card>
         ) : (
-          <Card className="border-0 shadow-sm">
+          <Card className="rounded-xl border shadow-sm overflow-hidden">
             <CardContent className="p-0">
-              <div className="overflow-x-auto">
-                <table className="w-full border-collapse">
-                  <thead className="bg-gray-200">
+              <div className="overflow-auto max-h-[30rem]">
+                <table className="w-full border-separate border-spacing-0">
+                  <thead className="sticky top-0 z-10">
                     <tr className="border-y border-gray-200">
-                      <th className="text-left px-2 py-2 text-xs font-semibold text-gray-500 border-r border-gray-200 w-8">#</th>
-                      <th className="text-left px-2 py-2 text-xs font-semibold text-gray-500 border-r border-gray-200">Account User Name</th>
-                      <th className="text-left px-2 py-2 text-xs font-semibold text-gray-500 border-r border-gray-200">Employee Code</th>
-                      <th className="text-left px-2 py-2 text-xs font-semibold text-gray-500 border-r border-gray-200">Email</th>
-                      <th className="text-left px-2 py-2 text-xs font-semibold text-gray-500 border-r border-gray-200">Mobile</th>
-                      <th className="text-center px-2 py-2 text-xs font-semibold text-gray-500">Actions</th>
+                       <th className="text-left px-2 py-2 text-xs font-semibold text-gray-500 border-r border-b border-gray-200 w-8 bg-gray-200">#</th>
+                       <th className="text-left px-2 py-2 text-xs font-semibold text-gray-500 border-r border-b border-gray-200 bg-gray-200">Account User Name</th>
+                       <th className="text-left px-2 py-2 text-xs font-semibold text-gray-500 border-r border-b border-gray-200 bg-gray-200">Employee Code</th>
+                       <th className="text-left px-2 py-2 text-xs font-semibold text-gray-500 border-r border-b border-gray-200 bg-gray-200">Email</th>
+                       <th className="text-left px-2 py-2 text-xs font-semibold text-gray-500 border-r border-b border-gray-200 bg-gray-200">Mobile</th>
+                       <th className="text-center px-2 py-2 text-xs font-semibold text-gray-500 bg-gray-200 border-b border-gray-200">Actions</th>
                     </tr>
                   </thead>
                   <tbody>

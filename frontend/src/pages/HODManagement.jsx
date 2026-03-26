@@ -165,27 +165,27 @@ const HODManagement = () => {
         {/* Actions + Stats */}
         <div className="flex flex-wrap items-center justify-between gap-2">
           <div className="flex flex-wrap items-center gap-2">
-            <div className="flex items-center gap-2 bg-primary-50 border border-primary-100 rounded-md px-3 py-1.5">
-              <span className="text-[11px] font-medium text-primary-700">
+            <div className="flex items-center gap-2 bg-primary-400 border border-primary-100 px-3 py-1.5 rounded-full">
+              <span className="text-[11px] font-medium text-white">
                 Total HODs
               </span>
-              <span className="text-sm font-bold text-primary-800">
+              <span className="text-sm font-bold text-white">
                 {hods.length}
               </span>
             </div>
-            <div className="flex items-center gap-2 bg-emerald-50 border border-emerald-100 rounded-md px-3 py-1.5">
-              <span className="text-[11px] font-medium text-emerald-700">
+            <div className="flex items-center gap-2 bg-emerald-400 border border-emerald-100 px-3 py-1.5 rounded-full">
+              <span className="text-[11px] font-medium text-white">
                 Sales Executives
               </span>
-              <span className="text-sm font-bold text-emerald-800">
+              <span className="text-sm font-bold text-white">
                 {salesExecutives.length}
               </span>
             </div>
-            <div className="flex items-center gap-2 bg-amber-50 border border-amber-100 rounded-md px-3 py-1.5">
-              <span className="text-[11px] font-medium text-amber-700">
+            <div className="flex items-center gap-2 bg-amber-400 border border-amber-100 px-3 py-1.5 rounded-full">
+              <span className="text-[11px] font-medium text-white">
                 Assigned
               </span>
-              <span className="text-sm font-bold text-amber-800">
+              <span className="text-sm font-bold text-white">
                 {hods.reduce(
                   (sum, hod) =>
                     sum + (hod.assigned_sales_executive_ids?.length || 0),
@@ -362,36 +362,20 @@ const HODManagement = () => {
             </CardContent>
           </Card>
         ) : (
-          <Card className="border-0 shadow-sm">
+          <Card className="rounded-xl border shadow-sm overflow-hidden">
             <CardContent className="p-0">
-              <div className="overflow-x-auto">
-                <table className="w-full border-collapse">
-                  <thead className="bg-gray-200">
+              <div className="overflow-auto bg-white shadow-sm w-full max-h-[30rem]">
+                <table className="w-full border-separate border-spacing-0">
+                  <thead className="sticky top-0 z-10">
                     <tr className="border-y border-gray-200">
-                      <th className="text-left px-2 py-2 text-xs font-semibold text-gray-500 border-r border-gray-200 w-8">
-                        #
-                      </th>
-                      <th className="text-left px-2 py-2 text-xs font-semibold text-gray-500 border-r border-gray-200">
-                        HOD Name
-                      </th>
-                      <th className="text-left px-2 py-2 text-xs font-semibold text-gray-500 border-r border-gray-200">
-                        Employee Code
-                      </th>
-                      <th className="text-left px-2 py-2 text-xs font-semibold text-gray-500 border-r border-gray-200">
-                        Email
-                      </th>
-                      <th className="text-left px-2 py-2 text-xs font-semibold text-gray-500 border-r border-gray-200">
-                        Mobile
-                      </th>
-                      <th className="text-center px-2 py-2 text-xs font-semibold text-gray-500 border-r border-gray-200">
-                        Team Size
-                      </th>
-                      <th className="text-left px-2 py-2 text-xs font-semibold text-gray-500 border-r border-gray-200">
-                        Assigned Team
-                      </th>
-                      <th className="text-center px-2 py-2 text-xs font-semibold text-gray-500">
-                        Actions
-                      </th>
+                      <th className="text-left px-2 py-2 text-xs font-semibold text-gray-500 border-r border-b border-gray-200 w-8 bg-gray-200">#</th>
+                      <th className="text-left px-2 py-2 text-xs font-semibold text-gray-500 border-r border-b border-gray-200 bg-gray-200">HOD Name</th>
+                      <th className="text-left px-2 py-2 text-xs font-semibold text-gray-500 border-r border-b border-gray-200 bg-gray-200">Employee Code</th>
+                      <th className="text-left px-2 py-2 text-xs font-semibold text-gray-500 border-r border-b border-gray-200 bg-gray-200">Email</th>
+                      <th className="text-left px-2 py-2 text-xs font-semibold text-gray-500 border-r border-b border-gray-200 bg-gray-200">Mobile</th>
+                      <th className="text-center px-2 py-2 text-xs font-semibold text-gray-500 border-r border-b border-gray-200 bg-gray-200">Team Size</th>
+                      <th className="text-left px-2 py-2 text-xs font-semibold text-gray-500 border-r border-b border-gray-200 bg-gray-200">Assigned Team</th>
+                      <th className="text-center px-2 py-2 text-xs font-semibold text-gray-500 border-b border-gray-200 bg-gray-200">Actions</th>
                     </tr>
                   </thead>
                   <tbody>

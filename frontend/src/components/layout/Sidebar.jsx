@@ -35,11 +35,11 @@ const Sidebar = ({ isOpen, onClose, isCollapsed, setIsCollapsed }) => {
     { to: '/executives', icon: Users, label: 'Sales Team', roles: ['organization', 'admin', 'hod'] },
     { to: '/hod-management', icon: UserCircleGear, label: 'HOD Management', roles: ['organization', 'admin'] },
     { to: '/dealers', icon: Storefront, label: 'Dealers', roles: ['organization', 'admin', 'hod'] },
+    { to: '/orders', icon: Package, label: 'Booked Orders', roles: ['organization', 'admin', 'hod'] },
     { to: '/followup-dealers', icon: CalendarCheck, label: 'Follow-up Dealers', roles: ['organization', 'admin', 'hod'] },
     { to: '/potentials', icon: Buildings, label: 'Potential Dealers', roles: ['organization', 'admin', 'hod'] },
     { to: '/item-master', icon: Package, label: 'Item Master', roles: ['organization', 'admin', 'hod'] },
     { to: '/account-users', icon: UserCircleGear, label: 'Account Users', roles: ['organization', 'admin'] },
-    { to: '/orders', icon: Package, label: 'Booked Orders', roles: ['organization', 'admin', 'hod'] },
     { to: '/dispatch', icon: Package, label: 'Dispatch Orders', roles: ['organization', 'admin', 'account_user'] },
     // { to: '/territories', icon: MapPin, label: 'Territories', roles: ['organization', 'admin', 'hod'] },
     { to: '/reports', icon: ChartBar, label: 'Reports', roles: ['organization', 'admin', 'hod'] },
@@ -88,7 +88,7 @@ const Sidebar = ({ isOpen, onClose, isCollapsed, setIsCollapsed }) => {
 
 
 
-        <nav className={`flex-1 py-4 space-y-1 overflow-y-auto bg-white ${isCollapsed ? 'px-1' : 'px-3'}`}>
+        <nav className={`flex-1 py-2 space-y-1 overflow-y-auto bg-white ${isCollapsed ? 'px-1' : 'px-3'}`}>
           {navItems.map((item, index) => (
             <motion.div
               key={item.to}
@@ -99,7 +99,7 @@ const Sidebar = ({ isOpen, onClose, isCollapsed, setIsCollapsed }) => {
               <NavLink
                 to={item.to}
                 className={({ isActive }) => `
-                  relative group flex items-center ${isCollapsed ? 'justify-center px-0 py-2' : 'gap-3 px-4 py-2'} rounded-xl text-sm font-medium transition-all duration-300
+                  relative group flex items-center ${isCollapsed ? 'justify-center px-0 py-2' : 'gap-3 px-4 py-1'} rounded-xl text-sm font-medium transition-all duration-300
                   ${isActive 
                     ? 'bg-gradient-to-r from-gray-300 to-gray-400 text-gray-700 shadow-sm border border-gray-200/50' 
                     : 'text-gray-600 hover:text-primary-600 hover:bg-gradient-to-r hover:from-primary-50 hover:to-orange-50'

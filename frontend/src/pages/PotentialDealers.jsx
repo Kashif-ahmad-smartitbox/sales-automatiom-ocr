@@ -126,27 +126,27 @@ const PotentialDealers = () => {
         {/* Actions + Stats */}
         <div className="flex flex-wrap items-center justify-between gap-2">
           <div className="flex flex-wrap items-center gap-2">
-            <div className="flex items-center gap-2 bg-primary-50 border border-primary-100 rounded-md px-3 py-1.5">
-              <span className="text-[11px] font-medium text-primary-700">
+            <div className="flex items-center gap-2 bg-primary-400 border border-primary-100 rounded-full px-3 py-1.5">
+              <span className="text-[11px] font-medium text-white">
                 Total Potentials
               </span>
-              <span className="text-sm font-bold text-primary-800">
+              <span className="text-sm font-bold text-white">
                 {potentials.length}
               </span>
             </div>
-            <div className="flex items-center gap-2 bg-emerald-50 border border-emerald-100 rounded-md px-3 py-1.5">
-              <span className="text-[11px] font-medium text-emerald-700">
+            <div className="flex items-center gap-2 bg-emerald-500 border border-emerald-100 rounded-full px-3 py-1.5">
+              <span className="text-[11px] font-medium text-white">
                 Assigned
               </span>
-              <span className="text-sm font-bold text-emerald-800">
+              <span className="text-sm font-bold text-white">
                 {potentials.filter((p) => p.is_assigned).length}
               </span>
             </div>
-            <div className="flex items-center gap-2 bg-gray-50 border border-gray-200 rounded-md px-3 py-1.5">
-              <span className="text-[11px] font-medium text-gray-600">
+            <div className="flex items-center gap-2 bg-gray-500 border border-gray-200 rounded-full px-3 py-1.5">
+              <span className="text-[11px] font-medium text-white">
                 Unassigned
               </span>
-              <span className="text-sm font-bold text-gray-800">
+              <span className="text-sm font-bold text-white">
                 {potentials.filter((p) => !p.is_assigned).length}
               </span>
             </div>
@@ -160,17 +160,18 @@ const PotentialDealers = () => {
             variant="outline"
             size="sm"
             onClick={fetchData}
-            className="h-8 text-xs"
+            className="h-8 text-xs bg-gray-700 text-white rounded-full hover:bg-gray-800 hover:text-white"
           >
             Refresh
           </Button>
         </div>
 
         {/* Content */}
-        <Card className="border-0 shadow-sm overflow-hidden">
-          <div className="overflow-x-auto">
-            <table className="w-full border-collapse">
-              <thead className="bg-gray-200">
+        <Card className="rounded-xl border shadow-sm overflow-hidden">
+          <CardContent className="p-0">
+            <div className="overflow-auto max-h-[30rem]">
+              <table className="w-full border-separate border-spacing-0">
+                <thead className="sticky top-0 z-10">
                 <tr className="border-y border-gray-200">
                   <th className="px-2 py-1.5 text-left text-xs font-semibold text-gray-600 border-r border-gray-200 w-8">
                     #
@@ -331,7 +332,8 @@ const PotentialDealers = () => {
               </tbody>
             </table>
           </div>
-        </Card>
+        </CardContent>
+      </Card>
       </div>
 
       {/* Assign Dialog */}

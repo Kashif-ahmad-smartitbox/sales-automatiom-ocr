@@ -300,35 +300,35 @@ const DealerManagement = () => {
         {/* Actions + Stats */}
         <div className="flex flex-wrap items-center justify-between gap-2">
           <div className="flex flex-wrap items-center gap-2">
-            <div className="flex items-center gap-2 bg-primary-50 border border-primary-100 rounded-md px-3 py-1.5">
-              <span className="text-[11px] font-medium text-primary-700">
+            <div className="flex items-center gap-2 bg-primary-400 border border-primary-100 rounded-full px-3 py-1.5">
+              <span className="text-[11px] font-medium text-white">
                 Total Dealers
               </span>
-              <span className="text-sm font-bold text-primary-800">
+              <span className="text-sm font-bold text-white">
                 {dealers.length}
               </span>
             </div>
-            <div className="flex items-center gap-2 bg-emerald-50 border border-emerald-100 rounded-md px-3 py-1.5">
-              <span className="text-[11px] font-medium text-emerald-700">
+            <div className="flex items-center gap-2 bg-emerald-400 border border-emerald-100 rounded-full px-3 py-1.5">
+              <span className="text-[11px] font-medium text-white">
                 Retailers
               </span>
-              <span className="text-sm font-bold text-emerald-800">
+              <span className="text-sm font-bold text-white">
                 {dealers.filter((d) => d.dealer_type === "Retailer").length}
               </span>
             </div>
-            <div className="flex items-center gap-2 bg-amber-50 border border-amber-100 rounded-md px-3 py-1.5">
-              <span className="text-[11px] font-medium text-amber-700">
+            <div className="flex items-center gap-2 bg-amber-400 border border-amber-100 rounded-full px-3 py-1.5">
+              <span className="text-[11px] font-medium text-white">
                 Distributors
               </span>
-              <span className="text-sm font-bold text-amber-800">
+              <span className="text-sm font-bold text-white">
                 {dealers.filter((d) => d.dealer_type === "Distributor").length}
               </span>
             </div>
-            <div className="flex items-center gap-2 bg-red-50 border border-red-100 rounded-md px-3 py-1.5">
-              <span className="text-[11px] font-medium text-red-700">
+            <div className="flex items-center gap-2 bg-red-400 border border-red-100 rounded-full px-3 py-1.5">
+              <span className="text-[11px] font-medium text-white">
                 High Priority
               </span>
-              <span className="text-sm font-bold text-red-800">
+              <span className="text-sm font-bold text-white">
                 {dealers.filter((d) => d.priority_level === 1).length}
               </span>
             </div>
@@ -571,7 +571,7 @@ const DealerManagement = () => {
         </div>
 
         {/* Dealers Table */}
-        <Card className="border-0 shadow-sm" data-testid="dealers-table-card">
+        <Card className="rounded-xl border shadow-sm overflow-hidden" data-testid="dealers-table-card">
           <CardContent className="p-0">
             {loading ? (
               <div className="flex items-center justify-center py-12">
@@ -584,50 +584,50 @@ const DealerManagement = () => {
                   : 'No dealers added yet. Click "Add Dealer" to get started.'}
               </div>
             ) : (
-              <div className="overflow-auto rounded-lg border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 shadow-sm w-full max-h-[40rem]">
-                <Table className="table-auto border-collapse">
-                  <TableHeader className="sticky top-0 z-10 bg-gray-200">
+              <div className="overflow-auto w-full max-h-[30rem]">
+                <Table className="table-auto border-separate border-spacing-0">
+                  <TableHeader className="sticky top-0 z-10">
                     <TableRow className="border-y border-gray-200 bg-gray-200 hover:bg-gray-200">
-                      <TableHead className="px-2 py-2 text-xs font-semibold text-gray-500 border-r border-gray-200 w-8">
+                      <TableHead className="px-2 py-2 text-xs font-semibold text-gray-500 border-r border-b border-gray-200 w-8 bg-gray-200">
                         #
                       </TableHead>
-                      <TableHead className="px-3 py-2 text-xs font-semibold text-gray-500 border-r border-gray-200">
+                      <TableHead className="px-3 py-2 text-xs font-semibold text-gray-500 border-r border-b border-gray-200 bg-gray-200">
                         Dealer
                       </TableHead>
-                      <TableHead className="px-2 py-2 text-xs font-semibold text-gray-500 border-r border-gray-200 w-10 text-center">
+                      <TableHead className="px-2 py-2 text-xs font-semibold text-gray-500 border-r border-b border-gray-200 w-10 text-center bg-gray-200">
                         Addr
                       </TableHead>
-                      <TableHead className="px-3 py-2 text-xs font-semibold text-gray-500 border-r border-gray-200">
+                      <TableHead className="px-3 py-2 text-xs font-semibold text-gray-500 border-r border-b border-gray-200 bg-gray-200">
                         Type
                       </TableHead>
-                      <TableHead className="px-3 py-2 text-xs font-semibold text-gray-500 border-r border-gray-200">
+                      <TableHead className="px-3 py-2 text-xs font-semibold text-gray-500 border-r border-b border-gray-200 bg-gray-200">
                         Territory
                       </TableHead>
-                      <TableHead className="px-3 py-2 text-xs font-semibold text-gray-500 border-r border-gray-200">
+                      <TableHead className="px-3 py-2 text-xs font-semibold text-gray-500 border-r border-b border-gray-200 bg-gray-200">
                         Contact
                       </TableHead>
-                      <TableHead className="px-3 py-2 text-xs font-semibold text-gray-500 border-r border-gray-200">
+                      <TableHead className="px-3 py-2 text-xs font-semibold text-gray-500 border-r border-b border-gray-200 bg-gray-200">
                         Phone
                       </TableHead>
-                      <TableHead className="px-3 py-2 text-xs font-semibold text-gray-500 border-r border-gray-200">
+                      <TableHead className="px-3 py-2 text-xs font-semibold text-gray-500 border-r border-b border-gray-200 bg-gray-200">
                         Priority
                       </TableHead>
-                      <TableHead className="px-3 py-2 text-xs font-semibold text-gray-500 border-r border-gray-200">
+                      <TableHead className="px-3 py-2 text-xs font-semibold text-gray-500 border-r border-b border-gray-200 bg-gray-200">
                         Booked Amt
                       </TableHead>
-                      <TableHead className="px-3 py-2 text-xs font-semibold text-gray-500 border-r border-gray-200">
+                      <TableHead className="px-3 py-2 text-xs font-semibold text-gray-500 border-r border-b border-gray-200 bg-gray-200">
                         Last Visit
                       </TableHead>
-                      <TableHead className="px-3 py-2 text-xs font-semibold text-gray-500 border-r border-gray-200">
+                      <TableHead className="px-3 py-2 text-xs font-semibold text-gray-500 border-r border-b border-gray-200 bg-gray-200">
                         Visited By
                       </TableHead>
-                      <TableHead className="px-3 py-2 text-xs font-semibold text-gray-500 border-r border-gray-200">
+                      <TableHead className="px-3 py-2 text-xs font-semibold text-gray-500 border-r border-b border-gray-200 bg-gray-200">
                         Outcome
                       </TableHead>
-                      <TableHead className="px-3 py-2 text-xs font-semibold text-gray-500 border-r border-gray-200">
+                      <TableHead className="px-3 py-2 text-xs font-semibold text-gray-500 border-r border-b border-gray-200 bg-gray-200">
                         Next Visit
                       </TableHead>
-                      <TableHead className="px-2 py-2 text-xs font-semibold text-gray-500 text-center">
+                      <TableHead className="px-2 py-2 text-xs font-semibold text-gray-500 text-center bg-gray-200 border-b border-gray-200">
                         Actions
                       </TableHead>
                     </TableRow>

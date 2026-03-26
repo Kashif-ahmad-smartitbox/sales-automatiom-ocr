@@ -173,43 +173,45 @@ const OwnerVisits = () => {
             </CardContent>
           </Card>
         ) : (
-          <div className="overflow-auto rounded-lg border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 shadow-sm w-full max-h-[40rem]">
-            <Table className="table-auto border-collapse">
-              <TableHeader className="text-nowrap sticky top-0 text-xs z-10 bg-gray-200">
-                <TableHead className="p-2 text-gray-500 font-semibold border-r border-gray-200 text-center w-8">
-                  #
-                </TableHead>
-                <TableHead className="p-2 text-gray-500 font-semibold border-r border-gray-200">
-                  Company
-                </TableHead>
-                <TableHead className="p-2 text-gray-500 font-semibold border-r border-gray-200">
-                  User
-                </TableHead>
-                <TableHead className="p-2 text-gray-500 font-semibold border-r border-gray-200">
-                  Dealer
-                </TableHead>
-                <TableHead className="p-2 text-gray-500 font-semibold border-r border-gray-200">
-                  Contact
-                </TableHead>
-                <TableHead className="p-2 text-gray-500 font-semibold border-r border-gray-200">
-                  Phone
-                </TableHead>
-                <TableHead className="p-2 text-gray-500 font-semibold border-r border-gray-200">
-                  Check-in
-                </TableHead>
-                <TableHead className="p-2 text-gray-500 font-semibold border-r border-gray-200">
-                  Check-out
-                </TableHead>
-                <TableHead className="p-2 text-gray-500 font-semibold border-r border-gray-200">
-                  Duration
-                </TableHead>
-                <TableHead className="p-2 text-gray-500 font-semibold border-r border-gray-200">
-                  Outcome
-                </TableHead>
-                <TableHead className="p-2 text-gray-500 font-semibold">
-                  Order Value
-                </TableHead>
-              </TableHeader>
+        <Card className="rounded-xl border shadow-sm overflow-hidden">
+          <CardContent className="p-0">
+            <div className="overflow-auto bg-white dark:bg-gray-900 shadow-sm w-full max-h-[30rem]">
+              <Table className="table-auto border-separate border-spacing-0">
+                <TableHeader className="text-nowrap sticky top-0 text-xs z-10">
+                  <TableHead className="p-2 text-gray-500 font-semibold border-r border-b border-gray-200 text-center w-8 bg-gray-200">
+                    #
+                  </TableHead>
+                  <TableHead className="p-2 text-gray-500 font-semibold border-r border-b border-gray-200 bg-gray-200">
+                    Company
+                  </TableHead>
+                  <TableHead className="p-2 text-gray-500 font-semibold border-r border-b border-gray-200 bg-gray-200">
+                    User
+                  </TableHead>
+                  <TableHead className="p-2 text-gray-500 font-semibold border-r border-b border-gray-200 bg-gray-200">
+                    Dealer
+                  </TableHead>
+                  <TableHead className="p-2 text-gray-500 font-semibold border-r border-b border-gray-200 bg-gray-200">
+                    Contact
+                  </TableHead>
+                  <TableHead className="p-2 text-gray-500 font-semibold border-r border-b border-gray-200 bg-gray-200">
+                    Phone
+                  </TableHead>
+                  <TableHead className="p-2 text-gray-500 font-semibold border-r border-b border-gray-200 bg-gray-200">
+                    Check-in
+                  </TableHead>
+                  <TableHead className="p-2 text-gray-500 font-semibold border-r border-b border-gray-200 bg-gray-200">
+                    Check-out
+                  </TableHead>
+                  <TableHead className="p-2 text-gray-500 font-semibold border-r border-b border-gray-200 bg-gray-200">
+                    Duration
+                  </TableHead>
+                  <TableHead className="p-2 text-gray-500 font-semibold border-r border-b border-gray-200 bg-gray-200">
+                    Outcome
+                  </TableHead>
+                  <TableHead className="p-2 text-gray-500 font-semibold bg-gray-200 border-b border-gray-200">
+                    Order Value
+                  </TableHead>
+                </TableHeader>
               <TableBody className="divide-y divide-gray-100 dark:divide-gray-800">
                 {filteredVisits.map((visit, idx) => {
                   const companyName = getTruncatedText(visit.company_name, 18);
@@ -288,6 +290,8 @@ const OwnerVisits = () => {
               </TableBody>
             </Table>
           </div>
+        </CardContent>
+      </Card>
         )}
       </div>
     </OwnerLayout>

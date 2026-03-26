@@ -325,9 +325,9 @@ const OwnerOrganizations = () => {
                                 <Target className="w-4 h-4" /> Today's Visits (
                                 {orgDetails[org.id].today_visits.length})
                               </p>
-                              <div className="overflow-x-auto">
+                              <div className="overflow-auto max-h-[30rem]">
                                 <table className="w-full border-collapse">
-                                  <thead className="bg-gray-200">
+                                  <thead className="bg-gray-200 sticky top-0 z-10">
                                     <tr className="border-y border-gray-200">
                                       <th className="text-left px-2 py-2 text-xs font-semibold text-gray-600 border-r border-gray-200 w-8">
                                         #

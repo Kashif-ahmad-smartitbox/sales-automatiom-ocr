@@ -99,11 +99,12 @@ const DispatchOrderPage = () => {
           ) : orders.length === 0 ? (
              <Card><CardContent className="text-center py-12">No approved orders ready for dispatch.</CardContent></Card>
           ) : (
-             <Card className="border-0 shadow-sm">
+             <Card className="rounded-xl border shadow-sm overflow-hidden">
+
                <CardContent className="p-0">
-                 <div className="overflow-x-auto">
+                 <div className="overflow-auto max-h-[30rem]">
                    <table className="w-full text-left">
-                     <thead className="bg-gray-200">
+                     <thead className="bg-gray-200 sticky top-0 z-10">
                        <tr className="border-y border-gray-200">
                          <th className="px-3 py-2 text-xs font-semibold text-gray-500 border-r border-gray-200">Order Date</th>
                          <th className="px-3 py-2 text-xs font-semibold text-gray-500 border-r border-gray-200">Dealer</th>

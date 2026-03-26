@@ -180,8 +180,8 @@ const OwnerSessions = () => {
         </div>
 
         {/* Sessions Table */}
-        <Card className="border-0 shadow-sm">
-          <CardContent className="p-0">
+        <Card className="rounded-xl border shadow-sm overflow-hidden">
+          <CardContent className="p-0 text-slate-500">
             {filteredSessions.length === 0 ? (
               <div className="p-6 text-center">
                 <ClockCounterClockwise className="w-10 h-10 text-gray-400 mx-auto mb-2" />
@@ -189,7 +189,7 @@ const OwnerSessions = () => {
               </div>
             ) : (
               <div className="p-4">
-                <div className="overflow-auto rounded-lg border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 shadow-sm w-full max-h-[40rem]">
+                <div className="overflow-auto rounded-lg border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 shadow-sm w-full max-h-[30rem]">
                   <Table className="table-auto border-collapse">
                     <TableHeader className="text-nowrap sticky top-0 text-xs z-10 bg-gray-200">
                       <TableHead className="p-2 text-gray-500 font-semibold border-r border-gray-200 text-center w-8">#</TableHead>
