@@ -63,22 +63,20 @@ const LandingPage = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16">
             <div className="flex items-center gap-3 cursor-pointer">
-              <div className="bg-gradient-to-br from-primary-500 to-orange-500 w-9 h-9 rounded-xl flex items-center justify-center shadow-md">
-                <MapPin weight="fill" className="w-5 h-5 text-white" />
-              </div>
-              <div className="hidden sm:block">
-                <span className="font-bold text-lg bg-gradient-to-r from-primary-600 to-orange-600 bg-clip-text text-transparent">Smart ITBox</span>
-                <div className="text-[10px] text-gray-500 font-medium -mt-1 tracking-wide uppercase">Field Automation</div>
-              </div>
+              <img 
+                src="/logo.png" 
+                alt="SMART ITBox Logo" 
+                className="h-10 w-auto object-contain"
+              />
             </div>
             <div className="flex items-center gap-2 sm:gap-4">
               <Link to="/login">
-                <Button variant="ghost" className="text-gray-700 hover:text-primary-700 hover:bg-primary-50 rounded-xl text-sm px-4">
+                <Button variant="ghost" className="text-gray-600 hover:text-primary-700 hover:bg-primary-50 rounded-xl text-sm px-4">
                   Sign In
                 </Button>
               </Link>
               <Link to="/register">
-                <Button className="bg-gradient-to-r from-primary-500 to-orange-500 hover:from-primary-600 hover:to-orange-600 text-white shadow-md rounded-xl text-sm px-5" data-testid="get-started-btn">
+                <Button className="bg-gradient-to-r from-primary-400 to-orange-400 hover:from-primary-500 hover:to-orange-500 text-white shadow-md rounded-xl text-sm px-5" data-testid="get-started-btn">
                   Start Free Trial
                 </Button>
               </Link>
@@ -90,8 +88,8 @@ const LandingPage = () => {
       {/* Hero Section */}
       <section className="relative pt-28 sm:pt-36 pb-16 sm:pb-24 px-4 overflow-hidden">
         {/* Abstract Background Blobs */}
-        <div className="absolute top-20 left-10 w-72 h-72 bg-primary-300/30 rounded-full blur-3xl mix-blend-multiply filter animate-pulse duration-1000 hidden md:block"></div>
-        <div className="absolute top-40 right-20 w-80 h-80 bg-orange-300/20 rounded-full blur-3xl mix-blend-multiply filter block"></div>
+        <div className="absolute top-20 left-10 w-72 h-72 bg-primary-200/10 rounded-full blur-3xl mix-blend-multiply filter animate-pulse duration-1000 hidden md:block"></div>
+        <div className="absolute top-40 right-20 w-80 h-80 bg-orange-200/10 rounded-full blur-3xl mix-blend-multiply filter block"></div>
         
         <div className="max-w-7xl mx-auto relative z-10 grid lg:grid-cols-2 gap-12 items-center">
           <motion.div 
@@ -108,12 +106,12 @@ const LandingPage = () => {
               Smarter Field Sales<br />
               <span className="bg-gradient-to-r from-primary-500 to-orange-600 bg-clip-text text-transparent">Automation Platform</span>
             </h1>
-            <p className="text-lg sm:text-xl text-slate-600 max-w-2xl mx-auto lg:mx-0 mb-8 leading-relaxed">
+            <p className="text-lg sm:text-xl text-slate-600 max-w-2xl mx-auto lg:mx-0 mb-8 leading-relaxed font-medium">
               Track your field team in real-time, automate visit workflows, and boost sales productivity with intelligent route planning and geo-verified check-ins.
             </p>
             <div className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4">
               <Link to="/register">
-                <Button size="lg" className="w-full sm:w-auto bg-gradient-to-r from-primary-500 to-orange-500 hover:from-primary-600 hover:to-orange-600 text-white px-8 py-6 rounded-xl text-lg shadow-xl shadow-primary-500/20 transition-all font-bold">
+                <Button size="lg" className="w-full sm:w-auto bg-gradient-to-r from-primary-400 to-orange-400 hover:from-primary-500 hover:to-orange-500 text-white px-8 py-6 rounded-xl text-lg shadow-xl shadow-primary-500/20 transition-all font-bold border-0">
                   Start Free Trial
                   <ArrowRight className="ml-2 w-5 h-5" />
                 </Button>
@@ -170,7 +168,7 @@ const LandingPage = () => {
               </div>
               
               {/* Floating element */}
-              <div className="absolute -right-6 -bottom-6 bg-white p-4 rounded-2xl shadow-xl border border-gray-100 flex items-center gap-4 animate-bounce" style={{ animationDuration: '3s' }}>
+              <div className="absolute -right-3 -bottom-6 bg-white p-4 rounded-2xl shadow-xl border border-gray-100 flex items-center gap-4 animate-bounce" style={{ animationDuration: '3s' }}>
                 <div className="bg-orange-100 p-3 rounded-xl">
                   <Target weight="fill" className="text-orange-500 w-6 h-6" />
                 </div>
@@ -192,7 +190,7 @@ const LandingPage = () => {
         >
           {stats.map((stat, index) => (
             <div key={index} className="text-center p-4 sm:p-6 bg-white/60 backdrop-blur-md rounded-2xl border border-primary-100 shadow-sm hover:border-primary-300 hover:shadow-md transition-all">
-              <div className="text-2xl sm:text-4xl font-extrabold bg-gradient-to-r from-primary-600 to-orange-600 bg-clip-text text-transparent mb-1 font-mono">{stat.value}</div>
+              <div className="text-2xl sm:text-4xl font-extrabold bg-gradient-to-r from-primary-600 to-orange-600 bg-clip-text text-transparent mb-1">{stat.value}</div>
               <div className="text-xs sm:text-sm text-gray-600 font-medium">{stat.label}</div>
             </div>
           ))}
@@ -200,9 +198,9 @@ const LandingPage = () => {
       </section>
 
       {/* Marquee Section */}
-      <section className="py-8 bg-white border-y border-gray-100 overflow-hidden relative">
+      <section className="py-8 bg-white border-y border-gray-50 overflow-hidden relative">
         <div className="max-w-7xl mx-auto px-4 text-center mb-6">
-          <p className="text-sm font-semibold text-black uppercase tracking-widest">Powering field forces across industries</p>
+          <p className="text-sm font-semibold text-gray-400 uppercase tracking-widest">Powering field forces across industries</p>
         </div>
         <div className="flex whitespace-nowrap overflow-hidden w-full relative">
            {/* Fade gradients on edges */}
@@ -241,8 +239,8 @@ const LandingPage = () => {
                 viewport={{ once: true }}
                 className="relative z-10 flex flex-col items-center text-center group"
               >
-                <div className="w-24 h-24 rounded-full bg-white border-4 border-gray-50 shadow-xl flex items-center justify-center mb-6 group-hover:scale-110 group-hover:border-primary-100 transition-all duration-300">
-                  <span className="text-3xl font-black bg-gradient-to-r from-primary-500 to-orange-600 bg-clip-text text-transparent">{step.number}</span>
+                <div className="w-24 h-24 rounded-full bg-white border-4 border-slate-50 shadow-xl shadow-slate-200/50 flex items-center justify-center mb-6 group-hover:scale-110 group-hover:border-primary-100 transition-all duration-300">
+                  <span className="text-3xl font-black bg-gradient-to-r from-primary-400 to-orange-400 bg-clip-text text-transparent">{step.number}</span>
                 </div>
                 <h3 className="text-xl font-bold text-gray-900 mb-3">{step.title}</h3>
                 <p className="text-gray-500 text-sm leading-relaxed max-w-xs">{step.desc}</p>
@@ -286,18 +284,18 @@ const LandingPage = () => {
       </section>
 
       {/* Testimonials Section */}
-      <section className="py-20 bg-gray-900 text-white relative overflow-hidden">
-        {/* Background Gradients */}
-        <div className="absolute top-0 right-0 w-96 h-96 bg-primary-500/10 rounded-full blur-3xl"></div>
-        <div className="absolute bottom-0 left-0 w-96 h-96 bg-orange-500/10 rounded-full blur-3xl"></div>
+      <section className="py-24 bg-white text-slate-900 relative overflow-hidden border-t border-gray-100">
+        {/* Soft Background Accents */}
+        <div className="absolute top-0 right-0 w-96 h-96 bg-primary-100/20 rounded-full blur-3xl"></div>
+        <div className="absolute bottom-0 left-0 w-96 h-96 bg-orange-100/20 rounded-full blur-3xl"></div>
         
         <div className="max-w-7xl mx-auto px-4 relative z-10">
           <div className="text-center mb-16">
-            <h2 className="text-3xl sm:text-4xl font-extrabold text-white mb-4">Loved by Sales Leaders</h2>
-            <p className="text-gray-400 max-w-2xl mx-auto text-lg">Don't just take our word for it.</p>
+            <h2 className="text-3xl sm:text-4xl font-extrabold text-slate-900 mb-4 tracking-tight">Loved by Sales Leaders</h2>
+            <p className="text-slate-500 max-w-2xl mx-auto text-lg font-medium">Don't just take our word for it.</p>
           </div>
 
-          <div className="grid md:grid-cols-3 gap-6">
+          <div className="grid md:grid-cols-3 gap-8">
             {testimonials.map((test, index) => (
               <motion.div 
                 key={index}
@@ -305,19 +303,19 @@ const LandingPage = () => {
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5, delay: index * 0.2 }}
                 viewport={{ once: true }}
-                className="bg-gray-800/50 backdrop-blur-sm p-8 rounded-3xl border border-gray-700 hover:border-primary-500/50 transition-colors"
+                className="bg-white p-8 rounded-[2rem] border border-gray-100 shadow-xl shadow-slate-200/50 hover:border-primary-200 hover:shadow-primary-100/50 transition-all duration-300 group"
               >
-                <div className="flex text-orange-400 mb-6">
+                <div className="flex text-amber-400 mb-6">
                   {[...Array(5)].map((_, i) => <Star key={i} weight="fill" size={18} />)}
                 </div>
-                <p className="text-gray-300 text-base leading-relaxed mb-8">"{test.text}"</p>
-                <div className="flex items-center gap-4 border-t border-gray-700 pt-6">
-                  <div className="w-12 h-12 rounded-full bg-gradient-to-r from-primary-500 to-orange-600 flex items-center justify-center font-bold text-white shadow-inner">
+                <p className="text-slate-600 text-base leading-relaxed mb-8 italic">"{test.text}"</p>
+                <div className="flex items-center gap-4 border-t border-slate-50 pt-6">
+                  <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-primary-400 to-orange-400 flex items-center justify-center font-bold text-white shadow-md transform group-hover:rotate-6 transition-transform">
                     {test.name.charAt(0)}
                   </div>
                   <div>
-                    <h4 className="font-bold text-white">{test.name}</h4>
-                    <p className="text-xs text-gray-400">{test.role}</p>
+                    <h4 className="font-bold text-slate-900">{test.name}</h4>
+                    <p className="text-xs text-slate-500 font-semibold">{test.role}</p>
                   </div>
                 </div>
               </motion.div>
@@ -327,32 +325,32 @@ const LandingPage = () => {
       </section>
 
       {/* CTA Section */}
-      <section className="py-24 px-4 bg-gradient-to-br from-primary-500 via-orange-500 to-orange-600 relative overflow-hidden">
+      <section className="py-24 px-4 bg-gradient-to-br from-yellow-50 via-orange-50 to-amber-50 relative overflow-hidden">
          {/* Background pattern */}
-         <div className="absolute inset-0 opacity-10" style={{ backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='1'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")` }}></div>
+         <div className="absolute inset-0 opacity-10" style={{ backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23fed50a' fill-opacity='0.4'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")` }}></div>
 
         <div className="max-w-4xl mx-auto text-center relative z-10">
-          <h2 className="text-4xl sm:text-5xl font-extrabold text-white mb-6">
+          <h2 className="text-4xl sm:text-5xl font-extrabold text-slate-900 mb-6 tracking-tight">
             Ready to Transform Your Field Operations?
           </h2>
-          <p className="text-primary-50 mb-10 text-lg sm:text-xl max-w-2xl mx-auto">
+          <p className="text-slate-600 mb-10 text-lg sm:text-xl max-w-2xl mx-auto font-medium">
             Join thousands of field forces maximizing their sales productivity with Smart ITBox.
           </p>
           <Link to="/register">
-            <Button size="lg" className="bg-white text-primary-700 rounded-xl hover:bg-gray-50 px-10 py-7 text-xl font-bold shadow-2xl hover:scale-105 transition-all">
+            <Button size="lg" className="bg-gradient-to-r from-primary-400 to-orange-400 hover:from-primary-500 hover:to-orange-500 text-white rounded-xl px-10 py-7 text-xl font-bold shadow-2xl hover:scale-105 transition-all border-0">
               Start Your Free Trial
               <ArrowRight className="ml-3 w-6 h-6" />
             </Button>
           </Link>
-          <p className="text-primary-100 text-sm mt-6">No credit card required • Setup in 5 minutes</p>
+          <p className="text-slate-600 text-sm mt-6 font-medium">No credit card required • Setup in 5 minutes</p>
         </div>
       </section>
 
       {/* Footer */}
-      <footer className="py-6 px-4 bg-gray-50 border-t border-gray-200">
-        <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
+      <footer className="py-6 px-4 bg-white border-t border-slate-50">
+        <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-6">
           <div className="flex items-center gap-2">
-            <div className="bg-gradient-to-br from-primary-500 to-orange-500 w-8 h-8 rounded-lg flex items-center justify-center">
+            <div className="bg-gradient-to-br from-primary-400 to-orange-400 w-8 h-8 rounded-lg flex items-center justify-center shadow-sm">
               <MapPin weight="fill" className="w-5 h-5 text-white" />
             </div>
             <span className="font-extrabold text-lg text-slate-800 tracking-tight">Smart ITBox</span>

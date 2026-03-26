@@ -228,30 +228,30 @@ const OwnerUsers = () => {
             <CardContent className="p-0">
               <div className="overflow-x-auto">
                 <table className="w-full border-collapse">
-                  <thead>
+                  <thead className="bg-gray-200">
                     <tr className="border-y border-gray-200">
-                      <th className="text-left px-2 py-1.5 text-[10px] font-semibold text-gray-600 border-r border-gray-200 w-8">
+                      <th className="text-left px-2 py-2 text-xs font-semibold text-gray-600 border-r border-gray-200 w-8">
                         #
                       </th>
-                      <th className="text-left px-2 py-1.5 text-[10px] font-semibold text-gray-600 border-r border-gray-200">
+                      <th className="text-left px-3 py-2 text-xs font-semibold text-gray-600 border-r border-gray-200">
                         Name
                       </th>
-                      <th className="text-left px-2 py-1.5 text-[10px] font-semibold text-gray-600 border-r border-gray-200">
+                      <th className="text-left px-3 py-2 text-xs font-semibold text-gray-600 border-r border-gray-200">
                         Role
                       </th>
-                      <th className="text-left px-2 py-1.5 text-[10px] font-semibold text-gray-600 border-r border-gray-200">
+                      <th className="text-left px-3 py-2 text-xs font-semibold text-gray-600 border-r border-gray-200">
                         Email
                       </th>
-                      <th className="text-left px-2 py-1.5 text-[10px] font-semibold text-gray-600 border-r border-gray-200">
+                      <th className="text-left px-3 py-2 text-xs font-semibold text-gray-600 border-r border-gray-200">
                         Mobile
                       </th>
-                      <th className="text-left px-2 py-1.5 text-[10px] font-semibold text-gray-600 border-r border-gray-200">
+                      <th className="text-left px-3 py-2 text-xs font-semibold text-gray-600 border-r border-gray-200">
                         Company
                       </th>
-                      <th className="text-left px-2 py-1.5 text-[10px] font-semibold text-gray-600 border-r border-gray-200">
+                      <th className="text-left px-3 py-2 text-xs font-semibold text-gray-600 border-r border-gray-200">
                         Location / Code
                       </th>
-                      <th className="text-center px-2 py-1.5 text-[10px] font-semibold text-gray-600">
+                      <th className="text-center px-2 py-2 text-xs font-semibold text-gray-600">
                         Active
                       </th>
                     </tr>
@@ -290,7 +290,7 @@ const OwnerUsers = () => {
                         <td className="px-2 py-1.5 text-[11px] text-gray-600 border-r border-gray-100 max-w-[160px] truncate">
                           {user.email}
                         </td>
-                        <td className="px-2 py-1.5 text-[11px] text-gray-600 font-mono border-r border-gray-100 whitespace-nowrap">
+                        <td className="px-2 py-1.5 text-[11px] text-gray-600 border-r border-gray-100 whitespace-nowrap">
                           {user.mobile}
                         </td>
                         <td className="px-2 py-1.5 text-[11px] text-purple-600 font-medium border-r border-gray-100 truncate">
@@ -310,7 +310,7 @@ const OwnerUsers = () => {
                               </span>
                             )
                           ) : user.employee_code ? (
-                            <span className="font-mono text-gray-400">
+                            <span className="text-gray-400">
                               {user.employee_code}
                             </span>
                           ) : (

@@ -254,7 +254,7 @@ const SalesExecutiveManagement = () => {
 
   return (
     <AdminLayout title="Sales Team">
-      <div className="space-y-4" data-testid="sales-executive-management">
+      <div className="space-y-2" data-testid="sales-executive-management">
         {/* Header */}
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
           <div>
@@ -275,7 +275,7 @@ const SalesExecutiveManagement = () => {
               <span className="text-[11px] font-medium text-primary-700">
                 Total Team
               </span>
-              <span className="text-sm font-bold font-mono text-primary-800">
+              <span className="text-sm font-bold text-primary-800">
                 {executives.length}
               </span>
             </div>
@@ -283,7 +283,7 @@ const SalesExecutiveManagement = () => {
               <span className="text-[11px] font-medium text-emerald-700">
                 Active Now
               </span>
-              <span className="text-sm font-bold font-mono text-emerald-800">
+              <span className="text-sm font-bold text-emerald-800">
                 {executives.filter((e) => e.is_in_market).length}
               </span>
             </div>
@@ -291,7 +291,7 @@ const SalesExecutiveManagement = () => {
               <span className="text-[11px] font-medium text-amber-700">
                 Idle
               </span>
-              <span className="text-sm font-bold font-mono text-amber-800">
+              <span className="text-sm font-bold text-amber-800">
                 {executives.filter((e) => getStatus(e) === "idle").length}
               </span>
             </div>
@@ -299,7 +299,7 @@ const SalesExecutiveManagement = () => {
               <span className="text-[11px] font-medium text-gray-600">
                 Offline
               </span>
-              <span className="text-sm font-bold font-mono text-gray-700">
+              <span className="text-sm font-bold text-gray-700">
                 {executives.filter((e) => getStatus(e) === "offline").length}
               </span>
             </div>
@@ -573,7 +573,7 @@ const SalesExecutiveManagement = () => {
             <CardContent className="p-0">
               <div className="overflow-x-auto">
                 <table className="w-full border-collapse">
-                  <thead>
+                  <thead className="bg-gray-200">
                     <tr className="border-y border-gray-200">
                       <th className="text-left px-2 py-2 text-xs font-semibold text-gray-500 border-r border-gray-200 w-8">
                         #
@@ -618,7 +618,7 @@ const SalesExecutiveManagement = () => {
                           <td className="px-3 py-2 border-r border-gray-100">
                             <div className="flex items-center gap-2">
                               <div
-                                className={`w-7 h-7 rounded-full flex items-center justify-center text-white text-xs font-bold flex-shrink-0 ${
+                                className={`w-6 h-6 rounded-full flex items-center justify-center text-white text-xs font-bold flex-shrink-0 ${
                                   status === "active"
                                     ? "bg-emerald-500"
                                     : status === "idle"
@@ -636,7 +636,7 @@ const SalesExecutiveManagement = () => {
                               </span>
                             </div>
                           </td>
-                          <td className="px-3 py-2 text-xs font-semibold text-gray-900 font-mono border-r border-gray-100">
+                          <td className="px-3 py-2 text-xs font-semibold text-gray-900 border-r border-gray-100">
                             {exec.employee_code}
                           </td>
                           <td
@@ -780,7 +780,7 @@ const SalesExecutiveManagement = () => {
                     <p className="text-[10px] text-gray-500 mb-1">
                       Total Visits
                     </p>
-                    <p className="text-lg font-bold font-mono text-gray-700">
+                    <p className="text-lg font-bold text-gray-700">
                       {execReport.total_visits}
                     </p>
                   </div>
@@ -788,19 +788,19 @@ const SalesExecutiveManagement = () => {
                     <p className="text-[10px] text-emerald-600 mb-1">
                       Completed
                     </p>
-                    <p className="text-lg font-bold font-mono text-emerald-700">
+                    <p className="text-lg font-bold text-emerald-700">
                       {execReport.completed_visits}
                     </p>
                   </div>
                   <div className="bg-primary-50 p-3 rounded-lg border border-primary-100">
                     <p className="text-[10px] text-primary-600 mb-1">Orders</p>
-                    <p className="text-lg font-bold font-mono text-primary-700">
+                    <p className="text-lg font-bold text-primary-700">
                       ₹{execReport.total_orders.toLocaleString()}
                     </p>
                   </div>
                   <div className="bg-purple-50 p-3 rounded-lg border border-purple-100">
                     <p className="text-[10px] text-purple-600 mb-1">Avg Time</p>
-                    <p className="text-lg font-bold font-mono text-purple-700">
+                    <p className="text-lg font-bold text-purple-700">
                       {execReport.avg_time_per_visit}m
                     </p>
                   </div>
@@ -912,7 +912,7 @@ const SalesExecutiveManagement = () => {
                                     {visit.outcome || "Pending"}
                                   </span>
                                 </td>
-                                <td className="px-2 py-2 text-right font-mono text-xs font-medium text-primary-600 border-r border-gray-100">
+                                <td className="px-2 py-2 text-right text-xs font-medium text-primary-600 border-r border-gray-100">
                                   {visit.order_value > 0
                                     ? `₹${visit.order_value.toLocaleString()}`
                                     : "-"}

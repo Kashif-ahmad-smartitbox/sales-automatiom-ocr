@@ -274,7 +274,7 @@ const AssignedPotentials = () => {
                             <Buildings size={14} weight="fill" />
                         </div>
                     </div>
-                    <div className="text-lg font-bold font-mono">{potentials.length}</div>
+                    <div className="text-lg font-bold">{potentials.length}</div>
                     <p className="text-[10px] text-white/80 mt-0.5">Ready for follow-up</p>
                 </CardContent>
             </Card>
@@ -284,14 +284,16 @@ const AssignedPotentials = () => {
         <Card className="border-0 shadow-sm overflow-hidden">
             <div className="overflow-auto rounded-lg border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 shadow-sm w-full max-h-[40rem]">
                 <Table className="table-auto border-collapse">
-                    <TableHeader className="text-nowrap sticky top-0 text-xs z-10">
-                      <TableHead className="p-2 text-gray-700 dark:text-gray-300 font-medium w-8">#</TableHead>
-                      <TableHead className="p-2 text-gray-700 dark:text-gray-300 font-medium">Dealer Name</TableHead>
-                      <TableHead className="p-2 text-gray-700 dark:text-gray-300 font-medium">Location / Address</TableHead>
-                      <TableHead className="p-2 text-gray-700 dark:text-gray-300 font-medium">Originally Found By</TableHead>
-                      <TableHead className="p-2 text-gray-700 dark:text-gray-300 font-medium">Assigned Date</TableHead>
-                      <TableHead className="p-2 text-gray-700 dark:text-gray-300 font-medium text-center">Status</TableHead>
-                      <TableHead className="p-2 text-gray-700 dark:text-gray-300 font-medium text-center">Action</TableHead>
+                    <TableHeader className="bg-gray-200">
+                      <TableRow className="border-y border-gray-200 bg-gray-200 hover:bg-gray-200">
+                        <TableHead className="px-2 py-2 text-xs font-semibold text-gray-500 border-r border-gray-200 w-8">#</TableHead>
+                        <TableHead className="px-2 py-2 text-xs font-semibold text-gray-500 border-r border-gray-200">Dealer Name</TableHead>
+                        <TableHead className="px-2 py-2 text-xs font-semibold text-gray-500 border-r border-gray-200">Location / Address</TableHead>
+                        <TableHead className="px-2 py-2 text-xs font-semibold text-gray-500 border-r border-gray-200">Originally Found By</TableHead>
+                        <TableHead className="px-2 py-2 text-xs font-semibold text-gray-500 border-r border-gray-200">Assigned Date</TableHead>
+                        <TableHead className="px-2 py-2 text-xs font-semibold text-gray-500 border-r border-gray-200 text-center">Status</TableHead>
+                        <TableHead className="px-2 py-2 text-xs font-semibold text-gray-500 text-center">Action</TableHead>
+                      </TableRow>
                     </TableHeader>
                     <TableBody className="divide-y divide-gray-100 dark:divide-gray-800">
                         {loading ? (
@@ -318,7 +320,7 @@ const AssignedPotentials = () => {
                               <TableCell className="px-2 py-1.5 text-xs font-medium text-gray-600 dark:text-gray-400 w-8">{idx + 1}</TableCell>
                               <TableCell className="px-2 py-1.5">
                                 <div className="font-medium text-xs text-gray-800 dark:text-gray-200" title={placeName.full}>{placeName.display}</div>
-                                        <div className="text-[10px] text-gray-400 dark:text-gray-500 mt-0.5 font-mono">ID: {item.place_id.substring(0, 10)}...</div>
+                                        <div className="text-[10px] text-gray-400 dark:text-gray-500 mt-0.5">ID: {item.place_id.substring(0, 10)}...</div>
                                     </TableCell>
                                     <TableCell className="px-2 py-1.5 max-w-xs">
                                         <div className="flex items-start gap-1.5 text-[11px] text-gray-600 dark:text-gray-400">

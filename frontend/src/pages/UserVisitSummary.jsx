@@ -139,7 +139,7 @@ const UserVisitSummary = () => {
 
   return (
     <AdminLayout title="User Visit Summary">
-      <div className="space-y-4" data-testid="user-visit-summary">
+      <div className="space-y-2" data-testid="user-visit-summary">
         <div>
           <h1 className="text-lg font-bold bg-gradient-to-r from-primary-600 to-orange-600 bg-clip-text text-transparent">
             User Visit Summary
@@ -234,7 +234,7 @@ const UserVisitSummary = () => {
                       </div>
                       <div>
                         <p className="font-semibold text-gray-800">{user.user_name}</p>
-                        <p className="text-[10px] text-gray-500 font-mono">{user.employee_code || user.user_id}</p>
+                        <p className="text-[10px] text-gray-500">{user.employee_code || user.user_id}</p>
                       </div>
                     </div>
                     <div className="flex items-center gap-4">
@@ -283,7 +283,7 @@ const UserVisitSummary = () => {
                                     : 'bg-white border-gray-200 hover:bg-gray-50'
                                 }`}
                               >
-                                <span className="font-mono">
+                                <span>
                                   {new Date(s.start_time).toLocaleDateString()} {new Date(s.start_time).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                                 </span>
                                 <span className="text-gray-400 mx-2">•</span>
@@ -322,50 +322,50 @@ const UserVisitSummary = () => {
                         return (
                           <div className="overflow-auto rounded-lg border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 shadow-sm w-full max-h-[40rem]">
                             <Table className="table-auto border-collapse">
-                              <TableHeader className="text-nowrap sticky top-0 text-xs z-10">
-                                <TableHead className="p-2 text-gray-700 dark:text-gray-300 font-medium text-center w-8">
+                              <TableHeader className="text-nowrap sticky top-0 text-xs z-10 bg-gray-200">
+                                <TableHead className="p-2 text-gray-500 font-semibold border-r border-gray-200 text-center w-8">
                                   #
                                 </TableHead>
-                                <TableHead className="p-2 text-gray-700 dark:text-gray-300 font-medium">
+                                <TableHead className="p-2 text-gray-500 font-semibold border-r border-gray-200">
                                   Dealer
                                 </TableHead>
-                                <TableHead className="p-2 text-gray-700 dark:text-gray-300 font-medium">
+                                <TableHead className="p-2 text-gray-500 font-semibold border-r border-gray-200">
                                   Address
                                 </TableHead>
-                                <TableHead className="p-2 text-gray-700 dark:text-gray-300 font-medium">
+                                <TableHead className="p-2 text-gray-500 font-semibold border-r border-gray-200">
                                   Type
                                 </TableHead>
-                                <TableHead className="p-2 text-gray-700 dark:text-gray-300 font-medium">
+                                <TableHead className="p-2 text-gray-500 font-semibold border-r border-gray-200">
                                   Territory
                                 </TableHead>
-                                <TableHead className="p-2 text-gray-700 dark:text-gray-300 font-medium">
+                                <TableHead className="p-2 text-gray-500 font-semibold border-r border-gray-200">
                                   Contact
                                 </TableHead>
-                                <TableHead className="p-2 text-gray-700 dark:text-gray-300 font-medium">
+                                <TableHead className="p-2 text-gray-500 font-semibold border-r border-gray-200">
                                   Phone
                                 </TableHead>
-                                <TableHead className="p-2 text-gray-700 dark:text-gray-300 font-medium">
+                                <TableHead className="p-2 text-gray-500 font-semibold border-r border-gray-200">
                                   Found By
                                 </TableHead>
-                                <TableHead className="p-2 text-gray-700 dark:text-gray-300 font-medium">
+                                <TableHead className="p-2 text-gray-500 font-semibold border-r border-gray-200">
                                   Priority
                                 </TableHead>
-                                <TableHead className="p-2 text-gray-700 dark:text-gray-300 font-medium">
+                                <TableHead className="p-2 text-gray-500 font-semibold border-r border-gray-200">
                                   Status
                                 </TableHead>
-                                <TableHead className="p-2 text-gray-700 dark:text-gray-300 font-medium">
+                                <TableHead className="p-2 text-gray-500 font-semibold border-r border-gray-200">
                                   Last Visit
                                 </TableHead>
-                                <TableHead className="p-2 text-gray-700 dark:text-gray-300 font-medium">
+                                <TableHead className="p-2 text-gray-500 font-semibold border-r border-gray-200">
                                   Visited By
                                 </TableHead>
-                                <TableHead className="p-2 text-gray-700 dark:text-gray-300 font-medium">
+                                <TableHead className="p-2 text-gray-500 font-semibold border-r border-gray-200">
                                   Outcome
                                 </TableHead>
-                                <TableHead className="p-2 text-gray-700 dark:text-gray-300 font-medium">
+                                <TableHead className="p-2 text-gray-500 font-semibold border-r border-gray-200">
                                   Next Visit
                                 </TableHead>
-                                <TableHead className="p-2 text-gray-700 dark:text-gray-300 font-medium text-center">
+                                <TableHead className="p-2 text-gray-500 font-semibold text-center">
                                   Items
                                 </TableHead>
                               </TableHeader>
@@ -416,7 +416,7 @@ const UserVisitSummary = () => {
                                         <TableCell className="px-2 py-2 text-xs text-gray-700 dark:text-gray-400" title={contactPerson.full}>
                                           <span>{contactPerson.display}</span>
                                         </TableCell>
-                                        <TableCell className="px-2 py-2 font-mono text-xs text-gray-700 dark:text-gray-400 whitespace-nowrap">
+                                        <TableCell className="px-2 py-2 text-xs text-gray-700 dark:text-gray-400 whitespace-nowrap">
                                           {dealer.phone || '–'}
                                         </TableCell>
                                         <TableCell className="px-2 py-2 text-xs text-gray-700 dark:text-gray-400" title={foundBy.full}>
@@ -435,7 +435,7 @@ const UserVisitSummary = () => {
                                             {dealer.is_visited ? 'Visited' : 'Not Visited'}
                                           </span>
                                         </TableCell>
-                                        <TableCell className="px-2 py-2 font-mono text-xs text-gray-700 dark:text-gray-400 whitespace-nowrap">
+                                        <TableCell className="px-2 py-2 text-xs text-gray-700 dark:text-gray-400 whitespace-nowrap">
                                           {dealer.last_visit_date ? formatDateDDMmmYYYY(dealer.last_visit_date) : '–'}
                                         </TableCell>
                                         <TableCell className="px-2 py-2 text-xs text-gray-700 dark:text-gray-400" title={visitedBy.full}>
@@ -455,7 +455,7 @@ const UserVisitSummary = () => {
                                             <span className="text-xs text-gray-400">–</span>
                                           )}
                                         </TableCell>
-                                        <TableCell className="px-2 py-2 font-mono text-xs text-gray-700 dark:text-gray-400 whitespace-nowrap">
+                                        <TableCell className="px-2 py-2 text-xs text-gray-700 dark:text-gray-400 whitespace-nowrap">
                                           {dealer.next_visit_date ? formatDateDDMmmYYYY(dealer.next_visit_date) : '–'}
                                         </TableCell>
                                         <TableCell className="px-2 py-2 text-center">

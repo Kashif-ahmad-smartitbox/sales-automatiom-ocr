@@ -356,7 +356,7 @@ const FollowupDealers = () => {
 
   return (
     <Layout title="Followup Dealers">
-      <div className="space-y-4">
+      <div className="space-y-2">
         {/* Header */}
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
           <div>
@@ -401,7 +401,7 @@ const FollowupDealers = () => {
               <span className="text-[11px] font-medium text-red-700">
                 Overdue
               </span>
-              <span className="text-sm font-bold font-mono text-red-800">
+              <span className="text-sm font-bold text-red-800">
                 {stats.overdue}
               </span>
             </div>
@@ -410,7 +410,7 @@ const FollowupDealers = () => {
               <span className="text-[11px] font-medium text-orange-700">
                 Today
               </span>
-              <span className="text-sm font-bold font-mono text-orange-800">
+              <span className="text-sm font-bold text-orange-800">
                 {stats.today}
               </span>
             </div>
@@ -419,7 +419,7 @@ const FollowupDealers = () => {
               <span className="text-[11px] font-medium text-blue-700">
                 Upcoming
               </span>
-              <span className="text-sm font-bold font-mono text-blue-800">
+              <span className="text-sm font-bold text-blue-800">
                 {stats.upcoming}
               </span>
             </div>
@@ -427,7 +427,7 @@ const FollowupDealers = () => {
               <span className="text-[11px] font-medium text-primary-700">
                 Total
               </span>
-              <span className="text-sm font-bold font-mono text-primary-800">
+              <span className="text-sm font-bold text-primary-800">
                 {dealers.length}
               </span>
             </div>
@@ -451,7 +451,7 @@ const FollowupDealers = () => {
         <Card className="border-0 shadow-sm overflow-hidden">
           <div className="overflow-x-auto">
             <table className="w-full border-collapse">
-              <thead>
+              <thead className="bg-gray-200">
                 <tr className="border-y border-gray-200">
                   <th className="px-2 py-2 text-left text-xs font-semibold text-gray-500 border-r border-gray-200 w-8">
                     #
@@ -534,7 +534,7 @@ const FollowupDealers = () => {
                           >
                             {dealerName.display}
                           </div>
-                          <div className="text-[10px] text-gray-400 mt-0.5">
+                          <div className="text-[12px] text-gray-400 mt-0.5">
                             {dealer.dealer_type} • Priority{" "}
                             {dealer.priority_level}
                           </div>
@@ -581,14 +581,14 @@ const FollowupDealers = () => {
                         <td>
                           {dealer.last_visit_date ? (
                             <div>
-                              <div className="flex items-center gap-1.5 text-xs font-medium text-gray-900">
+                              <div className="flex items-center gap-1.5 text-[12px] font-medium text-gray-900">
                                 <Calendar size={12} className="text-gray-400" />
                                 <span>
                                   {formatDateDDMmmYYYY(dealer.last_visit_date)}
                                 </span>
                               </div>
                               {dealer.last_visited_by && (
-                                <div className="text-[10px] text-gray-400 pl-5 mt-0.5">
+                                <div className="text-[12px] text-gray-400 pl-5 mt-0.5">
                                   By:{" "}
                                   {dealer.last_visited_by === user?.id ||
                                   dealer.last_visited_by === user?.name

@@ -124,7 +124,7 @@ const SettingsPage = () => {
 
   return (
     <AdminLayout title="Settings">
-      <div className="w-full space-y-5" data-testid="settings-page">
+      <div className="w-full space-y-2" data-testid="settings-page">
 
         {/* Page Header */}
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
@@ -376,7 +376,7 @@ const SettingsPage = () => {
                       <Input
                         value={company?.gst || 'Not provided'}
                         readOnly
-                        className="pl-10 bg-gray-50 border-gray-200 text-gray-800 font-mono text-sm cursor-default"
+                        className="pl-10 bg-gray-50 border-gray-200 text-gray-800 text-sm cursor-default"
                       />
                     </div>
                     <p className="text-[10px] text-gray-400">15-character alphanumeric GST identification number</p>

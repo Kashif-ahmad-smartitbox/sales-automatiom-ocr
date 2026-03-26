@@ -214,7 +214,7 @@ const OwnerActivity = () => {
                       <div className="flex flex-wrap gap-3 text-xs">
                         <div className="flex items-center gap-1 text-gray-500">
                           <Clock className="w-3 h-3" />
-                          <span className="font-mono text-[10px]">
+                          <span className="text-[10px]">
                             {new Date(item.check_in_time).toLocaleTimeString()}
                             {item.check_out_time && ` – ${new Date(item.check_out_time).toLocaleTimeString()}`}
                           </span>
@@ -225,7 +225,7 @@ const OwnerActivity = () => {
                           </div>
                         )}
                         {item.order_value && (
-                          <div className="flex items-center gap-1 text-primary-600 font-mono text-xs font-medium">
+                          <div className="flex items-center gap-1 text-primary-600 text-xs font-medium">
                             <CurrencyDollar className="w-3 h-3" />
                             ₹{item.order_value.toLocaleString()}
                           </div>

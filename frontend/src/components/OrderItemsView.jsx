@@ -41,12 +41,12 @@ const OrderItemsView = ({ visit }) => {
                 <div className="space-y-2">
                   <div className="overflow-auto rounded-lg border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 shadow-sm max-h-[400px]">
                     <Table className="table-auto border-collapse">
-                      <TableHeader className="sticky top-0 z-10">
-                        <TableHead className="py-1.5 px-2 text-gray-700 dark:text-gray-300 font-medium text-[10px]">#</TableHead>
-                        <TableHead className="py-1.5 px-2 text-gray-700 dark:text-gray-300 font-medium text-[10px]">Item</TableHead>
-                        <TableHead className="py-1.5 px-2 text-gray-700 dark:text-gray-300 font-medium text-[10px] text-center">Qty</TableHead>
-                        <TableHead className="py-1.5 px-2 text-gray-700 dark:text-gray-300 font-medium text-[10px] text-right">Rate (₹)</TableHead>
-                        <TableHead className="py-1.5 px-2 text-gray-700 dark:text-gray-300 font-medium text-[10px] text-right">Total (₹)</TableHead>
+                      <TableHeader className="sticky top-0 z-10 bg-gray-200">
+                        <TableHead className="py-1.5 px-2 text-gray-500 font-semibold border-r border-gray-200 text-[10px]">#</TableHead>
+                        <TableHead className="py-1.5 px-2 text-gray-500 font-semibold border-r border-gray-200 text-[10px]">Item</TableHead>
+                        <TableHead className="py-1.5 px-2 text-gray-500 font-semibold border-r border-gray-200 text-[10px] text-center">Qty</TableHead>
+                        <TableHead className="py-1.5 px-2 text-gray-500 font-semibold border-r border-gray-200 text-[10px] text-right">Rate (₹)</TableHead>
+                        <TableHead className="py-1.5 px-2 text-gray-500 font-semibold text-[10px] text-right">Total (₹)</TableHead>
                       </TableHeader>
                       <TableBody className="divide-y divide-gray-100 dark:divide-gray-800">
                         {items.map((item, idx) => (

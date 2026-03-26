@@ -146,7 +146,7 @@ const HODDashboard = () => {
                     <stat.icon className="w-3.5 h-3.5" weight="duotone" />
                   </div>
                 </div>
-                <div className="text-lg font-bold font-mono">{stat.value}</div>
+                <div className="text-lg font-bold">{stat.value}</div>
                 <p className="text-[10px] text-white/80 mt-0.5">{stat.subtext}</p>
               </CardContent>
             </Card>

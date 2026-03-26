@@ -178,7 +178,7 @@ const ItemMaster = () => {
 
   return (
     <AdminLayout title="Item Master">
-      <div className="space-y-4">
+      <div className="space-y-2">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
           <div className="flex items-center gap-3">
             <div className="w-10 h-10 rounded-xl bg-orange-100 flex items-center justify-center text-orange-600">
@@ -251,7 +251,7 @@ const ItemMaster = () => {
             ) : (
               <div className="overflow-x-auto">
                 <table className="w-full border-collapse">
-                  <thead>
+                  <thead className="bg-gray-200">
                     <tr className="border-y border-gray-200">
                       <th className="px-2 py-2 text-left text-xs font-semibold text-gray-500 border-r border-gray-200 w-8">
                         #

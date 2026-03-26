@@ -283,7 +283,7 @@ const DealerManagement = () => {
 
   return (
     <AdminLayout title="Dealer Management">
-      <div className="space-y-4" data-testid="dealer-management">
+      <div className="space-y-2" data-testid="dealer-management">
         {/* Header */}
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
           <div>
@@ -304,7 +304,7 @@ const DealerManagement = () => {
               <span className="text-[11px] font-medium text-primary-700">
                 Total Dealers
               </span>
-              <span className="text-sm font-bold font-mono text-primary-800">
+              <span className="text-sm font-bold text-primary-800">
                 {dealers.length}
               </span>
             </div>
@@ -312,7 +312,7 @@ const DealerManagement = () => {
               <span className="text-[11px] font-medium text-emerald-700">
                 Retailers
               </span>
-              <span className="text-sm font-bold font-mono text-emerald-800">
+              <span className="text-sm font-bold text-emerald-800">
                 {dealers.filter((d) => d.dealer_type === "Retailer").length}
               </span>
             </div>
@@ -320,7 +320,7 @@ const DealerManagement = () => {
               <span className="text-[11px] font-medium text-amber-700">
                 Distributors
               </span>
-              <span className="text-sm font-bold font-mono text-amber-800">
+              <span className="text-sm font-bold text-amber-800">
                 {dealers.filter((d) => d.dealer_type === "Distributor").length}
               </span>
             </div>
@@ -328,7 +328,7 @@ const DealerManagement = () => {
               <span className="text-[11px] font-medium text-red-700">
                 High Priority
               </span>
-              <span className="text-sm font-bold font-mono text-red-800">
+              <span className="text-sm font-bold text-red-800">
                 {dealers.filter((d) => d.priority_level === 1).length}
               </span>
             </div>
@@ -588,46 +588,46 @@ const DealerManagement = () => {
                 <Table className="table-auto border-collapse">
                   <TableHeader className="sticky top-0 z-10 bg-gray-200">
                     <TableRow className="border-y border-gray-200 bg-gray-200 hover:bg-gray-200">
-                      <TableHead className="px-2 py-2 text-xs font-semibold text-gray-700 border-r border-gray-200 w-8">
+                      <TableHead className="px-2 py-2 text-xs font-semibold text-gray-500 border-r border-gray-200 w-8">
                         #
                       </TableHead>
-                      <TableHead className="px-3 py-2 text-xs font-semibold text-gray-700 border-r border-gray-200">
+                      <TableHead className="px-3 py-2 text-xs font-semibold text-gray-500 border-r border-gray-200">
                         Dealer
                       </TableHead>
-                      <TableHead className="px-2 py-2 text-xs font-semibold text-gray-700 border-r border-gray-200 w-10 text-center">
+                      <TableHead className="px-2 py-2 text-xs font-semibold text-gray-500 border-r border-gray-200 w-10 text-center">
                         Addr
                       </TableHead>
-                      <TableHead className="px-3 py-2 text-xs font-semibold text-gray-700 border-r border-gray-200">
+                      <TableHead className="px-3 py-2 text-xs font-semibold text-gray-500 border-r border-gray-200">
                         Type
                       </TableHead>
-                      <TableHead className="px-3 py-2 text-xs font-semibold text-gray-700 border-r border-gray-200">
+                      <TableHead className="px-3 py-2 text-xs font-semibold text-gray-500 border-r border-gray-200">
                         Territory
                       </TableHead>
-                      <TableHead className="px-3 py-2 text-xs font-semibold text-gray-700 border-r border-gray-200">
+                      <TableHead className="px-3 py-2 text-xs font-semibold text-gray-500 border-r border-gray-200">
                         Contact
                       </TableHead>
-                      <TableHead className="px-3 py-2 text-xs font-semibold text-gray-700 border-r border-gray-200">
+                      <TableHead className="px-3 py-2 text-xs font-semibold text-gray-500 border-r border-gray-200">
                         Phone
                       </TableHead>
-                      <TableHead className="px-3 py-2 text-xs font-semibold text-gray-700 border-r border-gray-200">
+                      <TableHead className="px-3 py-2 text-xs font-semibold text-gray-500 border-r border-gray-200">
                         Priority
                       </TableHead>
-                      <TableHead className="px-3 py-2 text-xs font-semibold text-gray-700 border-r border-gray-200">
+                      <TableHead className="px-3 py-2 text-xs font-semibold text-gray-500 border-r border-gray-200">
                         Booked Amt
                       </TableHead>
-                      <TableHead className="px-3 py-2 text-xs font-semibold text-gray-700 border-r border-gray-200">
+                      <TableHead className="px-3 py-2 text-xs font-semibold text-gray-500 border-r border-gray-200">
                         Last Visit
                       </TableHead>
-                      <TableHead className="px-3 py-2 text-xs font-semibold text-gray-700 border-r border-gray-200">
+                      <TableHead className="px-3 py-2 text-xs font-semibold text-gray-500 border-r border-gray-200">
                         Visited By
                       </TableHead>
-                      <TableHead className="px-3 py-2 text-xs font-semibold text-gray-700 border-r border-gray-200">
+                      <TableHead className="px-3 py-2 text-xs font-semibold text-gray-500 border-r border-gray-200">
                         Outcome
                       </TableHead>
-                      <TableHead className="px-3 py-2 text-xs font-semibold text-gray-700 border-r border-gray-200">
+                      <TableHead className="px-3 py-2 text-xs font-semibold text-gray-500 border-r border-gray-200">
                         Next Visit
                       </TableHead>
-                      <TableHead className="px-2 py-2 text-xs font-semibold text-gray-700 text-center">
+                      <TableHead className="px-2 py-2 text-xs font-semibold text-gray-500 text-center">
                         Actions
                       </TableHead>
                     </TableRow>
@@ -680,7 +680,7 @@ const DealerManagement = () => {
                           >
                             {contactPerson.display}
                           </TableCell>
-                          <TableCell className="px-3 py-2 font-mono text-xs text-gray-700 border-r border-gray-100 whitespace-nowrap">
+                          <TableCell className="px-3 py-2 text-xs text-gray-700 border-r border-gray-100 whitespace-nowrap">
                             {dealer.phone || "–"}
                           </TableCell>
                           <TableCell className="px-3 py-2 border-r border-gray-100">
@@ -712,7 +712,7 @@ const DealerManagement = () => {
                               <span className="text-xs text-gray-400">₹0</span>
                             )}
                           </TableCell>
-                          <TableCell className="px-3 py-2 font-mono text-xs text-gray-700 border-r border-gray-100 whitespace-nowrap">
+                          <TableCell className="px-3 py-2 text-xs text-gray-700 border-r border-gray-100 whitespace-nowrap">
                             {dealer.last_visit_date
                               ? formatDateDDMmmYYYY(dealer.last_visit_date)
                               : "Never"}
@@ -749,7 +749,7 @@ const DealerManagement = () => {
                               <span className="text-xs text-gray-400">–</span>
                             )}
                           </TableCell>
-                          <TableCell className="px-3 py-2 font-mono text-xs text-gray-700 border-r border-gray-100 whitespace-nowrap">
+                          <TableCell className="px-3 py-2 text-xs text-gray-700 border-r border-gray-100 whitespace-nowrap">
                             {dealer.next_visit_date
                               ? formatDateDDMmmYYYY(dealer.next_visit_date)
                               : "–"}

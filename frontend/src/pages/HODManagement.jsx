@@ -148,7 +148,7 @@ const HODManagement = () => {
 
   return (
     <AdminLayout title="HOD Management">
-      <div className="space-y-4">
+      <div className="space-y-2">
         {/* Header */}
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
           <div>
@@ -169,7 +169,7 @@ const HODManagement = () => {
               <span className="text-[11px] font-medium text-primary-700">
                 Total HODs
               </span>
-              <span className="text-sm font-bold font-mono text-primary-800">
+              <span className="text-sm font-bold text-primary-800">
                 {hods.length}
               </span>
             </div>
@@ -177,7 +177,7 @@ const HODManagement = () => {
               <span className="text-[11px] font-medium text-emerald-700">
                 Sales Executives
               </span>
-              <span className="text-sm font-bold font-mono text-emerald-800">
+              <span className="text-sm font-bold text-emerald-800">
                 {salesExecutives.length}
               </span>
             </div>
@@ -185,7 +185,7 @@ const HODManagement = () => {
               <span className="text-[11px] font-medium text-amber-700">
                 Assigned
               </span>
-              <span className="text-sm font-bold font-mono text-amber-800">
+              <span className="text-sm font-bold text-amber-800">
                 {hods.reduce(
                   (sum, hod) =>
                     sum + (hod.assigned_sales_executive_ids?.length || 0),
@@ -366,30 +366,30 @@ const HODManagement = () => {
             <CardContent className="p-0">
               <div className="overflow-x-auto">
                 <table className="w-full border-collapse">
-                  <thead>
+                  <thead className="bg-gray-200">
                     <tr className="border-y border-gray-200">
-                      <th className="text-left px-2 py-1.5 text-[10px] font-semibold text-gray-600 border-r border-gray-200 w-8">
+                      <th className="text-left px-2 py-2 text-xs font-semibold text-gray-500 border-r border-gray-200 w-8">
                         #
                       </th>
-                      <th className="text-left px-2 py-1.5 text-[10px] font-semibold text-gray-600 border-r border-gray-200">
+                      <th className="text-left px-2 py-2 text-xs font-semibold text-gray-500 border-r border-gray-200">
                         HOD Name
                       </th>
-                      <th className="text-left px-2 py-1.5 text-[10px] font-semibold text-gray-600 border-r border-gray-200">
+                      <th className="text-left px-2 py-2 text-xs font-semibold text-gray-500 border-r border-gray-200">
                         Employee Code
                       </th>
-                      <th className="text-left px-2 py-1.5 text-[10px] font-semibold text-gray-600 border-r border-gray-200">
+                      <th className="text-left px-2 py-2 text-xs font-semibold text-gray-500 border-r border-gray-200">
                         Email
                       </th>
-                      <th className="text-left px-2 py-1.5 text-[10px] font-semibold text-gray-600 border-r border-gray-200">
+                      <th className="text-left px-2 py-2 text-xs font-semibold text-gray-500 border-r border-gray-200">
                         Mobile
                       </th>
-                      <th className="text-center px-2 py-1.5 text-[10px] font-semibold text-gray-600 border-r border-gray-200">
+                      <th className="text-center px-2 py-2 text-xs font-semibold text-gray-500 border-r border-gray-200">
                         Team Size
                       </th>
-                      <th className="text-left px-2 py-1.5 text-[10px] font-semibold text-gray-600 border-r border-gray-200">
+                      <th className="text-left px-2 py-2 text-xs font-semibold text-gray-500 border-r border-gray-200">
                         Assigned Team
                       </th>
-                      <th className="text-center px-2 py-1.5 text-[10px] font-semibold text-gray-600">
+                      <th className="text-center px-2 py-2 text-xs font-semibold text-gray-500">
                         Actions
                       </th>
                     </tr>
@@ -414,7 +414,7 @@ const HODManagement = () => {
                           </td>
                           <td className="px-2 py-1.5 border-r border-gray-100">
                             <div className="flex items-center gap-2">
-                              <div className="w-8 h-8 rounded-full flex items-center justify-center text-white text-xs font-bold bg-gradient-to-br from-purple-500 to-indigo-600 flex-shrink-0">
+                              <div className="w-6 h-6 rounded-full flex items-center justify-center text-white text-xs font-bold bg-gradient-to-br from-purple-500 to-indigo-600 flex-shrink-0">
                                 {hod.name.charAt(0)}
                               </div>
                               <span
@@ -425,7 +425,7 @@ const HODManagement = () => {
                               </span>
                             </div>
                           </td>
-                          <td className="px-2 py-1.5 text-[11px] font-semibold text-gray-900 font-mono border-r border-gray-100">
+                          <td className="px-2 py-1.5 text-[11px] font-semibold text-gray-900 border-r border-gray-100">
                             {hod.employee_code}
                           </td>
                           <td

@@ -159,11 +159,17 @@ thead {
 }
 
 thead th {
-  color: #374151 !important; /* text-gray-700 */
+  color: #6b7280 !important; /* text-gray-500 */
   font-weight: 600 !important;
-  font-size: 0.75rem;
-  padding: 0.5rem 1rem;
+  font-size: 0.75rem !important; /* text-xs */
+  padding: 0.5rem 0.75rem !important; /* py-2 px-3 */
+  border-right: 1px solid #e5e7eb !important; /* border-r border-gray-200 */
   white-space: nowrap !important;
+  text-align: left !important;
+}
+
+thead th:last-child {
+  border-right: none !important;
 }
 
 tbody tr {

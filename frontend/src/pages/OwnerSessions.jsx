@@ -191,19 +191,19 @@ const OwnerSessions = () => {
               <div className="p-4">
                 <div className="overflow-auto rounded-lg border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 shadow-sm w-full max-h-[40rem]">
                   <Table className="table-auto border-collapse">
-                    <TableHeader className="text-nowrap sticky top-0 text-xs z-10">
-                      <TableHead className="p-2 text-gray-700 dark:text-gray-300 font-medium text-center w-8">#</TableHead>
-                      <TableHead className="p-2 text-gray-700 dark:text-gray-300 font-medium">User</TableHead>
-                      <TableHead className="p-2 text-gray-700 dark:text-gray-300 font-medium">Company</TableHead>
-                      <TableHead className="p-2 text-gray-700 dark:text-gray-300 font-medium">Date</TableHead>
-                      <TableHead className="p-2 text-gray-700 dark:text-gray-300 font-medium">Time</TableHead>
-                      <TableHead className="p-2 text-gray-700 dark:text-gray-300 font-medium">Status</TableHead>
-                      <TableHead className="p-2 text-gray-700 dark:text-gray-300 font-medium text-center">Duration</TableHead>
-                      <TableHead className="p-2 text-gray-700 dark:text-gray-300 font-medium text-center">Distance</TableHead>
-                      <TableHead className="p-2 text-gray-700 dark:text-gray-300 font-medium text-center">Shown</TableHead>
-                      <TableHead className="p-2 text-gray-700 dark:text-gray-300 font-medium text-center">Visited</TableHead>
-                      <TableHead className="p-2 text-gray-700 dark:text-gray-300 font-medium text-center">Lost</TableHead>
-                      <TableHead className="p-2 text-gray-700 dark:text-gray-300 font-medium text-right">Action</TableHead>
+                    <TableHeader className="text-nowrap sticky top-0 text-xs z-10 bg-gray-200">
+                      <TableHead className="p-2 text-gray-500 font-semibold border-r border-gray-200 text-center w-8">#</TableHead>
+                      <TableHead className="p-2 text-gray-500 font-semibold border-r border-gray-200">User</TableHead>
+                      <TableHead className="p-2 text-gray-500 font-semibold border-r border-gray-200">Company</TableHead>
+                      <TableHead className="p-2 text-gray-500 font-semibold border-r border-gray-200">Date</TableHead>
+                      <TableHead className="p-2 text-gray-500 font-semibold border-r border-gray-200">Time</TableHead>
+                      <TableHead className="p-2 text-gray-500 font-semibold border-r border-gray-200">Status</TableHead>
+                      <TableHead className="p-2 text-gray-500 font-semibold border-r border-gray-200 text-center">Duration</TableHead>
+                      <TableHead className="p-2 text-gray-500 font-semibold border-r border-gray-200 text-center">Distance</TableHead>
+                      <TableHead className="p-2 text-gray-500 font-semibold border-r border-gray-200 text-center">Shown</TableHead>
+                      <TableHead className="p-2 text-gray-500 font-semibold border-r border-gray-200 text-center">Visited</TableHead>
+                      <TableHead className="p-2 text-gray-500 font-semibold border-r border-gray-200 text-center">Lost</TableHead>
+                      <TableHead className="p-2 text-gray-500 font-semibold text-right">Action</TableHead>
                     </TableHeader>
                     <TableBody className="divide-y divide-gray-100 dark:divide-gray-800">
                       {filteredSessions
@@ -220,18 +220,18 @@ const OwnerSessions = () => {
                           </TableCell>
                           <TableCell className="px-2 py-1.5 text-xs font-medium text-gray-800 dark:text-gray-200" title={userName.full}>{userName.display}</TableCell>
                           <TableCell className="px-2 py-1.5 text-[11px] text-gray-600 dark:text-gray-400" title={companyName.full}>{companyName.display}</TableCell>
-                          <TableCell className="px-2 py-1.5 font-mono text-[11px] text-gray-600 dark:text-gray-400 whitespace-nowrap">{formatDateDDMmmYYYY(session.start_time)}</TableCell>
-                          <TableCell className="px-2 py-1.5 font-mono text-[11px] text-gray-600 dark:text-gray-400 whitespace-nowrap">{new Date(session.start_time).toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'})}</TableCell>
+                          <TableCell className="px-2 py-1.5 text-[11px] text-gray-600 dark:text-gray-400 whitespace-nowrap">{formatDateDDMmmYYYY(session.start_time)}</TableCell>
+                          <TableCell className="px-2 py-1.5 text-[11px] text-gray-600 dark:text-gray-400 whitespace-nowrap">{new Date(session.start_time).toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'})}</TableCell>
                           <TableCell className="px-2 py-1.5">
                             <Badge className={`text-[10px] px-1.5 py-0 ${session.end_time ? 'bg-slate-100 text-slate-600' : 'bg-emerald-100 text-emerald-700'}`}>
                               {session.end_time ? 'Done' : 'Active'}
                             </Badge>
                           </TableCell>
-                          <TableCell className="px-2 py-1.5 font-mono text-[11px] text-gray-600 dark:text-gray-400 text-center">{formatDuration(session.start_time, session.end_time)}</TableCell>
-                          <TableCell className="px-2 py-1.5 font-mono text-[11px] text-gray-600 dark:text-gray-400 text-center">{session.total_distance ? `${(session.total_distance / 1000).toFixed(1)} km` : '–'}</TableCell>
-                          <TableCell className="px-2 py-1.5 font-mono text-[11px] font-bold text-slate-700 dark:text-slate-300 text-center">{session.potential_visits_count || 0}</TableCell>
-                          <TableCell className="px-2 py-1.5 font-mono text-[11px] font-bold text-emerald-700 text-center">{session.visits_completed || 0}</TableCell>
-                          <TableCell className="px-2 py-1.5 font-mono text-[11px] font-bold text-red-600 text-center">{session.calculated_lost_visits || 0}</TableCell>
+                          <TableCell className="px-2 py-1.5 text-[11px] text-gray-600 dark:text-gray-400 text-center">{formatDuration(session.start_time, session.end_time)}</TableCell>
+                          <TableCell className="px-2 py-1.5 text-[11px] text-gray-600 dark:text-gray-400 text-center">{session.total_distance ? `${(session.total_distance / 1000).toFixed(1)} km` : '–'}</TableCell>
+                          <TableCell className="px-2 py-1.5 text-[11px] font-bold text-slate-700 dark:text-slate-300 text-center">{session.potential_visits_count || 0}</TableCell>
+                          <TableCell className="px-2 py-1.5 text-[11px] font-bold text-emerald-700 text-center">{session.visits_completed || 0}</TableCell>
+                          <TableCell className="px-2 py-1.5 text-[11px] font-bold text-red-600 text-center">{session.calculated_lost_visits || 0}</TableCell>
                           <TableCell className="px-2 py-1.5 text-right">
                             <Button 
                               variant="ghost" 
@@ -325,12 +325,12 @@ const OwnerSessions = () => {
              ) : (
                  <div className="overflow-auto rounded-lg border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 shadow-sm">
                    <Table className="min-w-[400px]">
-                     <TableHeader className="bg-gradient-to-r from-primary-50 to-indigo-50 dark:from-gray-800 dark:to-gray-900 text-nowrap sticky top-0 text-xs z-10 border-b border-primary-100 dark:border-gray-700">
-                       <TableHead className="px-2 sm:px-4 py-2 text-gray-700 dark:text-gray-300 font-medium w-8">#</TableHead>
-                       <TableHead className="px-2 sm:px-4 py-2 text-gray-700 dark:text-gray-300 font-medium">Place/Dealer</TableHead>
-                       <TableHead className="px-2 sm:px-4 py-2 text-gray-700 dark:text-gray-300 font-medium hidden sm:table-cell">Address</TableHead>
-                       <TableHead className="px-2 sm:px-4 py-2 text-gray-700 dark:text-gray-300 font-medium text-center">Status</TableHead>
-                       <TableHead className="px-2 sm:px-4 py-2 text-gray-700 dark:text-gray-300 font-medium text-right">Time Shown</TableHead>
+                     <TableHeader className="bg-gray-200 text-nowrap sticky top-0 text-xs z-10 border-b border-gray-200">
+                       <TableHead className="px-2 sm:px-4 py-2 text-gray-500 font-semibold border-r border-gray-200 w-8">#</TableHead>
+                       <TableHead className="px-2 sm:px-4 py-2 text-gray-500 font-semibold border-r border-gray-200">Place/Dealer</TableHead>
+                       <TableHead className="px-2 sm:px-4 py-2 text-gray-500 font-semibold border-r border-gray-200 hidden sm:table-cell">Address</TableHead>
+                       <TableHead className="px-2 sm:px-4 py-2 text-gray-500 font-semibold border-r border-gray-200 text-center">Status</TableHead>
+                       <TableHead className="px-2 sm:px-4 py-2 text-gray-500 font-semibold text-right">Time Shown</TableHead>
                      </TableHeader>
                      <TableBody className="divide-y divide-gray-100 dark:divide-gray-800">
                      {sessionPotentials.map((item, idx) => {

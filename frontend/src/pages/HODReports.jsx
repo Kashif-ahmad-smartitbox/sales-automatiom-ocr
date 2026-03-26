@@ -129,7 +129,7 @@ const HODReports = () => {
 
   return (
     <AdminLayout title="HOD Reports">
-      <div className="space-y-4">
+      <div className="space-y-2">
         {/* Header with Date Range Selector */}
         <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-3">
           <div>
@@ -163,11 +163,11 @@ const HODReports = () => {
             <h2 className="text-sm font-bold text-gray-900 mb-3">HOD Overview</h2>
             <div className="overflow-auto rounded-lg border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 shadow-sm w-full max-h-[40rem]">
               <Table className="table-auto border-collapse">
-                <TableHeader className="text-nowrap sticky top-0 text-xs z-10">
-                  <TableHead className="p-2 text-gray-700 dark:text-gray-300 font-medium">HOD Name</TableHead>
-                  <TableHead className="p-2 text-gray-700 dark:text-gray-300 font-medium text-center">Team Size</TableHead>
-                  <TableHead className="p-2 text-gray-700 dark:text-gray-300 font-medium text-center">Total Visit</TableHead>
-                  <TableHead className="p-2 text-gray-700 dark:text-gray-300 font-medium text-right">Order Value</TableHead>
+                <TableHeader className="text-nowrap sticky top-0 text-xs z-10 bg-gray-200">
+                  <TableHead className="p-2 text-gray-500 font-semibold border-r border-gray-200">HOD Name</TableHead>
+                  <TableHead className="p-2 text-gray-500 font-semibold border-r border-gray-200 text-center">Team Size</TableHead>
+                  <TableHead className="p-2 text-gray-500 font-semibold border-r border-gray-200 text-center">Total Visit</TableHead>
+                  <TableHead className="p-2 text-gray-500 font-semibold text-right">Order Value</TableHead>
                 </TableHeader>
                 <TableBody className="divide-y divide-gray-100 dark:divide-gray-800">
                   {hodData.length === 0 ? (
@@ -188,8 +188,8 @@ const HODReports = () => {
                             {hod.team_size}
                           </button>
                         </TableCell>
-                        <TableCell className="py-1.5 px-2 text-center text-[11px] font-mono text-gray-700 dark:text-gray-400">{hod.total_visits}</TableCell>
-                        <TableCell className="py-1.5 px-2 text-right text-[11px] font-mono text-gray-900 dark:text-gray-200">
+                        <TableCell className="py-1.5 px-2 text-center text-[11px] text-gray-700 dark:text-gray-400">{hod.total_visits}</TableCell>
+                        <TableCell className="py-1.5 px-2 text-right text-[11px] text-gray-900 dark:text-gray-200">
                           ₹{hod.order_value.toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
                         </TableCell>
                       </TableRow>
@@ -216,12 +216,12 @@ const HODReports = () => {
               
               <div className="overflow-auto rounded-lg border border-green-200 bg-white shadow-sm w-full max-h-[40rem]">
                 <Table className="table-auto border-collapse">
-                  <TableHeader className="text-nowrap sticky top-0 text-xs z-10">
-                    <TableHead className="p-2 text-green-800 font-medium">HOD Name</TableHead>
-                    <TableHead className="p-2 text-green-800 font-medium">Executive</TableHead>
-                    <TableHead className="p-2 text-green-800 font-medium text-center">Visit</TableHead>
-                    <TableHead className="p-2 text-green-800 font-medium text-right">Order Value</TableHead>
-                    <TableHead className="p-2 text-green-800 font-medium text-center">Position</TableHead>
+                  <TableHeader className="text-nowrap sticky top-0 text-xs z-10 bg-gray-200">
+                    <TableHead className="p-2 text-gray-500 font-semibold border-r border-gray-200">HOD Name</TableHead>
+                    <TableHead className="p-2 text-gray-500 font-semibold border-r border-gray-200">Executive</TableHead>
+                    <TableHead className="p-2 text-gray-500 font-semibold border-r border-gray-200 text-center">Visit</TableHead>
+                    <TableHead className="p-2 text-gray-500 font-semibold border-r border-gray-200 text-right">Order Value</TableHead>
+                    <TableHead className="p-2 text-gray-500 font-semibold text-center">Position</TableHead>
                   </TableHeader>
                   <TableBody className="divide-y divide-green-100">
                     {topPerformers.length === 0 ? (
@@ -235,8 +235,8 @@ const HODReports = () => {
                         <TableRow key={`${performer.executive_id}-${index}`} className="transition-all text-xs duration-200">
                           <TableCell className="py-1.5 px-2 text-[11px] text-gray-900">{performer.hod_name}</TableCell>
                           <TableCell className="py-1.5 px-2 text-[11px] text-gray-900">{performer.executive_name}</TableCell>
-                          <TableCell className="py-1.5 px-2 text-center text-[11px] font-mono text-gray-700">{performer.visits}</TableCell>
-                          <TableCell className="py-1.5 px-2 text-right text-[11px] font-mono text-gray-900">
+                          <TableCell className="py-1.5 px-2 text-center text-[11px] text-gray-700">{performer.visits}</TableCell>
+                          <TableCell className="py-1.5 px-2 text-right text-[11px] text-gray-900">
                             {performer.order_value.toLocaleString('en-IN')}
                           </TableCell>
                           <TableCell className="py-1.5 px-2 text-center">
@@ -268,12 +268,12 @@ const HODReports = () => {
               
               <div className="overflow-auto rounded-lg border border-amber-200 bg-white shadow-sm w-full max-h-[40rem]">
                 <Table className="table-auto border-collapse">
-                  <TableHeader className="text-nowrap sticky top-0 text-xs z-10">
-                    <TableHead className="p-2 text-amber-800 font-medium">HOD Name</TableHead>
-                    <TableHead className="p-2 text-amber-800 font-medium">Executive</TableHead>
-                    <TableHead className="p-2 text-amber-800 font-medium text-center">Visit</TableHead>
-                    <TableHead className="p-2 text-amber-800 font-medium text-right">Order Value</TableHead>
-                    <TableHead className="p-2 text-amber-800 font-medium text-center">Type</TableHead>
+                  <TableHeader className="text-nowrap sticky top-0 text-xs z-10 bg-gray-200">
+                    <TableHead className="p-2 text-gray-500 font-semibold border-r border-gray-200">HOD Name</TableHead>
+                    <TableHead className="p-2 text-gray-500 font-semibold border-r border-gray-200">Executive</TableHead>
+                    <TableHead className="p-2 text-gray-500 font-semibold border-r border-gray-200 text-center">Visit</TableHead>
+                    <TableHead className="p-2 text-gray-500 font-semibold border-r border-gray-200 text-right">Order Value</TableHead>
+                    <TableHead className="p-2 text-gray-500 font-semibold text-center">Type</TableHead>
                   </TableHeader>
                   <TableBody className="divide-y divide-amber-100">
                     {underperformers.length === 0 ? (
@@ -287,8 +287,8 @@ const HODReports = () => {
                         <TableRow key={`${performer.executive_id}-${index}`} className="transition-all text-xs duration-200">
                           <TableCell className="py-1.5 px-2 text-[11px] text-gray-900">{performer.hod_name}</TableCell>
                           <TableCell className="py-1.5 px-2 text-[11px] text-gray-900">{performer.executive_name}</TableCell>
-                          <TableCell className="py-1.5 px-2 text-center text-[11px] font-mono text-gray-700">{performer.visits}</TableCell>
-                          <TableCell className="py-1.5 px-2 text-right text-[11px] font-mono text-gray-900">
+                          <TableCell className="py-1.5 px-2 text-center text-[11px] text-gray-700">{performer.visits}</TableCell>
+                          <TableCell className="py-1.5 px-2 text-right text-[11px] text-gray-900">
                             {performer.order_value.toLocaleString('en-IN')}
                           </TableCell>
                           <TableCell className="py-1.5 px-2 text-center">
@@ -350,14 +350,14 @@ const HODReports = () => {
               <div className="flex-1 overflow-y-auto p-4">
                 <div className="overflow-auto rounded-lg border border-gray-200 bg-white shadow-sm w-full max-h-[40rem]">
                   <Table className="table-auto border-collapse">
-                    <TableHeader className="text-nowrap sticky top-0 text-xs z-10">
-                      <TableHead className="p-2 text-gray-700 font-medium">Executive Name</TableHead>
-                      <TableHead className="p-2 text-gray-700 font-medium">Employee Code</TableHead>
-                      <TableHead className="p-2 text-gray-700 font-medium text-center">Total Visits</TableHead>
-                      <TableHead className="p-2 text-gray-700 font-medium text-center">Completed</TableHead>
-                      <TableHead className="p-2 text-gray-700 font-medium text-center">Pending</TableHead>
-                      <TableHead className="p-2 text-gray-700 font-medium text-right">Order Value</TableHead>
-                      <TableHead className="p-2 text-gray-700 font-medium text-center">Status</TableHead>
+                    <TableHeader className="text-nowrap sticky top-0 text-xs z-10 bg-gray-200">
+                      <TableHead className="p-2 text-gray-500 font-semibold border-r border-gray-200">Executive Name</TableHead>
+                      <TableHead className="p-2 text-gray-500 font-semibold border-r border-gray-200">Employee Code</TableHead>
+                      <TableHead className="p-2 text-gray-500 font-semibold border-r border-gray-200 text-center">Total Visits</TableHead>
+                      <TableHead className="p-2 text-gray-500 font-semibold border-r border-gray-200 text-center">Completed</TableHead>
+                      <TableHead className="p-2 text-gray-500 font-semibold border-r border-gray-200 text-center">Pending</TableHead>
+                      <TableHead className="p-2 text-gray-500 font-semibold border-r border-gray-200 text-right">Order Value</TableHead>
+                      <TableHead className="p-2 text-gray-500 font-semibold text-center">Status</TableHead>
                     </TableHeader>
                     <TableBody className="divide-y divide-gray-100">
                       {teamDetails.length === 0 ? (
@@ -371,10 +371,10 @@ const HODReports = () => {
                           <TableRow key={member.executive_id} className="transition-all text-xs duration-200">
                             <TableCell className="py-2 px-3 text-xs font-medium text-gray-900">{member.executive_name}</TableCell>
                             <TableCell className="py-2 px-3 text-xs text-gray-700">{member.employee_code}</TableCell>
-                            <TableCell className="py-2 px-3 text-center text-xs font-mono text-gray-700">{member.total_visits}</TableCell>
-                            <TableCell className="py-2 px-3 text-center text-xs font-mono text-green-600">{member.completed_visits}</TableCell>
-                            <TableCell className="py-2 px-3 text-center text-xs font-mono text-orange-600">{member.pending_visits}</TableCell>
-                            <TableCell className="py-2 px-3 text-right text-xs font-mono text-gray-900">
+                            <TableCell className="py-2 px-3 text-center text-xs text-gray-700">{member.total_visits}</TableCell>
+                            <TableCell className="py-2 px-3 text-center text-xs text-green-600">{member.completed_visits}</TableCell>
+                            <TableCell className="py-2 px-3 text-center text-xs text-orange-600">{member.pending_visits}</TableCell>
+                            <TableCell className="py-2 px-3 text-right text-xs text-gray-900">
                               ₹{member.order_value.toLocaleString('en-IN')}
                             </TableCell>
                             <TableCell className="py-2 px-3 text-center">

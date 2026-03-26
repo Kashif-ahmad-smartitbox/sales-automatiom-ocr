@@ -86,7 +86,7 @@ const DispatchOrderPage = () => {
 
   return (
     <AdminLayout title="Dispatch Orders">
-      <div className="space-y-4">
+      <div className="space-y-2">
         <div>
           <h1 className="text-lg font-bold bg-gradient-to-r from-primary-600 to-orange-600 bg-clip-text text-transparent">
             Dispatch Orders
@@ -103,15 +103,15 @@ const DispatchOrderPage = () => {
                <CardContent className="p-0">
                  <div className="overflow-x-auto">
                    <table className="w-full text-left">
-                     <thead className="bg-gray-50 text-xs font-semibold text-gray-600">
-                       <tr>
-                         <th className="px-4 py-3 border-b">Order Date</th>
-                         <th className="px-4 py-3 border-b">Dealer</th>
-                         <th className="px-4 py-3 border-b">Order Items</th>
-                         <th className="px-4 py-3 border-b">Total Amount</th>
-                         <th className="px-4 py-3 border-b">Status</th>
-                         <th className="px-4 py-3 border-b">Invoice Number</th>
-                         <th className="px-4 py-3 border-b text-right">Action</th>
+                     <thead className="bg-gray-200">
+                       <tr className="border-y border-gray-200">
+                         <th className="px-3 py-2 text-xs font-semibold text-gray-500 border-r border-gray-200">Order Date</th>
+                         <th className="px-3 py-2 text-xs font-semibold text-gray-500 border-r border-gray-200">Dealer</th>
+                         <th className="px-3 py-2 text-xs font-semibold text-gray-500 border-r border-gray-200">Order Items</th>
+                         <th className="px-3 py-2 text-xs font-semibold text-gray-500 border-r border-gray-200">Total Amount</th>
+                         <th className="px-3 py-2 text-xs font-semibold text-gray-500 border-r border-gray-200">Status</th>
+                         <th className="px-3 py-2 text-xs font-semibold text-gray-500 border-r border-gray-200">Invoice Number</th>
+                         <th className="px-3 py-2 text-xs font-semibold text-gray-500 text-right">Action</th>
                        </tr>
                      </thead>
                      <tbody className="text-sm divide-y divide-gray-100">
@@ -119,9 +119,9 @@ const DispatchOrderPage = () => {
                          const items = order.ordered_items || order.order_items || [];
                          return (
                          <tr key={order.id} className="hover:bg-gray-50">
-                            <td className="px-4 py-3 text-xs">{formatDateDDMmmYYYY(order.check_in_time)}</td>
-                            <td className="px-4 py-3 font-medium text-slate-800">{order.dealer_name}</td>
-                            <td className="px-4 py-3 text-xs text-gray-600">
+                            <td className="px-4 py-2 text-xs">{formatDateDDMmmYYYY(order.check_in_time)}</td>
+                            <td className="px-4 py-2 font-medium text-slate-800">{order.dealer_name}</td>
+                            <td className="px-4 py-2 text-xs text-gray-600">
                                {items.length > 0 ? (
                                  <ul className="list-disc list-inside">
                                    {items.map((it, idx) => (
@@ -134,19 +134,19 @@ const DispatchOrderPage = () => {
                                  <span className="text-gray-400 italic">No item details</span>
                                )}
                             </td>
-                            <td className="px-4 py-3 font-semibold text-emerald-600">
+                            <td className="px-4 py-2 font-semibold text-emerald-600">
                                ₹{items.length > 0 
                                   ? items.reduce((sum, it) => sum + (it.quantity || 0) * (it.rate || it.unit_price || 0), 0).toLocaleString() 
                                   : (order.order_value || 0).toLocaleString()}
                             </td>
-                            <td className="px-4 py-3">
+                            <td className="px-4 py-2">
                                <span className={`px-2 py-1 text-[10px] font-bold rounded-full ${order.order_status === 'Dispatched' ? 'bg-blue-100 text-blue-700' : 'bg-green-100 text-green-700'}`}>
                                   {order.order_status}
                                </span>
                             </td>
-                            <td className="px-4 py-3">
+                            <td className="px-4 py-2">
                                {order.order_status === 'Dispatched' ? (
-                                   <span className="font-mono text-xs">{order.invoice_number}</span>
+                                   <span className="text-xs">{order.invoice_number}</span>
                                ) : (
                                    <Input 
                                       className="h-8 max-w-[150px] text-xs" 
@@ -156,14 +156,14 @@ const DispatchOrderPage = () => {
                                    />
                                )}
                             </td>
-                            <td className="px-4 py-3 text-right">
+                            <td className="px-4 py-2 text-right">
                                <div className="flex items-center justify-end gap-2">
                                  {order.order_status === 'Dispatched' ? (
                                    <Button 
                                       size="sm" 
                                       variant="outline"
                                       onClick={() => handleGeneratePDF(order, order.invoice_number)} 
-                                      className="h-8 text-xs font-semibold"
+                                      className="h-6 text-xs font-semibold"
                                    >
                                       <Download className="mr-1" size={14} /> Download
                                    </Button>
@@ -172,7 +172,7 @@ const DispatchOrderPage = () => {
                                       size="sm" 
                                       disabled={order.order_status === 'Dispatched'} 
                                       onClick={() => handleDispatch(order)} 
-                                      className="h-8 text-xs bg-indigo-500 hover:bg-indigo-600 text-white shadow-sm"
+                                      className="h-6 text-xs bg-indigo-500 hover:bg-indigo-600 text-white shadow-sm"
                                    >
                                       <PaperPlaneRight className="mr-1" size={14} /> Dispatch & Invoice
                                    </Button>

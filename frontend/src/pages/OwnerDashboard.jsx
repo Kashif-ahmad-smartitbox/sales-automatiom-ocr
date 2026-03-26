@@ -184,7 +184,7 @@ const OwnerDashboard = () => {
                     <stat.icon className="w-3.5 h-3.5" weight="fill" />
                   </div>
                 </div>
-                <div className="text-lg font-bold font-mono">{stat.value.toLocaleString()}</div>
+                <div className="text-lg font-bold">{stat.value.toLocaleString()}</div>
                 <p className="text-[10px] text-white/80 mt-0.5">{stat.subtext}</p>
               </CardContent>
             </Card>
@@ -267,7 +267,7 @@ const OwnerDashboard = () => {
                                   </div>
                                   <div>
                                     <p className="text-slate-500 text-xs">GST</p>
-                                    <p className="text-slate-900 font-mono text-xs">{admin.company.gst || 'N/A'}</p>
+                                    <p className="text-slate-900 text-xs">{admin.company.gst || 'N/A'}</p>
                                   </div>
                                 </div>
                               </div>
@@ -384,14 +384,14 @@ const OwnerDashboard = () => {
             ) : (
               <div className="overflow-auto rounded-lg border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 shadow-sm w-full max-h-[40rem]">
                 <Table className="table-auto border-collapse">
-                  <TableHeader className="text-nowrap sticky top-0 text-xs z-10">
-                    <TableHead className="p-2 text-gray-700 dark:text-gray-300 font-medium text-center w-8">#</TableHead>
-                    <TableHead className="p-2 text-gray-700 dark:text-gray-300 font-medium">Company</TableHead>
-                    <TableHead className="p-2 text-gray-700 dark:text-gray-300 font-medium">User</TableHead>
-                    <TableHead className="p-2 text-gray-700 dark:text-gray-300 font-medium">Dealer</TableHead>
-                    <TableHead className="p-2 text-gray-700 dark:text-gray-300 font-medium">Check-in</TableHead>
-                    <TableHead className="p-2 text-gray-700 dark:text-gray-300 font-medium text-center">Outcome</TableHead>
-                    <TableHead className="p-2 text-gray-700 dark:text-gray-300 font-medium text-right">Order Value</TableHead>
+                  <TableHeader className="text-nowrap sticky top-0 text-xs z-10 bg-gray-200">
+                    <TableHead className="p-2 text-gray-500 font-semibold border-r border-gray-200 text-center w-8">#</TableHead>
+                    <TableHead className="p-2 text-gray-500 font-semibold border-r border-gray-200">Company</TableHead>
+                    <TableHead className="p-2 text-gray-500 font-semibold border-r border-gray-200">User</TableHead>
+                    <TableHead className="p-2 text-gray-500 font-semibold border-r border-gray-200">Dealer</TableHead>
+                    <TableHead className="p-2 text-gray-500 font-semibold border-r border-gray-200">Check-in</TableHead>
+                    <TableHead className="p-2 text-gray-500 font-semibold border-r border-gray-200 text-center">Outcome</TableHead>
+                    <TableHead className="p-2 text-gray-500 font-semibold text-right">Order Value</TableHead>
                   </TableHeader>
                   <TableBody className="divide-y divide-gray-100 dark:divide-gray-800">
                     {recentActivity.slice(0, 10).map((visit, idx) => {
@@ -409,7 +409,7 @@ const OwnerDashboard = () => {
                           </TableCell>
                           <TableCell className="px-2 py-1.5 text-[11px] text-gray-600 dark:text-gray-400" title={userName.full}>{userName.display}</TableCell>
                           <TableCell className="px-2 py-1.5 text-[11px] text-gray-600 dark:text-gray-400" title={dealerName.full}>{dealerName.display}</TableCell>
-                          <TableCell className="px-2 py-1.5 font-mono text-[11px] text-gray-600 dark:text-gray-400">
+                          <TableCell className="px-2 py-1.5 text-[11px] text-gray-600 dark:text-gray-400">
                             {formatDateDDMmmYYYY(visit.check_in_time)}
                           </TableCell>
                           <TableCell className="px-2 py-1.5 text-center">
@@ -422,7 +422,7 @@ const OwnerDashboard = () => {
                               {visit.outcome || 'In Progress'}
                             </Badge>
                           </TableCell>
-                          <TableCell className="px-2 py-1.5 font-mono text-[11px] font-medium text-primary-600 text-right">
+                          <TableCell className="px-2 py-1.5 text-[11px] font-medium text-primary-600 text-right">
                             {visit.order_value ? `₹${visit.order_value.toLocaleString()}` : '–'}
                           </TableCell>
                         </TableRow>

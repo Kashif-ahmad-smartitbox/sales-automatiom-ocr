@@ -327,21 +327,21 @@ const OwnerOrganizations = () => {
                               </p>
                               <div className="overflow-x-auto">
                                 <table className="w-full border-collapse">
-                                  <thead>
+                                  <thead className="bg-gray-200">
                                     <tr className="border-y border-gray-200">
-                                      <th className="text-left px-2 py-1.5 text-[10px] font-semibold text-gray-600 border-r border-gray-200 w-8">
+                                      <th className="text-left px-2 py-2 text-xs font-semibold text-gray-600 border-r border-gray-200 w-8">
                                         #
                                       </th>
-                                      <th className="text-left px-2 py-1.5 text-[10px] font-semibold text-gray-600 border-r border-gray-200">
+                                      <th className="text-left px-3 py-2 text-xs font-semibold text-gray-600 border-r border-gray-200">
                                         Dealer
                                       </th>
-                                      <th className="text-left px-2 py-1.5 text-[10px] font-semibold text-gray-600 border-r border-gray-200">
+                                      <th className="text-left px-3 py-2 text-xs font-semibold text-gray-600 border-r border-gray-200">
                                         Time
                                       </th>
-                                      <th className="text-center px-2 py-1.5 text-[10px] font-semibold text-gray-600 border-r border-gray-200">
+                                      <th className="text-center px-3 py-2 text-xs font-semibold text-gray-600 border-r border-gray-200">
                                         Outcome
                                       </th>
-                                      <th className="text-right px-2 py-1.5 text-[10px] font-semibold text-gray-600">
+                                      <th className="text-right px-3 py-2 text-xs font-semibold text-gray-600">
                                         Value
                                       </th>
                                     </tr>
@@ -369,7 +369,7 @@ const OwnerOrganizations = () => {
                                             >
                                               {dealerName.display}
                                             </td>
-                                            <td className="px-2 py-1.5 font-mono text-[11px] text-gray-600 border-r border-gray-100">
+                                            <td className="px-2 py-1.5 text-[11px] text-gray-600 border-r border-gray-100">
                                               {new Date(
                                                 visit.check_in_time,
                                               ).toLocaleTimeString()}
@@ -389,7 +389,7 @@ const OwnerOrganizations = () => {
                                                 {visit.outcome || "In Progress"}
                                               </Badge>
                                             </td>
-                                            <td className="px-2 py-1.5 font-mono text-[11px] text-gray-700 text-right">
+                                            <td className="px-2 py-1.5 text-[11px] text-gray-700 text-right">
                                               {visit.order_value
                                                 ? `₹${visit.order_value.toLocaleString()}`
                                                 : "–"}

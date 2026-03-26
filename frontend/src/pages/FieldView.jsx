@@ -496,33 +496,33 @@ const FieldView = () => {
     ) : (
       <div className="overflow-x-auto">
         <table className="w-full text-left border-collapse">
-          <thead>
+          <thead className="bg-gray-200">
             <tr className="border-y border-gray-200">
-              <th className="text-[10px] text-gray-600 font-semibold px-2 py-2 border-r border-gray-200 w-8">
+              <th className="text-xs text-gray-500 font-semibold px-2 py-2 border-r border-gray-200 w-8">
                 #
               </th>
-              <th className="text-[10px] text-gray-600 font-semibold px-2 py-2 border-r border-gray-200">
+              <th className="text-xs text-gray-500 font-semibold px-2 py-2 border-r border-gray-200">
                 Date
               </th>
-              <th className="text-[10px] text-gray-600 font-semibold px-2 py-2 border-r border-gray-200">
+              <th className="text-xs text-gray-500 font-semibold px-2 py-2 border-r border-gray-200">
                 Dealer
               </th>
-              <th className="text-[10px] text-gray-600 font-semibold px-2 py-2 border-r border-gray-200">
+              <th className="text-xs text-gray-500 font-semibold px-2 py-2 border-r border-gray-200">
                 Contact
               </th>
-              <th className="text-[10px] text-gray-600 font-semibold px-2 py-2 border-r border-gray-200">
+              <th className="text-xs text-gray-500 font-semibold px-2 py-2 border-r border-gray-200">
                 Check-in
               </th>
-              <th className="text-[10px] text-gray-600 font-semibold px-2 py-2 border-r border-gray-200">
+              <th className="text-xs text-gray-500 font-semibold px-2 py-2 border-r border-gray-200">
                 Duration
               </th>
-              <th className="text-[10px] text-gray-600 font-semibold px-2 py-2 border-r border-gray-200">
+              <th className="text-xs text-gray-500 font-semibold px-2 py-2 border-r border-gray-200">
                 Outcome
               </th>
-              <th className="text-[10px] text-gray-600 font-semibold px-2 py-2 border-r border-gray-200">
+              <th className="text-xs text-gray-500 font-semibold px-2 py-2 border-r border-gray-200">
                 Value
               </th>
-              <th className="text-[10px] text-gray-600 font-semibold px-2 py-2">
+              <th className="text-xs text-gray-500 font-semibold px-2 py-2">
                 Items
               </th>
             </tr>
@@ -543,7 +543,7 @@ const FieldView = () => {
                   <td className="px-2 py-1.5 text-xs font-medium text-gray-600 border-r border-gray-100 w-8">
                     {idx + 1}
                   </td>
-                  <td className="px-2 py-1.5 font-mono text-[11px] text-gray-600 whitespace-nowrap border-r border-gray-100">
+                  <td className="px-2 py-1.5 text-[11px] text-gray-600 whitespace-nowrap border-r border-gray-100">
                     {formatDateDDMmmYYYY(visit.check_in_time)}
                   </td>
                   <td
@@ -558,13 +558,13 @@ const FieldView = () => {
                   >
                     {contactName.display}
                   </td>
-                  <td className="px-2 py-1.5 font-mono text-[11px] text-gray-500 whitespace-nowrap border-r border-gray-100">
+                  <td className="px-2 py-1.5 text-[11px] text-gray-500 whitespace-nowrap border-r border-gray-100">
                     {new Date(visit.check_in_time).toLocaleTimeString([], {
                       hour: "2-digit",
                       minute: "2-digit",
                     })}
                   </td>
-                  <td className="px-2 py-1.5 font-mono text-[11px] text-gray-500 text-center border-r border-gray-100">
+                  <td className="px-2 py-1.5 text-[11px] text-gray-500 text-center border-r border-gray-100">
                     {visit.time_spent_minutes
                       ? `${Math.round(visit.time_spent_minutes)}m`
                       : "–"}
@@ -572,7 +572,7 @@ const FieldView = () => {
                   <td className="px-2 py-1.5 border-r border-gray-100">
                     {outcomeBadge(visit.outcome)}
                   </td>
-                  <td className="px-2 py-1.5 font-mono text-[11px] font-semibold text-orange-600 text-right whitespace-nowrap border-r border-gray-100">
+                  <td className="px-2 py-1.5 text-[11px] font-semibold text-orange-600 text-right whitespace-nowrap border-r border-gray-100">
                     {visit.order_value
                       ? `₹${visit.order_value.toLocaleString()}`
                       : "–"}
