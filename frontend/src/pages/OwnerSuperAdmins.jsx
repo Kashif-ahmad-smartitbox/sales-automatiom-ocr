@@ -201,7 +201,7 @@ const OwnerSuperAdmins = () => {
                               </div>
                               <div>
                                 <p className="text-[10px] text-gray-500">GST</p>
-                                <p className="text-sm text-gray-800 font-mono font-medium">{admin.company.gst || 'N/A'}</p>
+                                <p className="text-sm text-gray-800 font-medium">{admin.company.gst || 'N/A'}</p>
                               </div>
                             </div>
                           </div>
@@ -241,7 +241,7 @@ const OwnerSuperAdmins = () => {
                                         <Phone className="w-2.5 h-2.5 text-gray-400" /> {member.mobile}
                                       </p>
                                       {member.employee_code && (
-                                        <p className="font-mono text-gray-400">Code: {member.employee_code}</p>
+                                        <p className="text-gray-400">Code: {member.employee_code}</p>
                                       )}
                                     </div>
                                   </div>

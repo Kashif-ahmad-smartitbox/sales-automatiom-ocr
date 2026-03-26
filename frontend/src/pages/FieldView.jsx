@@ -494,35 +494,21 @@ const FieldView = () => {
         No visits yet today
       </p>
     ) : (
-      <div className="overflow-x-auto">
-        <table className="w-full text-left border-collapse">
-          <thead>
+      <div className="overflow-auto rounded-xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 shadow-sm w-full max-h-[30rem]">
+        <table className="w-full text-left border-separate border-spacing-0">
+          <thead className="sticky top-0 z-10">
             <tr className="border-y border-gray-200">
-              <th className="text-[10px] text-gray-600 font-semibold px-2 py-2 border-r border-gray-200 w-8">
-                #
-              </th>
-              <th className="text-[10px] text-gray-600 font-semibold px-2 py-2 border-r border-gray-200">
-                Date
-              </th>
-              <th className="text-[10px] text-gray-600 font-semibold px-2 py-2 border-r border-gray-200">
-                Dealer
-              </th>
-              <th className="text-[10px] text-gray-600 font-semibold px-2 py-2 border-r border-gray-200">
-                Contact
-              </th>
-              <th className="text-[10px] text-gray-600 font-semibold px-2 py-2 border-r border-gray-200">
-                Check-in
-              </th>
-              <th className="text-[10px] text-gray-600 font-semibold px-2 py-2 border-r border-gray-200">
-                Duration
-              </th>
-              <th className="text-[10px] text-gray-600 font-semibold px-2 py-2 border-r border-gray-200">
-                Outcome
-              </th>
-              <th className="text-[10px] text-gray-600 font-semibold px-2 py-2 border-r border-gray-200">
+               <th className="text-xs text-gray-500 font-semibold px-2 py-2 border-r border-b border-gray-200 w-8 bg-gray-200">#</th>
+               <th className="text-xs text-gray-500 font-semibold px-2 py-2 border-r border-b border-gray-200 bg-gray-200">Date</th>
+               <th className="text-xs text-gray-500 font-semibold px-2 py-2 border-r border-b border-gray-200 bg-gray-200">Dealer</th>
+               <th className="text-xs text-gray-500 font-semibold px-2 py-2 border-r border-b border-gray-200 bg-gray-200">Contact</th>
+               <th className="text-xs text-gray-500 font-semibold px-2 py-2 border-r border-b border-gray-200 bg-gray-200">Check-in</th>
+               <th className="text-xs text-gray-500 font-semibold px-2 py-2 border-r border-b border-gray-200 bg-gray-200">Duration</th>
+               <th className="text-xs text-gray-500 font-semibold px-2 py-2 border-b border-gray-200 bg-gray-200">Outcome</th>
+              <th className="text-xs text-gray-500 font-semibold px-2 py-2 border-r border-b border-gray-200 bg-gray-200">
                 Value
               </th>
-              <th className="text-[10px] text-gray-600 font-semibold px-2 py-2">
+              <th className="text-xs text-gray-500 font-semibold px-2 py-2 border-b border-gray-200 bg-gray-200">
                 Items
               </th>
             </tr>
@@ -543,7 +529,7 @@ const FieldView = () => {
                   <td className="px-2 py-1.5 text-xs font-medium text-gray-600 border-r border-gray-100 w-8">
                     {idx + 1}
                   </td>
-                  <td className="px-2 py-1.5 font-mono text-[11px] text-gray-600 whitespace-nowrap border-r border-gray-100">
+                  <td className="px-2 py-1.5 text-[11px] text-gray-600 whitespace-nowrap border-r border-gray-100">
                     {formatDateDDMmmYYYY(visit.check_in_time)}
                   </td>
                   <td
@@ -558,13 +544,13 @@ const FieldView = () => {
                   >
                     {contactName.display}
                   </td>
-                  <td className="px-2 py-1.5 font-mono text-[11px] text-gray-500 whitespace-nowrap border-r border-gray-100">
+                  <td className="px-2 py-1.5 text-[11px] text-gray-500 whitespace-nowrap border-r border-gray-100">
                     {new Date(visit.check_in_time).toLocaleTimeString([], {
                       hour: "2-digit",
                       minute: "2-digit",
                     })}
                   </td>
-                  <td className="px-2 py-1.5 font-mono text-[11px] text-gray-500 text-center border-r border-gray-100">
+                  <td className="px-2 py-1.5 text-[11px] text-gray-500 text-center border-r border-gray-100">
                     {visit.time_spent_minutes
                       ? `${Math.round(visit.time_spent_minutes)}m`
                       : "–"}
@@ -572,7 +558,7 @@ const FieldView = () => {
                   <td className="px-2 py-1.5 border-r border-gray-100">
                     {outcomeBadge(visit.outcome)}
                   </td>
-                  <td className="px-2 py-1.5 font-mono text-[11px] font-semibold text-orange-600 text-right whitespace-nowrap border-r border-gray-100">
+                  <td className="px-2 py-1.5 text-[11px] font-semibold text-orange-600 text-right whitespace-nowrap border-r border-gray-100">
                     {visit.order_value
                       ? `₹${visit.order_value.toLocaleString()}`
                       : "–"}
@@ -596,11 +582,11 @@ const FieldView = () => {
         <div className="bg-white rounded-2xl border border-gray-100 shadow-sm px-4 md:px-5 py-3 flex items-center justify-between gap-3 flex-wrap">
           {/* Left: welcome */}
           <div>
-            <p className="text-xs text-gray-400">Welcome back,</p>
+            <p className="text-sm text-gray-400">Welcome back,</p>
             <p className="font-bold text-sm md:text-base text-gray-900">
               {user?.name || "Sales Executive"}
             </p>
-            <div className="flex items-center gap-1 mt-0.5 text-[11px] text-gray-400">
+            <div className="flex items-center gap-1 mt-0.5 text-[12px] text-gray-400">
               <Clock size={11} />
               <span>
                 {new Date().toLocaleDateString("en-IN", {
@@ -613,7 +599,7 @@ const FieldView = () => {
           </div>
 
           {/* Center: Last Sync */}
-          <div className="hidden md:flex items-center gap-1.5 text-xs text-gray-400">
+          <div className="hidden md:flex items-center gap-1.5 text-sm text-gray-400">
             <div className="w-2 h-2 rounded-full bg-emerald-400"></div>
             Last Sync: {syncText}
             <button
@@ -627,7 +613,7 @@ const FieldView = () => {
           {/* Right: GPS + Accuracy + Button */}
           <div className="flex items-center gap-2 flex-wrap">
             <div className="flex items-center gap-1.5 bg-blue-50 border border-blue-100 text-blue-700 rounded-full px-2.5 py-1 text-xs font-semibold">
-              <div className="w-2 h-2 rounded-full bg-blue-500"></div>
+              <div className="w-2 h-2 rounded-full bg-blue-500 pulse-dot"></div>
               GPS
             </div>
             <div className="flex items-center gap-1.5 bg-emerald-50 border border-emerald-100 text-emerald-700 rounded-full px-2.5 py-1 text-xs font-semibold">
@@ -637,7 +623,7 @@ const FieldView = () => {
             {isInMarket ? (
               <button
                 onClick={handleEndMarket}
-                className="flex items-center gap-1.5 bg-orange-500 hover:bg-orange-600 text-white rounded-full px-4 py-1.5 text-xs font-bold transition-colors shadow-sm"
+                className="flex items-center gap-1.5 bg-red-500 hover:bg-red-600 text-white rounded-full px-4 py-1.5 text-xs font-bold transition-colors shadow-sm"
                 data-testid="end-market-btn"
               >
                 <Stop size={12} weight="fill" />
@@ -646,7 +632,7 @@ const FieldView = () => {
             ) : (
               <button
                 onClick={handleStartMarket}
-                className="flex items-center gap-1.5 bg-orange-500 hover:bg-orange-600 text-white rounded-full px-4 py-1.5 text-xs font-bold transition-colors shadow-sm"
+                className="flex items-center gap-1.5 bg-emerald-500 hover:bg-emerald-600 text-white rounded-full px-4 py-1.5 text-xs font-bold transition-colors shadow-sm"
                 data-testid="start-market-btn"
               >
                 <Play size={12} weight="fill" />

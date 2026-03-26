@@ -356,7 +356,7 @@ const FollowupDealers = () => {
 
   return (
     <Layout title="Followup Dealers">
-      <div className="space-y-4">
+      <div className="space-y-2">
         {/* Header */}
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
           <div>
@@ -396,38 +396,38 @@ const FollowupDealers = () => {
         {/* Actions + Stats */}
         <div className="flex flex-wrap items-center justify-between gap-2">
           <div className="flex flex-wrap items-center gap-2">
-            <div className="flex items-center gap-2 bg-red-50 border border-red-100 rounded-md px-3 py-1.5">
-              <WarningCircle size={13} className="text-red-600" weight="fill" />
-              <span className="text-[11px] font-medium text-red-700">
+            <div className="flex items-center gap-2 bg-red-500 border border-red-100 rounded-full px-3 py-1.5">
+              <WarningCircle size={13} className="text-white" weight="fill" />
+              <span className="text-[11px] font-medium text-white">
                 Overdue
               </span>
-              <span className="text-sm font-bold font-mono text-red-800">
+              <span className="text-sm font-bold text-white">
                 {stats.overdue}
               </span>
             </div>
-            <div className="flex items-center gap-2 bg-orange-50 border border-orange-100 rounded-md px-3 py-1.5">
-              <Clock size={13} className="text-orange-600" weight="fill" />
-              <span className="text-[11px] font-medium text-orange-700">
+            <div className="flex items-center gap-2 bg-orange-500 border border-orange-100 rounded-full px-3 py-1.5">
+              <Clock size={13} className="text-white" weight="fill" />
+              <span className="text-[11px] font-medium text-white">
                 Today
               </span>
-              <span className="text-sm font-bold font-mono text-orange-800">
+              <span className="text-sm font-bold text-white">
                 {stats.today}
               </span>
             </div>
-            <div className="flex items-center gap-2 bg-blue-50 border border-blue-100 rounded-md px-3 py-1.5">
-              <Calendar size={13} className="text-blue-600" weight="fill" />
-              <span className="text-[11px] font-medium text-blue-700">
+            <div className="flex items-center gap-2 bg-blue-500 border border-blue-100 rounded-full px-3 py-1.5">
+              <Calendar size={13} className="text-white" weight="fill" />
+              <span className="text-[11px] font-medium text-white">
                 Upcoming
               </span>
-              <span className="text-sm font-bold font-mono text-blue-800">
+              <span className="text-sm font-bold text-white">
                 {stats.upcoming}
               </span>
             </div>
-            <div className="flex items-center gap-2 bg-primary-50 border border-primary-100 rounded-md px-3 py-1.5">
-              <span className="text-[11px] font-medium text-primary-700">
+            <div className="flex items-center gap-2 bg-primary-400 border border-primary-100 rounded-full px-3 py-1.5">
+              <span className="text-[11px] font-medium text-white">
                 Total
               </span>
-              <span className="text-sm font-bold font-mono text-primary-800">
+              <span className="text-sm font-bold text-white">
                 {dealers.length}
               </span>
             </div>
@@ -441,50 +441,31 @@ const FollowupDealers = () => {
             variant="outline"
             size="sm"
             onClick={fetchData}
-            className="h-8 text-xs hover:bg-gray-200 hover:text-gray-800 rounded-xl"
+            className="h-8 text-xs bg-gray-700 text-white hover:bg-gray-800 hover:text-white rounded-xl"
           >
             Refresh
           </Button>
         </div>
 
         {/* Content */}
-        <Card className="border-0 shadow-sm overflow-hidden">
-          <div className="overflow-x-auto">
-            <table className="w-full border-collapse">
-              <thead>
+        <Card className="rounded-xl border shadow-sm overflow-hidden">
+          <CardContent className="p-0">
+            <div className="overflow-auto bg-white dark:bg-gray-900 shadow-sm w-full max-h-[30rem]">
+              <table className="w-full border-separate border-spacing-0">
+                <thead className="sticky top-0 z-10">
                 <tr className="border-y border-gray-200">
-                  <th className="px-2 py-2 text-left text-xs font-semibold text-gray-500 border-r border-gray-200 w-8">
-                    #
-                  </th>
-                  <th className="px-3 py-2 text-left text-xs font-semibold text-gray-500 border-r border-gray-200">
-                    Dealer Name
-                  </th>
-                  <th className="px-3 py-2 text-left text-xs font-semibold text-gray-500 border-r border-gray-200">
-                    Contact Info
-                  </th>
-                  <th className="px-3 py-2 text-left text-xs font-semibold text-gray-500 border-r border-gray-200">
-                    Location
-                  </th>
-                  <th className="px-3 py-2 text-left text-xs font-semibold text-gray-500 border-r border-gray-200">
-                    Last Visit
-                  </th>
-                  <th className="px-3 py-2 text-left text-xs font-semibold text-gray-500 border-r border-gray-200">
-                    Next Visit Date
-                  </th>
-                  <th className="px-2 py-2 text-center text-xs font-semibold text-gray-500 border-r border-gray-200">
-                    Status
-                  </th>
-                  <th className="px-3 py-2 text-left text-xs font-semibold text-gray-500 border-r border-gray-200">
-                    Last Outcome
-                  </th>
+                  <th className="px-2 py-2 text-left text-xs font-semibold text-gray-500 border-r border-b border-gray-200 w-8 bg-gray-200">#</th>
+                  <th className="px-3 py-2 text-left text-xs font-semibold text-gray-500 border-r border-b border-gray-200 bg-gray-200">Dealer Name</th>
+                  <th className="px-3 py-2 text-left text-xs font-semibold text-gray-500 border-r border-b border-gray-200 bg-gray-200">Contact Info</th>
+                  <th className="px-3 py-2 text-left text-xs font-semibold text-gray-500 border-r border-b border-gray-200 bg-gray-200">Location</th>
+                  <th className="px-3 py-2 text-left text-xs font-semibold text-gray-500 border-r border-b border-gray-200 bg-gray-200">Last Visit</th>
+                  <th className="px-3 py-2 text-left text-xs font-semibold text-gray-500 border-r border-b border-gray-200 bg-gray-200">Next Visit Date</th>
+                  <th className="px-2 py-2 text-center text-xs font-semibold text-gray-500 border-r border-b border-gray-200 bg-gray-200">Status</th>
+                  <th className="px-3 py-2 text-left text-xs font-semibold text-gray-500 border-r border-b border-gray-200 bg-gray-200">Last Outcome</th>
                   {showExecutiveColumn && (
-                    <th className="px-3 py-2 text-left text-xs font-semibold text-gray-500 border-r border-gray-200">
-                      Executive
-                    </th>
+                    <th className="px-3 py-2 text-left text-xs font-semibold text-gray-500 border-r border-b border-gray-200 bg-gray-200">Executive</th>
                   )}
-                  <th className="px-2 py-2 text-center text-xs font-semibold text-gray-500">
-                    Actions
-                  </th>
+                  <th className="px-2 py-2 text-center text-xs font-semibold text-gray-500 border-b border-gray-200 bg-gray-200">Actions</th>
                 </tr>
               </thead>
               <tbody>
@@ -534,7 +515,7 @@ const FollowupDealers = () => {
                           >
                             {dealerName.display}
                           </div>
-                          <div className="text-[10px] text-gray-400 mt-0.5">
+                          <div className="text-[12px] text-gray-400 mt-0.5">
                             {dealer.dealer_type} • Priority{" "}
                             {dealer.priority_level}
                           </div>
@@ -581,14 +562,14 @@ const FollowupDealers = () => {
                         <td>
                           {dealer.last_visit_date ? (
                             <div>
-                              <div className="flex items-center gap-1.5 text-xs font-medium text-gray-900">
+                              <div className="flex items-center gap-1.5 text-[12px] font-medium text-gray-900">
                                 <Calendar size={12} className="text-gray-400" />
                                 <span>
                                   {formatDateDDMmmYYYY(dealer.last_visit_date)}
                                 </span>
                               </div>
                               {dealer.last_visited_by && (
-                                <div className="text-[10px] text-gray-400 pl-5 mt-0.5">
+                                <div className="text-[12px] text-gray-400 pl-5 mt-0.5">
                                   By:{" "}
                                   {dealer.last_visited_by === user?.id ||
                                   dealer.last_visited_by === user?.name
@@ -701,7 +682,8 @@ const FollowupDealers = () => {
               </tbody>
             </table>
           </div>
-        </Card>
+        </CardContent>
+      </Card>
 
         {/* Action Button */}
         {isSalesExecutive && dealers.length > 0 && (

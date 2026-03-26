@@ -176,7 +176,7 @@ const AdminDashboard = () => {
 
   return (
     <AdminLayout title="Dashboard">
-      <div className="space-y-4 pb-20 md:pb-4" data-testid="admin-dashboard">
+      <div className="space-y-2 pb-20 md:pb-4" data-testid="admin-dashboard">
         {/* Header */}
         <div>
           <h1 className="text-lg md:text-2xl font-bold text-gray-900">
@@ -888,34 +888,31 @@ const AdminDashboard = () => {
                 No visit data available
               </p>
             ) : (
-              <div className="overflow-auto rounded-lg border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 shadow-sm">
+              <div className="overflow-auto rounded-lg border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 shadow-sm max-h-[30rem]">
                 <Table className="table-auto border-collapse">
-                  <TableHeader className="text-nowrap sticky top-0 text-xs z-10">
-                    <TableHead className="p-2 text-gray-700 dark:text-gray-300 font-medium w-8">
+                  <TableHeader className="text-nowrap sticky top-0 text-xs z-10 bg-gray-200">
+                    <TableHead className="p-2 text-gray-500 font-semibold border-r border-gray-200 w-8">
                       #
                     </TableHead>
-                    <TableHead className="p-2 text-gray-700 dark:text-gray-300 font-medium">
+                    <TableHead className="p-2 text-gray-500 font-semibold border-r border-gray-200">
                       Next Visit
                     </TableHead>
-                    <TableHead className="p-2 text-gray-700 dark:text-gray-300 font-medium">
+                    <TableHead className="p-2 text-gray-500 font-semibold border-r border-gray-200">
                       Dealer
                     </TableHead>
-                    {/* <TableHead className="p-2 text-gray-700 dark:text-gray-300 font-medium">
-                      Territory
-                    </TableHead> */}
-                    <TableHead className="p-2 text-gray-700 dark:text-gray-300 font-medium">
+                    <TableHead className="p-2 text-gray-500 font-semibold border-r border-gray-200">
                       Status
                     </TableHead>
-                    <TableHead className="p-2 text-gray-700 dark:text-gray-300 font-medium">
+                    <TableHead className="p-2 text-gray-500 font-semibold border-r border-gray-200">
                       Distance
                     </TableHead>
-                    <TableHead className="p-2 text-gray-700 dark:text-gray-300 font-medium">
+                    <TableHead className="p-2 text-gray-500 font-semibold border-r border-gray-200">
                       Duration
                     </TableHead>
-                    <TableHead className="p-2 text-gray-700 dark:text-gray-300 font-medium">
+                    <TableHead className="p-2 text-gray-500 font-semibold border-r border-gray-200">
                       Rep
                     </TableHead>
-                    <TableHead className="p-2 text-gray-700 dark:text-gray-300 font-medium">
+                    <TableHead className="p-2 text-gray-500 font-semibold">
                       Outcome
                     </TableHead>
                   </TableHeader>

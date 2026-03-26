@@ -221,7 +221,7 @@ const ReportsPage = () => {
 
   return (
     <AdminLayout title="Reports & Analytics">
-      <div className="space-y-4" data-testid="reports-page">
+      <div className="space-y-2" data-testid="reports-page">
         {/* Page Header */}
         <div>
           <h1 className="text-lg font-bold bg-gradient-to-r from-primary-600 to-orange-600 bg-clip-text text-transparent">
@@ -279,7 +279,7 @@ const ReportsPage = () => {
                       <Target className="w-3.5 h-3.5" weight="fill" />
                     </div>
                   </div>
-                  <div className="text-lg font-bold font-mono">
+                  <div className="text-lg font-bold">
                     {visitHistory.length}
                   </div>
                   <p className="text-[10px] text-white/80 mt-0.5">All time</p>
@@ -296,7 +296,7 @@ const ReportsPage = () => {
                       <TrendUp className="w-3.5 h-3.5" weight="fill" />
                     </div>
                   </div>
-                  <div className="text-lg font-bold font-mono">
+                  <div className="text-lg font-bold">
                     {outcomeStats["Order Booked"]}
                   </div>
                   <p className="text-[10px] text-white/80 mt-0.5">
@@ -321,7 +321,7 @@ const ReportsPage = () => {
                       <CurrencyDollar className="w-3.5 h-3.5" weight="fill" />
                     </div>
                   </div>
-                  <div className="text-lg font-bold font-mono">
+                  <div className="text-lg font-bold">
                     ₹
                     {visitHistory
                       .reduce((sum, v) => sum + (v.order_value || 0), 0)
@@ -343,7 +343,7 @@ const ReportsPage = () => {
                       <Warning className="w-3.5 h-3.5" weight="fill" />
                     </div>
                   </div>
-                  <div className="text-lg font-bold font-mono">
+                  <div className="text-lg font-bold">
                     {lostVisits.length}
                   </div>
                   <p className="text-[10px] text-white/80 mt-0.5">
@@ -582,29 +582,29 @@ const ReportsPage = () => {
                     No performance data yet
                   </p>
                 ) : (
-                  <div className="overflow-x-auto">
-                    <table className="w-full border-collapse">
-                      <thead>
+                  <div className="overflow-auto max-h-[30rem]">
+                    <table className="w-full border-separate border-spacing-0">
+                      <thead className="sticky top-0 z-10">
                         <tr className="border-y border-gray-200">
                           <th className="text-left px-2 py-2 text-xs font-semibold text-gray-500 border-r border-gray-200 w-8">
                             #
                           </th>
-                          <th className="text-left px-2 py-2 text-xs font-semibold text-gray-500 border-r border-gray-200">
+                          <th className="text-left px-3 py-2 text-xs font-semibold text-gray-500 border-r border-gray-200">
                             Executive
                           </th>
-                          <th className="text-center px-2 py-2 text-xs font-semibold text-gray-500 border-r border-gray-200">
+                          <th className="text-center px-3 py-2 text-xs font-semibold text-gray-500 border-r border-gray-200">
                             Total Visits
                           </th>
-                          <th className="text-center px-2 py-2 text-xs font-semibold text-gray-500 border-r border-gray-200">
+                          <th className="text-center px-3 py-2 text-xs font-semibold text-gray-500 border-r border-gray-200">
                             Completed
                           </th>
-                          <th className="text-right px-2 py-2 text-xs font-semibold text-gray-500 border-r border-gray-200">
+                          <th className="text-right px-3 py-2 text-xs font-semibold text-gray-500 border-r border-gray-200">
                             Orders Value
                           </th>
-                          <th className="text-center px-2 py-2 text-xs font-semibold text-gray-500 border-r border-gray-200">
+                          <th className="text-center px-3 py-2 text-xs font-semibold text-gray-500 border-r border-gray-200">
                             Avg Time/Visit
                           </th>
-                          <th className="text-center px-2 py-2 text-xs font-semibold text-gray-500">
+                          <th className="text-center px-3 py-2 text-xs font-semibold text-gray-500">
                             Status
                           </th>
                         </tr>
@@ -634,23 +634,23 @@ const ReportsPage = () => {
                                     {execName.display}
                                   </p>
                                   <p
-                                    className="text-[10px] text-gray-500 font-mono"
+                                    className="text-[10px] text-gray-500"
                                     title={execCode.full}
                                   >
                                     {execCode.display}
                                   </p>
                                 </div>
                               </td>
-                              <td className="font-mono text-xs font-semibold text-center border-r border-gray-100">
+                              <td className="text-xs font-semibold text-center border-r border-gray-100">
                                 {exec.total_visits}
                               </td>
-                              <td className="font-mono text-xs text-center border-r border-gray-100">
+                              <td className="text-xs text-center border-r border-gray-100">
                                 {exec.completed_visits}
                               </td>
-                              <td className="font-mono text-xs font-bold text-primary-600 text-right border-r border-gray-100">
+                              <td className="text-xs font-bold text-primary-600 text-right border-r border-gray-100">
                                 ₹{exec.total_orders.toLocaleString()}
                               </td>
-                              <td className="font-mono text-xs text-center border-r border-gray-100">
+                              <td className="text-xs text-center border-r border-gray-100">
                                 {exec.avg_time_per_visit} min
                               </td>
                               <td className="px-2 py-2 text-center">
@@ -693,11 +693,11 @@ const ReportsPage = () => {
                   </p>
                 ) : (
                   <>
-                    <div className="overflow-x-auto">
+                    <div className="overflow-auto max-h-[30rem]">
                       <table className="w-full border-collapse text-left">
-                        <thead>
+                        <thead className="bg-gray-200 sticky top-0 z-10">
                           <tr className="border-y border-gray-200">
-                            <th className="text-[10px] text-gray-500 font-semibold px-2 py-2 border-r border-gray-200 w-8">
+                            <th className="text-xs text-gray-500 font-semibold px-2 py-2 border-r border-gray-200 w-8">
                               #
                             </th>
                             <th className="text-xs text-gray-500 font-semibold px-3 py-2 border-r border-gray-200">
@@ -756,7 +756,7 @@ const ReportsPage = () => {
                                   <td className="px-2 py-2 border-r border-gray-100 text-xs font-medium text-gray-600 w-8">
                                     {(visitsPage - 1) * 15 + idx + 1}
                                   </td>
-                                  <td className="px-3 py-2 font-mono text-xs text-gray-700 whitespace-nowrap border-r border-gray-100">
+                                  <td className="px-3 py-2 text-xs text-gray-700 whitespace-nowrap border-r border-gray-100">
                                     {formatDateDDMmmYYYY(visit.check_in_time)}
                                   </td>
                                   <td
@@ -777,10 +777,10 @@ const ReportsPage = () => {
                                   >
                                     {contactName.display}
                                   </td>
-                                  <td className="px-3 py-2 font-mono text-xs text-gray-700 whitespace-nowrap border-r border-gray-100">
+                                  <td className="px-3 py-2 text-xs text-gray-700 whitespace-nowrap border-r border-gray-100">
                                     {visit.contact_phone || "–"}
                                   </td>
-                                  <td className="px-3 py-2 font-mono text-xs text-gray-700 whitespace-nowrap border-r border-gray-100">
+                                  <td className="px-3 py-2 text-xs text-gray-700 whitespace-nowrap border-r border-gray-100">
                                     {new Date(
                                       visit.check_in_time,
                                     ).toLocaleTimeString([], {
@@ -788,7 +788,7 @@ const ReportsPage = () => {
                                       minute: "2-digit",
                                     })}
                                   </td>
-                                  <td className="px-2 py-2 font-mono text-xs text-gray-600 text-center border-r border-gray-100">
+                                  <td className="px-2 py-2 text-xs text-gray-600 text-center border-r border-gray-100">
                                     {visit.time_spent_minutes
                                       ? `${Math.round(visit.time_spent_minutes)}m`
                                       : "–"}
@@ -809,7 +809,7 @@ const ReportsPage = () => {
                                       {visit.outcome || "In Progress"}
                                     </span>
                                   </td>
-                                  <td className="px-3 py-2 font-mono text-xs font-bold text-primary-600 text-right border-r border-gray-100">
+                                  <td className="px-3 py-2 text-xs font-bold text-primary-600 text-right border-r border-gray-100">
                                     {visit.order_value
                                       ? `₹${visit.order_value.toLocaleString()}`
                                       : "–"}
@@ -856,9 +856,9 @@ const ReportsPage = () => {
                   </div>
                 ) : (
                   <>
-                    <div className="overflow-x-auto">
+                    <div className="overflow-auto max-h-[30rem]">
                       <table className="w-full border-collapse text-left">
-                        <thead>
+                        <thead className="sticky top-0 z-10 bg-gray-200">
                           <tr className="border-y border-gray-200">
                             <th className="text-xs text-gray-500 font-semibold px-2 py-2 border-r border-gray-200 w-8">
                               #
@@ -893,7 +893,7 @@ const ReportsPage = () => {
                                 <td className="px-2 py-2 border-r border-gray-100 text-xs font-medium text-gray-600 w-8">
                                   {(lostPage - 1) * 15 + idx + 1}
                                 </td>
-                                <td className="px-3 py-2 font-mono text-xs text-gray-700 whitespace-nowrap border-r border-gray-100">
+                                <td className="px-3 py-2 text-xs text-gray-700 whitespace-nowrap border-r border-gray-100">
                                   {formatDateDDMmmYYYY(visit.check_in_time)}
                                 </td>
                                 <td
@@ -942,9 +942,9 @@ const ReportsPage = () => {
                   </p>
                 ) : (
                   <>
-                    <div className="overflow-x-auto">
+                    <div className="overflow-auto max-h-[30rem]">
                       <table className="w-full border-collapse text-left">
-                        <thead>
+                        <thead className="bg-gray-200 sticky top-0 z-10">
                           <tr className="border-y border-gray-200">
                             <th className="text-[10px] text-gray-600 font-semibold px-2 py-1.5 border-r border-gray-200 w-8">
                               #
@@ -1003,10 +1003,10 @@ const ReportsPage = () => {
                                   >
                                     {userName.display}
                                   </td>
-                                  <td className="px-3 py-2 font-mono text-xs text-gray-700 whitespace-nowrap border-r border-gray-100">
+                                  <td className="px-3 py-2 text-xs text-gray-700 whitespace-nowrap border-r border-gray-100">
                                     {formatDateDDMmmYYYY(session.start_time)}
                                   </td>
-                                  <td className="px-3 py-2 font-mono text-xs text-gray-700 whitespace-nowrap border-r border-gray-100">
+                                  <td className="px-3 py-2 text-xs text-gray-700 whitespace-nowrap border-r border-gray-100">
                                     {new Date(
                                       session.start_time,
                                     ).toLocaleTimeString([], {
@@ -1021,24 +1021,24 @@ const ReportsPage = () => {
                                       {session.end_time ? "Done" : "Active"}
                                     </span>
                                   </td>
-                                  <td className="px-2 py-2 font-mono text-xs text-gray-700 text-center border-r border-gray-100">
+                                  <td className="px-2 py-2 text-xs text-gray-700 text-center border-r border-gray-100">
                                     {formatDuration(
                                       session.start_time,
                                       session.end_time,
                                     )}
                                   </td>
-                                  <td className="px-2 py-2 font-mono text-xs text-gray-700 text-center border-r border-gray-100">
+                                  <td className="px-2 py-2 text-xs text-gray-700 text-center border-r border-gray-100">
                                     {session.total_distance
                                       ? `${(session.total_distance / 1000).toFixed(1)} km`
                                       : "–"}
                                   </td>
-                                  <td className="px-2 py-2 font-mono text-xs font-bold text-slate-700 text-center border-r border-gray-100">
+                                  <td className="px-2 py-2 text-xs font-bold text-slate-700 text-center border-r border-gray-100">
                                     {session.potential_visits_count || 0}
                                   </td>
-                                  <td className="px-2 py-2 font-mono text-xs font-bold text-emerald-600 text-center border-r border-gray-100">
+                                  <td className="px-2 py-2 text-xs font-bold text-emerald-600 text-center border-r border-gray-100">
                                     {session.visits_completed || 0}
                                   </td>
-                                  <td className="px-2 py-2 font-mono text-xs font-bold text-red-600 text-center border-r border-gray-100">
+                                  <td className="px-2 py-2 text-xs font-bold text-red-600 text-center border-r border-gray-100">
                                     {session.calculated_lost_visits || 0}
                                   </td>
                                   <td className="px-2 py-1.5 text-right">
@@ -1087,7 +1087,7 @@ const ReportsPage = () => {
               </div>
             </DialogHeader>
 
-            <div className="flex-1 overflow-y-auto overflow-x-auto pr-2 mt-4">
+            <div className="flex-1 overflow-auto max-h-[30rem] pr-2 mt-4">
               {detailsLoading ? (
                 <div className="flex justify-center p-8">
                   <div className="spinner" />
@@ -1098,7 +1098,7 @@ const ReportsPage = () => {
                 </div>
               ) : (
                 <table className="w-full border-collapse text-left min-w-[400px]">
-                  <thead className="sticky top-0">
+                  <thead className="sticky top-0 z-10 bg-gray-200">
                     <tr className="border-y border-gray-200">
                       <th className="px-2 sm:px-4 py-2 text-xs font-semibold text-gray-500 border-r border-gray-200">
                         Place/Dealer

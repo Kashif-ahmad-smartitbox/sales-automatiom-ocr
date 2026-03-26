@@ -109,7 +109,7 @@ const PotentialDealers = () => {
 
   return (
     <AdminLayout title="Potential Dealers">
-      <div className="space-y-4">
+      <div className="space-y-2">
         {/* Header */}
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
           <div>
@@ -126,27 +126,27 @@ const PotentialDealers = () => {
         {/* Actions + Stats */}
         <div className="flex flex-wrap items-center justify-between gap-2">
           <div className="flex flex-wrap items-center gap-2">
-            <div className="flex items-center gap-2 bg-primary-50 border border-primary-100 rounded-md px-3 py-1.5">
-              <span className="text-[11px] font-medium text-primary-700">
+            <div className="flex items-center gap-2 bg-primary-400 border border-primary-100 rounded-full px-3 py-1.5">
+              <span className="text-[11px] font-medium text-white">
                 Total Potentials
               </span>
-              <span className="text-sm font-bold font-mono text-primary-800">
+              <span className="text-sm font-bold text-white">
                 {potentials.length}
               </span>
             </div>
-            <div className="flex items-center gap-2 bg-emerald-50 border border-emerald-100 rounded-md px-3 py-1.5">
-              <span className="text-[11px] font-medium text-emerald-700">
+            <div className="flex items-center gap-2 bg-emerald-500 border border-emerald-100 rounded-full px-3 py-1.5">
+              <span className="text-[11px] font-medium text-white">
                 Assigned
               </span>
-              <span className="text-sm font-bold font-mono text-emerald-800">
+              <span className="text-sm font-bold text-white">
                 {potentials.filter((p) => p.is_assigned).length}
               </span>
             </div>
-            <div className="flex items-center gap-2 bg-gray-50 border border-gray-200 rounded-md px-3 py-1.5">
-              <span className="text-[11px] font-medium text-gray-600">
+            <div className="flex items-center gap-2 bg-gray-500 border border-gray-200 rounded-full px-3 py-1.5">
+              <span className="text-[11px] font-medium text-white">
                 Unassigned
               </span>
-              <span className="text-sm font-bold font-mono text-gray-800">
+              <span className="text-sm font-bold text-white">
                 {potentials.filter((p) => !p.is_assigned).length}
               </span>
             </div>
@@ -160,37 +160,38 @@ const PotentialDealers = () => {
             variant="outline"
             size="sm"
             onClick={fetchData}
-            className="h-8 text-xs"
+            className="h-8 text-xs bg-gray-700 text-white rounded-full hover:bg-gray-800 hover:text-white"
           >
             Refresh
           </Button>
         </div>
 
         {/* Content */}
-        <Card className="border-0 shadow-sm overflow-hidden">
-          <div className="overflow-x-auto">
-            <table className="w-full border-collapse">
-              <thead>
+        <Card className="rounded-xl border shadow-sm overflow-hidden">
+          <CardContent className="p-0">
+            <div className="overflow-auto max-h-[30rem]">
+              <table className="w-full border-separate border-spacing-0">
+                <thead className="sticky top-0 z-10">
                 <tr className="border-y border-gray-200">
-                  <th className="px-2 py-1.5 text-left text-[10px] font-semibold text-gray-600 border-r border-gray-200 w-8">
+                  <th className="px-2 py-1.5 text-left text-xs font-semibold text-gray-600 border-r border-gray-200 w-8">
                     #
                   </th>
-                  <th className="px-2 py-1.5 text-left text-[10px] font-semibold text-gray-600 border-r border-gray-200">
+                  <th className="px-3 py-1.5 text-left text-xs font-semibold text-gray-600 border-r border-gray-200">
                     Potential Dealer
                   </th>
-                  <th className="px-2 py-1.5 text-[10px] font-semibold text-gray-600 border-r border-gray-200 w-10 text-center">
+                  <th className="px-2 py-1.5 text-xs font-semibold text-gray-600 border-r border-gray-200 w-10 text-center">
                     Addr
                   </th>
-                  <th className="px-2 py-1.5 text-left text-[10px] font-semibold text-gray-600 border-r border-gray-200">
+                  <th className="px-3 py-1.5 text-left text-xs font-semibold text-gray-600 border-r border-gray-200">
                     Found By
                   </th>
-                  <th className="px-2 py-1.5 text-left text-[10px] font-semibold text-gray-600 border-r border-gray-200">
+                  <th className="px-3 py-1.5 text-left text-xs font-semibold text-gray-600 border-r border-gray-200">
                     Date Found
                   </th>
-                  <th className="px-2 py-1.5 text-left text-[10px] font-semibold text-gray-600 border-r border-gray-200">
+                  <th className="px-3 py-1.5 text-left text-xs font-semibold text-gray-600 border-r border-gray-200">
                     Assigned To
                   </th>
-                  <th className="px-2 py-1.5 text-center text-[10px] font-semibold text-gray-600">
+                  <th className="px-3 py-1.5 text-center text-xs font-semibold text-gray-600">
                     Assign
                   </th>
                 </tr>
@@ -242,7 +243,7 @@ const PotentialDealers = () => {
                           >
                             {placeName.display}
                           </div>
-                          <div className="text-[10px] text-gray-400 mt-0.5 font-mono">
+                          <div className="text-[12px] text-gray-400 mt-0.5">
                             ID: {item.place_id.substring(0, 10)}...
                           </div>
                         </td>
@@ -268,11 +269,11 @@ const PotentialDealers = () => {
                           </div>
                         </td>
                         <td className="px-2 py-1.5 border-r border-gray-100">
-                          <div className="flex items-center gap-1.5 text-[11px] text-gray-600">
+                          <div className="flex items-center gap-1.5 text-[12px] text-gray-600">
                             <Calendar size={12} className="text-gray-400" />
                             <span>{formatDateDDMmmYYYY(item.created_at)}</span>
                           </div>
-                          <div className="text-[10px] text-gray-400 pl-5">
+                          <div className="text-[12px] text-gray-400 pl-5">
                             {new Date(item.created_at).toLocaleTimeString([], {
                               hour: "2-digit",
                               minute: "2-digit",
@@ -298,7 +299,7 @@ const PotentialDealers = () => {
                           ) : (
                             <Badge
                               variant="outline"
-                              className="bg-gray-50 text-gray-600 border-gray-200 text-[10px] px-1.5 py-0"
+                              className="bg-yellow-50 text-yellow-600 border-yellow-200 text-[10px] px-1.5 py-0"
                             >
                               Unassigned
                             </Badge>
@@ -309,7 +310,7 @@ const PotentialDealers = () => {
                             variant={item.is_assigned ? "outline" : "default"}
                             size="sm"
                             onClick={() => handleAssignClick(item)}
-                            className="h-7 px-2"
+                            className="h-7 px-2 bg-green-600 text-white rounded-xl"
                           >
                             {item.is_assigned ? (
                               <>
@@ -331,7 +332,8 @@ const PotentialDealers = () => {
               </tbody>
             </table>
           </div>
-        </Card>
+        </CardContent>
+      </Card>
       </div>
 
       {/* Assign Dialog */}

@@ -306,7 +306,7 @@ const TerritoryManagement = () => {
                 <span className="text-xs font-medium text-white/90">
                   {type}s
                 </span>
-                <div className="text-lg font-bold font-mono mt-1">
+                <div className="text-lg font-bold mt-1">
                   {groupedTerritories[type].length}
                 </div>
               </CardContent>

@@ -47,7 +47,7 @@ const OrdersPage = () => {
 
   return (
     <AdminLayout title="Booked Orders">
-      <div className="space-y-4">
+      <div className="space-y-2">
         <div>
           <h1 className="text-lg font-bold bg-gradient-to-r from-primary-600 to-orange-600 bg-clip-text text-transparent">
             Booked Orders
@@ -60,20 +60,20 @@ const OrdersPage = () => {
         ) : orders.length === 0 ? (
            <Card><CardContent className="text-center py-12">No orders found.</CardContent></Card>
         ) : (
-           <Card className="border-0 shadow-sm">
+           <Card className="rounded-xl border shadow-sm overflow-hidden">
              <CardContent className="p-0">
-               <div className="overflow-x-auto">
-                 <table className="w-full text-left">
-                   <thead className="bg-gray-50 text-xs font-semibold text-gray-600">
-                     <tr>
-                       <th className="px-4 py-3 border-b">Date</th>
-                       <th className="px-4 py-3 border-b">Sales Executive</th>
-                       <th className="px-4 py-3 border-b">Dealer</th>
-                       <th className="px-4 py-3 border-b">Order Items</th>
-                       <th className="px-4 py-3 border-b">Total Value</th>
-                       <th className="px-4 py-3 border-b">Status</th>
+               <div className="overflow-auto max-h-[30rem]">
+                 <table className="w-full text-left border-separate border-spacing-0">
+                   <thead className="sticky top-0 z-10">
+                     <tr className="border-y border-gray-200">
+                       <th className="px-3 py-2 text-xs font-semibold text-gray-500 border-r border-b border-gray-200 bg-gray-200">Date</th>
+                       <th className="px-3 py-2 text-xs font-semibold text-gray-500 border-r border-b border-gray-200 bg-gray-200">Sales Executive</th>
+                       <th className="px-3 py-2 text-xs font-semibold text-gray-500 border-r border-b border-gray-200 bg-gray-200">Dealer</th>
+                       <th className="px-3 py-2 text-xs font-semibold text-gray-500 border-r border-b border-gray-200 bg-gray-200">Order Items</th>
+                       <th className="px-3 py-2 text-xs font-semibold text-gray-500 border-r border-b border-gray-200 bg-gray-200">Total Value</th>
+                       <th className="px-3 py-2 text-xs font-semibold text-gray-500 border-r border-b border-gray-200 bg-gray-200">Status</th>
                        {['hod', 'admin', 'organization'].includes(user?.role) && (
-                         <th className="px-4 py-3 border-b text-right">Action</th>
+                         <th className="px-3 py-2 text-xs font-semibold text-gray-500 text-right bg-gray-200 border-b border-gray-200">Action</th>
                        )}
                      </tr>
                    </thead>
@@ -82,10 +82,10 @@ const OrdersPage = () => {
                        const items = order.ordered_items || order.order_items || [];
                        return (
                        <tr key={order.id} className="hover:bg-gray-50">
-                          <td className="px-4 py-3 text-xs">{formatDateDDMmmYYYY(order.check_in_time)}</td>
-                          <td className="px-4 py-3">{order.exec_name}</td>
-                          <td className="px-4 py-3 font-medium text-slate-800">{order.dealer_name}</td>
-                          <td className="px-4 py-3 text-xs text-gray-600">
+                          <td className="px-4 py-2 text-xs">{formatDateDDMmmYYYY(order.check_in_time)}</td>
+                          <td className="px-4 py-2">{order.exec_name}</td>
+                          <td className="px-4 py-2 font-medium text-slate-800">{order.dealer_name}</td>
+                          <td className="px-4 py-2 text-xs text-gray-600">
                              {items.length > 0 ? (
                                <ul className="list-disc list-inside">
                                  {items.map((it, idx) => (
@@ -98,19 +98,19 @@ const OrdersPage = () => {
                                <span className="text-gray-400 italic">No item details</span>
                              )}
                           </td>
-                          <td className="px-4 py-3 font-semibold text-emerald-600">
+                          <td className="px-4 py-2 font-semibold text-emerald-600">
                              ₹{items.length > 0 
                                 ? items.reduce((sum, it) => sum + (it.quantity || 0) * (it.rate || it.unit_price || 0), 0).toLocaleString() 
                                 : (order.order_value || 0).toLocaleString()}
                           </td>
-                          <td className="px-4 py-3">
+                          <td className="px-4 py-2">
                              <span className={`px-2 py-1 text-[10px] font-bold rounded-full ${order.order_status === 'Approved' ? 'bg-green-100 text-green-700' : order.order_status === 'Dispatched' ? 'bg-blue-100 text-blue-700' : 'bg-orange-100 text-orange-700'}`}>
                                 {order.order_status || 'Pending'}
                              </span>
                           </td>
                           {['hod', 'admin', 'organization'].includes(user?.role) && (
-                            <td className="px-4 py-3 text-right">
-                               <Button size="sm" disabled={order.order_status === 'Approved' || order.order_status === 'Dispatched'} onClick={() => handleApprove(order.id)} className="h-7 text-xs bg-emerald-500 hover:bg-emerald-600 text-white">
+                            <td className="px-4 py-2 text-right">
+                               <Button size="sm" disabled={order.order_status === 'Approved' || order.order_status === 'Dispatched'} onClick={() => handleApprove(order.id)} className="h-6 text-xs bg-emerald-500 hover:bg-emerald-600 text-white rounded-xl">
                                   Approve
                                </Button>
                             </td>
