@@ -8,13 +8,8 @@ import { useAuth } from "../context/AuthContext";
 import { toast } from "sonner";
 import { formatDateDDMmmYYYY } from "../utils/tableHelpers";
 
-import pdfMake from "pdfmake/build/pdfmake";
-import pdfFonts from "pdfmake/build/vfs_fonts";
 import { Download, PaperPlaneRight } from "@phosphor-icons/react";
-
-if (pdfFonts && pdfFonts.pdfMake) {
-  pdfMake.vfs = pdfFonts.pdfMake.vfs;
-}
+import { downloadOrderPDF } from "../utils/CustomerOrderPDF";
 
 const API = `${process.env.REACT_APP_BACKEND_URL}/api`;
 
@@ -23,120 +18,54 @@ const DispatchOrderPage = () => {
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(true);
   const [invoiceNumbers, setInvoiceNumbers] = useState({});
+  const [company, setCompany] = useState({});
+  const [dealersMap, setDealersMap] = useState({});
 
-  const fetchOrders = useCallback(async () => {
+  const fetchData = useCallback(async () => {
     try {
-      const res = await axios.get(`${API}/orders`, { headers: getAuthHeader() });
+      const [ordersRes, companyRes, dealersRes] = await Promise.all([
+        axios.get(`${API}/orders`, { headers: getAuthHeader() }),
+        axios.get(`${API}/company/config`, { headers: getAuthHeader() }),
+        axios.get(`${API}/dealers`, { headers: getAuthHeader() })
+      ]);
+      
       // Only show Approved or Dispatched orders for Account user
-      const filtered = res.data.filter(o => o.order_status === 'Approved' || o.order_status === 'Dispatched');
+      const filtered = ordersRes.data.filter(o => o.order_status === 'Approved' || o.order_status === 'Dispatched');
       setOrders(filtered);
+      setCompany(companyRes.data);
+      
+      // Create a lookup map for dealers
+      const dMap = {};
+      if (Array.isArray(dealersRes.data)) {
+          dealersRes.data.forEach(d => {
+              dMap[d.id] = d;
+          });
+      }
+      setDealersMap(dMap);
     } catch (error) {
-      toast.error("Failed to fetch orders");
+      toast.error("Failed to fetch order/company details");
     } finally {
       setLoading(false);
     }
   }, [getAuthHeader]);
 
   useEffect(() => {
-    fetchOrders();
-  }, [fetchOrders]);
+    fetchData();
+  }, [fetchData]);
 
-  const generateInvoicePDF = (order, invNumber) => {
-    const itemsBody = [
-      [{ text: 'Item Name', style: 'tableHeader' }, { text: 'Quantity', style: 'tableHeader' }, { text: 'Rate (₹)', style: 'tableHeader' }, { text: 'Amount (₹)', style: 'tableHeader' }]
-    ];
-
-    let totalAmount = 0;
-    const itemsList = order.ordered_items || order.order_items || [];
-    
-    if (itemsList.length > 0) {
-      itemsList.forEach(item => {
-        const qty = item.quantity || 0;
-        const rate = item.rate || item.unit_price || 0;
-        const amount = qty * rate;
-        totalAmount += amount;
-        itemsBody.push([
-          item.name || 'Unknown Item',
-          qty.toString(),
-          rate.toLocaleString(),
-          amount.toLocaleString()
-        ]);
-      });
-    } else {
-        totalAmount = order.order_value || 0;
-        itemsBody.push([
-          'Miscellaneous Order Value',
-          '1',
-          totalAmount.toLocaleString(),
-          totalAmount.toLocaleString()
-        ]);
-    }
-
-    const docDefinition = {
-      content: [
-        { text: 'TAX INVOICE', style: 'header', alignment: 'center' },
-        { text: '\n' },
-        {
-          columns: [
-            {
-              text: [
-                { text: 'From:\n', style: 'subheader' },
-                'SMART ITBox\n',
-                'Your Company Address\n',
-                'City, State\n'
-              ]
-            },
-            {
-              text: [
-                { text: 'To:\n', style: 'subheader' },
-                `${order.dealer_name}\n`,
-                `Date: ${formatDateDDMmmYYYY(new Date().toISOString())}\n`,
-                `Invoice #: ${invNumber}\n`
-              ],
-              alignment: 'right'
-            }
-          ]
-        },
-        { text: '\n\n' },
-        {
-          table: {
-            headerRows: 1,
-            widths: ['*', 'auto', 'auto', 'auto'],
-            body: itemsBody
-          },
-          layout: 'lightHorizontalLines'
-        },
-        { text: '\n' },
-        {
-          text: `Total Amount: ₹${totalAmount.toLocaleString()}`,
-          style: 'total',
-          alignment: 'right'
-        }
-      ],
-      styles: {
-        header: {
-          fontSize: 22,
-          bold: true
-        },
-        subheader: {
-          fontSize: 14,
-          bold: true
-        },
-        tableHeader: {
-          bold: true,
-          fontSize: 12,
-          color: 'black'
-        },
-        total: {
-          fontSize: 14,
-          bold: true,
-          margin: [0, 10, 0, 0]
-        }
-      }
+  const handleGeneratePDF = (order, invNumber) => {
+    // Enrich order with dealer details if available
+    const dealer = dealersMap[order.dealer_id] || {};
+    const enrichedOrder = { 
+        ...order, 
+        invoice_number: invNumber,
+        dealer_address: dealer.address || "N/A",
+        dealer_city: dealer.city || "N/A",
+        dealer_gstin: dealer.gstin || "NA" 
     };
-
-    pdfMake.createPdf(docDefinition).download(`Invoice-${invNumber}.pdf`);
+    downloadOrderPDF(enrichedOrder, company);
   };
+
 
   const handleDispatch = async (order) => {
     const inv = invoiceNumbers[order.id];
@@ -145,10 +74,10 @@ const DispatchOrderPage = () => {
     if (!window.confirm(`Generate Invoice ${inv} and mark as dispatched?`)) return;
 
     try {
-      generateInvoicePDF(order, inv);
+      handleGeneratePDF(order, inv);
       await axios.put(`${API}/orders/${order.id}/dispatch`, { invoice_number: inv }, { headers: getAuthHeader() });
       toast.success("Order dispatched and invoice generated");
-      fetchOrders();
+      fetchData();
     } catch(err) {
       toast.error("Failed to dispatch order");
     }
@@ -233,7 +162,7 @@ const DispatchOrderPage = () => {
                                    <Button 
                                       size="sm" 
                                       variant="outline"
-                                      onClick={() => generateInvoicePDF(order, order.invoice_number)} 
+                                      onClick={() => handleGeneratePDF(order, order.invoice_number)} 
                                       className="h-8 text-xs font-semibold"
                                    >
                                       <Download className="mr-1" size={14} /> Download
