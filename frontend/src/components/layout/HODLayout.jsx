@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { List, MagnifyingGlass, CaretLeft, CaretRight } from '@phosphor-icons/react';
-import HODSidebar from './HODSidebar';
+import Sidebar from './Sidebar';
 import { useAuth } from '../../context/AuthContext';
 import { useSearch } from '../../context/SearchContext';
 
@@ -16,7 +16,7 @@ const HODLayout = ({ children, title }) => {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      <HODSidebar 
+      <Sidebar 
         isOpen={sidebarOpen} 
         onClose={() => setSidebarOpen(false)}
         isCollapsed={isCollapsed}

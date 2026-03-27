@@ -19,6 +19,7 @@ import {
   ArrowRight,
   CheckCircle,
   Package,
+  ArrowsClockwise
 } from "@phosphor-icons/react";
 import { useAuth } from "../context/AuthContext";
 import { useSearch } from "../context/SearchContext";
@@ -262,13 +263,27 @@ const AssignedPotentials = () => {
     <SalesExecutiveLayout title="My Assigned Dealers">
       <div className="space-y-4">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-          <div>
-            <h1 className="text-lg font-bold bg-gradient-to-r from-primary-600 to-orange-600 bg-clip-text text-transparent">
-              My Assigned Dealers
-            </h1>
-            <p className="text-xs text-gray-500 mt-0.5">
-              Potential dealers assigned to you for follow-up
-            </p>
+          <div className="flex items-center gap-3">
+            <div>
+              <h1 className="text-lg font-bold bg-gradient-to-r from-primary-600 to-orange-600 bg-clip-text text-transparent">
+                My Assigned Dealers
+              </h1>
+              <p className="text-xs text-gray-500 mt-0.5">
+                Potential dealers assigned to you for follow-up
+              </p>
+            </div>
+            <Badge className="bg-primary-100 text-primary-700 border-primary-200 text-sm px-2 py-1 rounded-full shrink-0">
+              {potentials.length}
+            </Badge>
+            <Button
+              size="sm"
+              variant="ghost"
+              className="h-8 w-12 p-0 rounded-xl bg-gray-500 hover:bg-gray-600 hover:text-white text-white"
+              onClick={fetchData}
+              title="Refresh"
+            >
+              <ArrowsClockwise size={18} weight="bold" />
+            </Button>
           </div>
           <SearchBar placeholder="Search assigned dealers..." />
         </div>
@@ -312,17 +327,10 @@ const AssignedPotentials = () => {
               </p>
             )}
           </div>
-          <Button
-            className="rounded-xl hover:bg-gray-200"
-            variant="outline"
-            onClick={fetchData}
-          >
-            Refresh
-          </Button>
         </div>
 
-        {/* Stats */}
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
+        {/* Stats - Commented out as requested */}
+        {/* <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
           <Card className="border-0 bg-gradient-to-br from-primary-400 to-primary-300 text-white shadow-md hover:shadow-lg transition-all duration-300">
             <CardContent className="p-3">
               <div className="flex items-center justify-between mb-1">
@@ -339,7 +347,7 @@ const AssignedPotentials = () => {
               </p>
             </CardContent>
           </Card>
-        </div>
+        </div> */}
 
         {/* Content */}
         <Card className="rounded-xl border shadow-sm overflow-hidden">

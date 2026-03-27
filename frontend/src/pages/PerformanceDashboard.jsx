@@ -495,10 +495,10 @@ const PerformanceDashboard = () => {
                <div className="space-y-4">
                  <div className="overflow-x-auto rounded-xl border border-gray-200 shadow-sm bg-white">
                    <table className="w-full text-left text-sm border-collapse whitespace-nowrap">
-                     <thead>
+                     <thead className="sticky top-0 z-10 bg-gray-200">
                        <tr className="bg-slate-100/80 border-b border-gray-200">
                           {Object.keys(kpiDetailsData[0]).map(key => (
-                            <th key={key} className="py-3 px-4 font-bold text-xs text-slate-700 uppercase tracking-wider">{key}</th>
+                            <th key={key} className="py-3 px-4 font-bold text-xs text-slate-700 uppercase tracking-wider bg-gray-200">{key}</th>
                           ))}
                        </tr>
                      </thead>

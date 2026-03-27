@@ -891,28 +891,28 @@ const AdminDashboard = () => {
               <div className="overflow-auto rounded-lg border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 shadow-sm max-h-[30rem]">
                 <Table className="table-auto border-collapse">
                   <TableHeader className="text-nowrap sticky top-0 text-xs z-10 bg-gray-200">
-                    <TableHead className="p-2 text-gray-500 font-semibold border-r border-gray-200 w-8">
+                    <TableHead className="p-2 text-gray-500 font-semibold border-r border-gray-200 w-8 bg-gray-200">
                       #
                     </TableHead>
-                    <TableHead className="p-2 text-gray-500 font-semibold border-r border-gray-200">
+                    <TableHead className="p-2 text-gray-500 font-semibold border-r border-gray-200 bg-gray-200">
                       Next Visit
                     </TableHead>
-                    <TableHead className="p-2 text-gray-500 font-semibold border-r border-gray-200">
+                    <TableHead className="p-2 text-gray-500 font-semibold border-r border-gray-200 bg-gray-200">
                       Dealer
                     </TableHead>
-                    <TableHead className="p-2 text-gray-500 font-semibold border-r border-gray-200">
+                    <TableHead className="p-2 text-gray-500 font-semibold border-r border-gray-200 bg-gray-200">
                       Status
                     </TableHead>
-                    <TableHead className="p-2 text-gray-500 font-semibold border-r border-gray-200">
+                    <TableHead className="p-2 text-gray-500 font-semibold border-r border-gray-200 bg-gray-200">
                       Distance
                     </TableHead>
-                    <TableHead className="p-2 text-gray-500 font-semibold border-r border-gray-200">
+                    <TableHead className="p-2 text-gray-500 font-semibold border-r border-gray-200 bg-gray-200">
                       Duration
                     </TableHead>
-                    <TableHead className="p-2 text-gray-500 font-semibold border-r border-gray-200">
+                    <TableHead className="p-2 text-gray-500 font-semibold border-r border-gray-200 bg-gray-200">
                       Rep
                     </TableHead>
-                    <TableHead className="p-2 text-gray-500 font-semibold">
+                    <TableHead className="p-2 text-gray-500 font-semibold bg-gray-200">
                       Outcome
                     </TableHead>
                   </TableHeader>

@@ -171,27 +171,27 @@ const PotentialDealers = () => {
           <CardContent className="p-0">
             <div className="overflow-auto max-h-[30rem]">
               <table className="w-full border-separate border-spacing-0">
-                <thead className="sticky top-0 z-10">
+                <thead className="sticky top-0 z-10 bg-gray-200">
                 <tr className="border-y border-gray-200">
-                  <th className="px-2 py-1.5 text-left text-xs font-semibold text-gray-600 border-r border-gray-200 w-8">
+                  <th className="px-2 py-1.5 text-left text-xs font-semibold text-gray-600 border-r border-gray-200 w-8 bg-gray-200">
                     #
                   </th>
-                  <th className="px-3 py-1.5 text-left text-xs font-semibold text-gray-600 border-r border-gray-200">
+                  <th className="px-3 py-1.5 text-left text-xs font-semibold text-gray-600 border-r border-gray-200 bg-gray-200">
                     Potential Dealer
                   </th>
-                  <th className="px-2 py-1.5 text-xs font-semibold text-gray-600 border-r border-gray-200 w-10 text-center">
+                  <th className="px-2 py-1.5 text-xs font-semibold text-gray-600 border-r border-gray-200 w-10 text-center bg-gray-200">
                     Addr
                   </th>
-                  <th className="px-3 py-1.5 text-left text-xs font-semibold text-gray-600 border-r border-gray-200">
+                  <th className="px-3 py-1.5 text-left text-xs font-semibold text-gray-600 border-r border-gray-200 bg-gray-200">
                     Found By
                   </th>
-                  <th className="px-3 py-1.5 text-left text-xs font-semibold text-gray-600 border-r border-gray-200">
+                  <th className="px-3 py-1.5 text-left text-xs font-semibold text-gray-600 border-r border-gray-200 bg-gray-200">
                     Date Found
                   </th>
-                  <th className="px-3 py-1.5 text-left text-xs font-semibold text-gray-600 border-r border-gray-200">
+                  <th className="px-3 py-1.5 text-left text-xs font-semibold text-gray-600 border-r border-gray-200 bg-gray-200">
                     Assigned To
                   </th>
-                  <th className="px-3 py-1.5 text-center text-xs font-semibold text-gray-600">
+                  <th className="px-3 py-1.5 text-center text-xs font-semibold text-gray-600 bg-gray-200">
                     Assign
                   </th>
                 </tr>

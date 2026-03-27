@@ -573,30 +573,30 @@ const SalesExecutiveManagement = () => {
             <CardContent className="p-0">
               <div className="overflow-auto max-h-[30rem]">
                 <table className="w-full border-separate border-spacing-0">
-                  <thead className="sticky top-0 z-10">
+                  <thead className="sticky top-0 z-10 bg-gray-200">
                     <tr className="border-y border-gray-200">
-                      <th className="text-left px-2 py-2 text-xs font-semibold text-gray-500 border-r border-gray-200 w-8">
+                      <th className="text-left px-2 py-2 text-xs font-semibold text-gray-600 border-r border-gray-200 w-8 bg-gray-200">
                         #
                       </th>
-                      <th className="text-left px-3 py-2 text-xs font-semibold text-gray-500 border-r border-gray-200">
+                      <th className="text-left px-3 py-2 text-xs font-semibold text-gray-600 border-r border-gray-200 bg-gray-200">
                         Executive Name
                       </th>
-                      <th className="text-left px-3 py-2 text-xs font-semibold text-gray-500 border-r border-gray-200">
+                      <th className="text-left px-3 py-2 text-xs font-semibold text-gray-600 border-r border-gray-200 bg-gray-200">
                         Employee Code
                       </th>
-                      <th className="text-left px-3 py-2 text-xs font-semibold text-gray-500 border-r border-gray-200">
+                      <th className="text-left px-3 py-2 text-xs font-semibold text-gray-600 border-r border-gray-200 bg-gray-200">
                         Email
                       </th>
-                      <th className="text-left px-3 py-2 text-xs font-semibold text-gray-500 border-r border-gray-200">
+                      <th className="text-left px-3 py-2 text-xs font-semibold text-gray-600 border-r border-gray-200 bg-gray-200">
                         Mobile
                       </th>
-                      <th className="text-left px-3 py-2 text-xs font-semibold text-gray-500 border-r border-gray-200">
+                      <th className="text-left px-3 py-2 text-xs font-semibold text-gray-600 border-r border-gray-200 bg-gray-200">
                         Location/Tracking
                       </th>
-                      <th className="text-center px-2 py-2 text-xs font-semibold text-gray-500 border-r border-gray-200">
+                      <th className="text-center px-2 py-2 text-xs font-semibold text-gray-600 border-r border-gray-200 bg-gray-200">
                         Status
                       </th>
-                      <th className="text-center px-2 py-2 text-xs font-semibold text-gray-500">
+                      <th className="text-center px-2 py-2 text-xs font-semibold text-gray-600 bg-gray-200">
                         Actions
                       </th>
                     </tr>
@@ -813,27 +813,27 @@ const SalesExecutiveManagement = () => {
                   </h4>
                   <div className="border border-gray-100 rounded-lg overflow-auto max-h-[30rem]">
                     <table className="w-full border-collapse text-left min-w-[500px]">
-                      <thead className="sticky top-0 z-10 bg-gray-50">
+                      <thead className="sticky top-0 z-10 bg-gray-200">
                         <tr className="border-y border-gray-200">
-                          <th className="px-2 py-2 text-xs font-semibold text-gray-500 border-r border-gray-200 w-8">
+                          <th className="px-2 py-2 text-xs font-semibold text-gray-600 border-r border-gray-200 w-8 bg-gray-200">
                             #
                           </th>
-                          <th className="px-2 py-2 text-xs font-semibold text-gray-500 border-r border-gray-200">
+                          <th className="px-2 py-2 text-xs font-semibold text-gray-600 border-r border-gray-200 bg-gray-200">
                             Date & Time
                           </th>
-                          <th className="px-2 py-2 text-xs font-semibold text-gray-500 border-r border-gray-200">
+                          <th className="px-2 py-2 text-xs font-semibold text-gray-600 border-r border-gray-200 bg-gray-200">
                             Dealer / Location
                           </th>
-                          <th className="px-2 py-2 text-xs font-semibold text-gray-500 border-r border-gray-200">
+                          <th className="px-2 py-2 text-xs font-semibold text-gray-600 border-r border-gray-200 bg-gray-200">
                             Duration
                           </th>
-                          <th className="px-2 py-2 text-xs font-semibold text-gray-500 border-r border-gray-200">
+                          <th className="px-2 py-2 text-xs font-semibold text-gray-600 border-r border-gray-200 bg-gray-200">
                             Outcome
                           </th>
-                          <th className="px-2 py-2 text-xs font-semibold text-gray-500 border-r border-gray-200 text-right">
+                          <th className="px-2 py-2 text-xs font-semibold text-gray-600 border-r border-gray-200 text-right bg-gray-200">
                             Order Value
                           </th>
-                          <th className="px-2 py-2 text-xs font-semibold text-gray-500 text-center">
+                          <th className="px-2 py-2 text-xs font-semibold text-gray-600 text-center bg-gray-200">
                             Items
                           </th>
                         </tr>

@@ -496,7 +496,7 @@ const FieldView = () => {
     ) : (
       <div className="overflow-auto rounded-xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 shadow-sm w-full max-h-[30rem]">
         <table className="w-full text-left border-separate border-spacing-0">
-          <thead className="sticky top-0 z-10">
+          <thead className="sticky top-0 z-10 bg-gray-200">
             <tr className="border-y border-gray-200">
                <th className="text-xs text-gray-500 font-semibold px-2 py-2 border-r border-b border-gray-200 w-8 bg-gray-200">#</th>
                <th className="text-xs text-gray-500 font-semibold px-2 py-2 border-r border-b border-gray-200 bg-gray-200">Date</th>

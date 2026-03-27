@@ -106,13 +106,13 @@ const DispatchOrderPage = () => {
                    <table className="w-full text-left">
                      <thead className="bg-gray-200 sticky top-0 z-10">
                        <tr className="border-y border-gray-200">
-                         <th className="px-3 py-2 text-xs font-semibold text-gray-500 border-r border-gray-200">Order Date</th>
-                         <th className="px-3 py-2 text-xs font-semibold text-gray-500 border-r border-gray-200">Dealer</th>
-                         <th className="px-3 py-2 text-xs font-semibold text-gray-500 border-r border-gray-200">Order Items</th>
-                         <th className="px-3 py-2 text-xs font-semibold text-gray-500 border-r border-gray-200">Total Amount</th>
-                         <th className="px-3 py-2 text-xs font-semibold text-gray-500 border-r border-gray-200">Status</th>
-                         <th className="px-3 py-2 text-xs font-semibold text-gray-500 border-r border-gray-200">Invoice Number</th>
-                         <th className="px-3 py-2 text-xs font-semibold text-gray-500 text-right">Action</th>
+                         <th className="px-3 py-2 text-xs font-semibold text-gray-600 border-r border-gray-200 bg-gray-200">Order Date</th>
+                         <th className="px-3 py-2 text-xs font-semibold text-gray-600 border-r border-gray-200 bg-gray-200">Dealer</th>
+                         <th className="px-3 py-2 text-xs font-semibold text-gray-600 border-r border-gray-200 bg-gray-200">Order Items</th>
+                         <th className="px-3 py-2 text-xs font-semibold text-gray-600 border-r border-gray-200 bg-gray-200">Total Amount</th>
+                         <th className="px-3 py-2 text-xs font-semibold text-gray-600 border-r border-gray-200 bg-gray-200">Status</th>
+                         <th className="px-3 py-2 text-xs font-semibold text-gray-600 border-r border-gray-200 bg-gray-200">Invoice Number</th>
+                         <th className="px-3 py-2 text-xs font-semibold text-gray-600 text-right bg-gray-200">Action</th>
                        </tr>
                      </thead>
                      <tbody className="text-sm divide-y divide-gray-100">

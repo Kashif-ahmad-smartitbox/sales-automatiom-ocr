@@ -228,7 +228,7 @@ const OwnerUsers = () => {
             <CardContent className="p-0">
               <div className="overflow-auto bg-white shadow-sm w-full max-h-[30rem]">
                 <table className="w-full border-separate border-spacing-0">
-                  <thead className="sticky top-0 z-10">
+                  <thead className="sticky top-0 z-10 bg-gray-200">
                     <tr className="border-y border-gray-100">
                       <th className="text-left px-2 py-2 text-xs font-semibold text-gray-600 border-r border-b border-gray-200 w-8 bg-gray-200">
                         #

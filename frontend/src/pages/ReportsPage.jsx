@@ -584,24 +584,24 @@ const ReportsPage = () => {
                 ) : (
                   <div className="overflow-auto max-h-[30rem]">
                     <table className="w-full border-separate border-spacing-0">
-                      <thead className="sticky top-0 z-10">
+                      <thead className="sticky top-0 z-10 bg-gray-200">
                         <tr className="border-y border-gray-200">
-                          <th className="text-left px-2 py-2 text-xs font-semibold text-gray-500 border-r border-gray-200 w-8">
+                          <th className="text-left px-2 py-2 text-xs font-semibold text-gray-600 border-r border-gray-200 w-8 bg-gray-200">
                             #
                           </th>
-                          <th className="text-left px-3 py-2 text-xs font-semibold text-gray-500 border-r border-gray-200">
+                          <th className="text-left px-3 py-2 text-xs font-semibold text-gray-600 border-r border-gray-200 bg-gray-200">
                             Executive
                           </th>
-                          <th className="text-center px-3 py-2 text-xs font-semibold text-gray-500 border-r border-gray-200">
+                          <th className="text-center px-3 py-2 text-xs font-semibold text-gray-600 border-r border-gray-200 bg-gray-200">
                             Total Visits
                           </th>
-                          <th className="text-center px-3 py-2 text-xs font-semibold text-gray-500 border-r border-gray-200">
+                          <th className="text-center px-3 py-2 text-xs font-semibold text-gray-600 border-r border-gray-200 bg-gray-200">
                             Completed
                           </th>
-                          <th className="text-right px-3 py-2 text-xs font-semibold text-gray-500 border-r border-gray-200">
+                          <th className="text-right px-3 py-2 text-xs font-semibold text-gray-600 border-r border-gray-200 bg-gray-200">
                             Orders Value
                           </th>
-                          <th className="text-center px-3 py-2 text-xs font-semibold text-gray-500 border-r border-gray-200">
+                          <th className="text-center px-3 py-2 text-xs font-semibold text-gray-600 border-r border-gray-200 bg-gray-200">
                             Avg Time/Visit
                           </th>
                           <th className="text-center px-3 py-2 text-xs font-semibold text-gray-500">
@@ -697,16 +697,16 @@ const ReportsPage = () => {
                       <table className="w-full border-collapse text-left">
                         <thead className="bg-gray-200 sticky top-0 z-10">
                           <tr className="border-y border-gray-200">
-                            <th className="text-xs text-gray-500 font-semibold px-2 py-2 border-r border-gray-200 w-8">
+                            <th className="text-xs text-gray-600 font-semibold px-2 py-2 border-r border-gray-200 w-8 bg-gray-200">
                               #
                             </th>
-                            <th className="text-xs text-gray-500 font-semibold px-3 py-2 border-r border-gray-200">
+                            <th className="text-xs text-gray-600 font-semibold px-3 py-2 border-r border-gray-200 bg-gray-200">
                               Date
                             </th>
-                            <th className="text-xs text-gray-500 font-semibold px-3 py-2 border-r border-gray-200">
+                            <th className="text-xs text-gray-600 font-semibold px-3 py-2 border-r border-gray-200 bg-gray-200">
                               User
                             </th>
-                            <th className="text-xs text-gray-500 font-semibold px-3 py-2 border-r border-gray-200">
+                            <th className="text-xs text-gray-600 font-semibold px-3 py-2 border-r border-gray-200 bg-gray-200">
                               Dealer
                             </th>
                             <th className="text-xs text-gray-500 font-semibold px-3 py-2 border-r border-gray-200">
@@ -860,16 +860,16 @@ const ReportsPage = () => {
                       <table className="w-full border-collapse text-left">
                         <thead className="sticky top-0 z-10 bg-gray-200">
                           <tr className="border-y border-gray-200">
-                            <th className="text-xs text-gray-500 font-semibold px-2 py-2 border-r border-gray-200 w-8">
+                            <th className="text-xs text-gray-600 font-semibold px-2 py-2 border-r border-gray-200 w-8 bg-gray-200">
                               #
                             </th>
-                            <th className="text-[10px] text-gray-600 font-semibold px-2 py-1.5 border-r border-gray-200">
+                            <th className="text-[10px] text-gray-600 font-semibold px-2 py-1.5 border-r border-gray-200 bg-gray-200">
                               Date
                             </th>
-                            <th className="text-[10px] text-gray-600 font-semibold px-2 py-1.5 border-r border-gray-200">
+                            <th className="text-[10px] text-gray-600 font-semibold px-2 py-1.5 border-r border-gray-200 bg-gray-200">
                               Dealer
                             </th>
-                            <th className="text-[10px] text-gray-600 font-semibold px-2 py-1.5">
+                            <th className="text-[10px] text-gray-600 font-semibold px-2 py-1.5 bg-gray-200">
                               Notes
                             </th>
                           </tr>
@@ -946,34 +946,34 @@ const ReportsPage = () => {
                       <table className="w-full border-collapse text-left">
                         <thead className="bg-gray-200 sticky top-0 z-10">
                           <tr className="border-y border-gray-200">
-                            <th className="text-[10px] text-gray-600 font-semibold px-2 py-1.5 border-r border-gray-200 w-8">
+                            <th className="text-[10px] text-gray-600 font-semibold px-2 py-1.5 border-r border-gray-200 w-8 bg-gray-200">
                               #
                             </th>
-                            <th className="text-[10px] text-gray-600 font-semibold px-2 py-1.5 border-r border-gray-200">
+                            <th className="text-[10px] text-gray-600 font-semibold px-2 py-1.5 border-r border-gray-200 bg-gray-200">
                               User
                             </th>
-                            <th className="text-[10px] text-gray-600 font-semibold px-2 py-1.5 border-r border-gray-200">
+                            <th className="text-[10px] text-gray-600 font-semibold px-2 py-1.5 border-r border-gray-200 bg-gray-200">
                               Date
                             </th>
-                            <th className="text-[10px] text-gray-600 font-semibold px-2 py-1.5 border-r border-gray-200">
+                            <th className="text-[10px] text-gray-600 font-semibold px-2 py-1.5 border-r border-gray-200 bg-gray-200">
                               Time
                             </th>
-                            <th className="text-[10px] text-gray-600 font-semibold px-2 py-1.5 border-r border-gray-200">
+                            <th className="text-[10px] text-gray-600 font-semibold px-2 py-1.5 border-r border-gray-200 bg-gray-200">
                               Status
                             </th>
-                            <th className="text-[10px] text-gray-600 font-semibold px-2 py-1.5 text-center border-r border-gray-200">
+                            <th className="text-[10px] text-gray-600 font-semibold px-2 py-1.5 text-center border-r border-gray-200 bg-gray-200">
                               Duration
                             </th>
-                            <th className="text-[10px] text-gray-600 font-semibold px-2 py-1.5 text-center border-r border-gray-200">
+                            <th className="text-[10px] text-gray-600 font-semibold px-2 py-1.5 text-center border-r border-gray-200 bg-gray-200">
                               Distance
                             </th>
-                            <th className="text-[10px] text-gray-600 font-semibold px-2 py-1.5 text-center border-r border-gray-200">
+                            <th className="text-[10px] text-gray-600 font-semibold px-2 py-1.5 text-center border-r border-gray-200 bg-gray-200">
                               Shown
                             </th>
-                            <th className="text-[10px] text-gray-600 font-semibold px-2 py-1.5 text-center border-r border-gray-200">
+                            <th className="text-[10px] text-gray-600 font-semibold px-2 py-1.5 text-center border-r border-gray-200 bg-gray-200">
                               Visited
                             </th>
-                            <th className="text-[10px] text-gray-600 font-semibold px-2 py-1.5 text-center border-r border-gray-200">
+                            <th className="text-[10px] text-gray-600 font-semibold px-2 py-1.5 text-center border-r border-gray-200 bg-gray-200">
                               Lost
                             </th>
                             <th className="text-[10px] text-gray-600 font-semibold px-2 py-1.5 text-right">
@@ -1100,16 +1100,16 @@ const ReportsPage = () => {
                 <table className="w-full border-collapse text-left min-w-[400px]">
                   <thead className="sticky top-0 z-10 bg-gray-200">
                     <tr className="border-y border-gray-200">
-                      <th className="px-2 sm:px-4 py-2 text-xs font-semibold text-gray-500 border-r border-gray-200">
+                      <th className="px-2 sm:px-4 py-2 text-xs font-semibold text-gray-600 border-r border-gray-200 bg-gray-200">
                         Place/Dealer
                       </th>
-                      <th className="px-2 sm:px-4 py-2 text-xs font-semibold text-gray-500 hidden sm:table-cell border-r border-gray-200">
+                      <th className="px-2 sm:px-4 py-2 text-xs font-semibold text-gray-600 hidden sm:table-cell border-r border-gray-200 bg-gray-200">
                         Address
                       </th>
-                      <th className="px-2 sm:px-4 py-2 text-xs font-semibold text-gray-500 text-center border-r border-gray-200">
+                      <th className="px-2 sm:px-4 py-2 text-xs font-semibold text-gray-600 text-center border-r border-gray-200 bg-gray-200">
                         Status
                       </th>
-                      <th className="px-2 sm:px-4 py-2 text-xs font-semibold text-gray-500 text-right">
+                      <th className="px-2 sm:px-4 py-2 text-xs font-semibold text-gray-600 text-right bg-gray-200">
                         Time Shown
                       </th>
                     </tr>

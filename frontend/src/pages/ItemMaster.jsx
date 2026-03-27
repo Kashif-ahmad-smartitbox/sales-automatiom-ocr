@@ -251,7 +251,7 @@ const ItemMaster = () => {
             ) : (
               <div className="overflow-auto bg-white dark:bg-gray-900 shadow-sm w-full max-h-[30rem]">
                 <table className="w-full border-separate border-spacing-0">
-                  <thead className="sticky top-0 z-10">
+                  <thead className="sticky top-0 z-10 bg-gray-200">
                     <tr className="border-y border-gray-200">
                       <th className="px-2 py-2 text-left text-xs font-semibold text-gray-500 border-r border-b border-gray-200 w-8 bg-gray-200">#</th>
                       <th className="px-3 py-2 text-left text-xs font-semibold text-gray-500 border-r border-b border-gray-200 bg-gray-200">Item Name</th>
