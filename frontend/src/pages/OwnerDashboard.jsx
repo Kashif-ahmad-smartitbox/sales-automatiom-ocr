@@ -384,14 +384,16 @@ const OwnerDashboard = () => {
             ) : (
               <div className="overflow-auto bg-white dark:bg-gray-900 shadow-sm w-full max-h-[30rem]">
                 <Table className="table-auto border-separate border-spacing-0">
-                  <TableHeader className="text-nowrap sticky top-0 text-xs z-10">
-                    <TableHead className="p-2 text-gray-500 font-semibold border-r border-b border-gray-200 text-center w-8 bg-gray-200">#</TableHead>
-                    <TableHead className="p-2 text-gray-500 font-semibold border-r border-b border-gray-200 bg-gray-200">Company</TableHead>
-                    <TableHead className="p-2 text-gray-500 font-semibold border-r border-b border-gray-200 bg-gray-200">User</TableHead>
-                    <TableHead className="p-2 text-gray-500 font-semibold border-r border-b border-gray-200 bg-gray-200">Dealer</TableHead>
-                    <TableHead className="p-2 text-gray-500 font-semibold border-r border-b border-gray-200 bg-gray-200">Check-in</TableHead>
-                    <TableHead className="p-2 text-gray-500 font-semibold border-r border-b border-gray-200 text-center bg-gray-200">Outcome</TableHead>
-                    <TableHead className="p-2 text-gray-500 font-semibold text-right bg-gray-200 border-b border-gray-200">Order Value</TableHead>
+                  <TableHeader className="text-nowrap sticky top-0 bg-gray-200">
+                    <tr className="border-y border-gray-200">
+                      <th className="px-2 py-2 text-center w-8 bg-gray-200">#</th>
+                      <th className="px-2 py-2 bg-gray-200 text-left">Company</th>
+                      <th className="px-2 py-2 bg-gray-200 text-left">User</th>
+                      <th className="px-2 py-2 bg-gray-200 text-left">Dealer</th>
+                      <th className="px-2 py-2 bg-gray-200 text-left">Check-in</th>
+                      <th className="px-2 py-2 bg-gray-200 text-center">Outcome</th>
+                      <th className="px-2 py-2 bg-gray-200 text-right border-r-0">Order Value</th>
+                    </tr>
                   </TableHeader>
                   <TableBody className="divide-y divide-gray-100 dark:divide-gray-800">
                     {recentActivity.slice(0, 10).map((visit, idx) => {
@@ -401,28 +403,28 @@ const OwnerDashboard = () => {
 
                       return (
                         <TableRow key={visit.id} className="group cursor-pointer transition-all text-xs text-gray-700 duration-200">
-                          <TableCell className="px-2 py-1.5 text-center">
-                            <span className="p-1 bg-gray-200 dark:bg-gray-700 font-medium rounded-full text-gray-600 dark:text-gray-300">{idx + 1}</span>
+                          <TableCell className="px-2 py-1 text-center">
+                            <span className="p-1 px-1.5 bg-gray-200 dark:bg-gray-700 rounded-full text-gray-800 dark:text-gray-300">{idx + 1}</span>
                           </TableCell>
-                          <TableCell className="px-2 py-1.5">
-                            <span className="font-medium text-[11px] text-gray-800 dark:text-gray-200" title={companyName.full}>{companyName.display}</span>
+                          <TableCell className="px-2 py-1">
+                            <span className="text-xs text-gray-900 dark:text-gray-200 font-semibold" title={companyName.full}>{companyName.display}</span>
                           </TableCell>
-                          <TableCell className="px-2 py-1.5 text-[11px] text-gray-600 dark:text-gray-400" title={userName.full}>{userName.display}</TableCell>
-                          <TableCell className="px-2 py-1.5 text-[11px] text-gray-600 dark:text-gray-400" title={dealerName.full}>{dealerName.display}</TableCell>
-                          <TableCell className="px-2 py-1.5 text-[11px] text-gray-600 dark:text-gray-400">
+                          <TableCell className="px-2 py-1 text-xs text-gray-800 dark:text-gray-400" title={userName.full}>{userName.display}</TableCell>
+                          <TableCell className="px-2 py-1 text-xs text-gray-800 dark:text-gray-400" title={dealerName.full}>{dealerName.display}</TableCell>
+                          <TableCell className="px-2 py-1 text-xs text-gray-800 dark:text-gray-400">
                             {formatDateDDMmmYYYY(visit.check_in_time)}
                           </TableCell>
-                          <TableCell className="px-2 py-1.5 text-center">
-                            <Badge className={
-                              visit.outcome === 'Order Booked' ? 'bg-emerald-100 text-emerald-700' :
-                              visit.outcome === 'Follow-up Required' ? 'bg-amber-100 text-amber-700' :
-                              visit.outcome === 'Lost Visit' ? 'bg-red-100 text-red-700' :
-                              'bg-slate-100 text-slate-600'
-                            }>
+                          <TableCell className="px-2 py-1 text-center">
+                            <Badge className={`text-[10px] px-1.5 py-0 ${
+                              visit.outcome === 'Order Booked' ? 'bg-emerald-100 text-emerald-800' :
+                              visit.outcome === 'Follow-up Required' ? 'bg-amber-100 text-amber-800' :
+                              visit.outcome === 'Lost Visit' ? 'bg-red-100 text-red-800' :
+                              'bg-slate-100 text-slate-700'
+                            }`}>
                               {visit.outcome || 'In Progress'}
                             </Badge>
                           </TableCell>
-                          <TableCell className="px-2 py-1.5 text-[11px] font-medium text-primary-600 text-right">
+                          <TableCell className="px-2 py-1 text-xs text-primary-700 font-semibold text-right border-r-0">
                             {visit.order_value ? `₹${visit.order_value.toLocaleString()}` : '–'}
                           </TableCell>
                         </TableRow>

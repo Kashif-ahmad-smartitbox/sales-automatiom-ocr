@@ -5,6 +5,14 @@ import { Card, CardContent } from "../components/ui/card";
 import { Input } from "../components/ui/input";
 import { Button } from "../components/ui/button";
 import { MapPin, Calendar, Buildings, Check } from "@phosphor-icons/react";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "../components/ui/table";
 import { useAuth } from "../context/AuthContext";
 import { useSearch } from "../context/SearchContext";
 import { toast } from "sonner";
@@ -117,7 +125,7 @@ const PotentialDealers = () => {
               Potential Dealers
             </h1>
             <p className="text-xs text-gray-500 mt-0.5">
-            Leads discovered by field team
+              Leads discovered by field team
             </p>
           </div>
           <SearchBar placeholder="Search potentials..." />
@@ -170,170 +178,171 @@ const PotentialDealers = () => {
         <Card className="rounded-xl border shadow-sm overflow-hidden">
           <CardContent className="p-0">
             <div className="overflow-auto max-h-[30rem]">
-              <table className="w-full border-separate border-spacing-0">
-                <thead className="sticky top-0 z-10 bg-gray-200">
-                <tr className="border-y border-gray-200">
-                  <th className="px-2 py-1.5 text-left text-xs font-semibold text-gray-600 border-r border-gray-200 w-8 bg-gray-200">
-                    #
-                  </th>
-                  <th className="px-3 py-1.5 text-left text-xs font-semibold text-gray-600 border-r border-gray-200 bg-gray-200">
-                    Potential Dealer
-                  </th>
-                  <th className="px-2 py-1.5 text-xs font-semibold text-gray-600 border-r border-gray-200 w-10 text-center bg-gray-200">
-                    Addr
-                  </th>
-                  <th className="px-3 py-1.5 text-left text-xs font-semibold text-gray-600 border-r border-gray-200 bg-gray-200">
-                    Found By
-                  </th>
-                  <th className="px-3 py-1.5 text-left text-xs font-semibold text-gray-600 border-r border-gray-200 bg-gray-200">
-                    Date Found
-                  </th>
-                  <th className="px-3 py-1.5 text-left text-xs font-semibold text-gray-600 border-r border-gray-200 bg-gray-200">
-                    Assigned To
-                  </th>
-                  <th className="px-3 py-1.5 text-center text-xs font-semibold text-gray-600 bg-gray-200">
-                    Assign
-                  </th>
-                </tr>
-              </thead>
-              <tbody>
-                {loading ? (
-                  <tr>
-                    <td colSpan="7" className="px-2 py-8 text-center">
-                      <div className="flex justify-center items-center gap-2 text-[11px] text-gray-500">
-                        <div className="spinner w-4 h-4" /> Loading data...
-                      </div>
-                    </td>
-                  </tr>
-                ) : filteredPotentials.length === 0 ? (
-                  <tr>
-                    <td
-                      colSpan="7"
-                      className="px-2 py-8 text-center text-[11px] text-gray-500"
-                    >
-                      {searchTerm
-                        ? "No matches found."
-                        : "No potential dealers found yet."}
-                    </td>
-                  </tr>
-                ) : (
-                  filteredPotentials.map((item, idx) => {
-                    const placeName = getTruncatedText(item.place_name, 18);
-                    const foundByName = getTruncatedText(
-                      item.found_by_name,
-                      16,
-                    );
-                    const assignedToName = getTruncatedText(
-                      item.assigned_to_name || "–",
-                      16,
-                    );
-
-                    return (
-                      <tr
-                        key={item._id || item.id}
-                        className="border-b border-gray-100 transition-colors"
+              <Table className="w-full text-left">
+                <TableHeader className="sticky top-0 z-10">
+                  <TableRow className="border-y border-gray-200">
+                    <TableHead className="px-2 py-2 w-8">#</TableHead>
+                    <TableHead className="px-3 py-2">
+                      Potential Dealer
+                    </TableHead>
+                    <TableHead className="px-2 py-2 w-10 text-center">
+                      Addr
+                    </TableHead>
+                    <TableHead className="px-3 py-2">Found By</TableHead>
+                    <TableHead className="px-3 py-2">Date Found</TableHead>
+                    <TableHead className="px-3 py-2">Assigned To</TableHead>
+                    <TableHead className="px-3 py-2 text-center border-r-0">
+                      Assign
+                    </TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  {loading ? (
+                    <TableRow>
+                      <TableCell colSpan={7} className="px-2 py-8 text-center">
+                        <div className="flex justify-center items-center gap-2 text-[11px] text-gray-500">
+                          <div className="spinner w-4 h-4" /> Loading data...
+                        </div>
+                      </TableCell>
+                    </TableRow>
+                  ) : filteredPotentials.length === 0 ? (
+                    <TableRow>
+                      <TableCell
+                        colSpan={7}
+                        className="px-2 py-8 text-center text-[11px] text-gray-500"
                       >
-                        <td className="px-2 py-1.5 border-r border-gray-100 text-xs font-semibold text-gray-900 w-8">
-                          {idx + 1}
-                        </td>
-                        <td className="px-2 py-1.5 border-r border-gray-100">
-                          <div
-                            className="font-medium text-xs text-gray-800"
-                            title={placeName.full}
-                          >
-                            {placeName.display}
-                          </div>
-                          <div className="text-[12px] text-gray-400 mt-0.5">
-                            ID: {item.place_id.substring(0, 10)}...
-                          </div>
-                        </td>
-                        <td className="px-2 py-1.5 border-r border-gray-100 w-10 text-center">
-                          <button
-                            title={item.address || "No address"}
-                            className="text-gray-400 hover:text-primary-600 transition-colors cursor-help inline-flex"
-                          >
-                            <MapPin size={13} weight="fill" />
-                          </button>
-                        </td>
-                        <td className="px-2 py-1.5 border-r border-gray-100">
-                          <div className="flex items-center gap-2">
-                            <div className="w-6 h-6 rounded-full bg-indigo-100 text-indigo-600 flex items-center justify-center text-[10px] font-bold">
-                              {item.found_by_name.charAt(0)}
-                            </div>
-                            <span
-                              className="text-xs font-semibold text-gray-900"
-                              title={foundByName.full}
+                        {searchTerm
+                          ? "No matches found."
+                          : "No potential dealers found yet."}
+                      </TableCell>
+                    </TableRow>
+                  ) : (
+                    filteredPotentials.map((item, idx) => {
+                      const placeName = getTruncatedText(item.place_name, 18);
+                      const foundByName = getTruncatedText(
+                        item.found_by_name,
+                        16,
+                      );
+                      const assignedToName = getTruncatedText(
+                        item.assigned_to_name || "–",
+                        16,
+                      );
+
+                      return (
+                        <TableRow
+                          key={item._id || item.id}
+                          className="transition-colors"
+                        >
+                          <TableCell className="px-2 py-1 text-xs text-gray-900 w-8 text-center border-r border-gray-200">
+                            {idx + 1}
+                          </TableCell>
+                          <TableCell className="px-2 py-1 border-r border-gray-200">
+                            <div
+                              className="text-xs text-gray-900"
+                              title={placeName.full}
                             >
-                              {foundByName.display}
-                            </span>
-                          </div>
-                        </td>
-                        <td className="px-2 py-1.5 border-r border-gray-100">
-                          <div className="flex items-center gap-1.5 text-[12px] text-gray-600">
-                            <Calendar size={12} className="text-gray-400" />
-                            <span>{formatDateDDMmmYYYY(item.created_at)}</span>
-                          </div>
-                          <div className="text-[12px] text-gray-400 pl-5">
-                            {new Date(item.created_at).toLocaleTimeString([], {
-                              hour: "2-digit",
-                              minute: "2-digit",
-                            })}
-                          </div>
-                        </td>
-                        <td className="px-2 py-1.5 border-r border-gray-100">
-                          {item.is_assigned ? (
+                              {placeName.display}
+                            </div>
+                            <div className="text-[10px] text-gray-500 mt-0.5">
+                              ID: {item.place_id.substring(0, 10)}...
+                            </div>
+                          </TableCell>
+                          <TableCell className="px-2 py-1 w-10 text-center border-r border-gray-200">
+                            <button
+                              title={item.address || "No address"}
+                              className="text-gray-900 hover:text-primary-700 transition-colors cursor-help inline-flex"
+                            >
+                              <MapPin size={13} weight="fill" />
+                            </button>
+                          </TableCell>
+                          <TableCell className="px-2 py-1 border-r border-gray-200">
                             <div className="flex items-center gap-2">
-                              <Badge
-                                variant="outline"
-                                className="bg-green-50 text-green-700 border-green-200 text-[10px] px-1.5 py-0"
-                              >
-                                Assigned
-                              </Badge>
+                              <div className="w-6 h-6 rounded-full bg-indigo-100 text-indigo-700 flex items-center justify-center text-[10px]">
+                                {item.found_by_name.charAt(0)}
+                              </div>
                               <span
-                                className="text-[11px] font-medium text-gray-900"
-                                title={assignedToName.full}
+                                className="text-xs text-gray-900"
+                                title={foundByName.full}
                               >
-                                {assignedToName.display}
+                                {foundByName.display}
                               </span>
                             </div>
-                          ) : (
-                            <Badge
-                              variant="outline"
-                              className="bg-yellow-50 text-yellow-600 border-yellow-200 text-[10px] px-1.5 py-0"
-                            >
-                              Unassigned
-                            </Badge>
-                          )}
-                        </td>
-                        <td className="px-2 py-1.5 text-center">
-                          <Button
-                            variant={item.is_assigned ? "outline" : "default"}
-                            size="sm"
-                            onClick={() => handleAssignClick(item)}
-                            className="h-7 px-2 bg-green-600 text-white rounded-xl"
-                          >
+                          </TableCell>
+                          <TableCell className="px-2 py-1 border-r border-gray-200">
+                            <div className="flex items-center gap-1.5 text-[11px] text-gray-800">
+                              <Calendar size={12} className="text-gray-500" />
+                              <span>
+                                {formatDateDDMmmYYYY(item.created_at)}
+                              </span>
+                            </div>
+                            <div className="text-[10px] text-gray-500 pl-5">
+                              {new Date(item.created_at).toLocaleTimeString(
+                                [],
+                                {
+                                  hour: "2-digit",
+                                  minute: "2-digit",
+                                },
+                              )}
+                            </div>
+                          </TableCell>
+                          <TableCell className="px-2 py-1 border-r border-gray-200">
                             {item.is_assigned ? (
-                              <>
-                                <Check size={14} className="mr-1" />
-                                Reassign
-                              </>
+                              <div className="flex items-center gap-2">
+                                <Badge
+                                  variant="outline"
+                                  className="bg-green-50 text-green-700 border-green-200 text-[10px] px-1.5 py-0"
+                                >
+                                  Assigned
+                                </Badge>
+                                <span
+                                  className="text-[11px] text-gray-900"
+                                  title={assignedToName.full}
+                                >
+                                  {assignedToName.display}
+                                </span>
+                              </div>
                             ) : (
-                              <>
-                                <Check size={14} className="mr-1" />
-                                Assign
-                              </>
+                              <Badge
+                                variant="outline"
+                                className="bg-yellow-50 text-yellow-700 border-yellow-200 text-[10px] px-1.5 py-0"
+                              >
+                                Unassigned
+                              </Badge>
                             )}
-                          </Button>
-                        </td>
-                      </tr>
-                    );
-                  })
-                )}
-              </tbody>
-            </table>
-          </div>
-        </CardContent>
-      </Card>
+                          </TableCell>
+                          <TableCell className="px-2 py-1 text-center border-r-0">
+                            <Button
+                              variant={item.is_assigned ? "outline" : "default"}
+                              size="sm"
+                              onClick={() => handleAssignClick(item)}
+                              className={`h-7 px-2 text-white rounded-xl text-[11px] ${
+                                item.is_assigned
+                                  ? "bg-primary-600 hover:bg-primary-700 hover:text-white"
+                                  : "bg-green-600 hover:bg-green-700 hover:text-white"
+                              }`}
+                            >
+                              {item.is_assigned ? (
+                                <>
+                                  <Check size={14} className="mr-1" />
+                                  Reassign
+                                </>
+                              ) : (
+                                <>
+                                  <Check size={14} className="mr-1" />
+                                  Assign
+                                </>
+                              )}
+                            </Button>
+                          </TableCell>
+                        </TableRow>
+                      );
+                    })
+                  )}
+                </TableBody>
+              </Table>
+            </div>
+          </CardContent>
+        </Card>
       </div>
 
       {/* Assign Dialog */}
@@ -390,7 +399,12 @@ const PotentialDealers = () => {
               >
                 Cancel
               </Button>
-              <Button className="rounded-xl bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white shadow-md transition-all" onClick={handleAssign}>Assign</Button>
+              <Button
+                className="rounded-xl bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white shadow-md transition-all"
+                onClick={handleAssign}
+              >
+                Assign
+              </Button>
             </div>
           </div>
         </DialogContent>

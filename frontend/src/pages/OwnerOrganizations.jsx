@@ -11,6 +11,14 @@ import { Badge } from "../components/ui/badge";
 import { Button } from "../components/ui/button";
 import { Input } from "../components/ui/input";
 import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "../components/ui/table";
+import {
   Buildings,
   Users,
   Storefront,
@@ -326,27 +334,17 @@ const OwnerOrganizations = () => {
                                 {orgDetails[org.id].today_visits.length})
                               </p>
                               <div className="overflow-auto max-h-[30rem]">
-                                <table className="w-full border-collapse">
-                                  <thead className="bg-gray-200 sticky top-0 z-10">
-                                    <tr className="border-y border-gray-200">
-                                      <th className="text-left px-2 py-2 text-xs font-semibold text-gray-600 border-r border-gray-200 w-8 bg-gray-200">
-                                        #
-                                      </th>
-                                      <th className="text-left px-3 py-2 text-xs font-semibold text-gray-600 border-r border-gray-200 bg-gray-200">
-                                        Dealer
-                                      </th>
-                                      <th className="text-left px-3 py-2 text-xs font-semibold text-gray-600 border-r border-gray-200 bg-gray-200">
-                                        Time
-                                      </th>
-                                      <th className="text-center px-3 py-2 text-xs font-semibold text-gray-600 border-r border-gray-200 bg-gray-200">
-                                        Outcome
-                                      </th>
-                                      <th className="text-right px-3 py-2 text-xs font-semibold text-gray-600 bg-gray-200">
-                                        Value
-                                      </th>
-                                    </tr>
-                                  </thead>
-                                  <tbody>
+                                <Table className="w-full text-left">
+                                  <TableHeader className="bg-gray-200 sticky top-0 z-10">
+                                    <TableRow className="border-y border-gray-200">
+                                      <TableHead className="px-2 py-2 w-8 text-center bg-gray-200 text-xs shadow-sm">#</TableHead>
+                                      <TableHead className="px-3 py-2 bg-gray-200 text-left text-xs shadow-sm">Dealer</TableHead>
+                                      <TableHead className="px-3 py-2 bg-gray-200 text-left text-xs shadow-sm">Time</TableHead>
+                                      <TableHead className="px-3 py-2 text-center bg-gray-200 text-xs shadow-sm">Outcome</TableHead>
+                                      <TableHead className="px-3 py-2 text-right bg-gray-200 border-r-0 text-xs shadow-sm">Value</TableHead>
+                                    </TableRow>
+                                  </TableHeader>
+                                  <TableBody>
                                     {orgDetails[org.id].today_visits
                                       .slice(0, 5)
                                       .map((visit, idx) => {
@@ -356,49 +354,47 @@ const OwnerOrganizations = () => {
                                         );
 
                                         return (
-                                          <tr
+                                          <TableRow
                                             key={visit.id}
                                             className="border-b border-gray-100 transition-colors"
                                           >
-                                            <td className="px-2 py-1.5 text-[11px] text-gray-600 border-r border-gray-100 w-8">
+                                            <TableCell className="px-2 py-1 text-xs text-gray-800 text-center border-r border-gray-100">
                                               {idx + 1}
-                                            </td>
-                                            <td
-                                              className="px-2 py-1.5 text-[11px] text-gray-800 border-r border-gray-100"
+                                            </TableCell>
+                                            <TableCell
+                                              className="px-3 py-1 text-xs text-gray-900 font-normal border-r border-gray-100"
                                               title={dealerName.full}
                                             >
                                               {dealerName.display}
-                                            </td>
-                                            <td className="px-2 py-1.5 text-[11px] text-gray-600 border-r border-gray-100">
+                                            </TableCell>
+                                            <TableCell className="px-3 py-1 text-xs text-gray-800 border-r border-gray-100">
                                               {new Date(
                                                 visit.check_in_time,
-                                              ).toLocaleTimeString()}
-                                            </td>
-                                            <td className="px-2 py-1.5 text-center border-r border-gray-100">
+                                              ).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}
+                                            </TableCell>
+                                            <TableCell className="px-2 py-1 text-center border-r border-gray-100">
                                               <Badge
-                                                className={
-                                                  visit.outcome ===
-                                                  "Order Booked"
+                                                className={`text-[10px] px-1.5 py-0 ${
+                                                  visit.outcome === "Order Booked"
                                                     ? "bg-emerald-100 text-emerald-700"
-                                                    : visit.outcome ===
-                                                        "Follow-up Required"
+                                                    : visit.outcome === "Follow-up Required"
                                                       ? "bg-amber-100 text-amber-700"
                                                       : "bg-slate-100 text-slate-600"
-                                                }
+                                                }`}
                                               >
                                                 {visit.outcome || "In Progress"}
                                               </Badge>
-                                            </td>
-                                            <td className="px-2 py-1.5 text-[11px] text-gray-700 text-right">
+                                            </TableCell>
+                                            <TableCell className="px-2 py-1 text-xs text-emerald-800 text-right font-normal border-r-0">
                                               {visit.order_value
                                                 ? `₹${visit.order_value.toLocaleString()}`
                                                 : "–"}
-                                            </td>
-                                          </tr>
+                                            </TableCell>
+                                          </TableRow>
                                         );
                                       })}
-                                  </tbody>
-                                </table>
+                                    </TableBody>
+                                </Table>
                               </div>
                             </div>
                           )}

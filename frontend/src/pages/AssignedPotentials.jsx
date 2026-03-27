@@ -354,29 +354,15 @@ const AssignedPotentials = () => {
           <CardContent className="p-0">
             <div className="overflow-auto bg-white dark:bg-gray-900 shadow-sm w-full max-h-[30rem]">
               <Table className="table-auto border-separate border-spacing-0">
-                <TableHeader className="text-nowrap sticky top-0 text-xs z-10">
+                <TableHeader className="text-nowrap sticky top-0 z-10">
                   <TableRow className="border-y border-gray-200 bg-gray-200 hover:bg-gray-200">
-                    <TableHead className="px-2 py-2 text-xs font-semibold text-gray-500 border-r border-b border-gray-200 w-8 bg-gray-200">
-                      #
-                    </TableHead>
-                    <TableHead className="px-2 py-2 text-xs font-semibold text-gray-500 border-r border-b border-gray-200 bg-gray-200">
-                      Dealer Name
-                    </TableHead>
-                    <TableHead className="px-2 py-2 text-xs font-semibold text-gray-500 border-r border-b border-gray-200 bg-gray-200">
-                      Location / Address
-                    </TableHead>
-                    <TableHead className="px-2 py-2 text-xs font-semibold text-gray-500 border-r border-b border-gray-200 bg-gray-200">
-                      Originally Found By
-                    </TableHead>
-                    <TableHead className="px-2 py-2 text-xs font-semibold text-gray-500 border-r border-b border-gray-200 bg-gray-200">
-                      Assigned Date
-                    </TableHead>
-                    <TableHead className="px-2 py-2 text-xs font-semibold text-gray-500 border-r border-b border-gray-200 text-center bg-gray-200">
-                      Status
-                    </TableHead>
-                    <TableHead className="px-2 py-2 text-xs font-semibold text-gray-500 text-center bg-gray-200 border-b border-gray-200">
-                      Action
-                    </TableHead>
+                    <TableHead className="px-2 py-2 text-center w-8 bg-gray-200">#</TableHead>
+                    <TableHead className="px-2 py-2 text-left bg-gray-200">Dealer Name</TableHead>
+                    <TableHead className="px-2 py-2 text-left bg-gray-200">Location / Address</TableHead>
+                    <TableHead className="px-2 py-2 text-left bg-gray-200">Originally Found By</TableHead>
+                    <TableHead className="px-2 py-2 text-left bg-gray-200">Assigned Date</TableHead>
+                    <TableHead className="px-2 py-2 text-center bg-gray-200">Status</TableHead>
+                    <TableHead className="px-2 py-2 text-center bg-gray-200 border-r-0">Action</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody className="divide-y divide-gray-100 dark:divide-gray-800">
@@ -412,12 +398,12 @@ const AssignedPotentials = () => {
                           key={item._id || item.id}
                           className="group cursor-pointer transition-all text-xs text-gray-700 duration-200"
                         >
-                          <TableCell className="px-2 py-1.5 text-xs font-medium text-gray-600 dark:text-gray-400 w-8">
+                          <TableCell className="px-2 py-1 text-center text-xs text-gray-800 w-8">
                             {idx + 1}
                           </TableCell>
-                          <TableCell className="px-2 py-1.5">
+                          <TableCell className="px-2 py-1">
                             <div
-                              className="font-medium text-xs text-gray-800 dark:text-gray-200"
+                              className="text-xs text-gray-900 dark:text-gray-200"
                               title={placeName.full}
                             >
                               {placeName.display}
@@ -426,8 +412,8 @@ const AssignedPotentials = () => {
                               ID: {item.place_id.substring(0, 10)}...
                             </div>
                           </TableCell>
-                          <TableCell className="px-2 py-1.5 max-w-xs">
-                            <div className="flex items-start gap-1.5 text-[11px] text-gray-600 dark:text-gray-400">
+                          <TableCell className="px-2 py-1 max-w-xs">
+                            <div className="flex items-start gap-1.5 text-xs text-gray-700 dark:text-gray-400">
                               <MapPin
                                 size={12}
                                 className="mt-0.5 shrink-0 text-gray-400 dark:text-gray-500"
@@ -440,24 +426,24 @@ const AssignedPotentials = () => {
                               </span>
                             </div>
                           </TableCell>
-                          <TableCell className="px-2 py-1.5">
+                          <TableCell className="px-2 py-1">
                             <div className="flex items-center gap-2">
-                              <div className="w-6 h-6 rounded-full bg-indigo-100 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400 flex items-center justify-center text-[10px] font-bold">
+                              <div className="w-6 h-6 rounded-full bg-indigo-100 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400 flex items-center justify-center text-[10px]">
                                 {item.found_by_name.charAt(0)}
                               </div>
                               <span
-                                className="text-xs font-medium text-gray-700 dark:text-gray-200"
+                                className="text-xs text-gray-800 dark:text-gray-200"
                                 title={foundByName.full}
                               >
                                 {foundByName.display}
                               </span>
                             </div>
                           </TableCell>
-                          <TableCell className="px-2 py-1.5">
-                            <div className="flex items-center gap-1.5 text-[11px] text-gray-600 dark:text-gray-400">
+                          <TableCell className="px-2 py-1">
+                            <div className="flex items-center gap-1.5 text-xs text-gray-800 dark:text-gray-400">
                               <Calendar
                                 size={12}
-                                className="text-gray-400 dark:text-gray-500"
+                                className="text-gray-500 dark:text-gray-500"
                               />
                               <span>
                                 {formatDateDDMmmYYYY(item.assigned_at)}
@@ -470,7 +456,7 @@ const AssignedPotentials = () => {
                               )}
                             </div>
                           </TableCell>
-                          <TableCell className="px-2 py-1.5 text-center">
+                          <TableCell className="px-2 py-1 text-center">
                             <Badge
                               variant="outline"
                               className="bg-blue-50 text-blue-700 border-blue-200 text-[10px] px-1.5 py-0"
@@ -478,8 +464,8 @@ const AssignedPotentials = () => {
                               Assigned
                             </Badge>
                           </TableCell>
-                          <TableCell className="px-2 py-1.5 text-center">
-                            <Button
+                          <TableCell className="px-2 py-1 text-center border-r-0">
+                                <Button
                               size="sm"
                               onClick={() => handleRecordVisit(item)}
                               className="bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white rounded-xl h-7 px-2"

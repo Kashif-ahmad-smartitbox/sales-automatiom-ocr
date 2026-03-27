@@ -5,6 +5,14 @@ import { Card, CardContent } from "../components/ui/card";
 import { Button } from "../components/ui/button";
 import { Input } from "../components/ui/input";
 import { Label } from "../components/ui/label";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "../components/ui/table";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "../components/ui/dialog";
 import { Plus, Trash, Phone, Pencil } from "@phosphor-icons/react";
 import { useAuth } from "../context/AuthContext";
@@ -181,62 +189,62 @@ const AccountUserManagement = () => {
           <Card className="rounded-xl border shadow-sm overflow-hidden">
             <CardContent className="p-0">
               <div className="overflow-auto max-h-[30rem]">
-                <table className="w-full border-separate border-spacing-0">
-                  <thead className="sticky top-0 z-10 bg-gray-200">
-                    <tr className="border-y border-gray-200">
-                       <th className="text-left px-2 py-2 text-xs font-semibold text-gray-500 border-r border-b border-gray-200 w-8 bg-gray-200">#</th>
-                       <th className="text-left px-2 py-2 text-xs font-semibold text-gray-500 border-r border-b border-gray-200 bg-gray-200">Account User Name</th>
-                       <th className="text-left px-2 py-2 text-xs font-semibold text-gray-500 border-r border-b border-gray-200 bg-gray-200">Employee Code</th>
-                       <th className="text-left px-2 py-2 text-xs font-semibold text-gray-500 border-r border-b border-gray-200 bg-gray-200">Email</th>
-                       <th className="text-left px-2 py-2 text-xs font-semibold text-gray-500 border-r border-b border-gray-200 bg-gray-200">Mobile</th>
-                       <th className="text-center px-2 py-2 text-xs font-semibold text-gray-500 bg-gray-200 border-b border-gray-200">Actions</th>
-                    </tr>
-                  </thead>
-                  <tbody>
+                <Table className="w-full text-left">
+                  <TableHeader className="sticky top-0 z-10 bg-gray-200">
+                    <TableRow className="border-y border-gray-200">
+                       <TableHead className="text-center px-2 py-2 bg-gray-200 w-8">#</TableHead>
+                       <TableHead className="text-left px-2 py-2 bg-gray-200">Account User Name</TableHead>
+                       <TableHead className="text-left px-2 py-2 bg-gray-200">Employee Code</TableHead>
+                       <TableHead className="text-left px-2 py-2 bg-gray-200">Email</TableHead>
+                       <TableHead className="text-left px-2 py-2 bg-gray-200">Mobile</TableHead>
+                       <TableHead className="text-center px-2 py-2 bg-gray-200 border-r-0">Actions</TableHead>
+                    </TableRow>
+                  </TableHeader>
+                  <TableBody>
                     {filteredUsers.map((user, idx) => {
                       const userName = getTruncatedText(user.name, 18);
                       const userEmail = getTruncatedText(user.email, 20);
 
                       return (
-                        <tr key={user.id} className="border-b border-gray-100 transition-colors">
-                          <td className="px-2 py-1.5 border-r border-gray-100 text-xs font-semibold text-gray-900 w-8">{idx + 1}</td>
-                          <td className="px-2 py-1.5 border-r border-gray-100">
+                        <TableRow key={user.id} className="border-b border-gray-100 transition-colors">
+                          <TableCell className="px-2 py-1 text-center text-xs text-gray-800 w-8 border-r border-gray-100 font-normal">{idx + 1}</TableCell>
+                          <TableCell className="px-2 py-1 border-r border-gray-100 font-normal">
                             <div className="flex items-center gap-2">
-                              <div className="w-6 h-6 rounded-full flex items-center justify-center text-white text-xs font-bold bg-gradient-to-br from-blue-500 to-indigo-600 flex-shrink-0">
+                              <div className="w-6 h-6 rounded-full flex items-center justify-center text-white text-[10px] bg-gradient-to-br from-blue-500 to-indigo-600 flex-shrink-0">
                                 {user.name.charAt(0)}
                               </div>
-                              <span className="text-[11px] font-semibold text-gray-800" title={userName.full}>
+                              <span className="text-xs text-gray-900" title={userName.full}>
                                 {userName.display}
                               </span>
                             </div>
-                          </td>
-                          <td className="px-2 py-1.5 text-[11px] font-semibold text-gray-900 border-r border-gray-100">
+                          </TableCell>
+                          <TableCell className="px-2 py-1 text-xs text-gray-800 border-r border-gray-100 font-normal">
                             {user.employee_code}
-                          </td>
-                          <td className="px-2 py-1.5 text-[11px] font-medium text-gray-900 border-r border-gray-100" title={userEmail.full}>
+                          </TableCell>
+                          <TableCell className="px-2 py-1 text-xs text-gray-700 border-r border-gray-100 font-normal" title={userEmail.full}>
                             {userEmail.display}
-                          </td>
-                          <td className="px-2 py-1.5 text-[11px] font-medium text-gray-900 border-r border-gray-100">
+                          </TableCell>
+                          <TableCell className="px-2 py-1 text-xs text-gray-700 border-r border-gray-100 font-normal">
                             <div className="flex items-center gap-1.5">
                               <Phone size={12} className="text-gray-400" />
                               <span>{user.mobile}</span>
                             </div>
-                          </td>
-                          <td className="px-2 py-1.5 text-center">
+                          </TableCell>
+                          <TableCell className="px-2 py-1 text-center border-r-0 font-normal">
                             <div className="flex items-center justify-center gap-1">
-                              <Button variant="ghost" size="sm" className="text-primary-600 hover:text-primary-700 hover:bg-primary-50 text-xs h-6 px-2" onClick={() => handleEdit(user)}>
+                              <Button variant="ghost" size="sm" className="text-primary-600 hover:text-primary-700 hover:bg-primary-50 text-[10px] h-6 px-2" onClick={() => handleEdit(user)}>
                                 <Pencil size={12} className="mr-0.5"/> Edit
                               </Button>
-                              <Button variant="ghost" size="sm" className="text-red-600 hover:text-red-700 hover:bg-red-50 text-xs h-6 px-2" onClick={() => handleDelete(user.id)}>
+                              <Button variant="ghost" size="sm" className="text-red-600 hover:text-red-700 hover:bg-red-50 text-[10px] h-6 px-2" onClick={() => handleDelete(user.id)}>
                                 <Trash size={12} className="mr-0.5"/> Delete
                               </Button>
                             </div>
-                          </td>
-                        </tr>
+                          </TableCell>
+                        </TableRow>
                       );
                     })}
-                  </tbody>
-                </table>
+                  </TableBody>
+                </Table>
               </div>
             </CardContent>
           </Card>

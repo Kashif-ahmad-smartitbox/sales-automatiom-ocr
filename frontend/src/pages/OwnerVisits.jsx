@@ -176,43 +176,23 @@ const OwnerVisits = () => {
         <Card className="rounded-xl border shadow-sm overflow-hidden">
           <CardContent className="p-0">
             <div className="overflow-auto bg-white dark:bg-gray-900 shadow-sm w-full max-h-[30rem]">
-              <Table className="table-auto border-separate border-spacing-0">
-                <TableHeader className="text-nowrap sticky top-0 text-xs z-10">
-                  <TableHead className="p-2 text-gray-500 font-semibold border-r border-b border-gray-200 text-center w-8 bg-gray-200">
-                    #
-                  </TableHead>
-                  <TableHead className="p-2 text-gray-500 font-semibold border-r border-b border-gray-200 bg-gray-200">
-                    Company
-                  </TableHead>
-                  <TableHead className="p-2 text-gray-500 font-semibold border-r border-b border-gray-200 bg-gray-200">
-                    User
-                  </TableHead>
-                  <TableHead className="p-2 text-gray-500 font-semibold border-r border-b border-gray-200 bg-gray-200">
-                    Dealer
-                  </TableHead>
-                  <TableHead className="p-2 text-gray-500 font-semibold border-r border-b border-gray-200 bg-gray-200">
-                    Contact
-                  </TableHead>
-                  <TableHead className="p-2 text-gray-500 font-semibold border-r border-b border-gray-200 bg-gray-200">
-                    Phone
-                  </TableHead>
-                  <TableHead className="p-2 text-gray-500 font-semibold border-r border-b border-gray-200 bg-gray-200">
-                    Check-in
-                  </TableHead>
-                  <TableHead className="p-2 text-gray-500 font-semibold border-r border-b border-gray-200 bg-gray-200">
-                    Check-out
-                  </TableHead>
-                  <TableHead className="p-2 text-gray-500 font-semibold border-r border-b border-gray-200 bg-gray-200">
-                    Duration
-                  </TableHead>
-                  <TableHead className="p-2 text-gray-500 font-semibold border-r border-b border-gray-200 bg-gray-200">
-                    Outcome
-                  </TableHead>
-                  <TableHead className="p-2 text-gray-500 font-semibold bg-gray-200 border-b border-gray-200">
-                    Order Value
-                  </TableHead>
+              <Table className="w-full text-left">
+                <TableHeader className="sticky top-0 z-10 bg-gray-200">
+                  <TableRow className="border-y border-gray-300">
+                    <TableHead className="px-2 py-2 w-8 text-center bg-gray-200">#</TableHead>
+                    <TableHead className="px-2 py-2 bg-gray-200">Company</TableHead>
+                    <TableHead className="px-2 py-2 bg-gray-200">User</TableHead>
+                    <TableHead className="px-2 py-2 bg-gray-200">Dealer</TableHead>
+                    <TableHead className="px-2 py-2 bg-gray-200">Contact</TableHead>
+                    <TableHead className="px-2 py-2 bg-gray-200">Phone</TableHead>
+                    <TableHead className="px-2 py-2 bg-gray-200">Check-in</TableHead>
+                    <TableHead className="px-2 py-2 bg-gray-200">Check-out</TableHead>
+                    <TableHead className="px-2 py-2 bg-gray-200">Duration</TableHead>
+                    <TableHead className="px-2 py-2 bg-gray-200">Outcome</TableHead>
+                    <TableHead className="px-2 py-2 bg-gray-200 text-right border-r-0">Order Value</TableHead>
+                  </TableRow>
                 </TableHeader>
-              <TableBody className="divide-y divide-gray-100 dark:divide-gray-800">
+                <TableBody>
                 {filteredVisits.map((visit, idx) => {
                   const companyName = getTruncatedText(visit.company_name, 18);
                   const userName = getTruncatedText(visit.user_name, 15);
@@ -224,64 +204,64 @@ const OwnerVisits = () => {
                       key={visit.id} 
                       className="group cursor-pointer transition-all text-xs text-gray-700 duration-200"
                     >
-                      <TableCell className="px-2 py-1.5 text-center">
-                        <span className="p-1 bg-gray-200 dark:bg-gray-700 font-medium rounded-full text-gray-600 dark:text-gray-300">
+                      <TableCell className="px-2 py-1 text-center border-r border-gray-100">
+                        <span className="p-1 px-1.5 bg-gray-200 dark:bg-gray-700 rounded-full text-gray-800 dark:text-gray-300">
                           {idx + 1}
                         </span>
                       </TableCell>
-                      <TableCell className="px-2 py-1.5">
+                      <TableCell className="px-2 py-1 border-r border-gray-100">
                         <div className="flex items-center gap-1.5">
-                          <Buildings className="w-3 h-3 text-purple-600" />
-                          <span className="font-medium text-xs text-gray-800 dark:text-gray-200" title={companyName.full}>
+                          <Buildings className="w-3 h-3 text-purple-700" />
+                          <span className="text-xs text-gray-900 dark:text-gray-200" title={companyName.full}>
                             {companyName.display}
                           </span>
                         </div>
                       </TableCell>
-                      <TableCell className="px-2 py-1.5">
-                        <div className="flex items-center gap-1.5 text-[11px] text-gray-600 dark:text-gray-400">
-                          <User className="w-3 h-3 text-emerald-600" />
+                      <TableCell className="px-2 py-1 border-r border-gray-100">
+                        <div className="flex items-center gap-1.5 text-xs text-gray-800 dark:text-gray-400">
+                          <User className="w-3 h-3 text-emerald-700" />
                           <span title={userName.full}>{userName.display}</span>
                         </div>
                       </TableCell>
-                      <TableCell className="px-2 py-1.5">
-                        <div className="flex items-center gap-1.5 text-[11px] text-gray-600 dark:text-gray-400">
-                          <Storefront className="w-3 h-3 text-primary-600" />
+                      <TableCell className="px-2 py-1 border-r border-gray-100">
+                        <div className="flex items-center gap-1.5 text-xs text-gray-800 dark:text-gray-400">
+                          <Storefront className="w-3 h-3 text-primary-700" />
                           <span title={dealerName.full}>{dealerName.display}</span>
                         </div>
                       </TableCell>
-                      <TableCell className="px-2 py-1.5 text-xs text-gray-600 dark:text-gray-400" title={contactName.full}>
+                      <TableCell className="px-2 py-1 text-xs text-gray-800 dark:text-gray-400 border-r border-gray-100" title={contactName.full}>
                         {contactName.display}
                       </TableCell>
-                      <TableCell className="px-2 py-1.5 text-xs text-gray-600 dark:text-gray-400 whitespace-nowrap">
+                      <TableCell className="px-2 py-1 text-xs text-gray-800 dark:text-gray-400 whitespace-nowrap border-r border-gray-100">
                         {visit.contact_phone || '–'}
                       </TableCell>
-                      <TableCell className="px-2 py-1.5 text-xs text-gray-600 dark:text-gray-400">
+                      <TableCell className="px-2 py-1 text-xs text-gray-800 dark:text-gray-400 border-r border-gray-100">
                         {formatDateDDMmmYYYY(visit.check_in_time)}
                       </TableCell>
-                      <TableCell className="px-2 py-1.5 text-xs text-gray-600 dark:text-gray-400">
+                      <TableCell className="px-2 py-1 text-xs text-gray-800 dark:text-gray-400 border-r border-gray-100">
                         {visit.check_out_time ? formatDateDDMmmYYYY(visit.check_out_time) : '–'}
                       </TableCell>
-                      <TableCell className="px-2 py-1.5 text-xs text-gray-600 dark:text-gray-400">
+                      <TableCell className="px-2 py-1 text-xs text-gray-800 dark:text-gray-400 border-r border-gray-100">
                         {visit.time_spent_minutes ? (
                           <span className="flex items-center gap-1">
-                            <Clock className="w-2.5 h-2.5 text-gray-400" />
+                            <Clock className="w-2.5 h-2.5 text-gray-500" />
                             {Math.round(visit.time_spent_minutes)} min
                           </span>
                         ) : '–'}
                       </TableCell>
-                      <TableCell className="px-2 py-1.5">
-                        <Badge variant="outline" className={`text-xs text-nowrap px-2 py-0.5 ${getOutcomeBadgeClass(visit.outcome)}`}>
+                      <TableCell className="px-2 py-1 border-r border-gray-100">
+                        <Badge variant="outline" className={`text-xs text-nowrap px-2 py-0 ${getOutcomeBadgeClass(visit.outcome)}`}>
                           {visit.outcome || 'In Progress'}
                         </Badge>
                       </TableCell>
-                      <TableCell className="px-2 py-1.5">
+                      <TableCell className="px-2 py-1 border-r-0">
                         {visit.order_value ? (
-                          <span className="flex items-center gap-1 text-primary-600 text-xs font-medium">
+                          <span className="flex items-center gap-1 text-emerald-700 text-xs font-semibold">
                             <CurrencyDollar className="w-2.5 h-2.5" />
                             ₹{visit.order_value.toLocaleString()}
                           </span>
                         ) : (
-                          <span className="text-gray-400 text-xs">–</span>
+                          <span className="text-gray-500 text-xs">–</span>
                         )}
                       </TableCell>
                     </TableRow>

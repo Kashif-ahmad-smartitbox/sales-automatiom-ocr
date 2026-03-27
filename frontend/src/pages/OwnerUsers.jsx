@@ -10,6 +10,14 @@ import {
 import { Badge } from "../components/ui/badge";
 import { Input } from "../components/ui/input";
 import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "../components/ui/table";
+import {
   Select,
   SelectContent,
   SelectItem,
@@ -227,57 +235,41 @@ const OwnerUsers = () => {
           <Card className="rounded-xl border shadow-sm overflow-hidden">
             <CardContent className="p-0">
               <div className="overflow-auto bg-white shadow-sm w-full max-h-[30rem]">
-                <table className="w-full border-separate border-spacing-0">
-                  <thead className="sticky top-0 z-10 bg-gray-200">
-                    <tr className="border-y border-gray-100">
-                      <th className="text-left px-2 py-2 text-xs font-semibold text-gray-600 border-r border-b border-gray-200 w-8 bg-gray-200">
-                        #
-                      </th>
-                      <th className="text-left px-3 py-2 text-xs font-semibold text-gray-600 border-r border-b border-gray-200 bg-gray-200">
-                        Name
-                      </th>
-                      <th className="text-left px-3 py-2 text-xs font-semibold text-gray-600 border-r border-b border-gray-200 bg-gray-200">
-                        Role
-                      </th>
-                      <th className="text-left px-3 py-2 text-xs font-semibold text-gray-600 border-r border-b border-gray-200 bg-gray-200">
-                        Email
-                      </th>
-                      <th className="text-left px-3 py-2 text-xs font-semibold text-gray-600 border-r border-b border-gray-200 bg-gray-200">
-                        Mobile
-                      </th>
-                      <th className="text-left px-3 py-2 text-xs font-semibold text-gray-600 border-r border-b border-gray-200 bg-gray-200">
-                        Company
-                      </th>
-                      <th className="text-left px-3 py-2 text-xs font-semibold text-gray-600 border-r border-gray-200">
-                        Location / Code
-                      </th>
-                      <th className="text-center px-2 py-2 text-xs font-semibold text-gray-600">
-                        Active
-                      </th>
-                    </tr>
-                  </thead>
-                  <tbody>
+                <Table className="w-full text-left">
+                  <TableHeader className="sticky top-0 z-10 bg-gray-200">
+                    <TableRow className="border-y border-gray-100">
+                      <TableHead className="px-2 py-2 w-8 text-center bg-gray-200">#</TableHead>
+                      <TableHead className="px-3 py-2 bg-gray-200">Name</TableHead>
+                      <TableHead className="px-3 py-2 bg-gray-200">Role</TableHead>
+                      <TableHead className="px-3 py-2 bg-gray-200">Email</TableHead>
+                      <TableHead className="px-3 py-2 bg-gray-200">Mobile</TableHead>
+                      <TableHead className="px-3 py-2 bg-gray-200">Company</TableHead>
+                      <TableHead className="px-3 py-2 bg-gray-200">Location / Code</TableHead>
+                      <TableHead className="px-2 py-2 text-center bg-gray-200 border-r-0">Active</TableHead>
+                    </TableRow>
+                  </TableHeader>
+                  <TableBody>
                     {filteredUsers.map((user, idx) => (
-                      <tr
+                      <TableRow
                         key={user.id}
                         className="border-b border-gray-100 transition-colors"
                       >
-                        <td className="px-2 py-1.5 border-r border-gray-100 text-xs font-medium text-gray-600 w-8">
+                        <TableCell className="px-2 py-1 text-xs text-gray-900 w-8 text-center border-r border-gray-100">
                           {idx + 1}
-                        </td>
-                        <td className="px-2 py-1.5 border-r border-gray-100">
+                        </TableCell>
+                        <TableCell className="px-2 py-1 border-r border-gray-100">
                           <div className="flex items-center gap-2">
                             <div
-                              className={`w-7 h-7 rounded-lg bg-gradient-to-br ${getRoleColor(user.role)} flex items-center justify-center text-white font-bold text-xs flex-shrink-0`}
+                              className={`w-7 h-7 rounded-lg bg-gradient-to-br ${getRoleColor(user.role)} flex items-center justify-center text-white font-bold text-[10px] flex-shrink-0`}
                             >
                               {user.name.charAt(0)}
                             </div>
-                            <span className="text-[11px] font-medium text-gray-800 truncate">
-                              {user.name}
+                            <span className="text-xs text-gray-900 truncate">
+                               {user.name}
                             </span>
                           </div>
-                        </td>
-                        <td className="px-2 py-1.5 border-r border-gray-100">
+                        </TableCell>
+                        <TableCell className="px-2 py-1 border-r border-gray-100">
                           <Badge
                             variant="outline"
                             className={`${getRoleBadgeClass(user.role)} text-[10px] px-1.5 py-0`}
@@ -286,51 +278,44 @@ const OwnerUsers = () => {
                               {user.role.replace("_", " ")}
                             </span>
                           </Badge>
-                        </td>
-                        <td className="px-2 py-1.5 text-[11px] text-gray-600 border-r border-gray-100 max-w-[160px] truncate">
-                          {user.email}
-                        </td>
-                        <td className="px-2 py-1.5 text-[11px] text-gray-600 border-r border-gray-100 whitespace-nowrap">
-                          {user.mobile}
-                        </td>
-                        <td className="px-2 py-1.5 text-[11px] text-purple-600 font-medium border-r border-gray-100 truncate">
-                          {user.company_name || "–"}
-                        </td>
-                        <td className="px-2 py-1.5 text-[11px] text-gray-600 border-r border-gray-100">
+                        </TableCell>
+                        <TableCell className="px-2 py-1 text-xs text-gray-800 max-w-[160px] truncate border-r border-gray-100">
+                           {user.email}
+                        </TableCell>
+                        <TableCell className="px-2 py-1 text-xs text-gray-800 whitespace-nowrap border-r border-gray-100">
+                           {user.mobile}
+                        </TableCell>
+                        <TableCell className="px-2 py-1 text-xs text-purple-700 truncate font-semibold border-r border-gray-100">
+                           {user.company_name || "–"}
+                        </TableCell>
+                        <TableCell className="px-2 py-1 text-xs text-gray-800 border-r border-gray-100">
                           {user.role === "sales_executive" ? (
                             user.is_live_tracking ? (
                               <span className="flex items-center gap-1">
-                                <Globe className="w-3 h-3 text-emerald-500" />{" "}
+                                <Globe className="w-3 h-3 text-emerald-700" />{" "}
                                 Live
                               </span>
                             ) : (
                               <span className="flex items-center gap-1 truncate">
-                                <MapPin className="w-3 h-3 text-amber-500 flex-shrink-0" />{" "}
-                                {user.assigned_city || "–"}
+                                <MapPin className="w-3 h-3 text-amber-700 flex-shrink-0" />{" "}
+                                {user.assigned_city || "No City"}
                               </span>
                             )
-                          ) : user.employee_code ? (
-                            <span className="text-gray-400">
-                              {user.employee_code}
+                          ) : (
+                            <span className="text-[10px] bg-slate-100 px-1.5 py-0.5 rounded text-slate-600">
+                              {user.employee_code || "N/A"}
                             </span>
-                          ) : (
-                            "–"
                           )}
-                        </td>
-                        <td className="px-2 py-1.5 text-center">
-                          {user.is_in_market ? (
-                            <span
-                              className="w-2 h-2 rounded-full bg-emerald-500 inline-block"
-                              title="Active in Market"
-                            ></span>
-                          ) : (
-                            <span className="w-2 h-2 rounded-full bg-gray-300 inline-block"></span>
-                          )}
-                        </td>
-                      </tr>
+                        </TableCell>
+                        <TableCell className="px-2 py-1 text-center border-r-0">
+                          <div
+                            className={`w-2 h-2 rounded-full mx-auto ${user.is_in_market ? "bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.5)]" : "bg-gray-300"}`}
+                          />
+                        </TableCell>
+                      </TableRow>
                     ))}
-                  </tbody>
-                </table>
+                  </TableBody>
+                </Table>
               </div>
             </CardContent>
           </Card>

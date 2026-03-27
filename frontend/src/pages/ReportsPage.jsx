@@ -8,6 +8,14 @@ import {
   CardTitle,
 } from "../components/ui/card";
 import { Button } from "../components/ui/button";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "../components/ui/table";
 import { Badge } from "../components/ui/badge";
 import {
   Tabs,
@@ -279,9 +287,7 @@ const ReportsPage = () => {
                       <Target className="w-3.5 h-3.5" weight="fill" />
                     </div>
                   </div>
-                  <div className="text-lg font-bold">
-                    {visitHistory.length}
-                  </div>
+                  <div className="text-lg font-bold">{visitHistory.length}</div>
                   <p className="text-[10px] text-white/80 mt-0.5">All time</p>
                 </CardContent>
               </Card>
@@ -343,9 +349,7 @@ const ReportsPage = () => {
                       <Warning className="w-3.5 h-3.5" weight="fill" />
                     </div>
                   </div>
-                  <div className="text-lg font-bold">
-                    {lostVisits.length}
-                  </div>
+                  <div className="text-lg font-bold">{lostVisits.length}</div>
                   <p className="text-[10px] text-white/80 mt-0.5">
                     Needs attention
                   </p>
@@ -583,33 +587,33 @@ const ReportsPage = () => {
                   </p>
                 ) : (
                   <div className="overflow-auto max-h-[30rem]">
-                    <table className="w-full border-separate border-spacing-0">
-                      <thead className="sticky top-0 z-10 bg-gray-200">
-                        <tr className="border-y border-gray-200">
-                          <th className="text-left px-2 py-2 text-xs font-semibold text-gray-600 border-r border-gray-200 w-8 bg-gray-200">
+                    <Table className="w-full text-left">
+                      <TableHeader className="sticky top-0 z-10">
+                        <TableRow className="border-y border-gray-200">
+                          <TableHead className="px-2 py-2 w-8 bg-gray-200">
                             #
-                          </th>
-                          <th className="text-left px-3 py-2 text-xs font-semibold text-gray-600 border-r border-gray-200 bg-gray-200">
-                            Executive
-                          </th>
-                          <th className="text-center px-3 py-2 text-xs font-semibold text-gray-600 border-r border-gray-200 bg-gray-200">
+                          </TableHead>
+                          <TableHead className="px-3 py-2 bg-gray-200">
+                            Executive Name
+                          </TableHead>
+                          <TableHead className="text-center px-3 py-2">
                             Total Visits
-                          </th>
-                          <th className="text-center px-3 py-2 text-xs font-semibold text-gray-600 border-r border-gray-200 bg-gray-200">
+                          </TableHead>
+                          <TableHead className="text-center px-3 py-2">
                             Completed
-                          </th>
-                          <th className="text-right px-3 py-2 text-xs font-semibold text-gray-600 border-r border-gray-200 bg-gray-200">
+                          </TableHead>
+                          <TableHead className="text-right px-3 py-2">
                             Orders Value
-                          </th>
-                          <th className="text-center px-3 py-2 text-xs font-semibold text-gray-600 border-r border-gray-200 bg-gray-200">
+                          </TableHead>
+                          <TableHead className="text-center px-3 py-2">
                             Avg Time/Visit
-                          </th>
-                          <th className="text-center px-3 py-2 text-xs font-semibold text-gray-500">
+                          </TableHead>
+                          <TableHead className="text-center px-3 py-2 border-r-0">
                             Status
-                          </th>
-                        </tr>
-                      </thead>
-                      <tbody>
+                          </TableHead>
+                        </TableRow>
+                      </TableHeader>
+                      <TableBody>
                         {executivePerformance.map((exec, idx) => {
                           const execName = getTruncatedText(exec.name, 20);
                           const execCode = getTruncatedText(
@@ -618,57 +622,57 @@ const ReportsPage = () => {
                           );
 
                           return (
-                            <tr
+                            <TableRow
                               key={exec.id}
-                              className="border-b border-gray-100 transition-colors"
+                              className="transition-colors"
                             >
-                              <td className="px-2 py-2 border-r border-gray-100 text-xs font-medium text-gray-600 w-8">
+                              <TableCell className="px-2 py-1 text-xs text-gray-900 w-8">
                                 {idx + 1}
-                              </td>
-                              <td className="px-3 py-2 border-r border-gray-100">
+                              </TableCell>
+                              <TableCell className="px-3 py-1">
                                 <div>
                                   <p
-                                    className="font-semibold text-xs text-gray-900"
+                                    className="text-xs text-gray-900"
                                     title={execName.full}
                                   >
                                     {execName.display}
                                   </p>
                                   <p
-                                    className="text-[10px] text-gray-500"
+                                    className="text-[10px] text-gray-600"
                                     title={execCode.full}
                                   >
                                     {execCode.display}
                                   </p>
                                 </div>
-                              </td>
-                              <td className="text-xs font-semibold text-center border-r border-gray-100">
+                              </TableCell>
+                              <TableCell className="text-xs text-center border-r border-gray-200">
                                 {exec.total_visits}
-                              </td>
-                              <td className="text-xs text-center border-r border-gray-100">
+                              </TableCell>
+                              <TableCell className="text-xs text-center text-gray-900 border-r border-gray-200">
                                 {exec.completed_visits}
-                              </td>
-                              <td className="text-xs font-bold text-primary-600 text-right border-r border-gray-100">
+                              </TableCell>
+                              <TableCell className="text-xs text-primary-700 text-right border-r border-gray-200">
                                 ₹{exec.total_orders.toLocaleString()}
-                              </td>
-                              <td className="text-xs text-center border-r border-gray-100">
+                              </TableCell>
+                              <TableCell className="text-xs text-center text-gray-900 border-r border-gray-200">
                                 {exec.avg_time_per_visit} min
-                              </td>
-                              <td className="px-2 py-2 text-center">
+                              </TableCell>
+                              <TableCell className="px-2 py-1 text-center border-r-0">
                                 <span
-                                  className={`text-xs font-semibold ${
+                                  className={`text-xs ${
                                     exec.is_in_market
-                                      ? "text-emerald-600"
-                                      : "text-slate-400"
+                                      ? "text-emerald-700"
+                                      : "text-gray-500"
                                   }`}
                                 >
                                   {exec.is_in_market ? "In Field" : "Offline"}
                                 </span>
-                              </td>
-                            </tr>
+                              </TableCell>
+                            </TableRow>
                           );
                         })}
-                      </tbody>
-                    </table>
+                      </TableBody>
+                    </Table>
                   </div>
                 )}
               </CardContent>
@@ -694,45 +698,31 @@ const ReportsPage = () => {
                 ) : (
                   <>
                     <div className="overflow-auto max-h-[30rem]">
-                      <table className="w-full border-collapse text-left">
-                        <thead className="bg-gray-200 sticky top-0 z-10">
-                          <tr className="border-y border-gray-200">
-                            <th className="text-xs text-gray-600 font-semibold px-2 py-2 border-r border-gray-200 w-8 bg-gray-200">
-                              #
-                            </th>
-                            <th className="text-xs text-gray-600 font-semibold px-3 py-2 border-r border-gray-200 bg-gray-200">
-                              Date
-                            </th>
-                            <th className="text-xs text-gray-600 font-semibold px-3 py-2 border-r border-gray-200 bg-gray-200">
-                              User
-                            </th>
-                            <th className="text-xs text-gray-600 font-semibold px-3 py-2 border-r border-gray-200 bg-gray-200">
-                              Dealer
-                            </th>
-                            <th className="text-xs text-gray-500 font-semibold px-3 py-2 border-r border-gray-200">
-                              Contact
-                            </th>
-                            <th className="text-xs text-gray-500 font-semibold px-3 py-2 border-r border-gray-200">
-                              Phone
-                            </th>
-                            <th className="text-xs text-gray-500 font-semibold px-3 py-2 border-r border-gray-200">
+                      <Table className="w-full border-collapse text-left">
+                        <TableHeader className="sticky top-0 z-10">
+                          <TableRow className="border-y border-gray-200">
+                            <TableHead className="px-2 py-2">#</TableHead>
+                            <TableHead className="px-3 py-2">Date</TableHead>
+                            <TableHead className="px-3 py-2">User</TableHead>
+                            <TableHead className="px-3 py-2">Dealer</TableHead>
+                            <TableHead className="px-3 py-2">Contact</TableHead>
+                            <TableHead className="px-3 py-2">Phone</TableHead>
+                            <TableHead className="px-3 py-2">
                               Check-in
-                            </th>
-                            <th className="text-xs text-gray-500 font-semibold px-2 py-2 text-center border-r border-gray-200">
+                            </TableHead>
+                            <TableHead className="px-2 py-2 text-center">
                               Duration
-                            </th>
-                            <th className="text-xs text-gray-500 font-semibold px-3 py-2 border-r border-gray-200">
-                              Outcome
-                            </th>
-                            <th className="text-xs text-gray-500 font-semibold px-3 py-2 text-right border-r border-gray-200">
+                            </TableHead>
+                            <TableHead className="px-3 py-2">Outcome</TableHead>
+                            <TableHead className="px-3 py-2 text-right">
                               Order Value
-                            </th>
-                            <th className="text-xs text-gray-500 font-semibold px-2 py-2 text-center">
+                            </TableHead>
+                            <TableHead className="px-2 py-2 text-center border-r-0">
                               Items
-                            </th>
-                          </tr>
-                        </thead>
-                        <tbody>
+                            </TableHead>
+                          </TableRow>
+                        </TableHeader>
+                        <TableBody>
                           {paginate(visitHistory, visitsPage).map(
                             (visit, idx) => {
                               const userName = getTruncatedText(
@@ -749,80 +739,80 @@ const ReportsPage = () => {
                               );
 
                               return (
-                                <tr
+                                <TableRow
                                   key={visit.id}
-                                  className="border-b border-gray-100 transition-colors"
+                                  className="transition-colors"
                                 >
-                                  <td className="px-2 py-2 border-r border-gray-100 text-xs font-medium text-gray-600 w-8">
+                                  <TableCell className="px-2 py-1 text-xs text-gray-900 w-8">
                                     {(visitsPage - 1) * 15 + idx + 1}
-                                  </td>
-                                  <td className="px-3 py-2 text-xs text-gray-700 whitespace-nowrap border-r border-gray-100">
+                                  </TableCell>
+                                  <TableCell className="px-3 py-1 text-xs text-gray-800 whitespace-nowrap">
                                     {formatDateDDMmmYYYY(visit.check_in_time)}
-                                  </td>
-                                  <td
-                                    className="px-3 py-2 text-xs text-gray-800 border-r border-gray-100"
+                                  </TableCell>
+                                  <TableCell
+                                    className="px-3 py-1 text-xs text-gray-900"
                                     title={userName.full}
                                   >
                                     {userName.display}
-                                  </td>
-                                  <td
-                                    className="px-3 py-2 text-xs font-semibold text-gray-900 border-r border-gray-100"
+                                  </TableCell>
+                                  <TableCell
+                                    className="px-3 py-1 text-xs text-gray-900"
                                     title={dealerName.full}
                                   >
                                     {dealerName.display}
-                                  </td>
-                                  <td
-                                    className="px-3 py-2 text-xs text-gray-700 border-r border-gray-100"
+                                  </TableCell>
+                                  <TableCell
+                                    className="px-3 py-1 text-xs text-gray-800"
                                     title={contactName.full}
                                   >
                                     {contactName.display}
-                                  </td>
-                                  <td className="px-3 py-2 text-xs text-gray-700 whitespace-nowrap border-r border-gray-100">
+                                  </TableCell>
+                                  <TableCell className="px-3 py-1 text-xs text-gray-800 whitespace-nowrap">
                                     {visit.contact_phone || "–"}
-                                  </td>
-                                  <td className="px-3 py-2 text-xs text-gray-700 whitespace-nowrap border-r border-gray-100">
+                                  </TableCell>
+                                  <TableCell className="px-3 py-1 text-xs text-gray-800 whitespace-nowrap">
                                     {new Date(
                                       visit.check_in_time,
                                     ).toLocaleTimeString([], {
                                       hour: "2-digit",
                                       minute: "2-digit",
                                     })}
-                                  </td>
-                                  <td className="px-2 py-2 text-xs text-gray-600 text-center border-r border-gray-100">
+                                  </TableCell>
+                                  <TableCell className="px-2 py-1 text-xs text-gray-800 text-center">
                                     {visit.time_spent_minutes
                                       ? `${Math.round(visit.time_spent_minutes)}m`
                                       : "–"}
-                                  </td>
-                                  <td className="px-3 py-2 border-r border-gray-100">
+                                  </TableCell>
+                                  <TableCell className="px-3 py-1">
                                     <span
-                                      className={`text-xs font-semibold ${
+                                      className={`text-xs ${
                                         visit.outcome === "Order Booked"
-                                          ? "text-emerald-600"
+                                          ? "text-emerald-700"
                                           : visit.outcome ===
                                               "Follow-up Required"
-                                            ? "text-amber-600"
+                                            ? "text-amber-700"
                                             : visit.outcome === "Lost Visit"
-                                              ? "text-red-600"
-                                              : "text-slate-500"
+                                              ? "text-red-700"
+                                              : "text-gray-700"
                                       }`}
                                     >
                                       {visit.outcome || "In Progress"}
                                     </span>
-                                  </td>
-                                  <td className="px-3 py-2 text-xs font-bold text-primary-600 text-right border-r border-gray-100">
+                                  </TableCell>
+                                  <TableCell className="px-3 py-1 text-xs text-primary-700 text-right">
                                     {visit.order_value
                                       ? `₹${visit.order_value.toLocaleString()}`
                                       : "–"}
-                                  </td>
-                                  <td className="px-2 py-2 text-center">
+                                  </TableCell>
+                                  <TableCell className="px-2 py-1 text-center border-r-0">
                                     <OrderItemsView visit={visit} />
-                                  </td>
-                                </tr>
+                                  </TableCell>
+                                </TableRow>
                               );
                             },
                           )}
-                        </tbody>
-                      </table>
+                        </TableBody>
+                      </Table>
                     </div>
                     <PaginationControls
                       currentPage={visitsPage}
@@ -857,24 +847,18 @@ const ReportsPage = () => {
                 ) : (
                   <>
                     <div className="overflow-auto max-h-[30rem]">
-                      <table className="w-full border-collapse text-left">
-                        <thead className="sticky top-0 z-10 bg-gray-200">
-                          <tr className="border-y border-gray-200">
-                            <th className="text-xs text-gray-600 font-semibold px-2 py-2 border-r border-gray-200 w-8 bg-gray-200">
-                              #
-                            </th>
-                            <th className="text-[10px] text-gray-600 font-semibold px-2 py-1.5 border-r border-gray-200 bg-gray-200">
-                              Date
-                            </th>
-                            <th className="text-[10px] text-gray-600 font-semibold px-2 py-1.5 border-r border-gray-200 bg-gray-200">
-                              Dealer
-                            </th>
-                            <th className="text-[10px] text-gray-600 font-semibold px-2 py-1.5 bg-gray-200">
+                      <Table className="w-full border-collapse text-left">
+                        <TableHeader className="sticky top-0 z-10">
+                          <TableRow className="border-y border-gray-200">
+                            <TableHead className="px-2 py-2">#</TableHead>
+                            <TableHead className="px-2 py-2">Date</TableHead>
+                            <TableHead className="px-2 py-2">Dealer</TableHead>
+                            <TableHead className="px-2 py-2 border-r-0">
                               Notes
-                            </th>
-                          </tr>
-                        </thead>
-                        <tbody>
+                            </TableHead>
+                          </TableRow>
+                        </TableHeader>
+                        <TableBody>
                           {paginate(lostVisits, lostPage).map((visit, idx) => {
                             const dealerName = getTruncatedText(
                               visit.dealer_name,
@@ -886,33 +870,33 @@ const ReportsPage = () => {
                             );
 
                             return (
-                              <tr
+                              <TableRow
                                 key={visit.id}
-                                className="border-b border-gray-100 transition-colors"
+                                className="transition-colors"
                               >
-                                <td className="px-2 py-2 border-r border-gray-100 text-xs font-medium text-gray-600 w-8">
+                                <TableCell className="px-2 py-1 text-xs text-gray-900 w-8">
                                   {(lostPage - 1) * 15 + idx + 1}
-                                </td>
-                                <td className="px-3 py-2 text-xs text-gray-700 whitespace-nowrap border-r border-gray-100">
+                                </TableCell>
+                                <TableCell className="px-3 py-1 text-xs text-gray-800 whitespace-nowrap">
                                   {formatDateDDMmmYYYY(visit.check_in_time)}
-                                </td>
-                                <td
-                                  className="px-3 py-2 text-xs font-semibold text-gray-900 border-r border-gray-100"
+                                </TableCell>
+                                <TableCell
+                                  className="px-3 py-1 text-xs text-gray-900"
                                   title={dealerName.full}
                                 >
                                   {dealerName.display}
-                                </td>
-                                <td
-                                  className="px-3 py-2 text-xs text-gray-600"
+                                </TableCell>
+                                <TableCell
+                                  className="px-3 py-1 text-xs text-gray-600 border-r-0"
                                   title={notes.full}
                                 >
                                   {notes.display}
-                                </td>
-                              </tr>
+                                </TableCell>
+                              </TableRow>
                             );
                           })}
-                        </tbody>
-                      </table>
+                        </TableBody>
+                      </Table>
                     </div>
                     <PaginationControls
                       currentPage={lostPage}
@@ -943,45 +927,35 @@ const ReportsPage = () => {
                 ) : (
                   <>
                     <div className="overflow-auto max-h-[30rem]">
-                      <table className="w-full border-collapse text-left">
-                        <thead className="bg-gray-200 sticky top-0 z-10">
-                          <tr className="border-y border-gray-200">
-                            <th className="text-[10px] text-gray-600 font-semibold px-2 py-1.5 border-r border-gray-200 w-8 bg-gray-200">
-                              #
-                            </th>
-                            <th className="text-[10px] text-gray-600 font-semibold px-2 py-1.5 border-r border-gray-200 bg-gray-200">
-                              User
-                            </th>
-                            <th className="text-[10px] text-gray-600 font-semibold px-2 py-1.5 border-r border-gray-200 bg-gray-200">
-                              Date
-                            </th>
-                            <th className="text-[10px] text-gray-600 font-semibold px-2 py-1.5 border-r border-gray-200 bg-gray-200">
-                              Time
-                            </th>
-                            <th className="text-[10px] text-gray-600 font-semibold px-2 py-1.5 border-r border-gray-200 bg-gray-200">
-                              Status
-                            </th>
-                            <th className="text-[10px] text-gray-600 font-semibold px-2 py-1.5 text-center border-r border-gray-200 bg-gray-200">
+                      <Table className="w-full border-collapse text-left">
+                        <TableHeader className="sticky top-0 z-10">
+                          <TableRow className="border-y border-gray-200">
+                            <TableHead className="px-2 py-2 w-8">#</TableHead>
+                            <TableHead className="px-2 py-2">User</TableHead>
+                            <TableHead className="px-2 py-2">Date</TableHead>
+                            <TableHead className="px-2 py-2">Time</TableHead>
+                            <TableHead className="px-2 py-2">Status</TableHead>
+                            <TableHead className="px-2 py-2 text-center">
                               Duration
-                            </th>
-                            <th className="text-[10px] text-gray-600 font-semibold px-2 py-1.5 text-center border-r border-gray-200 bg-gray-200">
+                            </TableHead>
+                            <TableHead className="px-2 py-2 text-center">
                               Distance
-                            </th>
-                            <th className="text-[10px] text-gray-600 font-semibold px-2 py-1.5 text-center border-r border-gray-200 bg-gray-200">
+                            </TableHead>
+                            <TableHead className="px-2 py-2 text-center">
                               Shown
-                            </th>
-                            <th className="text-[10px] text-gray-600 font-semibold px-2 py-1.5 text-center border-r border-gray-200 bg-gray-200">
+                            </TableHead>
+                            <TableHead className="px-2 py-2 text-center">
                               Visited
-                            </th>
-                            <th className="text-[10px] text-gray-600 font-semibold px-2 py-1.5 text-center border-r border-gray-200 bg-gray-200">
+                            </TableHead>
+                            <TableHead className="px-2 py-2 text-center">
                               Lost
-                            </th>
-                            <th className="text-[10px] text-gray-600 font-semibold px-2 py-1.5 text-right">
+                            </TableHead>
+                            <TableHead className="px-2 py-2 text-right border-r-0">
                               Action
-                            </th>
-                          </tr>
-                        </thead>
-                        <tbody>
+                            </TableHead>
+                          </TableRow>
+                        </TableHeader>
+                        <TableBody>
                           {paginate(marketSessions, sessionsPage).map(
                             (session, idx) => {
                               const userName = getTruncatedText(
@@ -990,58 +964,58 @@ const ReportsPage = () => {
                               );
 
                               return (
-                                <tr
+                                <TableRow
                                   key={session.id}
-                                  className="border-b border-gray-100 transition-colors"
+                                  className="transition-colors"
                                 >
-                                  <td className="px-2 py-2 border-r border-gray-100 text-xs font-medium text-gray-600 w-8">
+                                  <TableCell className="px-2 py-1 text-xs text-gray-900 w-8">
                                     {(sessionsPage - 1) * 15 + idx + 1}
-                                  </td>
-                                  <td
-                                    className="px-3 py-2 text-xs font-semibold text-gray-900 border-r border-gray-100"
+                                  </TableCell>
+                                  <TableCell
+                                    className="px-3 py-1 text-xs text-gray-900"
                                     title={userName.full}
                                   >
                                     {userName.display}
-                                  </td>
-                                  <td className="px-3 py-2 text-xs text-gray-700 whitespace-nowrap border-r border-gray-100">
+                                  </TableCell>
+                                  <TableCell className="px-3 py-1 text-xs text-gray-800 whitespace-nowrap">
                                     {formatDateDDMmmYYYY(session.start_time)}
-                                  </td>
-                                  <td className="px-3 py-2 text-xs text-gray-700 whitespace-nowrap border-r border-gray-100">
+                                  </TableCell>
+                                  <TableCell className="px-3 py-1 text-xs text-gray-800 whitespace-nowrap">
                                     {new Date(
                                       session.start_time,
                                     ).toLocaleTimeString([], {
                                       hour: "2-digit",
                                       minute: "2-digit",
                                     })}
-                                  </td>
-                                  <td className="px-3 py-2 border-r border-gray-100">
+                                  </TableCell>
+                                  <TableCell className="px-3 py-1">
                                     <span
-                                      className={`text-xs font-semibold ${session.end_time ? "text-slate-500" : "text-emerald-600"}`}
+                                      className={`text-xs ${session.end_time ? "text-gray-500" : "text-emerald-700"}`}
                                     >
                                       {session.end_time ? "Done" : "Active"}
                                     </span>
-                                  </td>
-                                  <td className="px-2 py-2 text-xs text-gray-700 text-center border-r border-gray-100">
+                                  </TableCell>
+                                  <TableCell className="px-2 py-1 text-xs text-gray-800 text-center">
                                     {formatDuration(
                                       session.start_time,
                                       session.end_time,
                                     )}
-                                  </td>
-                                  <td className="px-2 py-2 text-xs text-gray-700 text-center border-r border-gray-100">
+                                  </TableCell>
+                                  <TableCell className="px-2 py-1 text-xs text-gray-800 text-center">
                                     {session.total_distance
                                       ? `${(session.total_distance / 1000).toFixed(1)} km`
                                       : "–"}
-                                  </td>
-                                  <td className="px-2 py-2 text-xs font-bold text-slate-700 text-center border-r border-gray-100">
+                                  </TableCell>
+                                  <TableCell className="px-2 py-1 text-xs text-gray-900 text-center">
                                     {session.potential_visits_count || 0}
-                                  </td>
-                                  <td className="px-2 py-2 text-xs font-bold text-emerald-600 text-center border-r border-gray-100">
+                                  </TableCell>
+                                  <TableCell className="px-2 py-1 text-xs text-emerald-700 text-center">
                                     {session.visits_completed || 0}
-                                  </td>
-                                  <td className="px-2 py-2 text-xs font-bold text-red-600 text-center border-r border-gray-100">
+                                  </TableCell>
+                                  <TableCell className="px-2 py-1 text-xs text-red-700 text-center">
                                     {session.calculated_lost_visits || 0}
-                                  </td>
-                                  <td className="px-2 py-1.5 text-right">
+                                  </TableCell>
+                                  <TableCell className="px-2 py-1 text-right border-r-0">
                                     <Button
                                       variant="ghost"
                                       size="sm"
@@ -1052,13 +1026,13 @@ const ReportsPage = () => {
                                     >
                                       <Eye className="w-3 h-3 mr-1" /> Details
                                     </Button>
-                                  </td>
-                                </tr>
+                                  </TableCell>
+                                </TableRow>
                               );
                             },
                           )}
-                        </tbody>
-                      </table>
+                        </TableBody>
+                      </Table>
                     </div>
                     <PaginationControls
                       currentPage={sessionsPage}
@@ -1097,69 +1071,69 @@ const ReportsPage = () => {
                   No details recorded for this session.
                 </div>
               ) : (
-                <table className="w-full border-collapse text-left min-w-[400px]">
-                  <thead className="sticky top-0 z-10 bg-gray-200">
-                    <tr className="border-y border-gray-200">
-                      <th className="px-2 sm:px-4 py-2 text-xs font-semibold text-gray-600 border-r border-gray-200 bg-gray-200">
+                <Table className="w-full text-left min-w-[400px]">
+                  <TableHeader className="sticky top-0 z-10">
+                    <TableRow className="border-y border-gray-200">
+                      <TableHead className="px-2 sm:px-4 py-1 bg-gray-200">
                         Place/Dealer
-                      </th>
-                      <th className="px-2 sm:px-4 py-2 text-xs font-semibold text-gray-600 hidden sm:table-cell border-r border-gray-200 bg-gray-200">
+                      </TableHead>
+                      <TableHead className="px-2 sm:px-4 py-1 bg-gray-200">
                         Address
-                      </th>
-                      <th className="px-2 sm:px-4 py-2 text-xs font-semibold text-gray-600 text-center border-r border-gray-200 bg-gray-200">
+                      </TableHead>
+                      <TableHead className="px-2 sm:px-4 py-1 text-center bg-gray-200">
                         Status
-                      </th>
-                      <th className="px-2 sm:px-4 py-2 text-xs font-semibold text-gray-600 text-right bg-gray-200">
+                      </TableHead>
+                      <TableHead className="px-2 sm:px-4 py-1 text-right border-r-0 bg-gray-200">
                         Time Shown
-                      </th>
-                    </tr>
-                  </thead>
-                  <tbody>
+                      </TableHead>
+                    </TableRow>
+                  </TableHeader>
+                  <TableBody>
                     {sessionPotentials.map((item) => (
-                      <tr
+                      <TableRow
                         key={item.id}
-                        className={`border-b border-gray-100 transition-colors ${item.is_visited ? "bg-emerald-50 hover:bg-emerald-100" : "hover:bg-gray-50"}`}
+                        className={`border-b border-gray-200 transition-colors ${item.is_visited ? "bg-emerald-50 hover:bg-emerald-100" : "hover:bg-gray-50"}`}
                       >
-                        <td className="px-2 sm:px-4 py-1.5 font-medium text-[11px] text-slate-700 border-r border-gray-100">
+                        <TableCell className="px-2 sm:px-4 py-1 text-xs text-gray-900 border-r border-gray-200 font-normal">
                           <div className="flex items-center gap-2">
                             <MapPin
-                              className={`w-4 h-4 flex-shrink-0 ${item.is_visited ? "text-emerald-500" : "text-slate-400"}`}
+                              className={`w-4 h-4 flex-shrink-0 ${item.is_visited ? "text-emerald-700" : "text-gray-500"}`}
                             />
                             <div>
                               <span>{item.place_name}</span>
-                              <p className="text-[10px] text-slate-400 sm:hidden truncate max-w-[200px]">
+                              <p className="text-[10px] text-gray-500 sm:hidden truncate max-w-[200px]">
                                 {item.address}
                               </p>
                             </div>
                           </div>
-                        </td>
-                        <td
-                          className="px-2 sm:px-4 py-1.5 text-[11px] text-slate-500 max-w-xs truncate hidden sm:table-cell border-r border-gray-100"
+                        </TableCell>
+                        <TableCell
+                          className="px-2 sm:px-4 py-1 text-xs text-gray-700 max-w-xs truncate hidden sm:table-cell border-r border-gray-200 font-normal"
                           title={item.address}
                         >
                           {item.address}
-                        </td>
-                        <td className="px-2 sm:px-4 py-1.5 text-center border-r border-gray-100">
+                        </TableCell>
+                        <TableCell className="px-2 sm:px-4 py-1 text-center border-r border-gray-200 font-normal">
                           {item.is_visited ? (
-                            <Badge className="bg-emerald-100 text-emerald-700 text-[10px] px-1.5 py-0">
+                            <Badge className="bg-emerald-100 text-emerald-800 text-[10px] px-1.5 py-0 font-normal">
                               Visited
                             </Badge>
                           ) : (
-                            <Badge className="bg-slate-100 text-slate-500 text-[10px] px-1.5 py-0">
+                            <Badge className="bg-gray-100 text-gray-600 text-[10px] px-1.5 py-0 font-normal">
                               Shown
                             </Badge>
                           )}
-                        </td>
-                        <td className="px-2 sm:px-4 py-1.5 text-right text-[11px] text-slate-500 whitespace-nowrap">
+                        </TableCell>
+                        <TableCell className="px-2 sm:px-4 py-1 text-right text-xs text-gray-600 whitespace-nowrap border-r-0 font-normal">
                           {new Date(item.created_at).toLocaleTimeString([], {
                             hour: "2-digit",
                             minute: "2-digit",
                           })}
-                        </td>
-                      </tr>
+                        </TableCell>
+                      </TableRow>
                     ))}
-                  </tbody>
-                </table>
+                  </TableBody>
+                </Table>
               )}
             </div>
           </DialogContent>

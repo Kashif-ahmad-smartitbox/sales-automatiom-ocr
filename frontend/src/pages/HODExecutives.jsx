@@ -5,6 +5,14 @@ import { Card, CardContent } from "../components/ui/card";
 import { Badge } from "../components/ui/badge";
 import { Input } from "../components/ui/input";
 import { Phone, MapPin, Globe } from "@phosphor-icons/react";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "../components/ui/table";
 import { useAuth } from "../context/AuthContext";
 import { useSearch } from "../context/SearchContext";
 import SearchBar from "../components/SearchBar";
@@ -118,33 +126,33 @@ const HODExecutives = () => {
           <Card className="rounded-xl border shadow-sm overflow-hidden">
             <CardContent className="p-0">
               <div className="overflow-auto bg-white shadow-sm w-full max-h-[30rem]">
-                <table className="w-full border-separate border-spacing-0">
-                  <thead className="sticky top-0 z-10 bg-gray-200">
-                    <tr className="border-y border-gray-100">
-                      <th className="text-left px-2 py-2 text-xs font-semibold text-gray-500 border-r border-b border-gray-200 w-8 bg-gray-200">#</th>
-                      <th className="text-left px-2 py-2 text-xs font-semibold text-gray-500 border-r border-b border-gray-200 bg-gray-200">Name</th>
-                      <th className="text-left px-2 py-2 text-xs font-semibold text-gray-500 border-r border-b border-gray-200 bg-gray-200">Code</th>
-                      <th className="text-left px-2 py-2 text-xs font-semibold text-gray-500 border-r border-b border-gray-200 bg-gray-200">Mobile</th>
-                      <th className="text-left px-2 py-2 text-xs font-semibold text-gray-500 border-r border-b border-gray-200 bg-gray-200">Location</th>
-                      <th className="text-left px-2 py-2 text-xs font-semibold text-gray-500 border-r border-b border-gray-200 bg-gray-200">Target</th>
-                      <th className="text-center px-2 py-2 text-xs font-semibold text-gray-500 bg-gray-200 border-b border-gray-200">Status</th>
-                    </tr>
-                  </thead>
-                  <tbody>
+                <Table className="w-full text-left">
+                  <TableHeader className="sticky top-0 z-10 bg-gray-200">
+                    <TableRow className="border-y border-gray-100">
+                      <TableHead className="px-2 py-2 text-center w-8 bg-gray-200">#</TableHead>
+                      <TableHead className="text-left px-2 py-2 bg-gray-200">Name</TableHead>
+                      <TableHead className="text-left px-2 py-2 bg-gray-200">Code</TableHead>
+                      <TableHead className="text-left px-2 py-2 bg-gray-200">Mobile</TableHead>
+                      <TableHead className="text-left px-2 py-2 bg-gray-200">Location</TableHead>
+                      <TableHead className="text-left px-2 py-2 bg-gray-200">Target</TableHead>
+                      <TableHead className="text-center px-2 py-2 bg-gray-200 border-r-0">Status</TableHead>
+                    </TableRow>
+                  </TableHeader>
+                  <TableBody>
                     {filteredExecutives.map((exec, idx) => {
                       const status = getStatus(exec);
                       return (
-                        <tr
+                        <TableRow
                           key={exec.id}
                           className="border-b border-gray-100 transition-colors"
                         >
-                          <td className="px-2 py-1.5 border-r border-gray-100 text-xs font-semibold text-gray-900 w-8">
+                          <TableCell className="px-2 py-1 text-center text-xs text-gray-800 border-r border-gray-100 font-normal">
                             {idx + 1}
-                          </td>
-                          <td className="px-2 py-1.5 border-r border-gray-100">
+                          </TableCell>
+                          <TableCell className="px-2 py-1 border-r border-gray-100">
                             <div className="flex items-center gap-2">
                               <div
-                                className={`w-7 h-7 rounded-full flex items-center justify-center text-white text-xs font-bold flex-shrink-0 ${
+                                className={`w-7 h-7 rounded-full flex items-center justify-center text-white text-[10px] font-bold flex-shrink-0 ${
                                   status === "active"
                                     ? "bg-emerald-500"
                                     : status === "idle"
@@ -154,42 +162,42 @@ const HODExecutives = () => {
                               >
                                 {exec.name.charAt(0)}
                               </div>
-                              <span className="text-[11px] font-semibold text-gray-800">
+                              <span className="text-xs text-gray-900 font-normal">
                                 {exec.name}
                               </span>
                             </div>
-                          </td>
-                          <td className="px-2 py-1.5 text-[11px] font-semibold text-gray-900 border-r border-gray-100">
+                          </TableCell>
+                          <TableCell className="px-2 py-1 text-xs text-gray-800 border-r border-gray-100 font-normal">
                             {exec.employee_code}
-                          </td>
-                          <td className="px-2 py-1.5 border-r border-gray-100">
-                            <div className="flex items-center gap-1.5 text-[11px] font-medium text-gray-900">
-                              <Phone size={11} className="text-gray-400" />
+                          </TableCell>
+                          <TableCell className="px-2 py-1 border-r border-gray-100 font-normal text-xs">
+                            <div className="flex items-center gap-1.5 text-xs text-gray-800">
+                              <Phone size={11} className="text-gray-500" />
                               <span>{exec.mobile}</span>
                             </div>
-                          </td>
-                          <td className="px-2 py-1.5 text-[11px] font-medium text-gray-900 border-r border-gray-100">
+                          </TableCell>
+                          <TableCell className="px-2 py-1 text-xs text-gray-800 border-r border-gray-100 font-normal">
                             {exec.is_live_tracking ? (
                               <span className="flex items-center gap-1">
-                                <Globe size={11} className="text-emerald-500" />{" "}
+                                <Globe size={11} className="text-emerald-600" />{" "}
                                 Any City
                               </span>
                             ) : (
                               <span className="flex items-center gap-1">
-                                <MapPin size={11} className="text-amber-500" />{" "}
+                                <MapPin size={11} className="text-amber-600" />{" "}
                                 {exec.assigned_city || "–"}
                                 {exec.assigned_state
                                   ? `, ${exec.assigned_state}`
                                   : ""}
                               </span>
                             )}
-                          </td>
-                          <td className="px-2 py-1.5 text-[11px] font-medium text-gray-900 border-r border-gray-100">
+                          </TableCell>
+                          <TableCell className="px-2 py-1 text-xs text-gray-800 border-r border-gray-100 font-normal">
                             {exec.daily_sales_target
                               ? `${exec.daily_sales_target}/day`
                               : "–"}
-                          </td>
-                          <td className="px-2 py-1.5 text-center">
+                          </TableCell>
+                          <TableCell className="px-2 py-1 text-center border-r-0">
                             <Badge
                               className={
                                 status === "active"
@@ -201,12 +209,12 @@ const HODExecutives = () => {
                             >
                               {status}
                             </Badge>
-                          </td>
-                        </tr>
+                          </TableCell>
+                        </TableRow>
                       );
                     })}
-                  </tbody>
-                </table>
+                  </TableBody>
+                </Table>
               </div>
             </CardContent>
           </Card>

@@ -18,6 +18,14 @@ import {
 } from "../components/ui/select";
 import { Checkbox } from "../components/ui/checkbox";
 import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "../components/ui/table";
+import {
   MapPin,
   Play,
   Stop,
@@ -495,25 +503,21 @@ const FieldView = () => {
       </p>
     ) : (
       <div className="overflow-auto rounded-xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 shadow-sm w-full max-h-[30rem]">
-        <table className="w-full text-left border-separate border-spacing-0">
-          <thead className="sticky top-0 z-10 bg-gray-200">
-            <tr className="border-y border-gray-200">
-               <th className="text-xs text-gray-500 font-semibold px-2 py-2 border-r border-b border-gray-200 w-8 bg-gray-200">#</th>
-               <th className="text-xs text-gray-500 font-semibold px-2 py-2 border-r border-b border-gray-200 bg-gray-200">Date</th>
-               <th className="text-xs text-gray-500 font-semibold px-2 py-2 border-r border-b border-gray-200 bg-gray-200">Dealer</th>
-               <th className="text-xs text-gray-500 font-semibold px-2 py-2 border-r border-b border-gray-200 bg-gray-200">Contact</th>
-               <th className="text-xs text-gray-500 font-semibold px-2 py-2 border-r border-b border-gray-200 bg-gray-200">Check-in</th>
-               <th className="text-xs text-gray-500 font-semibold px-2 py-2 border-r border-b border-gray-200 bg-gray-200">Duration</th>
-               <th className="text-xs text-gray-500 font-semibold px-2 py-2 border-b border-gray-200 bg-gray-200">Outcome</th>
-              <th className="text-xs text-gray-500 font-semibold px-2 py-2 border-r border-b border-gray-200 bg-gray-200">
-                Value
-              </th>
-              <th className="text-xs text-gray-500 font-semibold px-2 py-2 border-b border-gray-200 bg-gray-200">
-                Items
-              </th>
-            </tr>
-          </thead>
-          <tbody>
+        <Table className="w-full text-left">
+          <TableHeader className="sticky top-0 z-10 bg-gray-200">
+            <TableRow className="border-y border-gray-200">
+              <TableHead className="px-2 py-2 text-center w-8 bg-gray-200">#</TableHead>
+              <TableHead className="px-2 py-2 text-left bg-gray-200">Date</TableHead>
+              <TableHead className="px-2 py-2 text-left bg-gray-200">Dealer</TableHead>
+              <TableHead className="px-2 py-2 text-left bg-gray-200">Contact</TableHead>
+              <TableHead className="px-2 py-2 text-left bg-gray-200">Check-in</TableHead>
+              <TableHead className="px-2 py-2 text-center bg-gray-200">Duration</TableHead>
+              <TableHead className="px-2 py-2 text-left bg-gray-200">Outcome</TableHead>
+              <TableHead className="px-2 py-2 text-right bg-gray-200">Value</TableHead>
+              <TableHead className="px-2 py-2 text-center bg-gray-200 border-r-0">Items</TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
             {visits.map((visit, idx) => {
               const dealerName = getTruncatedText(visit.dealer_name, 16);
               const contactName = getTruncatedText(
@@ -522,55 +526,55 @@ const FieldView = () => {
               );
 
               return (
-                <tr
+                <TableRow
                   key={visit.id}
                   className="border-b border-gray-100 transition-colors"
                 >
-                  <td className="px-2 py-1.5 text-xs font-medium text-gray-600 border-r border-gray-100 w-8">
+                  <TableCell className="px-2 py-1 text-center text-xs text-gray-800 border-r border-gray-100 font-normal">
                     {idx + 1}
-                  </td>
-                  <td className="px-2 py-1.5 text-[11px] text-gray-600 whitespace-nowrap border-r border-gray-100">
+                  </TableCell>
+                  <TableCell className="px-2 py-1 text-xs text-gray-700 whitespace-nowrap border-r border-gray-100 font-normal">
                     {formatDateDDMmmYYYY(visit.check_in_time)}
-                  </td>
-                  <td
-                    className="px-2 py-1.5 text-xs font-medium text-gray-800 border-r border-gray-100"
+                  </TableCell>
+                  <TableCell
+                    className="px-2 py-1 text-xs text-gray-900 border-r border-gray-100 font-normal"
                     title={dealerName.full}
                   >
                     {dealerName.display}
-                  </td>
-                  <td
-                    className="px-2 py-1.5 text-[11px] text-gray-500 border-r border-gray-100"
+                  </TableCell>
+                  <TableCell
+                    className="px-2 py-1 text-xs text-gray-700 border-r border-gray-100 font-normal"
                     title={contactName.full}
                   >
                     {contactName.display}
-                  </td>
-                  <td className="px-2 py-1.5 text-[11px] text-gray-500 whitespace-nowrap border-r border-gray-100">
+                  </TableCell>
+                  <TableCell className="px-2 py-1 text-xs text-gray-700 whitespace-nowrap border-r border-gray-100 font-normal">
                     {new Date(visit.check_in_time).toLocaleTimeString([], {
                       hour: "2-digit",
                       minute: "2-digit",
                     })}
-                  </td>
-                  <td className="px-2 py-1.5 text-[11px] text-gray-500 text-center border-r border-gray-100">
+                  </TableCell>
+                  <TableCell className="px-2 py-1 text-xs text-gray-700 text-center border-r border-gray-100 font-normal">
                     {visit.time_spent_minutes
                       ? `${Math.round(visit.time_spent_minutes)}m`
                       : "–"}
-                  </td>
-                  <td className="px-2 py-1.5 border-r border-gray-100">
+                  </TableCell>
+                  <TableCell className="px-2 py-1 border-r border-gray-100 font-normal">
                     {outcomeBadge(visit.outcome)}
-                  </td>
-                  <td className="px-2 py-1.5 text-[11px] font-semibold text-orange-600 text-right whitespace-nowrap border-r border-gray-100">
+                  </TableCell>
+                  <TableCell className="px-2 py-1 text-xs text-orange-700 text-right whitespace-nowrap border-r border-gray-100 font-normal">
                     {visit.order_value
                       ? `₹${visit.order_value.toLocaleString()}`
                       : "–"}
-                  </td>
-                  <td className="px-2 py-1.5 text-center">
+                  </TableCell>
+                  <TableCell className="px-2 py-1 text-center border-r-0 font-normal">
                     <OrderItemsView visit={visit} />
-                  </td>
-                </tr>
+                  </TableCell>
+                </TableRow>
               );
             })}
-          </tbody>
-        </table>
+          </TableBody>
+        </Table>
       </div>
     );
 

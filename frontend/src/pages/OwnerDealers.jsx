@@ -12,6 +12,14 @@ import {
   SelectValue,
 } from "../components/ui/select";
 import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "../components/ui/table";
+import {
   Storefront,
   Phone,
   MapPin,
@@ -196,68 +204,68 @@ const OwnerDealers = () => {
           <Card className="rounded-xl border shadow-sm overflow-hidden">
             <CardContent className="p-0">
               <div className="overflow-auto bg-white dark:bg-gray-900 shadow-sm w-full max-h-[30rem]">
-                <table className="w-full border-separate border-spacing-0">
-                  <thead className="sticky top-0 z-10 bg-gray-200">
-                    <tr className="border-y border-gray-200">
-                       <th className="text-left px-2 py-2 text-xs font-semibold text-gray-600 border-r border-b border-gray-200 w-8 bg-gray-200">#</th>
-                       <th className="text-left px-3 py-2 text-xs font-semibold text-gray-600 border-r border-b border-gray-200 bg-gray-200">Dealer Name</th>
-                       <th className="text-left px-3 py-2 text-xs font-semibold text-gray-600 border-r border-b border-gray-200 bg-gray-200">Type</th>
-                       <th className="text-left px-3 py-2 text-xs font-semibold text-gray-600 border-r border-b border-gray-200 bg-gray-200">Address</th>
-                       <th className="text-left px-3 py-2 text-xs font-semibold text-gray-600 border-r border-b border-gray-200 bg-gray-200">Contact</th>
-                       <th className="text-left px-3 py-2 text-xs font-semibold text-gray-600 border-r border-b border-gray-200 bg-gray-200">Phone</th>
-                       <th className="text-left px-3 py-2 text-xs font-semibold text-gray-600 border-r border-b border-gray-200 bg-gray-200">Company</th>
-                       <th className="text-left px-3 py-2 text-xs font-semibold text-gray-600 border-r border-b border-gray-200 bg-gray-200">Frequency</th>
-                       <th className="text-left px-3 py-2 text-xs font-semibold text-gray-600 bg-gray-200 border-b border-gray-200">Priority</th>
-                    </tr>
-                  </thead>
-                  <tbody>
+                <Table className="w-full text-left">
+                  <TableHeader className="sticky top-0 z-10 bg-gray-200">
+                    <TableRow className="border-y border-gray-200">
+                       <TableHead className="text-left px-2 py-2 text-xs text-gray-800 w-8 bg-gray-200">#</TableHead>
+                       <TableHead className="text-left px-3 py-2 text-xs text-gray-800 bg-gray-200">Dealer Name</TableHead>
+                       <TableHead className="text-left px-3 py-2 text-xs text-gray-800 bg-gray-200">Type</TableHead>
+                       <TableHead className="text-left px-3 py-2 text-xs text-gray-800 bg-gray-200">Address</TableHead>
+                       <TableHead className="text-left px-3 py-2 text-xs text-gray-800 bg-gray-200">Contact</TableHead>
+                       <TableHead className="text-left px-3 py-2 text-xs text-gray-800 bg-gray-200">Phone</TableHead>
+                       <TableHead className="text-left px-3 py-2 text-xs text-gray-800 bg-gray-200">Company</TableHead>
+                       <TableHead className="text-left px-3 py-2 text-xs text-gray-800 bg-gray-200">Frequency</TableHead>
+                       <TableHead className="text-left px-3 py-2 text-xs text-gray-800 bg-gray-200">Priority</TableHead>
+                    </TableRow>
+                  </TableHeader>
+                  <TableBody>
                     {filteredDealers.map((dealer, idx) => (
-                      <tr
+                      <TableRow
                         key={dealer.id}
                         className="border-b border-gray-100 transition-colors"
                       >
-                        <td className="px-2 py-1.5 border-r border-gray-100 text-xs font-medium text-gray-600 w-8">
+                        <TableCell className="px-2 py-1 text-xs text-gray-900 w-8 text-center border-r border-gray-100">
                           {idx + 1}
-                        </td>
-                        <td className="px-2 py-1.5 border-r border-gray-100">
-                          <p className="text-[11px] font-medium text-gray-800 truncate max-w-[140px]">
-                            {dealer.name}
+                        </TableCell>
+                        <TableCell className="px-2 py-1 border-r border-gray-100">
+                          <p className="text-xs text-gray-900 truncate max-w-[140px] font-normal">
+                             {dealer.name}
                           </p>
-                        </td>
-                        <td className="px-2 py-1.5 border-r border-gray-100">
-                          <Badge className="bg-primary-100 text-primary-700 border-primary-200 text-[10px] px-1.5 py-0">
+                        </TableCell>
+                        <TableCell className="px-2 py-1 border-r border-gray-100">
+                          <Badge className="bg-primary-100 text-primary-800 border-primary-200 text-[10px] px-1.5 py-0 font-normal">
                             {dealer.dealer_type}
                           </Badge>
-                        </td>
-                        <td className="px-2 py-1.5 border-r border-gray-100 max-w-[160px]">
+                        </TableCell>
+                        <TableCell className="px-2 py-1 max-w-[160px] border-r border-gray-100">
                           <p
-                            className="text-[11px] text-gray-500 truncate"
+                            className="text-xs text-gray-700 truncate font-normal"
                             title={dealer.address}
                           >
                             {dealer.address}
                           </p>
-                        </td>
-                        <td className="px-2 py-1.5 border-r border-gray-100 text-[11px] text-gray-600">
+                        </TableCell>
+                        <TableCell className="px-2 py-1 text-xs text-gray-800 border-r border-gray-100 font-normal">
                           {dealer.contact_person || "–"}
-                        </td>
-                        <td className="px-2 py-1.5 border-r border-gray-100 text-[11px] text-gray-600 whitespace-nowrap">
-                          {dealer.phone || "–"}
-                        </td>
-                        <td className="px-2 py-1.5 border-r border-gray-100 text-[11px] text-purple-600 font-medium truncate max-w-[120px]">
-                          {dealer.company_name}
-                        </td>
-                        <td className="px-2 py-1.5 border-r border-gray-100 text-[11px] text-gray-600">
+                        </TableCell>
+                        <TableCell className="px-2 py-1 text-xs text-gray-800 whitespace-nowrap border-r border-gray-100 font-normal">
+                           {dealer.phone || "–"}
+                        </TableCell>
+                        <TableCell className="px-2 py-1 text-xs text-purple-700 font-normal truncate max-w-[120px] border-r border-gray-100">
+                           {dealer.company_name}
+                        </TableCell>
+                        <TableCell className="px-2 py-1 text-xs text-gray-800 border-r border-gray-100 font-normal">
                           {dealer.visit_frequency}
-                        </td>
-                        <td className="px-2 py-1.5">
+                        </TableCell>
+                        <TableCell className="px-2 py-1 border-r-0">
                           <div className="flex">
                             {getPriorityStars(dealer.priority_level)}
                           </div>
-                        </td>
-                      </tr>
+                        </TableCell>
+                      </TableRow>
                     ))}
-                  </tbody>
-                </table>
+                  </TableBody>
+                </Table>
               </div>
             </CardContent>
           </Card>

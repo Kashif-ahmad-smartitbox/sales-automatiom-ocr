@@ -11,6 +11,14 @@ import { Badge } from "../components/ui/badge";
 import { Button } from "../components/ui/button";
 import { Input } from "../components/ui/input";
 import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "../components/ui/table";
+import {
   Package,
   Plus,
   PencilSimple,
@@ -250,19 +258,19 @@ const ItemMaster = () => {
               </div>
             ) : (
               <div className="overflow-auto bg-white dark:bg-gray-900 shadow-sm w-full max-h-[30rem]">
-                <table className="w-full border-separate border-spacing-0">
-                  <thead className="sticky top-0 z-10 bg-gray-200">
-                    <tr className="border-y border-gray-200">
-                      <th className="px-2 py-2 text-left text-xs font-semibold text-gray-500 border-r border-b border-gray-200 w-8 bg-gray-200">#</th>
-                      <th className="px-3 py-2 text-left text-xs font-semibold text-gray-500 border-r border-b border-gray-200 bg-gray-200">Item Name</th>
-                      <th className="px-3 py-2 text-left text-xs font-semibold text-gray-500 border-r border-b border-gray-200 bg-gray-200">Category</th>
-                      <th className="px-3 py-2 text-left text-xs font-semibold text-gray-500 border-r border-b border-gray-200 bg-gray-200">Price</th>
-                      <th className="px-3 py-2 text-left text-xs font-semibold text-gray-500 border-r border-b border-gray-200 bg-gray-200">Description</th>
-                      <th className="px-3 py-2 text-left text-xs font-semibold text-gray-500 border-r border-b border-gray-200 bg-gray-200">Added Date</th>
-                      <th className="px-2 py-2 text-center text-xs font-semibold text-gray-500 bg-gray-200 border-b border-gray-200">Actions</th>
-                    </tr>
-                  </thead>
-                  <tbody className="bg-white divide-y divide-gray-100">
+                <Table className="w-full border-separate border-spacing-0">
+                  <TableHeader className="sticky top-0 z-10 bg-gray-200">
+                    <TableRow className="border-y border-gray-200">
+                      <TableHead className="px-2 py-2 text-center w-8 bg-gray-200">#</TableHead>
+                      <TableHead className="px-3 py-2 bg-gray-200 text-left">Item Name</TableHead>
+                      <TableHead className="px-3 py-2 bg-gray-200 text-left">Category</TableHead>
+                      <TableHead className="px-3 py-2 bg-gray-200 text-left">Price</TableHead>
+                      <TableHead className="px-3 py-2 bg-gray-200 text-left">Description</TableHead>
+                      <TableHead className="px-3 py-2 bg-gray-200 text-left">Added Date</TableHead>
+                      <TableHead className="px-2 py-2 text-center bg-gray-200 border-r-0">Actions</TableHead>
+                    </TableRow>
+                  </TableHeader>
+                  <TableBody className="bg-white divide-y divide-gray-100">
                     {filteredItems.map((item, idx) => {
                       const itemName = getTruncatedText(item.item_name, 20);
                       const description = getTruncatedText(
@@ -271,52 +279,52 @@ const ItemMaster = () => {
                       );
 
                       return (
-                        <tr key={item.id} className="transition-colors">
-                          <td className="px-2 py-2 border-r border-gray-100 text-xs font-medium text-gray-600 w-8">
+                        <TableRow key={item.id} className="transition-colors">
+                          <TableCell className="px-2 py-1 text-xs text-gray-800 text-center">
                             {idx + 1}
-                          </td>
-                          <td className="px-3 py-2 border-r border-gray-100">
+                          </TableCell>
+                          <TableCell className="px-3 py-1">
                             <div className="flex items-center gap-2">
                               <Package
-                                className="w-4 h-4 text-primary-500"
+                                className="w-4 h-4 text-primary-600"
                                 weight="duotone"
                               />
                               <span
-                                className="text-xs font-semibold text-gray-900"
+                                className="text-xs text-gray-900"
                                 title={itemName.full}
                               >
                                 {itemName.display}
                               </span>
                             </div>
-                          </td>
-                          <td className="px-3 py-2 border-r border-gray-100">
-                            <span className="text-xs font-semibold text-primary-600">
+                          </TableCell>
+                          <TableCell className="px-3 py-1">
+                            <span className="text-xs text-primary-700 font-semibold">
                               {item.product_category}
                             </span>
-                          </td>
-                          <td className="px-3 py-2 border-r border-gray-100">
-                            <span className="text-xs font-bold text-emerald-600">
+                          </TableCell>
+                          <TableCell className="px-3 py-1">
+                            <span className="text-xs font-semibold text-emerald-800">
                               ₹{item.default_price.toLocaleString()}
                             </span>
-                          </td>
-                          <td className="px-3 py-2 border-r border-gray-100">
+                          </TableCell>
+                          <TableCell className="px-3 py-1">
                             <span
-                              className="text-xs text-gray-600"
+                              className="text-xs text-gray-700"
                               title={description.full}
                             >
                               {description.display}
                             </span>
-                          </td>
-                          <td className="px-3 py-2 border-r border-gray-100">
-                            <span className="text-xs text-gray-500">
+                          </TableCell>
+                          <TableCell className="px-3 py-1">
+                            <span className="text-xs text-gray-700">
                               {formatDateDDMmmYYYY(item.created_at)}
                             </span>
-                          </td>
-                          <td className="px-2 py-2">
+                          </TableCell>
+                          <TableCell className="px-2 py-1 border-r-0">
                             <div className="flex items-center justify-center gap-1">
                               <button
                                 onClick={() => openEditModal(item)}
-                                className="p-1.5 text-blue-600 hover:bg-blue-50 rounded-lg transition-colors"
+                                className="p-1 text-blue-700 hover:bg-blue-50 rounded-lg transition-colors"
                                 title="Edit"
                               >
                                 <PencilSimple size={14} weight="bold" />
@@ -325,18 +333,18 @@ const ItemMaster = () => {
                                 onClick={() =>
                                   handleDeleteItem(item.id, item.item_name)
                                 }
-                                className="p-1.5 text-red-600 hover:bg-red-50 rounded-lg transition-colors"
+                                className="p-1 text-red-700 hover:bg-red-50 rounded-lg transition-colors"
                                 title="Delete"
                               >
                                 <Trash size={14} weight="bold" />
                               </button>
                             </div>
-                          </td>
-                        </tr>
+                          </TableCell>
+                        </TableRow>
                       );
                     })}
-                  </tbody>
-                </table>
+                  </TableBody>
+                </Table>
               </div>
             )}
           </CardContent>

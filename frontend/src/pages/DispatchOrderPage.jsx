@@ -7,6 +7,14 @@ import { Input } from "../components/ui/input";
 import { useAuth } from "../context/AuthContext";
 import { toast } from "sonner";
 import { formatDateDDMmmYYYY } from "../utils/tableHelpers";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "../components/ui/table";
 
 import { Download, PaperPlaneRight } from "@phosphor-icons/react";
 import { downloadOrderPDF } from "../utils/CustomerOrderPDF";
@@ -103,87 +111,87 @@ const DispatchOrderPage = () => {
 
                <CardContent className="p-0">
                  <div className="overflow-auto max-h-[30rem]">
-                   <table className="w-full text-left">
-                     <thead className="bg-gray-200 sticky top-0 z-10">
-                       <tr className="border-y border-gray-200">
-                         <th className="px-3 py-2 text-xs font-semibold text-gray-600 border-r border-gray-200 bg-gray-200">Order Date</th>
-                         <th className="px-3 py-2 text-xs font-semibold text-gray-600 border-r border-gray-200 bg-gray-200">Dealer</th>
-                         <th className="px-3 py-2 text-xs font-semibold text-gray-600 border-r border-gray-200 bg-gray-200">Order Items</th>
-                         <th className="px-3 py-2 text-xs font-semibold text-gray-600 border-r border-gray-200 bg-gray-200">Total Amount</th>
-                         <th className="px-3 py-2 text-xs font-semibold text-gray-600 border-r border-gray-200 bg-gray-200">Status</th>
-                         <th className="px-3 py-2 text-xs font-semibold text-gray-600 border-r border-gray-200 bg-gray-200">Invoice Number</th>
-                         <th className="px-3 py-2 text-xs font-semibold text-gray-600 text-right bg-gray-200">Action</th>
-                       </tr>
-                     </thead>
-                     <tbody className="text-sm divide-y divide-gray-100">
+                  <Table className="w-full text-left">
+                    <TableHeader className="bg-gray-200 sticky top-0 z-10">
+                      <TableRow className="border-y border-gray-200">
+                        <TableHead className="px-3 py-2 text-left bg-gray-200">Order Date</TableHead>
+                        <TableHead className="px-3 py-2 text-left bg-gray-200">Dealer</TableHead>
+                        <TableHead className="px-3 py-2 text-left bg-gray-200">Order Items</TableHead>
+                        <TableHead className="px-3 py-2 text-left bg-gray-200">Total Amount</TableHead>
+                        <TableHead className="px-3 py-2 text-left bg-gray-200">Status</TableHead>
+                        <TableHead className="px-3 py-2 text-left bg-gray-200 text-center">Invoice Number</TableHead>
+                        <TableHead className="px-3 py-2 text-right bg-gray-200 border-r-0">Action</TableHead>
+                      </TableRow>
+                    </TableHeader>
+                    <TableBody className="text-sm divide-y divide-gray-100">
                        {orders.map(order => {
                          const items = order.ordered_items || order.order_items || [];
                          return (
-                         <tr key={order.id} className="hover:bg-gray-50">
-                            <td className="px-4 py-2 text-xs">{formatDateDDMmmYYYY(order.check_in_time)}</td>
-                            <td className="px-4 py-2 font-medium text-slate-800">{order.dealer_name}</td>
-                            <td className="px-4 py-2 text-xs text-gray-600">
-                               {items.length > 0 ? (
-                                 <ul className="list-disc list-inside">
-                                   {items.map((it, idx) => (
-                                     <li key={idx} className="truncate max-w-[200px]" title={`${it.name} (x${it.quantity})`}>
-                                       {it.name} <span className="font-semibold px-1 text-gray-800">x{it.quantity}</span>
-                                     </li>
-                                   ))}
-                                 </ul>
-                               ) : (
-                                 <span className="text-gray-400 italic">No item details</span>
-                               )}
-                            </td>
-                            <td className="px-4 py-2 font-semibold text-emerald-600">
+                          <TableRow key={order.id} className="hover:bg-gray-50 border-b border-gray-100">
+                            <TableCell className="px-3 py-1 text-xs text-gray-700">{formatDateDDMmmYYYY(order.check_in_time)}</TableCell>
+                            <TableCell className="px-3 py-1 text-xs text-gray-900">{order.dealer_name}</TableCell>
+                            <TableCell className="px-3 py-1 text-xs text-gray-700">
+                              {items.length > 0 ? (
+                                <ul className="list-disc list-inside">
+                                  {items.map((it, idx) => (
+                                    <li key={idx} className="truncate max-w-[200px]" title={`${it.name} (x${it.quantity})`}>
+                                      {it.name} <span className="px-1 text-gray-800">x{it.quantity}</span>
+                                    </li>
+                                  ))}
+                                </ul>
+                              ) : (
+                                <span className="text-gray-400 italic">No item details</span>
+                              )}
+                            </TableCell>
+                            <TableCell className="px-3 py-1 text-xs font-normal text-emerald-700">
                                ₹{items.length > 0 
                                   ? items.reduce((sum, it) => sum + (it.quantity || 0) * (it.rate || it.unit_price || 0), 0).toLocaleString() 
                                   : (order.order_value || 0).toLocaleString()}
-                            </td>
-                            <td className="px-4 py-2">
-                               <span className={`px-2 py-1 text-[10px] font-bold rounded-full ${order.order_status === 'Dispatched' ? 'bg-blue-100 text-blue-700' : 'bg-green-100 text-green-700'}`}>
-                                  {order.order_status}
-                               </span>
-                            </td>
-                            <td className="px-4 py-2">
-                               {order.order_status === 'Dispatched' ? (
-                                   <span className="text-xs">{order.invoice_number}</span>
-                               ) : (
-                                   <Input 
-                                      className="h-8 max-w-[150px] text-xs" 
-                                      placeholder="e.g. INV-2023-01"
-                                      value={invoiceNumbers[order.id] || ''}
-                                      onChange={(e) => setInvoiceNumbers({ ...invoiceNumbers, [order.id]: e.target.value })}
-                                   />
+                            </TableCell>
+                            <TableCell className="px-3 py-1">
+                              <span className={`px-2 py-1 text-[10px] font-bold rounded-full ${order.order_status === 'Dispatched' ? 'bg-blue-100 text-blue-700' : 'bg-green-100 text-green-700'}`}>
+                                 {order.order_status}
+                              </span>
+                            </TableCell>
+                            <TableCell className="px-3 py-1 text-center">
+                                {order.order_status === 'Dispatched' ? (
+                                    <span className="text-xs text-gray-800">{order.invoice_number}</span>
+                                ) : (
+                                    <div className="flex items-center justify-center gap-2">
+                                        <Input
+                                            className="h-7 w-24 text-[11px]"
+                                            placeholder="Invoice #"
+                                            value={invoiceNumbers[order.id] || ''}
+                                            onChange={(e) => setInvoiceNumbers({ ...invoiceNumbers, [order.id]: e.target.value })}
+                                        />
+                                        <Button
+                                            size="sm"
+                                            className="h-7 text-[11px] bg-emerald-600 hover:bg-emerald-700 text-white"
+                                            onClick={() => handleDispatch(order.id)}
+                                        >
+                                            <PaperPlaneRight size={14} className="mr-1" />
+                                            Dispatch
+                                        </Button>
+                                    </div>
+                                )}
+                            </TableCell>
+                            <TableCell className="px-3 py-1 text-right border-r-0">
+                               {order.order_status === 'Dispatched' && (
+                                   <Button
+                                       variant="ghost"
+                                       size="sm"
+                                       className="h-7 text-xs text-primary-600 hover:text-primary-700 hover:bg-primary-50"
+                                       onClick={() => handleDownloadPDF(order)}
+                                   >
+                                       <Download size={14} className="mr-1" />
+                                       PDF
+                                   </Button>
                                )}
-                            </td>
-                            <td className="px-4 py-2 text-right">
-                               <div className="flex items-center justify-end gap-2">
-                                 {order.order_status === 'Dispatched' ? (
-                                   <Button 
-                                      size="sm" 
-                                      variant="outline"
-                                      onClick={() => handleGeneratePDF(order, order.invoice_number)} 
-                                      className="h-6 text-xs font-semibold"
-                                   >
-                                      <Download className="mr-1" size={14} /> Download
-                                   </Button>
-                                 ) : (
-                                   <Button 
-                                      size="sm" 
-                                      disabled={order.order_status === 'Dispatched'} 
-                                      onClick={() => handleDispatch(order)} 
-                                      className="h-6 text-xs bg-indigo-500 hover:bg-indigo-600 text-white shadow-sm"
-                                   >
-                                      <PaperPlaneRight className="mr-1" size={14} /> Dispatch & Invoice
-                                   </Button>
-                                 )}
-                               </div>
-                            </td>
-                         </tr>
+                            </TableCell>
+                          </TableRow>
                        )})}
-                     </tbody>
-                   </table>
+                    </TableBody>
+                  </Table>
                  </div>
                </CardContent>
              </Card>

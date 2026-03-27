@@ -3,6 +3,14 @@ import axios from "axios";
 import AdminLayout from "../components/layout/AdminLayout";
 import { Card, CardContent } from "../components/ui/card";
 import { Button } from "../components/ui/button";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "../components/ui/table";
 import { useAuth } from "../context/AuthContext";
 import { toast } from "sonner";
 import { formatDateDDMmmYYYY } from "../utils/tableHelpers";
@@ -63,62 +71,62 @@ const OrdersPage = () => {
            <Card className="rounded-xl border shadow-sm overflow-hidden">
              <CardContent className="p-0">
                <div className="overflow-auto max-h-[30rem]">
-                 <table className="w-full text-left border-separate border-spacing-0">
-                   <thead className="sticky top-0 z-10 bg-gray-200">
-                     <tr className="border-y border-gray-200">
-                       <th className="px-3 py-2 text-xs font-semibold text-gray-500 border-r border-b border-gray-200 bg-gray-200">Date</th>
-                       <th className="px-3 py-2 text-xs font-semibold text-gray-500 border-r border-b border-gray-200 bg-gray-200">Sales Executive</th>
-                       <th className="px-3 py-2 text-xs font-semibold text-gray-500 border-r border-b border-gray-200 bg-gray-200">Dealer</th>
-                       <th className="px-3 py-2 text-xs font-semibold text-gray-500 border-r border-b border-gray-200 bg-gray-200">Order Items</th>
-                       <th className="px-3 py-2 text-xs font-semibold text-gray-500 border-r border-b border-gray-200 bg-gray-200">Total Value</th>
-                       <th className="px-3 py-2 text-xs font-semibold text-gray-500 border-r border-b border-gray-200 bg-gray-200">Status</th>
-                       {['hod', 'admin', 'organization'].includes(user?.role) && (
-                         <th className="px-3 py-2 text-xs font-semibold text-gray-500 text-right bg-gray-200 border-b border-gray-200">Action</th>
-                       )}
-                     </tr>
-                   </thead>
-                   <tbody className="text-sm divide-y divide-gray-100">
+                 <Table className="w-full text-left">
+                    <TableHeader className="sticky top-0 z-10 bg-gray-200">
+                      <TableRow className="border-y border-gray-200">
+                        <TableHead className="px-3 py-2 text-xs text-gray-800 bg-gray-200">Date</TableHead>
+                        <TableHead className="px-3 py-2 text-xs text-gray-800 bg-gray-200">Sales Executive</TableHead>
+                        <TableHead className="px-3 py-2 text-xs text-gray-800 bg-gray-200">Dealer</TableHead>
+                        <TableHead className="px-3 py-2 text-xs text-gray-800 bg-gray-200">Order Items</TableHead>
+                        <TableHead className="px-3 py-2 text-xs text-gray-800 bg-gray-200">Total Value</TableHead>
+                        <TableHead className="px-3 py-2 text-xs text-gray-800 bg-gray-200">Status</TableHead>
+                        {['hod', 'admin', 'organization'].includes(user?.role) && (
+                          <TableHead className="px-3 py-2 text-xs text-gray-800 text-right bg-gray-200 border-r-0">Action</TableHead>
+                        )}
+                      </TableRow>
+                    </TableHeader>
+                   <TableBody>
                      {orders.map(order => {
                        const items = order.ordered_items || order.order_items || [];
                        return (
-                       <tr key={order.id} className="hover:bg-gray-50">
-                          <td className="px-4 py-2 text-xs">{formatDateDDMmmYYYY(order.check_in_time)}</td>
-                          <td className="px-4 py-2">{order.exec_name}</td>
-                          <td className="px-4 py-2 font-medium text-slate-800">{order.dealer_name}</td>
-                          <td className="px-4 py-2 text-xs text-gray-600">
-                             {items.length > 0 ? (
-                               <ul className="list-disc list-inside">
-                                 {items.map((it, idx) => (
-                                   <li key={idx} className="truncate max-w-[200px]" title={`${it.name} (x${it.quantity})`}>
-                                     {it.name} <span className="font-semibold px-1 text-gray-800">x{it.quantity}</span>
-                                   </li>
-                                 ))}
-                               </ul>
-                             ) : (
-                               <span className="text-gray-400 italic">No item details</span>
-                             )}
-                          </td>
-                          <td className="px-4 py-2 font-semibold text-emerald-600">
-                             ₹{items.length > 0 
-                                ? items.reduce((sum, it) => sum + (it.quantity || 0) * (it.rate || it.unit_price || 0), 0).toLocaleString() 
-                                : (order.order_value || 0).toLocaleString()}
-                          </td>
-                          <td className="px-4 py-2">
-                             <span className={`px-2 py-1 text-[10px] font-bold rounded-full ${order.order_status === 'Approved' ? 'bg-green-100 text-green-700' : order.order_status === 'Dispatched' ? 'bg-blue-100 text-blue-700' : 'bg-orange-100 text-orange-700'}`}>
-                                {order.order_status || 'Pending'}
-                             </span>
-                          </td>
-                          {['hod', 'admin', 'organization'].includes(user?.role) && (
-                            <td className="px-4 py-2 text-right">
-                               <Button size="sm" disabled={order.order_status === 'Approved' || order.order_status === 'Dispatched'} onClick={() => handleApprove(order.id)} className="h-6 text-xs bg-emerald-500 hover:bg-emerald-600 text-white rounded-xl">
-                                  Approve
-                               </Button>
-                            </td>
-                          )}
-                       </tr>
+                        <TableRow key={order.id} className="hover:bg-gray-50 transition-colors">
+                           <TableCell className="px-3 py-1 text-xs text-gray-800 border-r border-gray-100 font-normal">{formatDateDDMmmYYYY(order.check_in_time)}</TableCell>
+                           <TableCell className="px-3 py-1 text-xs text-gray-900 border-r border-gray-100 font-normal">{order.exec_name}</TableCell>
+                           <TableCell className="px-3 py-1 text-xs text-gray-900 font-normal border-r border-gray-100">{order.dealer_name}</TableCell>
+                           <TableCell className="px-3 py-1 text-xs text-gray-800 border-r border-gray-100 font-normal">
+                              {items.length > 0 ? (
+                                <ul className="list-disc list-inside">
+                                  {items.map((it, idx) => (
+                                    <li key={idx} className="truncate max-w-[200px]" title={`${it.name} (x${it.quantity})`}>
+                                      {it.name} <span className="px-1 text-gray-900">x{it.quantity}</span>
+                                    </li>
+                                  ))}
+                                </ul>
+                              ) : (
+                                <span className="text-gray-500 italic">No item details</span>
+                              )}
+                           </TableCell>
+                           <TableCell className="px-3 py-1 text-xs text-emerald-800 font-normal border-r border-gray-100">
+                              ₹{items.length > 0 
+                                 ? items.reduce((sum, it) => sum + (it.quantity || 0) * (it.rate || it.unit_price || 0), 0).toLocaleString() 
+                                 : (order.order_value || 0).toLocaleString()}
+                           </TableCell>
+                           <TableCell className="px-3 py-1 text-xs border-r border-gray-100">
+                              <span className={`px-2 py-1 text-[10px] rounded-full ${order.order_status === 'Approved' ? 'bg-green-100 text-green-800' : order.order_status === 'Dispatched' ? 'bg-blue-100 text-blue-800' : 'bg-orange-100 text-orange-800'}`}>
+                                 {order.order_status || 'Pending'}
+                              </span>
+                           </TableCell>
+                           {['hod', 'admin', 'organization'].includes(user?.role) && (
+                             <TableCell className="px-3 py-1 text-right border-r-0 font-normal">
+                                <Button size="sm" disabled={order.order_status === 'Approved' || order.order_status === 'Dispatched'} onClick={() => handleApprove(order.id)} className="h-6 text-[10px] py-1 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl">
+                                   Approve
+                                </Button>
+                             </TableCell>
+                           )}
+                        </TableRow>
                      )})}
-                   </tbody>
-                 </table>
+                   </TableBody>
+                 </Table>
                </div>
              </CardContent>
            </Card>

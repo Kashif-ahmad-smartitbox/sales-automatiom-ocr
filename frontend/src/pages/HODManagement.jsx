@@ -7,6 +7,14 @@ import { Input } from "../components/ui/input";
 import { Label } from "../components/ui/label";
 import { Badge } from "../components/ui/badge";
 import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "../components/ui/table";
+import {
   Dialog,
   DialogContent,
   DialogHeader,
@@ -365,20 +373,20 @@ const HODManagement = () => {
           <Card className="rounded-xl border shadow-sm overflow-hidden">
             <CardContent className="p-0">
               <div className="overflow-auto bg-white shadow-sm w-full max-h-[30rem]">
-                <table className="w-full border-separate border-spacing-0">
-                  <thead className="sticky top-0 z-10 bg-gray-200">
-                    <tr className="border-y border-gray-200">
-                      <th className="text-left px-2 py-2 text-xs font-semibold text-gray-500 border-r border-b border-gray-200 w-8 bg-gray-200">#</th>
-                      <th className="text-left px-2 py-2 text-xs font-semibold text-gray-500 border-r border-b border-gray-200 bg-gray-200">HOD Name</th>
-                      <th className="text-left px-2 py-2 text-xs font-semibold text-gray-500 border-r border-b border-gray-200 bg-gray-200">Employee Code</th>
-                      <th className="text-left px-2 py-2 text-xs font-semibold text-gray-500 border-r border-b border-gray-200 bg-gray-200">Email</th>
-                      <th className="text-left px-2 py-2 text-xs font-semibold text-gray-500 border-r border-b border-gray-200 bg-gray-200">Mobile</th>
-                      <th className="text-center px-2 py-2 text-xs font-semibold text-gray-500 border-r border-b border-gray-200 bg-gray-200">Team Size</th>
-                      <th className="text-left px-2 py-2 text-xs font-semibold text-gray-500 border-r border-b border-gray-200 bg-gray-200">Assigned Team</th>
-                      <th className="text-center px-2 py-2 text-xs font-semibold text-gray-500 border-b border-gray-200 bg-gray-200">Actions</th>
-                    </tr>
-                  </thead>
-                  <tbody>
+                <Table className="w-full border-separate border-spacing-0">
+                  <TableHeader className="sticky top-0 z-10 bg-gray-200">
+                    <TableRow className="border-y border-gray-200">
+                      <TableHead className="px-2 py-2 text-center w-8 bg-gray-200">#</TableHead>
+                      <TableHead className="text-left px-2 py-2 bg-gray-200">HOD Name</TableHead>
+                      <TableHead className="text-left px-2 py-2 bg-gray-200">Employee Code</TableHead>
+                      <TableHead className="text-left px-2 py-2 bg-gray-200">Email</TableHead>
+                      <TableHead className="text-left px-2 py-2 bg-gray-200">Mobile</TableHead>
+                      <TableHead className="text-center px-2 py-2 bg-gray-200">Team Size</TableHead>
+                      <TableHead className="text-left px-2 py-2 bg-gray-200">Assigned Team</TableHead>
+                      <TableHead className="text-center px-2 py-2 bg-gray-200 border-r-0">Actions</TableHead>
+                    </TableRow>
+                  </TableHeader>
+                  <TableBody>
                     {filteredHODs.map((hod, idx) => {
                       const hodName = getTruncatedText(hod.name, 18);
                       const hodEmail = getTruncatedText(hod.email, 20);
@@ -389,54 +397,54 @@ const HODManagement = () => {
                         .join(", ");
 
                       return (
-                        <tr
+                        <TableRow
                           key={hod.id}
                           className="border-b border-gray-100 transition-colors"
                         >
-                          <td className="px-2 py-1.5 border-r border-gray-100 text-xs font-semibold text-gray-900 w-8">
+                          <TableCell className="px-2 py-1 text-xs text-gray-800 text-center">
                             {idx + 1}
-                          </td>
-                          <td className="px-2 py-1.5 border-r border-gray-100">
+                          </TableCell>
+                          <TableCell className="px-2 py-1">
                             <div className="flex items-center gap-2">
-                              <div className="w-6 h-6 rounded-full flex items-center justify-center text-white text-xs font-bold bg-gradient-to-br from-purple-500 to-indigo-600 flex-shrink-0">
+                              <div className="w-6 h-6 rounded-full flex items-center justify-center text-white text-[10px] font-bold bg-gradient-to-br from-purple-500 to-indigo-600 flex-shrink-0">
                                 {hod.name.charAt(0)}
                               </div>
                               <span
-                                className="text-[11px] font-semibold text-gray-800"
+                                className="text-xs text-gray-900"
                                 title={hodName.full}
                               >
                                 {hodName.display}
                               </span>
                             </div>
-                          </td>
-                          <td className="px-2 py-1.5 text-[11px] font-semibold text-gray-900 border-r border-gray-100">
+                          </TableCell>
+                          <TableCell className="px-2 py-1 text-xs text-gray-800">
                             {hod.employee_code}
-                          </td>
-                          <td
-                            className="px-2 py-1.5 text-[11px] font-medium text-gray-900 border-r border-gray-100"
+                          </TableCell>
+                          <TableCell
+                            className="px-2 py-1 text-xs text-gray-800"
                             title={hodEmail.full}
                           >
                             {hodEmail.display}
-                          </td>
-                          <td className="px-2 py-1.5 text-[11px] font-medium text-gray-900 border-r border-gray-100">
+                          </TableCell>
+                          <TableCell className="px-2 py-1 text-xs text-gray-800">
                             <div className="flex items-center gap-1.5">
-                              <Phone size={12} className="text-gray-400" />
+                              <Phone size={12} className="text-gray-500" />
                               <span>{hod.mobile}</span>
                             </div>
-                          </td>
-                          <td className="px-2 py-1.5 text-center border-r border-gray-100">
+                          </TableCell>
+                          <TableCell className="px-2 py-1 text-center">
                             <Badge className="bg-purple-100 text-purple-700 border-purple-200 text-[10px] px-1.5 py-0">
                               <Users size={10} className="mr-1" />
                               {hod.assigned_sales_executive_ids?.length || 0}
                             </Badge>
-                          </td>
-                          <td
-                            className="px-2 py-1.5 border-r border-gray-100"
+                          </TableCell>
+                          <TableCell
+                            className="px-2 py-1"
                             title={assignedTeamNames || "No team assigned"}
                           >
                             {hod.assigned_sales_executives &&
                             hod.assigned_sales_executives.length > 0 ? (
-                              <div className="text-[11px] text-gray-700">
+                              <div className="text-xs text-gray-800">
                                 {hod.assigned_sales_executives
                                   .slice(0, 2)
                                   .map((exec, execIdx) => (
@@ -462,17 +470,17 @@ const HODManagement = () => {
                                 )}
                               </div>
                             ) : (
-                              <span className="text-[11px] text-gray-400">
+                              <span className="text-xs text-gray-500 font-normal">
                                 No team assigned
                               </span>
                             )}
-                          </td>
-                          <td className="px-2 py-1.5 text-center">
+                          </TableCell>
+                          <TableCell className="px-2 py-1 text-center border-r-0">
                             <div className="flex items-center justify-center gap-1">
                               <Button
                                 variant="ghost"
                                 size="sm"
-                                className="text-primary-600 hover:text-primary-700 hover:bg-primary-50 text-xs h-6 px-2"
+                                className="text-primary-700 hover:text-primary-800 hover:bg-primary-50 text-[10px] h-6 px-1.5 font-normal"
                                 onClick={() => handleEdit(hod)}
                               >
                                 <Pencil size={12} className="mr-0.5" />
@@ -481,19 +489,19 @@ const HODManagement = () => {
                               <Button
                                 variant="ghost"
                                 size="sm"
-                                className="text-red-600 hover:text-red-700 hover:bg-red-50 text-xs h-6 px-2"
+                                className="text-red-700 hover:text-red-800 hover:bg-red-50 text-[10px] h-6 px-1.5 font-normal"
                                 onClick={() => handleDelete(hod.id)}
                               >
                                 <Trash size={12} className="mr-0.5" />
                                 Delete
                               </Button>
                             </div>
-                          </td>
-                        </tr>
+                          </TableCell>
+                        </TableRow>
                       );
                     })}
-                  </tbody>
-                </table>
+                  </TableBody>
+                </Table>
               </div>
             </CardContent>
           </Card>

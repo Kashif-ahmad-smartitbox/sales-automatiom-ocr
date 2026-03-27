@@ -41,32 +41,34 @@ const OrderItemsView = ({ visit }) => {
                 <div className="space-y-2">
                   <div className="overflow-auto rounded-lg border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 shadow-sm max-h-[400px]">
                     <Table className="table-auto border-collapse">
-                      <TableHeader className="sticky top-0 z-10 bg-gray-200">
-                        <TableHead className="py-1.5 px-2 text-gray-500 font-semibold border-r border-gray-200 text-[10px]">#</TableHead>
-                        <TableHead className="py-1.5 px-2 text-gray-500 font-semibold border-r border-gray-200 text-[10px]">Item</TableHead>
-                        <TableHead className="py-1.5 px-2 text-gray-500 font-semibold border-r border-gray-200 text-[10px] text-center">Qty</TableHead>
-                        <TableHead className="py-1.5 px-2 text-gray-500 font-semibold border-r border-gray-200 text-[10px] text-right">Rate (₹)</TableHead>
-                        <TableHead className="py-1.5 px-2 text-gray-500 font-semibold text-[10px] text-right">Total (₹)</TableHead>
+                      <TableHeader>
+                        <TableRow className="border-y border-gray-200 bg-gray-200 hover:bg-gray-200">
+                          <TableHead className="px-2 py-2 text-center w-8 bg-gray-200">#</TableHead>
+                          <TableHead className="px-2 py-2 text-left bg-gray-200">Item</TableHead>
+                          <TableHead className="px-2 py-2 text-center bg-gray-200">Qty</TableHead>
+                          <TableHead className="px-2 py-2 text-right bg-gray-200">Rate (₹)</TableHead>
+                          <TableHead className="px-2 py-2 text-right bg-gray-200 border-r-0">Total (₹)</TableHead>
+                        </TableRow>
                       </TableHeader>
                       <TableBody className="divide-y divide-gray-100 dark:divide-gray-800">
                         {items.map((item, idx) => (
                           <TableRow key={idx} className="group transition-all duration-200">
-                            <TableCell className="py-1.5 px-2">
-                              <span className="w-5 h-5 rounded-full bg-primary-100 dark:bg-primary-900/30 text-primary-700 dark:text-primary-400 flex items-center justify-center text-[10px] font-medium">
+                            <TableCell className="px-2 py-1 text-center font-normal">
+                              <span className="w-5 h-5 rounded-full bg-primary-100 dark:bg-primary-900/30 text-primary-700 dark:text-primary-400 flex items-center justify-center text-[10px]">
                                 {idx + 1}
                               </span>
                             </TableCell>
-                            <TableCell className="py-1.5 px-2 text-[11px] text-gray-800 dark:text-gray-200 font-medium">{item.name}</TableCell>
-                            <TableCell className="py-1.5 px-2 text-center text-[11px] text-gray-700 dark:text-gray-300">{item.quantity}</TableCell>
-                            <TableCell className="py-1.5 px-2 text-right text-[11px] text-gray-700 dark:text-gray-300">₹{item.rate.toFixed(2)}</TableCell>
-                            <TableCell className="py-1.5 px-2 text-right text-[11px] text-primary-600 dark:text-primary-400 font-semibold">
+                            <TableCell className="px-2 py-1 text-xs text-gray-900 dark:text-gray-200">{item.name}</TableCell>
+                            <TableCell className="px-2 py-1 text-center text-xs text-gray-700 dark:text-gray-300">{item.quantity}</TableCell>
+                            <TableCell className="px-2 py-1 text-right text-xs text-gray-700 dark:text-gray-300">₹{item.rate.toFixed(2)}</TableCell>
+                            <TableCell className="px-2 py-1 text-right text-xs text-primary-700 dark:text-primary-400 border-r-0">
                               ₹{(item.quantity * item.rate).toFixed(2)}
                             </TableCell>
                           </TableRow>
                         ))}
-                        <TableRow className="font-bold border-t-2 border-gray-200 dark:border-gray-700">
-                          <TableCell colSpan={4} className="py-1.5 px-2 text-right text-[11px] text-gray-700 dark:text-gray-300">Total:</TableCell>
-                          <TableCell className="py-1.5 px-2 text-right text-[11px] text-primary-600 dark:text-primary-400 font-bold">
+                        <TableRow className="border-t-2 border-gray-200 dark:border-gray-700">
+                          <TableCell colSpan={4} className="px-2 py-1 text-right text-xs text-gray-700 dark:text-gray-300">Total:</TableCell>
+                          <TableCell className="px-2 py-1 text-right text-xs text-primary-700 dark:text-primary-400 font-bold border-r-0">
                             ₹{items.reduce((sum, item) => sum + (item.quantity * item.rate), 0).toFixed(2)}
                           </TableCell>
                         </TableRow>

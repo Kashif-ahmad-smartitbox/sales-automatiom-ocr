@@ -25,6 +25,14 @@ import { toast } from "sonner";
 import { Badge } from "../components/ui/badge";
 import { useNavigate } from "react-router-dom";
 import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "../components/ui/table";
+import {
   Dialog,
   DialogContent,
   DialogHeader,
@@ -451,24 +459,24 @@ const FollowupDealers = () => {
         <Card className="rounded-xl border shadow-sm overflow-hidden">
           <CardContent className="p-0">
             <div className="overflow-auto bg-white dark:bg-gray-900 shadow-sm w-full max-h-[30rem]">
-              <table className="w-full border-separate border-spacing-0">
-                <thead className="sticky top-0 z-10">
-                <tr className="border-y border-gray-200">
-                  <th className="px-2 py-2 text-left text-xs font-semibold text-gray-500 border-r border-b border-gray-200 w-8 bg-gray-200">#</th>
-                  <th className="px-3 py-2 text-left text-xs font-semibold text-gray-500 border-r border-b border-gray-200 bg-gray-200">Dealer Name</th>
-                  <th className="px-3 py-2 text-left text-xs font-semibold text-gray-500 border-r border-b border-gray-200 bg-gray-200">Contact Info</th>
-                  <th className="px-3 py-2 text-left text-xs font-semibold text-gray-500 border-r border-b border-gray-200 bg-gray-200">Location</th>
-                  <th className="px-3 py-2 text-left text-xs font-semibold text-gray-500 border-r border-b border-gray-200 bg-gray-200">Last Visit</th>
-                  <th className="px-3 py-2 text-left text-xs font-semibold text-gray-500 border-r border-b border-gray-200 bg-gray-200">Next Visit Date</th>
-                  <th className="px-2 py-2 text-center text-xs font-semibold text-gray-500 border-r border-b border-gray-200 bg-gray-200">Status</th>
-                  <th className="px-3 py-2 text-left text-xs font-semibold text-gray-500 border-r border-b border-gray-200 bg-gray-200">Last Outcome</th>
-                  {showExecutiveColumn && (
-                    <th className="px-3 py-2 text-left text-xs font-semibold text-gray-500 border-r border-b border-gray-200 bg-gray-200">Executive</th>
-                  )}
-                  <th className="px-2 py-2 text-center text-xs font-semibold text-gray-500 border-b border-gray-200 bg-gray-200">Actions</th>
-                </tr>
-              </thead>
-              <tbody>
+              <Table className="w-full text-left">
+                <TableHeader className="sticky top-0 z-10 bg-gray-200">
+                  <TableRow className="border-y border-gray-200">
+                    <TableHead className="px-2 py-2 text-center w-8 bg-gray-200">#</TableHead>
+                    <TableHead className="px-3 py-2 text-left bg-gray-200">Dealer Name</TableHead>
+                    <TableHead className="px-3 py-2 text-left bg-gray-200">Contact Info</TableHead>
+                    <TableHead className="px-3 py-2 text-left bg-gray-200">Location</TableHead>
+                    <TableHead className="px-3 py-2 text-left bg-gray-200">Last Visit</TableHead>
+                    <TableHead className="px-3 py-2 text-left bg-gray-200">Next Visit Date</TableHead>
+                    <TableHead className="px-2 py-2 text-center bg-gray-200">Status</TableHead>
+                    <TableHead className="px-3 py-2 text-left bg-gray-200">Last Outcome</TableHead>
+                    {showExecutiveColumn && (
+                      <TableHead className="px-3 py-2 text-left bg-gray-200">Executive</TableHead>
+                    )}
+                    <TableHead className="px-2 py-2 text-center bg-gray-200 border-r-0">Actions</TableHead>
+                  </TableRow>
+                </TableHeader>
+              <TableBody>
                 {loading ? (
                   <tr>
                     <td
@@ -501,50 +509,50 @@ const FollowupDealers = () => {
                     const cityName = getTruncatedText(dealer.city || "", 14);
 
                     return (
-                      <tr
+                      <TableRow
                         key={dealer.id}
                         className={`border-b border-gray-100 transition-colors`}
                       >
-                        <td className="px-2 py-2 border-r border-gray-100 text-xs font-semibold text-gray-600 w-8">
+                        <TableCell className="px-2 py-1 text-center text-xs text-gray-900 w-8 border-r border-gray-100 font-normal">
                           {idx + 1}
-                        </td>
-                        <td className="px-3 py-2 border-r border-gray-100">
+                        </TableCell>
+                        <TableCell className="px-3 py-1 text-xs border-r border-gray-100 font-normal">
                           <div
-                            className="font-semibold text-xs text-gray-900"
+                            className="text-gray-900"
                             title={dealerName.full}
                           >
                             {dealerName.display}
                           </div>
-                          <div className="text-[12px] text-gray-400 mt-0.5">
+                          <div className="text-[10px] text-gray-800 mt-0.5 font-normal">
                             {dealer.dealer_type} • Priority{" "}
                             {dealer.priority_level}
                           </div>
-                        </td>
-                        <td className="px-3 py-2 border-r border-gray-100">
+                        </TableCell>
+                        <TableCell className="px-3 py-1 text-xs border-r border-gray-100 font-normal">
                           {dealer.contact_person && (
-                            <div className="flex items-center gap-1.5 text-[11px] font-medium text-gray-900">
-                              <User size={12} className="text-gray-400" />
+                            <div className="flex items-center gap-1.5 text-gray-900">
+                              <User size={12} className="text-gray-800" />
                               <span title={contactPerson.full}>
                                 {contactPerson.display}
                               </span>
                             </div>
                           )}
                           {dealer.phone && (
-                            <div className="flex items-center gap-1.5 text-[11px] font-medium text-gray-900 mt-1">
-                              <Phone size={12} className="text-gray-400" />
+                            <div className="flex items-center gap-1.5 text-gray-900 mt-0.5">
+                              <Phone size={12} className="text-gray-800" />
                               <span>{dealer.phone}</span>
                             </div>
                           )}
                           {!dealer.contact_person && !dealer.phone && (
-                            <span className="text-[11px] text-gray-400">
+                            <span className="text-gray-700">
                               Not available
                             </span>
                           )}
-                        </td>
-                        <td className="px-2 py-1.5 border-r border-gray-100">
+                        </TableCell>
+                        <TableCell className="px-3 py-1 text-xs border-r border-gray-100 font-normal">
                           {dealer.city && (
                             <div
-                              className="text-[11px] font-semibold text-gray-900"
+                              className="text-gray-900"
                               title={cityName.full}
                             >
                               {cityName.display}
@@ -553,23 +561,23 @@ const FollowupDealers = () => {
                           {dealer.address && (
                             <button
                               title={dealer.address}
-                              className="text-gray-400 hover:text-primary-600 transition-colors cursor-help inline-flex mt-0.5"
+                              className="text-gray-800 hover:text-primary-600 transition-colors cursor-help inline-flex mt-0.5"
                             >
                               <MapPin size={12} weight="fill" />
                             </button>
                           )}
-                        </td>
-                        <td>
+                        </TableCell>
+                        <TableCell className="px-3 py-1 text-xs border-r border-gray-100 font-normal">
                           {dealer.last_visit_date ? (
                             <div>
-                              <div className="flex items-center gap-1.5 text-[12px] font-medium text-gray-900">
-                                <Calendar size={12} className="text-gray-400" />
+                              <div className="flex items-center gap-1.5 text-gray-900">
+                                <Calendar size={12} className="text-gray-800" />
                                 <span>
                                   {formatDateDDMmmYYYY(dealer.last_visit_date)}
                                 </span>
                               </div>
                               {dealer.last_visited_by && (
-                                <div className="text-[12px] text-gray-400 pl-5 mt-0.5">
+                                <div className="text-[10px] text-gray-800 pl-5 mt-0.5">
                                   By:{" "}
                                   {dealer.last_visited_by === user?.id ||
                                   dealer.last_visited_by === user?.name
@@ -580,25 +588,25 @@ const FollowupDealers = () => {
                               )}
                             </div>
                           ) : (
-                            <span className="text-xs text-gray-400">
+                            <span className="text-gray-700">
                               Never visited
                             </span>
                           )}
-                        </td>
-                        <td>
-                          <div className="flex items-center gap-1.5 text-xs font-medium text-gray-700">
-                            <Calendar size={12} className="text-gray-400" />
+                        </TableCell>
+                        <TableCell className="px-3 py-1 text-xs border-r border-gray-100 font-normal">
+                          <div className="flex items-center gap-1.5 text-gray-900">
+                            <Calendar size={12} className="text-gray-800" />
                             <span>
                               {formatDateDDMmmYYYY(dealer.next_visit_date)}
                             </span>
                           </div>
                           <div
-                            className={`text-[10px] pl-5 mt-0.5 font-medium ${
+                            className={`text-[9px] pl-5 mt-0.5 ${
                               dealer.followup_status === "overdue"
-                                ? "text-red-600"
+                                ? "text-red-700"
                                 : dealer.followup_status === "today"
-                                  ? "text-orange-600"
-                                  : "text-blue-600"
+                                  ? "text-orange-700"
+                                  : "text-blue-700"
                             }`}
                           >
                             {getDaysUntilText(
@@ -606,59 +614,58 @@ const FollowupDealers = () => {
                               dealer.followup_status,
                             )}
                           </div>
-                        </td>
-                        <td className="px-2 py-2 text-center">
+                        </TableCell>
+                        <TableCell className="px-2 py-1 text-center text-xs border-r border-gray-100 font-normal">
                           <span
-                            className={`text-xs font-semibold ${
+                            className={`text-[10px] ${
                               dealer.followup_status === "overdue"
-                                ? "text-red-600"
+                                ? "text-red-700"
                                 : dealer.followup_status === "today"
-                                  ? "text-orange-600"
-                                  : "text-blue-600"
+                                  ? "text-orange-700"
+                                  : "text-blue-700"
                             }`}
                           >
                             {dealer.followup_status
-                              ? dealer.followup_status.charAt(0).toUpperCase() +
-                                dealer.followup_status.slice(1)
+                              ? dealer.followup_status.toUpperCase()
                               : ""}
                           </span>
-                        </td>
-                        <td className="px-3 py-2 border-r border-gray-100">
+                        </TableCell>
+                        <TableCell className="px-3 py-1 text-xs border-r border-gray-100 font-normal">
                           {dealer.last_outcome ? (
                             <span
-                              className={`text-xs font-semibold ${
+                              className={`text-[10px] ${
                                 dealer.last_outcome === "Order Booked"
-                                  ? "text-emerald-600"
+                                  ? "text-emerald-700"
                                   : dealer.last_outcome === "Follow-up Required"
-                                    ? "text-amber-600"
-                                    : "text-slate-500"
+                                    ? "text-amber-700"
+                                    : "text-gray-800"
                               }`}
                             >
-                              {dealer.last_outcome}
+                              {dealer.last_outcome.toUpperCase()}
                             </span>
                           ) : (
-                            <span className="text-xs text-gray-400">
-                              No previous outcome
+                            <span className="text-gray-700">
+                              –
                             </span>
                           )}
-                        </td>
+                        </TableCell>
                         {showExecutiveColumn && (
-                          <td className="px-2 py-1.5 border-r border-gray-100">
-                            <span className="text-[11px] font-medium text-gray-900">
+                          <TableCell className="px-3 py-1 text-xs border-r border-gray-100 font-normal">
+                            <span className="text-gray-900">
                               {dealer.last_visited_by_name ||
                                 dealer.last_visited_by ||
                                 "—"}
                             </span>
-                          </td>
+                          </TableCell>
                         )}
-                        <td>
-                          <div className="flex items-center justify-center gap-2">
+                        <TableCell className="px-2 py-1 border-r-0">
+                          <div className="flex items-center justify-center gap-1.5">
                             {isSalesExecutive && (
                               <Button
                                 size="sm"
-                                variant="outline"
+                                variant="ghost"
                                 onClick={() => handleOpenFollowup(dealer)}
-                                className="h-8 px-2"
+                                className="h-7 w-7 p-0 text-primary-700 hover:bg-primary-50"
                                 title="Update Follow-up"
                               >
                                 <PencilSimple size={14} />
@@ -666,21 +673,21 @@ const FollowupDealers = () => {
                             )}
                             <Button
                               size="sm"
-                              variant="outline"
+                              variant="ghost"
                               onClick={() => handleViewHistory(dealer)}
-                              className="h-8 px-2"
+                              className="h-7 w-9 p-0 text-white bg-gray-500 hover:bg-gray-600 hover:text-white"
                               title="View History"
                             >
                               <ClockClockwise size={14} />
                             </Button>
                           </div>
-                        </td>
-                      </tr>
+                        </TableCell>
+                      </TableRow>
                     );
                   })
                 )}
-              </tbody>
-            </table>
+              </TableBody>
+            </Table>
           </div>
         </CardContent>
       </Card>

@@ -890,31 +890,17 @@ const AdminDashboard = () => {
             ) : (
               <div className="overflow-auto rounded-lg border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 shadow-sm max-h-[30rem]">
                 <Table className="table-auto border-collapse">
-                  <TableHeader className="text-nowrap sticky top-0 text-xs z-10 bg-gray-200">
-                    <TableHead className="p-2 text-gray-500 font-semibold border-r border-gray-200 w-8 bg-gray-200">
-                      #
-                    </TableHead>
-                    <TableHead className="p-2 text-gray-500 font-semibold border-r border-gray-200 bg-gray-200">
-                      Next Visit
-                    </TableHead>
-                    <TableHead className="p-2 text-gray-500 font-semibold border-r border-gray-200 bg-gray-200">
-                      Dealer
-                    </TableHead>
-                    <TableHead className="p-2 text-gray-500 font-semibold border-r border-gray-200 bg-gray-200">
-                      Status
-                    </TableHead>
-                    <TableHead className="p-2 text-gray-500 font-semibold border-r border-gray-200 bg-gray-200">
-                      Distance
-                    </TableHead>
-                    <TableHead className="p-2 text-gray-500 font-semibold border-r border-gray-200 bg-gray-200">
-                      Duration
-                    </TableHead>
-                    <TableHead className="p-2 text-gray-500 font-semibold border-r border-gray-200 bg-gray-200">
-                      Rep
-                    </TableHead>
-                    <TableHead className="p-2 text-gray-500 font-semibold bg-gray-200">
-                      Outcome
-                    </TableHead>
+                   <TableHeader className="text-nowrap sticky top-0 text-xs z-10 bg-gray-200">
+                    <TableRow className="border-y border-gray-200">
+                      <TableHead className="px-2 py-2 text-center w-8 bg-gray-200">#</TableHead>
+                      <TableHead className="px-2 py-2 bg-gray-200">Next Visit</TableHead>
+                      <TableHead className="px-2 py-2 bg-gray-200">Dealer</TableHead>
+                      <TableHead className="px-2 py-2 bg-gray-200">Status</TableHead>
+                      <TableHead className="px-2 py-2 bg-gray-200 text-center">Distance</TableHead>
+                      <TableHead className="px-2 py-2 bg-gray-200 text-center">Duration</TableHead>
+                      <TableHead className="px-2 py-2 bg-gray-200">Rep</TableHead>
+                      <TableHead className="px-2 py-2 bg-gray-200 border-r-0">Outcome</TableHead>
+                    </TableRow>
                   </TableHeader>
                   <TableBody className="divide-y divide-gray-100 dark:divide-gray-800">
                     {dealerVisitsData.visits.slice(0, 10).map((visit, idx) => {
@@ -928,93 +914,86 @@ const AdminDashboard = () => {
                       return (
                         <TableRow
                           key={visit.id}
-                          className="group cursor-pointer transition-all text-xs text-gray-700 duration-200"
+                          className="group cursor-pointer transition-all text-xs text-gray-900 duration-200"
                         >
-                          <TableCell className="px-2 py-1.5 text-xs font-medium text-gray-600 dark:text-gray-400 w-8">
+                          <TableCell className="px-2 py-1 text-xs text-gray-800 dark:text-gray-100 w-8 text-center border-r border-gray-100 font-normal">
                             {idx + 1}
                           </TableCell>
-                          <TableCell className="px-2 py-1.5">
-                            <span className="text-[11px] text-gray-600 dark:text-gray-400">
+                          <TableCell className="px-2 py-1 border-r border-gray-100 font-normal">
+                            <span className="text-xs text-gray-800 dark:text-gray-300">
                               {visit.next_visit_date
                                 ? formatDateDDMmmYYYY(visit.next_visit_date)
                                 : formatDateDDMmmYYYY(visit.check_in_time)}
                             </span>
                           </TableCell>
-                          <TableCell className="px-2 py-1.5">
-                            <div>
-                              <p
-                                className="text-xs font-semibold text-gray-900 dark:text-gray-100"
-                                title={dealerName.full}
-                              >
-                                {dealerName.display}
-                              </p>
-                            </div>
+                          <TableCell className="px-2 py-1 border-r border-gray-100 font-normal">
+                            <p
+                              className="text-xs text-gray-900 dark:text-gray-100"
+                              title={dealerName.full}
+                            >
+                              {dealerName.display}
+                            </p>
                           </TableCell>
-                          {/* <TableCell className="px-2 py-1.5">
-                            <span className="text-[11px] text-gray-600 dark:text-gray-400">
-                              {visit.territory || "N/A"}
-                            </span>
-                          </TableCell> */}
-                          <TableCell className="px-2 py-1.5">
+                          <TableCell className="px-2 py-1 border-r border-gray-100 font-normal">
                             <span
-                              className={`inline-block text-[10px] font-semibold px-1.5 py-0.5 rounded-full ${outcomeStyle.bg} ${outcomeStyle.text}`}
+                              className={`inline-block text-xs px-1.5 py-0.5 rounded-full ${outcomeStyle.bg} ${outcomeStyle.text} font-normal`}
                             >
                               {visit.check_out_time
                                 ? outcomeStyle.label
                                 : "In Progress"}
                             </span>
                           </TableCell>
-                          <TableCell className="px-2 py-1.5">
-                            <div className="flex items-center gap-1">
+                          <TableCell className="px-2 py-1 text-center border-r border-gray-100 font-normal">
+                            <div className="flex items-center justify-center gap-1">
                               <MapPin
                                 size={11}
-                                className="text-gray-400 dark:text-gray-500"
+                                className="text-gray-500 dark:text-gray-400"
                               />
-                              <span className="text-[11px] text-gray-600 dark:text-gray-400">
+                              <span className="text-xs text-gray-800 dark:text-gray-300">
                                 {visit.distance_km
                                   ? `${visit.distance_km} km`
                                   : "-"}
                               </span>
                             </div>
                           </TableCell>
-                          <TableCell className="px-2 py-1.5">
-                            <div className="flex items-center gap-1">
+                          <TableCell className="px-2 py-1 text-center border-r border-gray-100 font-normal">
+                            <div className="flex items-center justify-center gap-1">
                               <Clock
                                 size={11}
-                                className="text-gray-400 dark:text-gray-500"
+                                className="text-gray-500 dark:text-gray-400"
                               />
-                              <span className="text-[11px] text-gray-600 dark:text-gray-400">
+                              <span className="text-xs text-gray-800 dark:text-gray-300">
                                 {visit.duration_formatted || "-"}
                               </span>
                             </div>
                           </TableCell>
-                          <TableCell className="px-2 py-1.5">
+                          <TableCell className="px-2 py-1 border-r border-gray-100 font-normal">
                             <div className="flex items-center gap-1.5">
                               <div className="w-5 h-5 rounded-full bg-orange-400 flex items-center justify-center text-white text-[10px] font-bold flex-shrink-0">
                                 {(repName.full || "U").charAt(0).toUpperCase()}
                               </div>
                               <span
-                                className="text-[11px] text-gray-700 dark:text-gray-200"
+                                className="text-xs text-gray-900 dark:text-gray-100"
                                 title={repName.full}
                               >
                                 {repName.display}
                               </span>
                             </div>
                           </TableCell>
-                          <TableCell className="px-2 py-1.5">
+                          <TableCell className="px-2 py-1 border-r-0 font-normal">
                             <div className="flex items-center gap-2">
                               {visit.order_value > 0 && (
-                                <span className="text-[11px] font-bold text-emerald-600">
+                                <span className="text-xs text-emerald-700 font-semibold">
                                   ₹{visit.order_value.toLocaleString("en-IN")}
                                 </span>
                               )}
                               {!visit.check_out_time && (
-                                <span className="text-xs text-gray-400 dark:text-gray-500">
+                                <span className="text-xs text-gray-500 dark:text-gray-400">
                                   Active
                                 </span>
                               )}
                               {visit.check_out_time && !visit.order_value && (
-                                <span className="text-xs text-gray-400 dark:text-gray-500">
+                                <span className="text-xs text-gray-500">
                                   {outcomeStyle.label}
                                 </span>
                               )}

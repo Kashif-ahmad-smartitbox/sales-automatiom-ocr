@@ -479,66 +479,66 @@ const UserVisitSummary = () => {
                                         key={dealer.id || dealer.place_id}
                                         className="group cursor-pointer transition-all text-xs text-gray-700 duration-200"
                                       >
-                                        <TableCell className="px-2 py-1.5 text-center">
-                                          <span className="p-1 bg-gray-200 dark:bg-gray-700 font-medium rounded-full text-gray-600 dark:text-gray-300">
+                                        <TableCell className="px-2 py-1 text-center">
+                                          <span className="p-1 bg-gray-200 dark:bg-gray-700 rounded-full text-gray-800 dark:text-gray-200">
                                             {serialNumber}
                                           </span>
                                         </TableCell>
-                                        <TableCell className="px-2 py-1.5">
+                                        <TableCell className="px-2 py-1">
                                           <p
-                                            className="text-xs font-medium text-gray-800 dark:text-gray-200"
+                                            className="text-xs text-gray-900 dark:text-gray-100"
                                             title={dealerName.full}
                                           >
                                             {dealerName.display}
                                           </p>
                                         </TableCell>
-                                        <TableCell className="px-2 py-1.5">
+                                        <TableCell className="px-2 py-1">
                                           <p
-                                            className="text-[11px] text-gray-600 dark:text-gray-400 flex items-start gap-1.5 min-w-0 max-w-[220px]"
+                                            className="text-xs text-gray-800 dark:text-gray-300 flex items-start gap-1.5 min-w-0 max-w-[220px]"
                                             title={dealer.address}
                                           >
                                             <MapPin
                                               size={12}
-                                              className="flex-shrink-0 mt-0.5 text-gray-400"
+                                              className="flex-shrink-0 mt-0.5 text-gray-500"
                                             />
                                             <span className="truncate">
                                               {dealer.address || "–"}
                                             </span>
                                           </p>
                                         </TableCell>
-                                        <TableCell className="px-2 py-1.5">
-                                          <span className="text-[10px] px-1.5 py-0 text-gray-600 dark:text-gray-400">
+                                        <TableCell className="px-2 py-1">
+                                          <span className="text-xs px-1.5 py-0 text-gray-800 dark:text-gray-300">
                                             {dealer.dealer_type || "–"}
                                           </span>
                                         </TableCell>
-                                        <TableCell className="px-2 py-2 text-xs text-gray-700 dark:text-gray-400">
+                                        <TableCell className="px-2 py-1 text-xs text-gray-900 dark:text-gray-400">
                                           {getTerritoryName(
                                             dealer.territory_id,
                                           )}
                                         </TableCell>
                                         <TableCell
-                                          className="px-2 py-2 text-xs text-gray-700 dark:text-gray-400"
+                                          className="px-2 py-1 text-xs text-gray-900 dark:text-gray-400"
                                           title={contactPerson.full}
                                         >
                                           <span>{contactPerson.display}</span>
                                         </TableCell>
-                                        <TableCell className="px-2 py-2 text-xs text-gray-700 dark:text-gray-400 whitespace-nowrap">
+                                        <TableCell className="px-2 py-1 text-xs text-gray-900 dark:text-gray-400 whitespace-nowrap">
                                           {dealer.phone || "–"}
                                         </TableCell>
                                         <TableCell
-                                          className="px-2 py-2 text-xs text-gray-700 dark:text-gray-400"
+                                          className="px-2 py-1 text-xs text-gray-900 dark:text-gray-400"
                                           title={foundBy.full}
                                         >
                                           <span>{foundBy.display}</span>
                                         </TableCell>
-                                        <TableCell className="px-2 py-2">
+                                        <TableCell className="px-2 py-1">
                                           <span
-                                            className={`text-xs font-semibold ${
+                                            className={`text-xs ${
                                               dealer.priority_level === 1
-                                                ? "text-red-600"
+                                                ? "text-red-700"
                                                 : dealer.priority_level === 2
-                                                  ? "text-amber-600"
-                                                  : "text-slate-500"
+                                                  ? "text-amber-700"
+                                                  : "text-gray-700"
                                             }`}
                                           >
                                             {dealer.priority_level === 1
@@ -548,16 +548,16 @@ const UserVisitSummary = () => {
                                                 : "Low"}
                                           </span>
                                         </TableCell>
-                                        <TableCell className="px-2 py-2">
+                                        <TableCell className="px-2 py-1">
                                           <span
-                                            className={`text-xs font-semibold ${dealer.is_visited ? "text-emerald-600" : "text-slate-400"}`}
+                                            className={`text-xs ${dealer.is_visited ? "text-emerald-700" : "text-gray-500"}`}
                                           >
                                             {dealer.is_visited
                                               ? "Visited"
                                               : "Not Visited"}
                                           </span>
                                         </TableCell>
-                                        <TableCell className="px-2 py-2 text-xs text-gray-700 dark:text-gray-400 whitespace-nowrap">
+                                        <TableCell className="px-2 py-1 text-xs text-gray-900 dark:text-gray-400 whitespace-nowrap">
                                           {dealer.last_visit_date
                                             ? formatDateDDMmmYYYY(
                                                 dealer.last_visit_date,
@@ -565,43 +565,43 @@ const UserVisitSummary = () => {
                                             : "–"}
                                         </TableCell>
                                         <TableCell
-                                          className="px-2 py-2 text-xs text-gray-700 dark:text-gray-400"
+                                          className="px-2 py-1 text-xs text-gray-900 dark:text-gray-400"
                                           title={visitedBy.full}
                                         >
                                           <span>{visitedBy.display}</span>
                                         </TableCell>
-                                        <TableCell className="px-2 py-2">
+                                        <TableCell className="px-2 py-1">
                                           {dealer.last_outcome ? (
                                             <span
-                                              className={`text-xs font-semibold ${
+                                              className={`text-xs ${
                                                 dealer.last_outcome ===
                                                 "Order Booked"
-                                                  ? "text-emerald-600"
+                                                  ? "text-emerald-700"
                                                   : dealer.last_outcome ===
                                                       "Follow-up Required"
-                                                    ? "text-amber-600"
+                                                    ? "text-amber-700"
                                                     : dealer.last_outcome ===
                                                         "Lost Visit"
-                                                      ? "text-red-600"
-                                                      : "text-slate-500"
+                                                      ? "text-red-700"
+                                                      : "text-gray-700"
                                               }`}
                                             >
                                               {dealer.last_outcome}
                                             </span>
                                           ) : (
-                                            <span className="text-xs text-gray-400">
+                                            <span className="text-xs text-gray-500">
                                               –
                                             </span>
                                           )}
                                         </TableCell>
-                                        <TableCell className="px-2 py-2 text-xs text-gray-700 dark:text-gray-400 whitespace-nowrap">
+                                        <TableCell className="px-2 py-1 text-xs text-gray-900 dark:text-gray-400 whitespace-nowrap">
                                           {dealer.next_visit_date
                                             ? formatDateDDMmmYYYY(
                                                 dealer.next_visit_date,
                                               )
                                             : "–"}
                                         </TableCell>
-                                        <TableCell className="px-2 py-2 text-center">
+                                        <TableCell className="px-2 py-1 text-center">
                                           <DealerOrderItemsView
                                             dealer={dealer}
                                           />

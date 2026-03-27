@@ -649,48 +649,48 @@ const DealerManagement = () => {
                           key={dealer.id}
                           className="border-b border-gray-100 transition-colors bg-white hover:bg-gray-50"
                         >
-                          <TableCell className="px-2 py-2 border-r border-gray-100 text-xs font-semibold text-gray-600 w-8 text-center">
+                          <TableCell className="px-2 py-1 text-xs text-gray-900 w-8 text-center">
                             {idx + 1}
                           </TableCell>
-                          <TableCell className="px-3 py-2 border-r border-gray-100">
+                          <TableCell className="px-3 py-1">
                             <p
-                              className="text-xs font-semibold text-gray-900"
+                              className="text-xs text-gray-900"
                               title={dealerName.full}
                             >
                               {dealerName.display}
                             </p>
                           </TableCell>
-                          <TableCell className="px-2 py-2 border-r border-gray-100 w-10 text-center">
+                          <TableCell className="px-2 py-1 w-10 text-center">
                             <button
                               title={dealer.address || "No address"}
-                              className="text-gray-400 hover:text-primary-600 transition-colors cursor-help inline-flex"
+                              className="text-gray-500 hover:text-primary-600 transition-colors cursor-help inline-flex"
                             >
                               <MapPin size={14} weight="fill" />
                             </button>
                           </TableCell>
-                          <TableCell className="px-3 py-2 text-xs text-gray-700 border-r border-gray-100">
+                          <TableCell className="px-3 py-1 text-xs text-gray-900">
                             {dealer.dealer_type}
                           </TableCell>
-                          <TableCell className="px-3 py-2 text-xs text-gray-700 border-r border-gray-100">
+                          <TableCell className="px-3 py-1 text-xs text-gray-900">
                             {getTerritoryName(dealer.territory_id)}
                           </TableCell>
                           <TableCell
-                            className="px-3 py-2 text-xs text-gray-700 border-r border-gray-100"
+                            className="px-3 py-1 text-xs text-gray-900"
                             title={contactPerson.full}
                           >
                             {contactPerson.display}
                           </TableCell>
-                          <TableCell className="px-3 py-2 text-xs text-gray-700 border-r border-gray-100 whitespace-nowrap">
+                          <TableCell className="px-3 py-1 text-xs text-gray-900 whitespace-nowrap">
                             {dealer.phone || "–"}
                           </TableCell>
-                          <TableCell className="px-3 py-2 border-r border-gray-100">
+                          <TableCell className="px-3 py-1">
                             <span
-                              className={`text-xs font-semibold ${
+                              className={`text-xs ${
                                 dealer.priority_level === 1
-                                  ? "text-red-600"
+                                  ? "text-red-700"
                                   : dealer.priority_level === 2
-                                    ? "text-amber-600"
-                                    : "text-slate-500"
+                                    ? "text-amber-700"
+                                    : "text-gray-700"
                               }`}
                             >
                               {dealer.priority_level === 1
@@ -700,61 +700,61 @@ const DealerManagement = () => {
                                   : "Low"}
                             </span>
                           </TableCell>
-                          <TableCell className="px-3 py-2 border-r border-gray-100">
+                          <TableCell className="px-3 py-1">
                             {dealer.total_booked_amount > 0 ? (
-                              <span className="text-xs font-bold text-emerald-600">
+                              <span className="text-xs text-emerald-700">
                                 ₹
                                 {dealer.total_booked_amount.toLocaleString(
                                   "en-IN",
                                 )}
                               </span>
                             ) : (
-                              <span className="text-xs text-gray-400">₹0</span>
+                              <span className="text-xs text-gray-500">₹0</span>
                             )}
                           </TableCell>
-                          <TableCell className="px-3 py-2 text-xs text-gray-700 border-r border-gray-100 whitespace-nowrap">
+                          <TableCell className="px-3 py-1 text-xs text-gray-900 whitespace-nowrap">
                             {dealer.last_visit_date
                               ? formatDateDDMmmYYYY(dealer.last_visit_date)
                               : "Never"}
                           </TableCell>
                           <TableCell
-                            className="px-3 py-2 text-xs text-gray-700 border-r border-gray-100"
+                            className="px-3 py-1 text-xs text-gray-900"
                             title={visitedBy.full}
                           >
                             {visitedBy.display}
                           </TableCell>
-                          <TableCell className="px-3 py-2 border-r border-gray-100">
+                          <TableCell className="px-3 py-1">
                             {dealer.last_outcome ? (
                               dealer.last_outcome === "Order Booked" ? (
                                 <span
-                                  className="text-xs font-semibold text-emerald-600 cursor-pointer hover:text-emerald-700 underline underline-offset-2"
+                                  className="text-xs text-emerald-700 cursor-pointer hover:text-emerald-800 underline underline-offset-2"
                                   onClick={() => setOrderDialogDealer(dealer)}
                                 >
                                   {dealer.last_outcome}
                                 </span>
                               ) : (
                                 <span
-                                  className={`text-xs font-semibold ${
+                                  className={`text-xs ${
                                     dealer.last_outcome === "Follow-up Required"
-                                      ? "text-amber-600"
+                                      ? "text-amber-700"
                                       : dealer.last_outcome === "Lost Visit"
-                                        ? "text-red-600"
-                                        : "text-slate-500"
+                                        ? "text-red-700"
+                                        : "text-gray-700"
                                   }`}
                                 >
                                   {dealer.last_outcome}
                                 </span>
                               )
                             ) : (
-                              <span className="text-xs text-gray-400">–</span>
+                              <span className="text-xs text-gray-500">–</span>
                             )}
                           </TableCell>
-                          <TableCell className="px-3 py-2 text-xs text-gray-700 border-r border-gray-100 whitespace-nowrap">
+                          <TableCell className="px-3 py-1 text-xs text-gray-700 border-r border-gray-100 whitespace-nowrap">
                             {dealer.next_visit_date
                               ? formatDateDDMmmYYYY(dealer.next_visit_date)
                               : "–"}
                           </TableCell>
-                          <TableCell className="px-2 py-1.5">
+                          <TableCell className="px-2 py-1">
                             <div className="flex items-center justify-center gap-1">
                               <Button
                                 variant="ghost"
