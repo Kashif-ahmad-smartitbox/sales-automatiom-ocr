@@ -627,7 +627,7 @@ const FieldView = () => {
             {isInMarket ? (
               <button
                 onClick={handleEndMarket}
-                className="flex items-center gap-1.5 bg-red-500 hover:bg-red-600 text-white rounded-full px-4 py-1.5 text-xs font-bold transition-colors shadow-sm"
+                className="flex items-center gap-1.5 bg-red-500 hover:bg-red-600 text-white rounded-full px-4 h-7 sm:h-8 text-xs font-bold transition-colors shadow-sm whitespace-nowrap"
                 data-testid="end-market-btn"
               >
                 <Stop size={12} weight="fill" />
@@ -636,7 +636,7 @@ const FieldView = () => {
             ) : (
               <button
                 onClick={handleStartMarket}
-                className="flex items-center gap-1.5 bg-emerald-500 hover:bg-emerald-600 text-white rounded-full px-4 py-1.5 text-xs font-bold transition-colors shadow-sm"
+                className="flex items-center gap-1.5 bg-emerald-500 hover:bg-emerald-600 text-white rounded-full px-4 h-7 sm:h-8 text-xs font-bold transition-colors shadow-sm whitespace-nowrap"
                 data-testid="start-market-btn"
               >
                 <Play size={12} weight="fill" />
@@ -850,7 +850,7 @@ const FieldView = () => {
 
           {/* Map view */}
           {viewMode === "map" && currentLocation && (
-            <div className="h-[240px] sm:h-[300px] md:h-[380px]">
+            <div className="h-[240px] sm:h-[300px] md:h-[380px] relative z-10">
               <MapContainer
                 center={[currentLocation.lat, currentLocation.lng]}
                 zoom={15}

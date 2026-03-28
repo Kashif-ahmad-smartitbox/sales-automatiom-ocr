@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from "react";
+import { Fragment, useState, useEffect, useCallback } from "react";
 import axios from "axios";
 import SalesExecutiveLayout from "../components/layout/SalesExecutiveLayout";
 import { Card, CardContent } from "../components/ui/card";
@@ -19,7 +19,8 @@ import {
   ArrowRight,
   CheckCircle,
   Package,
-  ArrowsClockwise
+  ArrowsClockwise,
+  CaretRight,
 } from "@phosphor-icons/react";
 import { useAuth } from "../context/AuthContext";
 import { useSearch } from "../context/SearchContext";
@@ -55,6 +56,7 @@ const AssignedPotentials = () => {
   const [loading, setLoading] = useState(true);
   const [visitDialogOpen, setVisitDialogOpen] = useState(false);
   const [selectedDealer, setSelectedDealer] = useState(null);
+  const [mobileExpandedDealer, setMobileExpandedDealer] = useState(null);
   const [companyProducts, setCompanyProducts] = useState([]);
   const [visitData, setVisitData] = useState({
     outcome: "",
@@ -120,6 +122,10 @@ const AssignedPotentials = () => {
     });
     setItemDetails({});
     setVisitDialogOpen(true);
+  };
+
+  const toggleMobileDealerDetails = (dealerKey) => {
+    setMobileExpandedDealer((prev) => (prev === dealerKey ? null : dealerKey));
   };
 
   const toggleOrderedItem = (item) => {
@@ -263,7 +269,7 @@ const AssignedPotentials = () => {
     <SalesExecutiveLayout title="My Assigned Dealers">
       <div className="space-y-4">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-2 sm:gap-3 flex-wrap">
             <div>
               <h1 className="text-lg font-bold bg-gradient-to-r from-primary-600 to-orange-600 bg-clip-text text-transparent">
                 My Assigned Dealers
@@ -278,7 +284,7 @@ const AssignedPotentials = () => {
             <Button
               size="sm"
               variant="ghost"
-              className="h-7 sm:h-8 w-12 p-0 rounded-xl bg-gray-500 hover:bg-gray-600 hover:text-white text-white md:w-12 w-full"
+              className="h-7 sm:h-8 w-10 p-0 rounded-xl bg-gray-500 hover:bg-gray-600 hover:text-white text-white"
               onClick={fetchData}
               title="Refresh"
             >
@@ -304,7 +310,7 @@ const AssignedPotentials = () => {
                 </div>
                 <Button
                   onClick={() => navigate("/field")}
-                  className="bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 rounded-xl text-white shadow-md whitespace-nowrap"
+                  className="bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 rounded-xl text-white shadow-md w-full sm:w-auto text-center"
                   size="sm"
                 >
                   Go to Field View
@@ -352,7 +358,7 @@ const AssignedPotentials = () => {
         {/* Content */}
         <Card className="rounded-xl border shadow-sm overflow-hidden">
           <CardContent className="p-0">
-            <div className="overflow-auto bg-white dark:bg-gray-900 shadow-sm w-full max-h-[30rem]">
+            <div className="hidden md:block overflow-auto bg-white dark:bg-gray-900 shadow-sm w-full max-h-[30rem]">
               <Table className="table-auto border-separate border-spacing-0">
                 <TableHeader className="text-nowrap sticky top-0 z-10">
                   <TableRow className="border-y border-gray-200 bg-gray-200 hover:bg-gray-200">
@@ -475,6 +481,123 @@ const AssignedPotentials = () => {
                             </Button>
                           </TableCell>
                         </TableRow>
+                      );
+                    })
+                  )}
+                </TableBody>
+              </Table>
+            </div>
+
+            <div className="md:hidden bg-white dark:bg-gray-900 shadow-sm w-full max-h-[30rem] overflow-auto">
+              <Table className="min-w-[760px]">
+                <TableHeader className="whitespace-nowrap text-xs">
+                  <TableHead className="px-2 py-2 w-8 text-center">#</TableHead>
+                  <TableHead className="px-2 py-2">Dealer</TableHead>
+                  <TableHead className="px-2 py-2">Address</TableHead>
+                  <TableHead className="px-2 py-2">Assigned</TableHead>
+                  <TableHead className="px-2 py-2 text-center">Status</TableHead>
+                  <TableHead className="px-2 py-2 text-center">Action</TableHead>
+                </TableHeader>
+                <TableBody>
+                  {loading ? (
+                    <TableRow>
+                      <TableCell colSpan="6" className="px-2 py-6 text-center">
+                        <div className="flex justify-center items-center gap-2 text-[11px] text-gray-500">
+                          <div className="spinner w-4 h-4" /> Loading data...
+                        </div>
+                      </TableCell>
+                    </TableRow>
+                  ) : filteredPotentials.length === 0 ? (
+                    <TableRow>
+                      <TableCell colSpan="6" className="px-2 py-8 text-center text-[11px] text-gray-500">
+                        {searchTerm
+                          ? "No matches found."
+                          : "No dealers assigned to you yet."}
+                      </TableCell>
+                    </TableRow>
+                  ) : (
+                    filteredPotentials.map((item, idx) => {
+                      const dealerKey = String(item._id || item.id || item.place_id || idx);
+                      const isExpanded = mobileExpandedDealer === dealerKey;
+                      const placeName = getTruncatedText(item.place_name, 22);
+
+                      return (
+                        <Fragment key={dealerKey}>
+                          <TableRow
+                            className="cursor-pointer"
+                            onClick={() => toggleMobileDealerDetails(dealerKey)}
+                          >
+                            <TableCell className="px-2 py-1 text-center text-xs">{idx + 1}</TableCell>
+                            <TableCell className="px-2 py-1" title={placeName.full}>
+                              <div className="flex items-center gap-1.5">
+                                <CaretRight
+                                  size={11}
+                                  className={`transition-transform ${isExpanded ? "rotate-90" : "rotate-0"}`}
+                                />
+                                <span className="text-xs text-gray-900">{placeName.display}</span>
+                              </div>
+                            </TableCell>
+                            <TableCell className="px-2 py-1 text-xs text-gray-800" title={item.address}>
+                              {getTruncatedText(item.address, 28).display || "Address not available"}
+                            </TableCell>
+                            <TableCell className="px-2 py-1 text-xs text-gray-800 whitespace-nowrap">
+                              {formatDateDDMmmYYYY(item.assigned_at)}
+                            </TableCell>
+                            <TableCell className="px-2 py-1 text-center">
+                              <Badge
+                                variant="outline"
+                                className="bg-blue-50 text-blue-700 border-blue-200 text-[10px] px-1.5 py-0"
+                              >
+                                Assigned
+                              </Badge>
+                            </TableCell>
+                            <TableCell className="px-2 py-1 text-center">
+                              <div onClick={(e) => e.stopPropagation()}>
+                                <Button
+                                  size="sm"
+                                  onClick={() => handleRecordVisit(item)}
+                                  className="bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white rounded-xl h-7 px-2"
+                                >
+                                  <CheckCircle size={14} className="mr-1" />
+                                  Record Visit
+                                </Button>
+                              </div>
+                            </TableCell>
+                          </TableRow>
+
+                          {isExpanded && (
+                            <TableRow>
+                              <TableCell colSpan="6" className="px-2 py-2 bg-slate-50">
+                                <div className="space-y-1 text-xs">
+                                  <p>
+                                    <span className="text-gray-500">Dealer ID : </span>
+                                    <span className="text-gray-900">{item.place_id || "-"}</span>
+                                  </p>
+                                  <p>
+                                    <span className="text-gray-500">Found By : </span>
+                                    <span className="text-gray-900">{item.found_by_name || "-"}</span>
+                                  </p>
+                                  <p>
+                                    <span className="text-gray-500">Assigned At : </span>
+                                    <span className="text-gray-900">
+                                      {new Date(item.assigned_at).toLocaleString([], {
+                                        year: "numeric",
+                                        month: "short",
+                                        day: "2-digit",
+                                        hour: "2-digit",
+                                        minute: "2-digit",
+                                      })}
+                                    </span>
+                                  </p>
+                                  <p className="break-words">
+                                    <span className="text-gray-500">Address : </span>
+                                    <span className="text-gray-900">{item.address || "Address not available"}</span>
+                                  </p>
+                                </div>
+                              </TableCell>
+                            </TableRow>
+                          )}
+                        </Fragment>
                       );
                     })
                   )}
