@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from "react";
+import { Fragment, useState, useEffect, useCallback } from "react";
 import axios from "axios";
 import AdminLayout from "../components/layout/AdminLayout";
 import { Card, CardContent } from "../components/ui/card";
@@ -59,6 +59,7 @@ const UserVisitSummary = () => {
   const [showAllSessions, setShowAllSessions] = useState({});
   const [selectedSession, setSelectedSession] = useState({});
   const [page, setPage] = useState({});
+  const [mobileExpandedDealer, setMobileExpandedDealer] = useState({});
 
   // Date range filter - default to last 15 days
   const [fromDate, setFromDate] = useState(getDefault15DaysAgo());
@@ -119,6 +120,14 @@ const UserVisitSummary = () => {
 
   const setUserPage = (userId, p) => {
     setPage((prev) => ({ ...prev, [userId]: p }));
+    setMobileExpandedDealer((prev) => ({ ...prev, [userId]: null }));
+  };
+
+  const toggleMobileDealerDetails = (userId, dealerKey) => {
+    setMobileExpandedDealer((prev) => ({
+      ...prev,
+      [userId]: prev[userId] === dealerKey ? null : dealerKey,
+    }));
   };
 
   const getTerritoryName = (id) => {
@@ -393,9 +402,10 @@ const UserVisitSummary = () => {
                         );
 
                         return (
-                          <div className="overflow-auto rounded-xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 shadow-sm w-full max-h-[30rem]">
-                            <Table className="table-auto border-separate border-spacing-0">
-                              <TableHeader className="text-nowrap sticky top-0 text-xs z-10">
+                          <>
+                          <div className="hidden md:block overflow-auto rounded-xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 shadow-sm w-full max-h-[30rem]">
+                            <Table className="min-w-[1200px] border-separate border-spacing-0">
+                              <TableHeader className="whitespace-nowrap sticky top-0 text-xs z-10">
                                 <TableHead className="p-2 text-gray-500 font-semibold border-r border-b border-gray-200 text-center w-8 bg-gray-200">
                                   #
                                 </TableHead>
@@ -477,7 +487,7 @@ const UserVisitSummary = () => {
                                     return (
                                       <TableRow
                                         key={dealer.id || dealer.place_id}
-                                        className="group cursor-pointer transition-all text-xs text-gray-700 duration-200"
+                                        className="group cursor-pointer text-xs text-gray-700"
                                       >
                                         <TableCell className="px-2 py-1 text-center">
                                           <span className="p-1 bg-gray-200 dark:bg-gray-700 rounded-full text-gray-800 dark:text-gray-200">
@@ -652,6 +662,190 @@ const UserVisitSummary = () => {
                               </div>
                             )}
                           </div>
+
+                          <div className="md:hidden rounded-xl border border-gray-200 bg-white shadow-sm overflow-hidden">
+                            <div className="overflow-x-auto">
+                              <Table className="min-w-[760px]">
+                                <TableHeader className="whitespace-nowrap text-xs">
+                                  <TableHead className="px-2 py-2 w-8 text-center">#</TableHead>
+                                  <TableHead className="px-2 py-2">Dealer</TableHead>
+                                  <TableHead className="px-2 py-2">Territory</TableHead>
+                                  <TableHead className="px-2 py-2">Contact</TableHead>
+                                  <TableHead className="px-2 py-2">Phone</TableHead>
+                                  <TableHead className="px-2 py-2">Status</TableHead>
+                                  <TableHead className="px-2 py-2">Priority</TableHead>
+                                  <TableHead className="px-2 py-2 text-center">Items</TableHead>
+                                </TableHeader>
+                                <TableBody>
+                                  {filteredDealers.length === 0 ? (
+                                    <TableRow>
+                                      <TableCell
+                                        colSpan="8"
+                                        className="px-2 py-8 text-center text-[11px] text-gray-500"
+                                      >
+                                        {sid
+                                          ? "No dealers in this session"
+                                          : "No dealers shown yet (start a market session to see dealers)"}
+                                      </TableCell>
+                                    </TableRow>
+                                  ) : (
+                                    paginatedDealers.map((dealer, idx) => {
+                                      const serialNumber = startIdx + idx + 1;
+                                      const dealerKey = `${user.user_id}-${startIdx + idx}-${dealer.id ?? "na"}-${dealer.place_id ?? "na"}`;
+                                      const isDealerExpanded =
+                                        mobileExpandedDealer[user.user_id] === dealerKey;
+                                      const dealerName = getTruncatedText(
+                                        dealer.name || dealer.dealer_name,
+                                        22,
+                                      );
+                                      const contactPerson = getTruncatedText(
+                                        dealer.contact_person,
+                                        18,
+                                      );
+
+                                      return (
+                                        <Fragment key={dealerKey}>
+                                          <TableRow
+                                            className="cursor-pointer"
+                                            onClick={() =>
+                                              toggleMobileDealerDetails(
+                                                user.user_id,
+                                                dealerKey,
+                                              )
+                                            }
+                                          >
+                                            <TableCell className="px-2 py-1 text-center">{serialNumber}</TableCell>
+                                            <TableCell className="px-2 py-1" title={dealerName.full}>
+                                              <div className="flex items-center gap-1.5">
+                                                <CaretDown
+                                                  size={12}
+                                                  className={`transition-transform ${isDealerExpanded ? "rotate-180" : ""}`}
+                                                />
+                                                <p className="text-xs text-gray-900">{dealerName.display}</p>
+                                              </div>
+                                            </TableCell>
+                                            <TableCell className="px-2 py-1 text-xs text-gray-900">
+                                              {getTerritoryName(dealer.territory_id)}
+                                            </TableCell>
+                                            <TableCell className="px-2 py-1" title={contactPerson.full}>
+                                              <p className="text-xs text-gray-900">{contactPerson.display}</p>
+                                            </TableCell>
+                                            <TableCell className="px-2 py-1 text-xs text-gray-900 whitespace-nowrap">
+                                              {dealer.phone || "-"}
+                                            </TableCell>
+                                            <TableCell className="px-2 py-1">
+                                              <span className={`text-xs ${dealer.is_visited ? "text-emerald-700" : "text-gray-500"}`}>
+                                                {dealer.is_visited ? "Visited" : "Not Visited"}
+                                              </span>
+                                            </TableCell>
+                                            <TableCell className="px-2 py-1">
+                                              <span
+                                                className={`text-xs ${
+                                                  dealer.priority_level === 1
+                                                    ? "text-red-700"
+                                                    : dealer.priority_level === 2
+                                                      ? "text-amber-700"
+                                                      : "text-gray-700"
+                                                }`}
+                                              >
+                                                {dealer.priority_level === 1
+                                                  ? "High"
+                                                  : dealer.priority_level === 2
+                                                    ? "Medium"
+                                                    : "Low"}
+                                              </span>
+                                            </TableCell>
+                                            <TableCell className="px-2 py-1 text-center">
+                                              <div onClick={(e) => e.stopPropagation()}>
+                                                <DealerOrderItemsView dealer={dealer} />
+                                              </div>
+                                            </TableCell>
+                                          </TableRow>
+
+                                          {isDealerExpanded && (
+                                            <TableRow>
+                                              <TableCell colSpan="8" className="px-2 py-2 bg-slate-50">
+                                                <div className="space-y-1 text-xs">
+                                                  <p>
+                                                    <span className="text-gray-500">Type : </span>
+                                                    <span className="text-gray-900">{dealer.dealer_type || "-"}</span>
+                                                  </p>
+                                                  <p>
+                                                    <span className="text-gray-500">Found By : </span>
+                                                    <span className="text-gray-900">{dealer.found_by || "-"}</span>
+                                                  </p>
+                                                  <p>
+                                                    <span className="text-gray-500">Visited By : </span>
+                                                    <span className="text-gray-900">{dealer.last_visited_by || "-"}</span>
+                                                  </p>
+                                                  <p>
+                                                    <span className="text-gray-500">Last Visit : </span>
+                                                    <span className="text-gray-900 whitespace-nowrap">
+                                                      {dealer.last_visit_date
+                                                        ? formatDateDDMmmYYYY(dealer.last_visit_date)
+                                                        : "-"}
+                                                    </span>
+                                                  </p>
+                                                  <p>
+                                                    <span className="text-gray-500">Next Visit : </span>
+                                                    <span className="text-gray-900 whitespace-nowrap">
+                                                      {dealer.next_visit_date
+                                                        ? formatDateDDMmmYYYY(dealer.next_visit_date)
+                                                        : "-"}
+                                                    </span>
+                                                  </p>
+                                                  <p>
+                                                    <span className="text-gray-500">Outcome : </span>
+                                                    <span className="text-gray-900">{dealer.last_outcome || "-"}</span>
+                                                  </p>
+                                                </div>
+                                                <div className="mt-1.5">
+                                                  <p className="text-xs break-words">
+                                                    <span className="text-gray-500">Address : </span>
+                                                    <span className="text-gray-900">{dealer.address || "-"}</span>
+                                                  </p>
+                                                </div>
+                                              </TableCell>
+                                            </TableRow>
+                                          )}
+                                        </Fragment>
+                                      );
+                                    })
+                                  )}
+                                </TableBody>
+                              </Table>
+                            </div>
+
+                            {filteredDealers.length > PAGE_SIZE && (
+                              <div className="flex items-center justify-between px-3 py-2 border-t border-gray-100 bg-gray-50">
+                                <span className="text-[11px] text-gray-600">
+                                  {startIdx + 1}-{Math.min(startIdx + PAGE_SIZE, filteredDealers.length)} / {filteredDealers.length}
+                                </span>
+                                <div className="flex items-center gap-1">
+                                  <Button
+                                    variant="outline"
+                                    size="sm"
+                                    className="h-7 px-2"
+                                    disabled={currentPage <= 1}
+                                    onClick={() => setUserPage(user.user_id, currentPage - 1)}
+                                  >
+                                    <CaretLeft size={14} />
+                                  </Button>
+                                  <span className="text-xs font-medium px-1.5">{currentPage}/{totalPages}</span>
+                                  <Button
+                                    variant="outline"
+                                    size="sm"
+                                    className="h-7 px-2"
+                                    disabled={currentPage >= totalPages}
+                                    onClick={() => setUserPage(user.user_id, currentPage + 1)}
+                                  >
+                                    <CaretRight size={14} />
+                                  </Button>
+                                </div>
+                              </div>
+                            )}
+                          </div>
+                          </>
                         );
                       })()}
                     </div>

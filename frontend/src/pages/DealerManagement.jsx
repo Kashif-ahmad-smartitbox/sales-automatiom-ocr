@@ -300,7 +300,7 @@ const DealerManagement = () => {
         {/* Actions + Stats */}
         <div className="flex flex-wrap items-center justify-between gap-2">
           <div className="flex flex-wrap items-center gap-2">
-            <div className="flex items-center gap-2 bg-primary-400 border border-primary-100 rounded-full px-3 py-1.5">
+            <div className="flex items-center gap-1 sm:gap-2 bg-primary-400 border border-primary-100 rounded-full px-1 sm:px-3 py-1.5">
               <span className="text-[11px] font-medium text-white">
                 Total Dealers
               </span>
@@ -308,7 +308,7 @@ const DealerManagement = () => {
                 {dealers.length}
               </span>
             </div>
-            <div className="flex items-center gap-2 bg-emerald-400 border border-emerald-100 rounded-full px-3 py-1.5">
+            <div className="flex items-center gap-1 sm:gap-2 bg-emerald-400 border border-emerald-100 rounded-full px-1 sm:px-3 py-1.5">
               <span className="text-[11px] font-medium text-white">
                 Retailers
               </span>
@@ -316,7 +316,7 @@ const DealerManagement = () => {
                 {dealers.filter((d) => d.dealer_type === "Retailer").length}
               </span>
             </div>
-            <div className="flex items-center gap-2 bg-amber-400 border border-amber-100 rounded-full px-3 py-1.5">
+            <div className="flex items-center gap-1 sm:gap-2 bg-amber-400 border border-amber-100 rounded-full px-1 sm:px-3 py-1.5">
               <span className="text-[11px] font-medium text-white">
                 Distributors
               </span>
@@ -324,7 +324,7 @@ const DealerManagement = () => {
                 {dealers.filter((d) => d.dealer_type === "Distributor").length}
               </span>
             </div>
-            <div className="flex items-center gap-2 bg-red-400 border border-red-100 rounded-full px-3 py-1.5">
+            <div className="flex items-center gap-1 sm:gap-2 bg-red-400 border border-red-100 rounded-full px-1 sm:px-3 py-1.5">
               <span className="text-[11px] font-medium text-white">
                 High Priority
               </span>
@@ -348,7 +348,7 @@ const DealerManagement = () => {
           >
             <DialogTrigger asChild>
               <Button
-                className="bg-gradient-to-r from-green-500 to-green-500 hover:from-green-600 hover:to-green-600 text-white shadow-sm text-xs h-8 rounded-xl"
+                className="bg-gradient-to-r from-green-500 to-green-500 hover:from-green-600 hover:to-green-600 text-white shadow-sm text-xs h-7 sm:h-8 rounded-xl w-full text-center md:w-auto md:text-left"
                 data-testid="add-dealer-btn"
               >
                 <Plus className="mr-1" size={14} />

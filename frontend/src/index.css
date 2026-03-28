@@ -143,7 +143,9 @@ code {
 
 /* Mobile touch targets */
 @media (max-width: 768px) {
-  button, .btn, a[role="button"] {
+  button:not([class*="h-"]),
+  .btn:not([class*="h-"]),
+  a[role="button"]:not([class*="h-"]) {
     min-height: 44px;
   }
 }

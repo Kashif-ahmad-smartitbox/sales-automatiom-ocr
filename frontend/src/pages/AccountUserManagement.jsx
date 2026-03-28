@@ -137,7 +137,7 @@ const AccountUserManagement = () => {
 
           <Dialog open={dialogOpen} onOpenChange={(open) => { if (!open) closeDialog(); else setDialogOpen(true); }}>
             <DialogTrigger asChild>
-              <Button className="bg-gradient-to-r from-green-500 to-green-500 hover:from-green-600 hover:to-green-600 text-white shadow-sm text-xs h-8 rounded-xl">
+              <Button className="bg-gradient-to-r from-green-500 to-green-500 hover:from-green-600 hover:to-green-600 text-white shadow-sm text-xs h-7 sm:h-8 rounded-xl w-full text-center md:w-auto md:text-left">
                 <Plus className="mr-1" size={14} /> Add Account User
               </Button>
             </DialogTrigger>
@@ -184,7 +184,7 @@ const AccountUserManagement = () => {
         {loading ? (
           <div className="flex justify-center py-12"><div className="spinner" /></div>
         ) : filteredUsers.length === 0 ? (
-          <Card><CardContent className="text-center py-12 text-slate-500">No Account Users Found.</CardContent></Card>
+          <Card><CardContent className="text-center py-8 sm:py-12 text-slate-500">No Account Users Found.</CardContent></Card>
         ) : (
           <Card className="rounded-xl border shadow-sm overflow-hidden">
             <CardContent className="p-0">

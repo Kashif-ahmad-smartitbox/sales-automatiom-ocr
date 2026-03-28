@@ -168,7 +168,7 @@ const PotentialDealers = () => {
             variant="outline"
             size="sm"
             onClick={fetchData}
-            className="h-8 text-xs bg-gray-700 text-white rounded-full hover:bg-gray-800 hover:text-white"
+            className="h-7 sm:h-8 text-xs bg-gray-700 text-white rounded-full hover:bg-gray-800 hover:text-white w-full text-center md:w-auto md:text-left"
           >
             Refresh
           </Button>

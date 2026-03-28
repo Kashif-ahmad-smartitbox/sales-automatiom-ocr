@@ -325,7 +325,7 @@ const SalesExecutiveManagement = () => {
           >
             <DialogTrigger asChild>
               <Button
-                className="bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 rounded-xl text-white shadow-sm text-xs h-8"
+                className="bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 rounded-xl text-white shadow-sm text-xs h-7 sm:h-8 w-full text-center md:w-auto md:text-left"
                 data-testid="add-executive-btn"
               >
                 <Plus className="mr-1" size={14} />
@@ -573,7 +573,7 @@ const SalesExecutiveManagement = () => {
           </div>
         ) : filteredExecutives.length === 0 ? (
           <Card>
-            <CardContent className="text-center py-12 text-slate-500">
+            <CardContent className="text-center py-8 sm:py-12 text-slate-500">
               {searchTerm
                 ? "No executives match your search"
                 : 'No sales executives added yet. Click "Add Sales Executive" to get started.'}

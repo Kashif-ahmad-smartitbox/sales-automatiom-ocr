@@ -105,7 +105,7 @@ const DispatchOrderPage = () => {
         {loading ? (
              <div className="flex justify-center py-12"><div className="spinner" /></div>
           ) : orders.length === 0 ? (
-             <Card><CardContent className="text-center py-12">No approved orders ready for dispatch.</CardContent></Card>
+             <Card><CardContent className="text-center py-8 sm:py-12">No approved orders ready for dispatch.</CardContent></Card>
           ) : (
              <Card className="rounded-xl border shadow-sm overflow-hidden">
 

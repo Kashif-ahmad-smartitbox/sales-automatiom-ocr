@@ -240,7 +240,7 @@ const ItemMaster = () => {
 
             <Button
               onClick={() => setShowAddModal(true)}
-              className="flex-1 md:flex-initial bg-green-500 text-white hover:bg-green-600 rounded-xl"
+              className="flex-1 md:flex-initial bg-green-500 text-white hover:bg-green-600 rounded-xl h-8 sm:h-8 px-3 text-xs"
             >
               <Plus className="w-4 h-4 mr-1" weight="bold" />
               Add Item

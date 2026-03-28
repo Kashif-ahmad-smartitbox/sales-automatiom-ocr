@@ -580,7 +580,7 @@ const ReportsPage = () => {
                   Executive Performance
                 </CardTitle>
               </CardHeader>
-              <CardContent>
+              <CardContent className="p-2">
                 {executivePerformance.length === 0 ? (
                   <p className="text-center py-6 text-xs text-gray-500">
                     No performance data yet
@@ -690,7 +690,7 @@ const ReportsPage = () => {
                   Recent Visits
                 </CardTitle>
               </CardHeader>
-              <CardContent>
+              <CardContent className="p-2">
                 {visitHistory.length === 0 ? (
                   <p className="text-center py-6 text-xs text-gray-500">
                     No visits recorded yet
@@ -834,7 +834,7 @@ const ReportsPage = () => {
                   Lost Visits Analysis
                 </CardTitle>
               </CardHeader>
-              <CardContent>
+              <CardContent className="p-2">
                 {lostVisits.length === 0 ? (
                   <div className="text-center py-8">
                     <div className="w-16 h-16 rounded-full bg-emerald-100 flex items-center justify-center mx-auto mb-4">
@@ -919,7 +919,7 @@ const ReportsPage = () => {
                   Daily Market Sessions
                 </CardTitle>
               </CardHeader>
-              <CardContent>
+              <CardContent className="p-2">
                 {marketSessions.length === 0 ? (
                   <p className="text-center py-6 text-xs text-gray-500">
                     No market sessions recorded

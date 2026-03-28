@@ -278,7 +278,7 @@ const AssignedPotentials = () => {
             <Button
               size="sm"
               variant="ghost"
-              className="h-8 w-12 p-0 rounded-xl bg-gray-500 hover:bg-gray-600 hover:text-white text-white"
+              className="h-7 sm:h-8 w-12 p-0 rounded-xl bg-gray-500 hover:bg-gray-600 hover:text-white text-white md:w-12 w-full"
               onClick={fetchData}
               title="Refresh"
             >
@@ -368,7 +368,7 @@ const AssignedPotentials = () => {
                 <TableBody className="divide-y divide-gray-100 dark:divide-gray-800">
                   {loading ? (
                     <TableRow>
-                      <TableCell colSpan="7" className="px-2 py-8 text-center">
+                      <TableCell colSpan="7" className="px-2 py-6 sm:py-8 text-center">
                         <div className="flex justify-center items-center gap-2 text-[11px] text-gray-500 dark:text-gray-400">
                           <div className="spinner w-4 h-4" /> Loading data...
                         </div>

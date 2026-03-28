@@ -110,7 +110,14 @@
     @apply px-2 py-2 text-[10px];
   }
   .data-table td {
-    @apply px-2 py-2 text-xs;
+    @apply px-2 py-1 text-xs;
+  }
+}
+
+/* Mobile button responsiveness */
+@media (max-width: 768px) {
+  .mobile-button-full {
+    @apply w-full text-center;
   }
 }
 

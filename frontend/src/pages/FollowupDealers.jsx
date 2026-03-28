@@ -404,7 +404,7 @@ const FollowupDealers = () => {
         {/* Actions + Stats */}
         <div className="flex flex-wrap items-center justify-between gap-2">
           <div className="flex flex-wrap items-center gap-2">
-            <div className="flex items-center gap-2 bg-red-500 border border-red-100 rounded-full px-3 py-1.5">
+            <div className="flex items-center gap-1 sm:gap-2 bg-red-500 border border-red-100 rounded-full px-1 sm:px-3 py-1.5">
               <WarningCircle size={13} className="text-white" weight="fill" />
               <span className="text-[11px] font-medium text-white">
                 Overdue
@@ -413,7 +413,7 @@ const FollowupDealers = () => {
                 {stats.overdue}
               </span>
             </div>
-            <div className="flex items-center gap-2 bg-orange-500 border border-orange-100 rounded-full px-3 py-1.5">
+            <div className="flex items-center gap-1 sm:gap-2 bg-orange-500 border border-orange-100 rounded-full px-1 sm:px-3 py-1.5">
               <Clock size={13} className="text-white" weight="fill" />
               <span className="text-[11px] font-medium text-white">
                 Today
@@ -422,7 +422,7 @@ const FollowupDealers = () => {
                 {stats.today}
               </span>
             </div>
-            <div className="flex items-center gap-2 bg-blue-500 border border-blue-100 rounded-full px-3 py-1.5">
+            <div className="flex items-center gap-1 sm:gap-2 bg-blue-500 border border-blue-100 rounded-full px-1 sm:px-3 py-1.5">
               <Calendar size={13} className="text-white" weight="fill" />
               <span className="text-[11px] font-medium text-white">
                 Upcoming
@@ -431,7 +431,7 @@ const FollowupDealers = () => {
                 {stats.upcoming}
               </span>
             </div>
-            <div className="flex items-center gap-2 bg-primary-400 border border-primary-100 rounded-full px-3 py-1.5">
+            <div className="flex items-center gap-1 sm:gap-2 bg-primary-400 border border-primary-100 rounded-full px-1 sm:px-3 py-1.5">
               <span className="text-[11px] font-medium text-white">
                 Total
               </span>
@@ -449,7 +449,7 @@ const FollowupDealers = () => {
             variant="outline"
             size="sm"
             onClick={fetchData}
-            className="h-8 text-xs bg-gray-700 text-white hover:bg-gray-800 hover:text-white rounded-xl"
+            className="h-7 sm:h-8 text-xs bg-gray-700 text-white hover:bg-gray-800 hover:text-white rounded-xl w-full text-center md:w-auto md:text-left"
           >
             Refresh
           </Button>
@@ -481,7 +481,7 @@ const FollowupDealers = () => {
                   <tr>
                     <td
                       colSpan={tableColumnCount}
-                      className="px-2 py-8 text-center"
+                      className="px-2 py-6 sm:py-8 text-center"
                     >
                       <div className="flex justify-center items-center gap-2 text-[11px] text-gray-500">
                         <div className="spinner w-4 h-4" /> Loading data...

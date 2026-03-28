@@ -216,7 +216,7 @@ const HODManagement = () => {
             }}
           >
             <DialogTrigger asChild>
-              <Button className="bg-gradient-to-r from-green-500 to-green-500 hover:from-green-600 hover:to-green-600 text-white shadow-sm text-xs h-8 rounded-xl">
+              <Button className="bg-gradient-to-r from-green-500 to-green-500 hover:from-green-600 hover:to-green-600 text-white shadow-sm text-xs h-7 sm:h-8 rounded-xl w-full text-center md:w-auto md:text-left">
                 <Plus className="mr-1" size={14} />
                 Add HOD
               </Button>
