@@ -79,6 +79,14 @@ const ReportsPage = () => {
   const [visitHistory, setVisitHistory] = useState([]);
   const [marketSessions, setMarketSessions] = useState([]);
   const [weeklySales, setWeeklySales] = useState({ daily: [], summary: {} });
+  const [advancedOverview, setAdvancedOverview] = useState({
+    summary: {},
+    top_performers: [],
+    territory_coverage: [],
+    follow_up_pipeline: { counts: {}, items: [] },
+    dealer_attention: [],
+    outcome_trend: [],
+  });
   const [loading, setLoading] = useState(true);
 
   // Pagination
@@ -94,7 +102,15 @@ const ReportsPage = () => {
 
   const fetchReportData = useCallback(async () => {
     try {
-      const [dashRes, perfRes, lostRes, histRes, sessRes, weeklyRes] =
+      const [
+        dashRes,
+        perfRes,
+        lostRes,
+        histRes,
+        sessRes,
+        weeklyRes,
+        advancedRes,
+      ] =
         await Promise.all([
           axios.get(`${API}/reports/dashboard`, { headers: getAuthHeader() }),
           axios.get(`${API}/reports/executive-performance`, {
@@ -108,6 +124,9 @@ const ReportsPage = () => {
           axios.get(`${API}/reports/weekly-sales`, {
             headers: getAuthHeader(),
           }),
+          axios.get(`${API}/reports/advanced-overview`, {
+            headers: getAuthHeader(),
+          }),
         ]);
       setDashboardStats(dashRes.data);
       setExecutivePerformance(perfRes.data);
@@ -115,6 +134,7 @@ const ReportsPage = () => {
       setVisitHistory(histRes.data);
       setMarketSessions(sessRes.data);
       setWeeklySales(weeklyRes.data);
+      setAdvancedOverview(advancedRes.data);
     } catch (error) {
       toast.error("Failed to fetch reports");
     } finally {
@@ -169,9 +189,33 @@ const ReportsPage = () => {
     return data.slice(start, start + ROWS_PER_PAGE);
   };
 
+  const formatCurrency = (value) =>
+    `Rs. ${Number(value || 0).toLocaleString("en-IN", {
+      maximumFractionDigits: 0,
+    })}`;
+
+  const formatMinutes = (value) => {
+    if (!value) return "0 min";
+    if (value < 60) return `${Math.round(value)} min`;
+    const hours = Math.floor(value / 60);
+    const minutes = Math.round(value % 60);
+    return `${hours}h ${minutes}m`;
+  };
+
   const totalSessionsPages = Math.ceil(marketSessions.length / ROWS_PER_PAGE);
   const totalVisitsPages = Math.ceil(visitHistory.length / ROWS_PER_PAGE);
   const totalLostPages = Math.ceil(lostVisits.length / ROWS_PER_PAGE);
+  const advancedSummary = advancedOverview.summary || {};
+
+  if (loading) {
+    return (
+      <AdminLayout title="Reports & Analytics">
+        <div className="flex items-center justify-center h-64">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-orange-500"></div>
+        </div>
+      </AdminLayout>
+    );
+  }
 
   const PaginationControls = ({ currentPage, totalPages, onPageChange }) => {
     if (totalPages <= 1) return null;
@@ -357,6 +401,64 @@ const ReportsPage = () => {
               </Card>
             </div>
 
+            <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
+              <Card className="border border-emerald-100 shadow-sm bg-emerald-50/70">
+                <CardContent className="p-3">
+                  <p className="text-[11px] font-medium text-emerald-800">
+                    Conversion Rate
+                  </p>
+                  <p className="text-lg font-bold text-emerald-900 mt-1">
+                    {advancedSummary.conversion_rate || 0}%
+                  </p>
+                  <p className="text-[10px] text-emerald-700 mt-1">
+                    Orders from completed visits
+                  </p>
+                </CardContent>
+              </Card>
+
+              <Card className="border border-blue-100 shadow-sm bg-blue-50/70">
+                <CardContent className="p-3">
+                  <p className="text-[11px] font-medium text-blue-800">
+                    Avg Order Value
+                  </p>
+                  <p className="text-lg font-bold text-blue-900 mt-1">
+                    {formatCurrency(advancedSummary.avg_order_value)}
+                  </p>
+                  <p className="text-[10px] text-blue-700 mt-1">
+                    Per booked order
+                  </p>
+                </CardContent>
+              </Card>
+
+              <Card className="border border-amber-100 shadow-sm bg-amber-50/70">
+                <CardContent className="p-3">
+                  <p className="text-[11px] font-medium text-amber-800">
+                    Avg Visit Time
+                  </p>
+                  <p className="text-lg font-bold text-amber-900 mt-1">
+                    {formatMinutes(advancedSummary.avg_visit_minutes)}
+                  </p>
+                  <p className="text-[10px] text-amber-700 mt-1">
+                    Based on completed visits
+                  </p>
+                </CardContent>
+              </Card>
+
+              <Card className="border border-rose-100 shadow-sm bg-rose-50/70">
+                <CardContent className="p-3">
+                  <p className="text-[11px] font-medium text-rose-800">
+                    Overdue Follow-ups
+                  </p>
+                  <p className="text-lg font-bold text-rose-900 mt-1">
+                    {advancedSummary.overdue_follow_ups || 0}
+                  </p>
+                  <p className="text-[10px] text-rose-700 mt-1">
+                    Dealers needing action now
+                  </p>
+                </CardContent>
+              </Card>
+            </div>
+
             {/* Charts Row 1: 7-Day Trend + Outcome Pie */}
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
               {/* 7-Day Visit & Order Trend */}
@@ -489,6 +591,101 @@ const ReportsPage = () => {
               </Card>
             </div>
 
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+              <Card className="border-0 shadow-sm">
+                <CardHeader className="pb-2">
+                  <CardTitle className="text-sm font-bold text-gray-800">
+                    Territory Coverage
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  {advancedOverview.territory_coverage?.length ? (
+                    <ResponsiveContainer width="100%" height={220}>
+                      <BarChart
+                        data={advancedOverview.territory_coverage}
+                        layout="vertical"
+                        margin={{ top: 5, right: 10, left: 20, bottom: 5 }}
+                      >
+                        <CartesianGrid
+                          strokeDasharray="3 3"
+                          stroke="#f0f0f0"
+                          horizontal={false}
+                        />
+                        <XAxis type="number" hide />
+                        <YAxis
+                          type="category"
+                          dataKey="territory_name"
+                          width={110}
+                          tick={{ fontSize: 10, fill: "#475569" }}
+                          axisLine={false}
+                          tickLine={false}
+                        />
+                        <Tooltip />
+                        <Bar
+                          dataKey="visited_dealers"
+                          name="Visited Dealers"
+                          fill="#0f766e"
+                          radius={[0, 4, 4, 0]}
+                        />
+                      </BarChart>
+                    </ResponsiveContainer>
+                  ) : (
+                    <div className="flex items-center justify-center h-44 text-xs text-gray-400">
+                      No territory coverage data available
+                    </div>
+                  )}
+                </CardContent>
+              </Card>
+
+              <Card className="border-0 shadow-sm">
+                <CardHeader className="pb-2">
+                  <CardTitle className="text-sm font-bold text-gray-800">
+                    14-Day Revenue Momentum
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  {advancedOverview.outcome_trend?.length ? (
+                    <ResponsiveContainer width="100%" height={220}>
+                      <BarChart
+                        data={advancedOverview.outcome_trend}
+                        margin={{ top: 5, right: 10, left: -20, bottom: 5 }}
+                      >
+                        <CartesianGrid
+                          strokeDasharray="3 3"
+                          stroke="#f0f0f0"
+                          vertical={false}
+                        />
+                        <XAxis
+                          dataKey="label"
+                          tick={{ fontSize: 10, fill: "#6b7280" }}
+                          axisLine={false}
+                          tickLine={false}
+                        />
+                        <YAxis
+                          tick={{ fontSize: 10, fill: "#6b7280" }}
+                          axisLine={false}
+                          tickLine={false}
+                        />
+                        <Tooltip
+                          formatter={(value) => formatCurrency(value)}
+                        />
+                        <Bar
+                          dataKey="revenue"
+                          name="Revenue"
+                          fill="#2563eb"
+                          radius={[4, 4, 0, 0]}
+                        />
+                      </BarChart>
+                    </ResponsiveContainer>
+                  ) : (
+                    <div className="flex items-center justify-center h-44 text-xs text-gray-400">
+                      No revenue trend available
+                    </div>
+                  )}
+                </CardContent>
+              </Card>
+            </div>
+
             {/* Executive Performance Chart */}
             {executivePerformance.length > 0 && (
               <Card className="border-0 shadow-sm">
@@ -567,6 +764,196 @@ const ReportsPage = () => {
                 </CardContent>
               </Card>
             )}
+
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+              <Card className="border-0 shadow-sm">
+                <CardHeader className="pb-2">
+                  <CardTitle className="text-sm font-bold text-gray-800">
+                    Top Performers Snapshot
+                  </CardTitle>
+                </CardHeader>
+                <CardContent className="p-0">
+                  {advancedOverview.top_performers?.length ? (
+                    <div className="overflow-auto">
+                      <Table>
+                        <TableHeader>
+                          <TableRow>
+                            <TableHead>Executive</TableHead>
+                            <TableHead className="text-center">Visits</TableHead>
+                            <TableHead className="text-center">Conv.</TableHead>
+                            <TableHead className="text-right">Revenue</TableHead>
+                          </TableRow>
+                        </TableHeader>
+                        <TableBody>
+                          {advancedOverview.top_performers.map((exec) => (
+                            <TableRow key={exec.executive_id}>
+                              <TableCell className="py-2">
+                                <div className="font-medium text-xs text-gray-900">
+                                  {exec.executive_name}
+                                </div>
+                                <div className="text-[10px] text-gray-500">
+                                  {exec.employee_code || "No code"}
+                                </div>
+                              </TableCell>
+                              <TableCell className="text-center text-xs">
+                                {exec.total_visits}
+                              </TableCell>
+                              <TableCell className="text-center text-xs">
+                                {exec.conversion_rate}%
+                              </TableCell>
+                              <TableCell className="text-right text-xs font-medium">
+                                {formatCurrency(exec.revenue)}
+                              </TableCell>
+                            </TableRow>
+                          ))}
+                        </TableBody>
+                      </Table>
+                    </div>
+                  ) : (
+                    <div className="flex items-center justify-center h-40 text-xs text-gray-400">
+                      No performer data available
+                    </div>
+                  )}
+                </CardContent>
+              </Card>
+
+              <Card className="border-0 shadow-sm">
+                <CardHeader className="pb-2">
+                  <CardTitle className="text-sm font-bold text-gray-800">
+                    Follow-up Pipeline
+                  </CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-3">
+                  <div className="grid grid-cols-3 gap-2">
+                    <div className="rounded-lg bg-rose-50 border border-rose-100 p-2 text-center">
+                      <p className="text-[10px] text-rose-700">Overdue</p>
+                      <p className="text-sm font-bold text-rose-900">
+                        {advancedOverview.follow_up_pipeline?.counts?.overdue ||
+                          0}
+                      </p>
+                    </div>
+                    <div className="rounded-lg bg-amber-50 border border-amber-100 p-2 text-center">
+                      <p className="text-[10px] text-amber-700">Today</p>
+                      <p className="text-sm font-bold text-amber-900">
+                        {advancedOverview.follow_up_pipeline?.counts?.today || 0}
+                      </p>
+                    </div>
+                    <div className="rounded-lg bg-emerald-50 border border-emerald-100 p-2 text-center">
+                      <p className="text-[10px] text-emerald-700">Upcoming</p>
+                      <p className="text-sm font-bold text-emerald-900">
+                        {advancedOverview.follow_up_pipeline?.counts?.upcoming ||
+                          0}
+                      </p>
+                    </div>
+                  </div>
+
+                  <div className="space-y-2">
+                    {(advancedOverview.follow_up_pipeline?.items || [])
+                      .slice(0, 5)
+                      .map((item) => (
+                        <div
+                          key={item.visit_id}
+                          className="rounded-lg border border-gray-100 p-2"
+                        >
+                          <div className="flex items-center justify-between gap-2">
+                            <div>
+                              <p className="text-xs font-medium text-gray-900">
+                                {item.dealer_name}
+                              </p>
+                              <p className="text-[10px] text-gray-500">
+                                {item.executive_name}
+                              </p>
+                            </div>
+                            <Badge
+                              className={`text-[10px] ${
+                                item.bucket === "overdue"
+                                  ? "bg-rose-100 text-rose-700"
+                                  : item.bucket === "today"
+                                    ? "bg-amber-100 text-amber-700"
+                                    : "bg-emerald-100 text-emerald-700"
+                              }`}
+                            >
+                              {item.bucket}
+                            </Badge>
+                          </div>
+                          <p className="text-[10px] text-gray-500 mt-1">
+                            Next visit:{" "}
+                            {item.next_visit_date
+                              ? formatDateDDMmmYYYY(item.next_visit_date)
+                              : "-"}
+                          </p>
+                        </div>
+                      ))}
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
+
+            <Card className="border-0 shadow-sm">
+              <CardHeader className="pb-2">
+                <CardTitle className="text-sm font-bold text-gray-800">
+                  Dealers Needing Attention
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="p-0">
+                {advancedOverview.dealer_attention?.length ? (
+                  <div className="overflow-auto">
+                    <Table>
+                      <TableHeader>
+                        <TableRow>
+                          <TableHead>Dealer</TableHead>
+                          <TableHead>Territory</TableHead>
+                          <TableHead className="text-center">Last Outcome</TableHead>
+                          <TableHead className="text-center">Days Idle</TableHead>
+                          <TableHead className="text-right">Status</TableHead>
+                        </TableRow>
+                      </TableHeader>
+                      <TableBody>
+                        {advancedOverview.dealer_attention.map((dealer) => (
+                          <TableRow key={dealer.dealer_id}>
+                            <TableCell className="py-2">
+                              <div className="font-medium text-xs text-gray-900">
+                                {dealer.dealer_name}
+                              </div>
+                              <div className="text-[10px] text-gray-500">
+                                {dealer.city || "No city"}
+                              </div>
+                            </TableCell>
+                            <TableCell className="text-xs">
+                              {dealer.territory_name}
+                            </TableCell>
+                            <TableCell className="text-center text-xs">
+                              {dealer.last_outcome || "-"}
+                            </TableCell>
+                            <TableCell className="text-center text-xs">
+                              {dealer.days_since_last_visit || 0}
+                            </TableCell>
+                            <TableCell className="text-right">
+                              <Badge
+                                className={`text-[10px] ${
+                                  dealer.attention_status ===
+                                  "Overdue Follow-up"
+                                    ? "bg-rose-100 text-rose-700"
+                                    : dealer.attention_status === "Cold Dealer"
+                                      ? "bg-amber-100 text-amber-700"
+                                      : "bg-slate-100 text-slate-700"
+                                }`}
+                              >
+                                {dealer.attention_status}
+                              </Badge>
+                            </TableCell>
+                          </TableRow>
+                        ))}
+                      </TableBody>
+                    </Table>
+                  </div>
+                ) : (
+                  <div className="flex items-center justify-center h-40 text-xs text-gray-400">
+                    No dealer risk data available
+                  </div>
+                )}
+              </CardContent>
+            </Card>
           </TabsContent>
 
           {/* Team Performance Tab */}
