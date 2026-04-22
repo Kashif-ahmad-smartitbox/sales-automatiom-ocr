@@ -47,6 +47,43 @@ const webpackConfig = {
       '@': path.resolve(__dirname, 'src'),
     },
     configure: (webpackConfig) => {
+      webpackConfig.ignoreWarnings = [
+        ...(webpackConfig.ignoreWarnings || []),
+        (warning) =>
+          warning?.module?.resource?.includes(`${path.sep}node_modules${path.sep}pdfmake${path.sep}build${path.sep}pdfmake.js`) &&
+          typeof warning?.message === "string" &&
+          warning.message.includes("Failed to parse source map"),
+      ];
+
+      // pdfmake ships a sourcemap reference CRA/source-map-loader cannot parse.
+      // Excluding that package removes the noisy warning without changing runtime behavior.
+      webpackConfig.module.rules.forEach((rule) => {
+        if (!Array.isArray(rule.oneOf)) return;
+
+        rule.oneOf.forEach((oneOfRule) => {
+          if (
+            oneOfRule.enforce === "pre" &&
+            oneOfRule.use &&
+            oneOfRule.use.some(
+              (loaderConfig) =>
+                typeof loaderConfig === "object" &&
+                loaderConfig.loader &&
+                loaderConfig.loader.includes("source-map-loader"),
+            )
+          ) {
+            const currentExclude = Array.isArray(oneOfRule.exclude)
+              ? oneOfRule.exclude
+              : oneOfRule.exclude
+                ? [oneOfRule.exclude]
+                : [];
+
+            oneOfRule.exclude = [
+              ...currentExclude,
+              /node_modules[\\/]pdfmake[\\/]/,
+            ];
+          }
+        });
+      });
 
       // Add ignored patterns to reduce watched directories
         webpackConfig.watchOptions = {

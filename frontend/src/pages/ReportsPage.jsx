@@ -99,6 +99,13 @@ const ReportsPage = () => {
   const [sessionPotentials, setSessionPotentials] = useState([]);
   const [detailsLoading, setDetailsLoading] = useState(false);
   const [isDetailsOpen, setIsDetailsOpen] = useState(false);
+  const [isMetricDetailsOpen, setIsMetricDetailsOpen] = useState(false);
+  const [metricDetailsLoading, setMetricDetailsLoading] = useState(false);
+  const [metricDetails, setMetricDetails] = useState({
+    metric: "",
+    title: "",
+    rows: [],
+  });
 
   const fetchReportData = useCallback(async () => {
     try {
@@ -160,6 +167,96 @@ const ReportsPage = () => {
     }
   };
 
+  const metricColumnConfig = {
+    total_visits: [
+      { key: "date", label: "Date" },
+      { key: "executive_name", label: "Executive" },
+      { key: "dealer_name", label: "Dealer" },
+      { key: "outcome", label: "Outcome" },
+      { key: "duration_minutes", label: "Duration" },
+      { key: "order_value", label: "Order Value", align: "right" },
+    ],
+    orders_booked: [
+      { key: "date", label: "Date" },
+      { key: "executive_name", label: "Executive" },
+      { key: "dealer_name", label: "Dealer" },
+      { key: "outcome", label: "Outcome" },
+      { key: "order_value", label: "Order Value", align: "right" },
+      { key: "duration_minutes", label: "Duration" },
+    ],
+    total_revenue: [
+      { key: "date", label: "Date" },
+      { key: "executive_name", label: "Executive" },
+      { key: "dealer_name", label: "Dealer" },
+      { key: "outcome", label: "Outcome" },
+      { key: "order_value", label: "Order Value", align: "right" },
+      { key: "duration_minutes", label: "Duration" },
+    ],
+    lost_visits: [
+      { key: "date", label: "Date" },
+      { key: "executive_name", label: "Executive" },
+      { key: "dealer_name", label: "Dealer" },
+      { key: "outcome", label: "Outcome" },
+      { key: "duration_minutes", label: "Duration" },
+      { key: "next_visit_date", label: "Next Visit" },
+    ],
+    conversion_rate: [
+      { key: "date", label: "Date" },
+      { key: "executive_name", label: "Executive" },
+      { key: "dealer_name", label: "Dealer" },
+      { key: "outcome", label: "Outcome" },
+      { key: "order_value", label: "Order Value", align: "right" },
+      { key: "duration_minutes", label: "Duration" },
+    ],
+    avg_order_value: [
+      { key: "date", label: "Date" },
+      { key: "executive_name", label: "Executive" },
+      { key: "dealer_name", label: "Dealer" },
+      { key: "outcome", label: "Outcome" },
+      { key: "order_value", label: "Order Value", align: "right" },
+      { key: "duration_minutes", label: "Duration" },
+    ],
+    avg_visit_time: [
+      { key: "date", label: "Date" },
+      { key: "executive_name", label: "Executive" },
+      { key: "dealer_name", label: "Dealer" },
+      { key: "outcome", label: "Outcome" },
+      { key: "duration_minutes", label: "Duration" },
+      { key: "order_value", label: "Order Value", align: "right" },
+    ],
+    overdue_follow_ups: [
+      { key: "next_visit_date", label: "Next Visit" },
+      { key: "dealer_name", label: "Dealer" },
+      { key: "executive_name", label: "Executive" },
+      { key: "territory_name", label: "Territory" },
+      { key: "pending_days", label: "Pending Days", align: "center" },
+      { key: "last_outcome", label: "Last Outcome" },
+    ],
+  };
+
+  const openMetricDetails = async (metric) => {
+    setIsMetricDetailsOpen(true);
+    setMetricDetailsLoading(true);
+    setMetricDetails({
+      metric,
+      title: "",
+      rows: [],
+    });
+
+    try {
+      const res = await axios.get(`${API}/reports/advanced-overview/details`, {
+        headers: getAuthHeader(),
+        params: { metric },
+      });
+      setMetricDetails(res.data);
+    } catch (error) {
+      console.error("Failed to load metric details", error);
+      toast.error("Failed to load card details");
+    } finally {
+      setMetricDetailsLoading(false);
+    }
+  };
+
   useEffect(() => {
     fetchReportData();
   }, [fetchReportData]);
@@ -206,6 +303,45 @@ const ReportsPage = () => {
   const totalVisitsPages = Math.ceil(visitHistory.length / ROWS_PER_PAGE);
   const totalLostPages = Math.ceil(lostVisits.length / ROWS_PER_PAGE);
   const advancedSummary = advancedOverview.summary || {};
+  const activeMetricColumns = metricColumnConfig[metricDetails.metric] || [];
+
+  const formatMetricCell = (key, value) => {
+    if (!value && value !== 0) return "—";
+    if (key === "date" || key === "next_visit_date") {
+      return formatDateDDMmmYYYY(value);
+    }
+    if (key === "order_value") {
+      return formatCurrency(value);
+    }
+    if (key === "duration_minutes") {
+      return formatMinutes(value);
+    }
+    if (key === "pending_days") {
+      return `${value} days`;
+    }
+    return value;
+  };
+
+  const getMetricCellClassName = (column) => {
+    if (column.align === "right") return "px-3 py-2 text-xs text-right";
+    if (column.align === "center") return "px-3 py-2 text-xs text-center";
+    return "px-3 py-2 text-xs";
+  };
+
+  const metricCardInteractiveClassName =
+    "cursor-pointer transition-all duration-300 hover:-translate-y-0.5 hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-primary-300";
+
+  const getMetricCardProps = (metric) => ({
+    role: "button",
+    tabIndex: 0,
+    onClick: () => openMetricDetails(metric),
+    onKeyDown: (event) => {
+      if (event.key === "Enter" || event.key === " ") {
+        event.preventDefault();
+        openMetricDetails(metric);
+      }
+    },
+  });
 
   if (loading) {
     return (
@@ -321,7 +457,10 @@ const ReportsPage = () => {
           <TabsContent value="overview" className="space-y-4">
             {/* Summary Stats - gradient cards */}
             <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
-              <Card className="border-0 bg-gradient-to-br from-primary-400 to-primary-500 text-white shadow-md hover:shadow-lg transition-all duration-300">
+              <Card
+                {...getMetricCardProps("total_visits")}
+                className={`border-0 bg-gradient-to-br from-primary-400 to-primary-500 text-white shadow-md ${metricCardInteractiveClassName}`}
+              >
                 <CardContent className="p-3">
                   <div className="flex items-center justify-between mb-1">
                     <span className="text-xs font-medium text-white/90">
@@ -336,7 +475,10 @@ const ReportsPage = () => {
                 </CardContent>
               </Card>
 
-              <Card className="border-0 bg-gradient-to-br from-emerald-400 to-emerald-500 text-white shadow-md hover:shadow-lg transition-all duration-300">
+              <Card
+                {...getMetricCardProps("orders_booked")}
+                className={`border-0 bg-gradient-to-br from-emerald-400 to-emerald-500 text-white shadow-md ${metricCardInteractiveClassName}`}
+              >
                 <CardContent className="p-3">
                   <div className="flex items-center justify-between mb-1">
                     <span className="text-xs font-medium text-white/90">
@@ -361,7 +503,10 @@ const ReportsPage = () => {
                 </CardContent>
               </Card>
 
-              <Card className="border-0 bg-gradient-to-br from-purple-400 to-purple-500 text-white shadow-md hover:shadow-lg transition-all duration-300">
+              <Card
+                {...getMetricCardProps("total_revenue")}
+                className={`border-0 bg-gradient-to-br from-purple-400 to-purple-500 text-white shadow-md ${metricCardInteractiveClassName}`}
+              >
                 <CardContent className="p-3">
                   <div className="flex items-center justify-between mb-1">
                     <span className="text-xs font-medium text-white/90">
@@ -383,7 +528,10 @@ const ReportsPage = () => {
                 </CardContent>
               </Card>
 
-              <Card className="border-0 bg-gradient-to-br from-red-400 to-red-500 text-white shadow-md hover:shadow-lg transition-all duration-300">
+              <Card
+                {...getMetricCardProps("lost_visits")}
+                className={`border-0 bg-gradient-to-br from-red-400 to-red-500 text-white shadow-md ${metricCardInteractiveClassName}`}
+              >
                 <CardContent className="p-3">
                   <div className="flex items-center justify-between mb-1">
                     <span className="text-xs font-medium text-white/90">
@@ -402,7 +550,10 @@ const ReportsPage = () => {
             </div>
 
             <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
-              <Card className="border border-emerald-100 shadow-sm bg-emerald-50/70">
+              <Card
+                {...getMetricCardProps("conversion_rate")}
+                className={`border border-emerald-100 shadow-sm bg-emerald-50/70 ${metricCardInteractiveClassName}`}
+              >
                 <CardContent className="p-3">
                   <p className="text-[11px] font-medium text-emerald-800">
                     Conversion Rate
@@ -416,7 +567,10 @@ const ReportsPage = () => {
                 </CardContent>
               </Card>
 
-              <Card className="border border-blue-100 shadow-sm bg-blue-50/70">
+              <Card
+                {...getMetricCardProps("avg_order_value")}
+                className={`border border-blue-100 shadow-sm bg-blue-50/70 ${metricCardInteractiveClassName}`}
+              >
                 <CardContent className="p-3">
                   <p className="text-[11px] font-medium text-blue-800">
                     Avg Order Value
@@ -430,7 +584,10 @@ const ReportsPage = () => {
                 </CardContent>
               </Card>
 
-              <Card className="border border-amber-100 shadow-sm bg-amber-50/70">
+              <Card
+                {...getMetricCardProps("avg_visit_time")}
+                className={`border border-amber-100 shadow-sm bg-amber-50/70 ${metricCardInteractiveClassName}`}
+              >
                 <CardContent className="p-3">
                   <p className="text-[11px] font-medium text-amber-800">
                     Avg Visit Time
@@ -444,7 +601,10 @@ const ReportsPage = () => {
                 </CardContent>
               </Card>
 
-              <Card className="border border-rose-100 shadow-sm bg-rose-50/70">
+              <Card
+                {...getMetricCardProps("overdue_follow_ups")}
+                className={`border border-rose-100 shadow-sm bg-rose-50/70 ${metricCardInteractiveClassName}`}
+              >
                 <CardContent className="p-3">
                   <p className="text-[11px] font-medium text-rose-800">
                     Overdue Follow-ups
@@ -1517,6 +1677,61 @@ const ReportsPage = () => {
                             minute: "2-digit",
                           })}
                         </TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+              )}
+            </div>
+          </DialogContent>
+        </Dialog>
+
+        <Dialog
+          open={isMetricDetailsOpen}
+          onOpenChange={setIsMetricDetailsOpen}
+        >
+          <DialogContent className="max-w-6xl max-h-[85vh] overflow-hidden flex flex-col">
+            <DialogHeader>
+              <DialogTitle>{metricDetails.title || "Report Details"}</DialogTitle>
+            </DialogHeader>
+
+            <div className="flex-1 overflow-auto max-h-[32rem] pr-1 mt-2">
+              {metricDetailsLoading ? (
+                <div className="flex justify-center p-8">
+                  <div className="spinner" />
+                </div>
+              ) : metricDetails.rows?.length === 0 ? (
+                <div className="text-center p-8 text-slate-500">
+                  No details found for this card.
+                </div>
+              ) : (
+                <Table className="w-full text-left min-w-[760px]">
+                  <TableHeader className="sticky top-0 z-10 bg-white">
+                    <TableRow className="border-y border-gray-200">
+                      {activeMetricColumns.map((column) => (
+                        <TableHead
+                          key={column.key}
+                          className={`${getMetricCellClassName(column)} bg-gray-100 font-medium text-gray-700`}
+                        >
+                          {column.label}
+                        </TableHead>
+                      ))}
+                    </TableRow>
+                  </TableHeader>
+                  <TableBody>
+                    {metricDetails.rows.map((row) => (
+                      <TableRow
+                        key={row.id}
+                        className="border-b border-gray-100 hover:bg-gray-50"
+                      >
+                        {activeMetricColumns.map((column) => (
+                          <TableCell
+                            key={`${row.id}-${column.key}`}
+                            className={`${getMetricCellClassName(column)} text-gray-800`}
+                          >
+                            {formatMetricCell(column.key, row[column.key])}
+                          </TableCell>
+                        ))}
                       </TableRow>
                     ))}
                   </TableBody>
